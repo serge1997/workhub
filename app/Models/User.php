@@ -20,8 +20,16 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'user_name',
         'password',
+        'banned_at',
+        'banned_reason'
     ];
+
+    public function isBanned(): bool
+    {
+        return $this->banned_at !== null;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

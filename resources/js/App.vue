@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>Hello</h1>
         <router-view></router-view>
     </div>
 </template>
@@ -9,3 +8,12 @@ export default {
 
 }
 </script>
+<style>
+body {
+    background-color: #f1f5f9;
+}
+.form-btn {
+    background-color: #1e293b;
+    color: #f1f5f9;
+}
+</style>
