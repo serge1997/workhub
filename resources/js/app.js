@@ -8,12 +8,21 @@ import PrimeVue from "primevue/config";
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primeicons/primeicons.css'
 import Button from 'primevue/button';
+import Dropdown from 'primevue/dropdown';
+import InputText from 'primevue/inputtext';
+import Menu from 'primevue/menu';
+import SidebarComponent from './components/SidebarComponent.vue';
 
 const app = createApp(App);
 
 app.component('Button', Button);
+app.component('Dropdown', Dropdown);
+app.component('InputText', InputText);
+app.component('SidebarComponent', SidebarComponent);
+app.component('Menu', Menu);
 
 
 app.use(router)
         .use(VueAxios, axios)
-            .mount('#app');
+            .use(PrimeVue)
+                .mount('#app');
