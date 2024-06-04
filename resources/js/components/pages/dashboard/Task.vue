@@ -17,8 +17,40 @@
                         <Button class="text-warning fw-bold" text icon="pi pi-hourglass" />
                     </div>
                     <div class="w-100 d-flex justify-content-end gap-0">
-                        <Button text icon="pi pi-comment" />
+                        <Button @click="visible = true" text icon="pi pi-comment" />
+                        <Button text icon="pi pi-eye" />
                         <Button text icon="pi pi-play" />
+                        <Dialog v-model:visible="visible" modal header="Task comment" :style="{ width: '25rem' }">
+                            <div class="w-100 comment-list mb-3">
+                                <div class="card border-0 comment-card">
+                                    <div class="card-header bg-white border-0 p-0 border-0 d-flex align-items-center gap-2">
+                                        <small>
+                                            <img style="width: 35px;" class="img-thumbnail rounded-circle" src="/img/avatars/hair0.jpeg" alt="">
+                                        </small>
+                                        <small style="font-size: 12px;" class="fw-bold">Serge Gogo</small>
+                                    </div>
+                                    <div class="card-body p-0 px-2">
+                                        <span>
+                                            <p style="font-size: 0.9rem;" class="">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                tempor incididunt ut labore et dolore magna aliqua
+                                            </p>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="p-text-secondary block mb-5">Seu commentario</span>
+                            <div class="w-100 d-flex">
+                                <IconField iconPosition="left" class="p-0">
+                                    <InputIcon class="pi pi-comment"> </InputIcon>
+                                    <InputText v-model="value1" placeholder="comment..." />
+                                </IconField>
+                                <Button text icon="pi pi-send" />
+                            </div>
+                        </Dialog>
+                    </div>
+                    <div class="w-100 d-flex justify-content-end gap-0">
+                        <img class="img-thumbnail rounded-circle w-50" src="/img/avatars/hair0.jpeg" alt="">
                     </div>
                 </div>
             </div>
@@ -32,6 +64,14 @@ export default {
     name: 'Task',
 
     components: {
+
+    },
+    data(){
+        return {
+            visible: false
+        }
+    },
+    methods:{
 
     }
 }

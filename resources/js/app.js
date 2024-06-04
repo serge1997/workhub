@@ -12,6 +12,9 @@ import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import Menu from 'primevue/menu';
 import SidebarComponent from './components/SidebarComponent.vue';
+import Dialog from 'primevue/dialog';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 
 const app = createApp(App);
 
@@ -20,6 +23,9 @@ app.component('Dropdown', Dropdown);
 app.component('InputText', InputText);
 app.component('SidebarComponent', SidebarComponent);
 app.component('Menu', Menu);
+app.component('Dialog', Dialog);
+app.component('IconField', IconField);
+app.component('InputIcon', InputIcon);
 
 
 app.use(router)
