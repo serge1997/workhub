@@ -1,6 +1,7 @@
 <template>
     <div class="container-fluid m-auto p-0">
-        <div class="row m-auto min-vh-100">
+        <NavbarComponent />
+        <div class="row m-auto overflow-scroll d-flex">
             <div class="col-md-2 d-flex">
                 <div style="top: 0; left: 0; z-index: 10;" class="col-md-2 position-fixed bg-white z-3 min-vh-100">
                     <div class="sidebar-header p-3">
@@ -8,6 +9,12 @@
                     </div>
                     <div class="sidebar-body">
                         <ul class="list-group text-capitalize">
+                            <li class="list-group-item border-0">
+                                <router-link class="text-decoration-none" :to="{name: 'TaskReception'}">
+                                    <i class="pi pi-inbox"></i>
+                                    Caixa de entrada
+                                </router-link>
+                            </li>
                             <li class="list-group-item border-0">
                                 <i class="pi pi-user"></i>
                                 Perfil
@@ -30,7 +37,7 @@
                                 <Menu v-if="menuCreateToggle" :model="menu" class="p-2 rounded-0 shadow-sm">
                                     <template #item="{ item, props }">
                                         <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
-                                            <span class="" style="color: #475569;">
+                                            <span class="sub-menu-item" style="color: #475569;">
                                                 <i :class="item.icon" class="mb-3 px-1"></i>
                                                 {{ item.label }}
                                             </span>
@@ -71,5 +78,8 @@ export default {
 }
 .list-group-item{
     cursor: pointer;
+}
+.sidebar-body, .sub-menu-item{
+    font-size: 0.9rem;
 }
 </style>
