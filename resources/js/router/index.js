@@ -5,6 +5,7 @@ import Login from './../components/pages/auth/Login.vue';
 import Register from './../components/pages/auth/Register.vue';
 import Task from './../components/pages/dashboard/Task.vue';
 import TaskReception from "../components/pages/dashboard/TaskReception.vue";
+import Profil from "../components/pages/dashboard/Profil.vue";
 
 const routes = [
     {
@@ -31,6 +32,11 @@ const routes = [
         path: '/task-inbox',
         name: 'TaskReception',
         component: TaskReception
+    },
+    {
+        path: '/profil',
+        name: 'Profil',
+        component: Profil
     }
 ]
 

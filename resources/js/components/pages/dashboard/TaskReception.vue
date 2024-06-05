@@ -1,7 +1,7 @@
 <template>
     <SidebarComponent>
         <div class="row m-auto position-relative overflow-scroll">
-            <div class="col-md-10 m-auto">
+            <div class="col-md-10">
                 <h1 class="fw-light text-center p-2">Task reception</h1>
                 <div class="card">
                     <div class="card-body d-flex justify-content-between">

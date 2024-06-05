@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid m-auto p-0">
         <NavbarComponent />
-        <div class="row m-auto overflow-scroll d-flex">
+        <div class="row m-auto overflow-scroll">
             <div class="col-md-2 d-flex">
                 <div style="top: 0; left: 0; z-index: 10;" class="col-md-2 position-fixed bg-white z-3 min-vh-100">
                     <div class="sidebar-header p-3">
@@ -16,8 +16,10 @@
                                 </router-link>
                             </li>
                             <li class="list-group-item border-0">
-                                <i class="pi pi-user"></i>
-                                Perfil
+                                <router-link class="text-decoration-none" :to="{name: 'Profil'}">
+                                    <i class="pi pi-user"></i>
+                                    Profil
+                                </router-link>
                             </li>
                             <li class="list-group-item border-0">
                                 <router-link class="text-decoration-none" :to="{name: 'Task'}">
