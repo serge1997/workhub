@@ -23,7 +23,9 @@ class User extends Authenticatable
         'user_name',
         'password',
         'banned_at',
-        'banned_reason'
+        'banned_reason',
+        'position_id',
+        'manager_id'
     ];
 
     public function isBanned(): bool

@@ -38,7 +38,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 p-3 d-flex justify-content-end">
-                            <Button class="form-btn" text label="Salvar" />
+                            <Button @click="registerUser" class="form-btn" text label="Salvar" />
                         </div>
                     </div>
                 </div>
@@ -51,6 +51,7 @@
 </template>
 <script>
 import SidebarComponent from './../../SidebarComponent.vue';
+import { Container } from './../../../core/Container.js';
 export default {
     name: 'Register',
 
@@ -68,6 +69,19 @@ export default {
                 {name: "Project manager"}
             ]
         }
+    },
+    //Dev: Serge Gogo
+    methods: {
+        registeUser(){
+            const container = Container.app();
+            const Api = container.get('ApiModule');
+            Api.post('user', {})
+        }
+    },
+
+    mounted(){
+
+
     }
 }
 </script>
