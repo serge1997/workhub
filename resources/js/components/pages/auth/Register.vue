@@ -7,38 +7,38 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Nome completo</label>
-                            <input type="text" class="form-control" id="email" placeholder="full name">
+                            <input v-model="user.name" type="text" class="form-control" id="email" placeholder="full name">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Nome de usuario</label>
-                            <input type="text" class="form-control" id="email" placeholder="name@example.com">
+                            <input type="text" v-model="user.username" class="form-control" id="email" placeholder="name@example.com">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">E-mail</label>
-                            <input type="text" class="form-control" id="email" placeholder="full name">
+                            <input type="text" v-model="user.email" class="form-control" id="email" placeholder="full name">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="email" placeholder="password">
+                            <input type="password" v-model="user.password" class="form-control" id="email" placeholder="password">
                         </div>
                     </div>
                     <div class="row mb-3">
                     <div class="col-md-12 d-flex flex-column">
                             <label for="email" class="form-label">Position</label>
-                            <Dropdown :options="positions" optionLabel="name" placeholder="select a position"/>
+                            <Dropdown :options="positions" v-model="user.position_id" optionLabel="name" placeholder="select a position"/>
                     </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12 d-flex flex-column">
-                            <label for="email" class="form-label">Manager</label>
-                            <Dropdown :options="managers" optionLabel="name" placeholder="select a manager"/>
+                        <label for="email" class="form-label">Manager</label>
+                        <Dropdown :options="managers" v-model="user.manager_id" optionLabel="name" placeholder="select a manager"/>
                     </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 p-3 d-flex justify-content-end">
-                            <Button @click="registerUser" class="form-btn" text label="Salvar" />
+                            <Button @click="onCreate" class="form-btn" text label="Salvar" />
                         </div>
                     </div>
                 </div>
@@ -52,12 +52,9 @@
 <script>
 import SidebarComponent from './../../SidebarComponent.vue';
 import { Container } from './../../../core/Container.js';
+import { User } from '../../../main/user.js';
 export default {
     name: 'Register',
-
-    components: {
-        SidebarComponent
-    },
     data(){
         return {
             managers: [
@@ -67,15 +64,25 @@ export default {
             positions: [
                 {name: "Developer"},
                 {name: "Project manager"}
-            ]
+            ],
+            user: {
+                __proto__: new User()
+            }
         }
     },
     //Dev: Serge Gogo
     methods: {
-        registeUser(){
-            const container = Container.app();
-            const Api = container.get('ApiModule');
-            Api.post('user', {})
+        onCreate(){
+           try {
+            this.user.create('user')
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => console.log(error))
+           }catch(error) {
+            console.log(error.message)
+           }
+
         }
     },
 

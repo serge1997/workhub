@@ -1,12 +1,11 @@
 import { ApiModule } from "./ApiModule.js";
 export class Container{
-    #bindings = [];
-    name = "Serge Gogo";
-
-    constructor(){};
+    constructor(){
+        this.bindings = [];
+    };
 
     bind(key, callback) {
-        this.#bindings[key] = callback;
+        this.bindings[key] = callback;
     }
 
     resolve() {
@@ -14,7 +13,7 @@ export class Container{
             return new ApiModule();
         })
 
-        return this.#bindings;
+        return this.bindings;
     }
 
     get(key) {

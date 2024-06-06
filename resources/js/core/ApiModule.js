@@ -1,10 +1,10 @@
 import axios from "axios";
 export class ApiModule {
-    #baseURL = `${location.origin}/api/`;
-
-    constructor(){}
+    constructor(){
+        this.baseURL = `${location.origin}/api/`;
+    }
 
     async post(url, data){
-        return await axios.post(this.#baseURL + url, data);
+        return await axios.post(this.baseURL + url, data);
     }
 }
