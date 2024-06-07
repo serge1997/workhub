@@ -7,6 +7,7 @@ export class User {
         this.password = '';
         this.position_id = null;
         this.manager_id = null;
+        this.user_type = ''
         this.app = Container.app();
         this.Api = this.app.getInstance('ApiModule');
         return new Proxy(this, {
@@ -26,6 +27,7 @@ export class User {
             email: this.email,
             username: this.username,
             password: this.password,
+            user_type: this.user_type,
             position_id: this.position_id = null,
             manager_id: this.manager_id = null
         }

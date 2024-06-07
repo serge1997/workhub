@@ -31,6 +31,12 @@
                     <div class="row mb-3">
                         <div class="col-md-12 d-flex flex-column">
                             <label for="email" class="form-label">Position</label>
+                            <Dropdown :options="userType" v-model="user.user_type" optionValue="enum" optionLabel="label" placeholder="select a position"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12 d-flex flex-column">
+                            <label for="email" class="form-label">Position</label>
                             <Dropdown :options="positions" v-model="user.position_id" optionLabel="name" placeholder="select a position"/>
                         </div>
                     </div>
@@ -68,6 +74,10 @@ export default {
             positions: [
                 {name: "Developer"},
                 {name: "Project manager"}
+            ],
+            userType: [
+                {enum: 'ADM', label: 'Manager'},
+                {enum: 'USR', label: 'Colaborador'}
             ],
             user: {},
             container: Container.app(),
