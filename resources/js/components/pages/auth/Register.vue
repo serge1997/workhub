@@ -61,7 +61,6 @@
 </template>
 <script>
 import SidebarComponent from './../../SidebarComponent.vue';
-import { Container } from './../../../core/Container.js';
 import { User } from '../../../main/user.js';
 export default {
     name: 'Register',
@@ -80,9 +79,10 @@ export default {
                 {enum: 'USR', label: 'Colaborador'}
             ],
             user: {},
-            container: Container.app(),
             formErrorBag: null,
             invalidInpuClass: null,
+            departments: null,
+            positions: null,
         }
     },
     //Dev: Serge Gogo
@@ -90,23 +90,34 @@ export default {
         onCreate(e){
            try {
             e.preventDefault();
-            Reflect.setPrototypeOf(this.user, this.container.getInstance('User'));
-            this.user.create('user')
+            Reflect.setPrototypeOf(this.user, this.$App.getInstance('User'));
+            this.$Api.post('user', this.user)
                 .then(response => {
                     console.log(response)
                 })
                 .catch(error =>{
-                    this.formErrorBag = error;
+                    this.formErrorBag = error.response.data.errors;
                     this.invalidInpuClass = 'border-danger'
                 })
            }catch(error) {
             console.error(error.message)
            }
-        }
+        },
+        onListAllPositions(){
+            this.$Api.get('positions')
+                .then(async response => {
+                        this.positions = await response.data;
+                    })
+                .catch(err => console.log(err));
+        },
+
     },
 
     mounted(){
-
+        this.onListAllPositions();
+        // //Container.app();
+        // console.log(this.$Api.get('url'));
+        // console.log(this.$App.getInstance('User'));
 
     }
 }

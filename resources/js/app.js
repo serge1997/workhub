@@ -16,6 +16,7 @@ import NavbarComponent from './components/NavbarComponent.vue';
 import Dialog from 'primevue/dialog';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import OwnPlugins from './core/OwnPlugins.mjs';
 
 const app = createApp(App);
 
@@ -33,4 +34,5 @@ app.component('InputIcon', InputIcon);
 app.use(router)
         .use(VueAxios, axios)
             .use(PrimeVue)
-                .mount('#app');
+                .use(OwnPlugins)
+                        .mount('#app');

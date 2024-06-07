@@ -1,4 +1,4 @@
-import { Container } from './../core/Container.js';
+//import { Container } from './../core/Container.js';
 export class User {
     constructor(){
         this.name = '';
@@ -8,8 +8,8 @@ export class User {
         this.position_id = null;
         this.manager_id = null;
         this.user_type = ''
-        this.app = Container.app();
-        this.Api = this.app.getInstance('ApiModule');
+        //this.app = Container.app();
+        //this.Api = this.app.getInstance('ApiModule');
         return new Proxy(this, {
             set: (target, prop, val) => {
                 if (!Object.hasOwn(target, prop)){
@@ -32,7 +32,7 @@ export class User {
             manager_id: this.manager_id = null
         }
         return new Promise((resolve, reject) => {
-            this.Api.post(url, postData)
+            Api.post(url, postData)
                 .then(response => {
                     if (response.status === 200){
                         resolve(response.data)

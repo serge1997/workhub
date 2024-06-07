@@ -11,4 +11,15 @@ class PositionController extends Controller
         private PositionRepositoryInterface $positionRepositoryInterface
     )
     {}
+
+    public function OnListAll()
+    {
+        try{
+            return response()
+                ->json($this->positionRepositoryInterface->listAll());
+        }catch(\Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

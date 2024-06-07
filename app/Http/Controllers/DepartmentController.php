@@ -11,4 +11,15 @@ class DepartmentController extends Controller
         private DepartmentRepositoryInterface $departmentRepositoryInterface
     )
     {}
+
+    public function OnListAll()
+    {
+        try{
+            return response()
+                ->json($this->departmentRepositoryInterface->listAll());
+        }catch(\Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

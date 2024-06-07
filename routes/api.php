@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PositionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -20,4 +22,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::controller(UserController::class)->group(function() {
     Route::post('user', 'OnCreate');
+});
+
+Route::controller(PositionController::class)->group(function() {
+    Route::get('positions', 'OnListAll');
+});
+
+Route::controller(DepartmentController::class)->group(function(){
+    Route::get('departments', 'OnListAll');
 });
