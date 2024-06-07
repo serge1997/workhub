@@ -1,7 +1,9 @@
 import { ApiModule } from "./ApiModule.js";
+import { User } from "../main/user.js";
 export class Container{
     constructor(){
-        this.bindings = [];
+        this.bindings = {};
+        this.resolve();
     };
 
     bind(key, callback) {
@@ -9,24 +11,22 @@ export class Container{
     }
 
     resolve() {
-        this.bind('ApiModule', function() {
+        this.bind('ApiModule', () => {
             return new ApiModule();
         })
-
-        return this.bindings;
+        this.bind('User', () => {
+            return new User();
+        })
     }
 
-    get(key) {
-        const resolvingClass = this.resolve();
-        const keys = Object.keys(resolvingClass);
-        if (!keys.includes(key)){
+    getInstance(key) {
+        if (!Object.hasOwn(this.bindings, key)){
             throw new ReferenceError("Class not binding or not exists");
         }
-
-        return resolvingClass[key]();
+        return this.bindings[key]();
     }
 
     static app(){
-        return new this;
+        return new this();
     }
 }

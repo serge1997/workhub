@@ -24,8 +24,18 @@ class StoreUserRequest extends FormRequest
         return [
             'name'      => ['required'],
             'email'     => ['required'],
-            'user_name' => ['required'],
+            'username' =>  ['required'],
             'password'  => ['required'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required'     => 'nome é obrigatorio',
+            'email.required'    => 'email é obrigatorio',
+            'username.required' => 'username é obrigatorio',
+            'password.required' => 'password é obrigatorio',
         ];
     }
 }

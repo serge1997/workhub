@@ -7,28 +7,32 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Nome completo</label>
-                            <input v-model="user.name" type="text" class="form-control" id="email" placeholder="full name">
+                            <input v-model="user.name" type="text" :class="invalidInpuClass" class="form-control" id="email" placeholder="full name">
+                            <small class="text-danger" v-if="formErrorBag && 'name' in formErrorBag" v-text="`*${formErrorBag.name}`"></small>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Nome de usuario</label>
-                            <input type="text" v-model="user.username" class="form-control" id="email" placeholder="name@example.com">
+                            <input type="text" v-model="user.username" :class="invalidInpuClass" class="form-control" id="email" placeholder="username">
+                            <small class="text-danger" v-if="formErrorBag && 'username' in formErrorBag" v-text="`*${formErrorBag.username}`"></small>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">E-mail</label>
-                            <input type="text" v-model="user.email" class="form-control" id="email" placeholder="full name">
+                            <input type="text" v-model="user.email" :class="invalidInpuClass" class="form-control" id="email" placeholder="name@example.com">
+                            <small class="text-danger" v-if="formErrorBag && 'email' in formErrorBag" v-text="`*${formErrorBag.email}`"></small>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Password</label>
-                            <input type="password" v-model="user.password" class="form-control" id="email" placeholder="password">
+                            <input type="password" v-model="user.password" :class="invalidInpuClass" class="form-control" id="email" placeholder="password">
+                            <small class="text-danger" v-if="formErrorBag && 'password' in formErrorBag" v-text="`*${formErrorBag.password}`"></small>
                         </div>
                     </div>
                     <div class="row mb-3">
-                    <div class="col-md-12 d-flex flex-column">
+                        <div class="col-md-12 d-flex flex-column">
                             <label for="email" class="form-label">Position</label>
                             <Dropdown :options="positions" v-model="user.position_id" optionLabel="name" placeholder="select a position"/>
-                    </div>
+                        </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12 d-flex flex-column">
@@ -65,24 +69,29 @@ export default {
                 {name: "Developer"},
                 {name: "Project manager"}
             ],
-            user: {
-                __proto__: new User()
-            }
+            user: {},
+            container: Container.app(),
+            formErrorBag: null,
+            invalidInpuClass: null,
         }
     },
     //Dev: Serge Gogo
     methods: {
-        onCreate(){
+        onCreate(e){
            try {
+            e.preventDefault();
+            Reflect.setPrototypeOf(this.user, this.container.getInstance('User'));
             this.user.create('user')
                 .then(response => {
                     console.log(response)
                 })
-                .catch(error => console.log(error))
+                .catch(error =>{
+                    this.formErrorBag = error;
+                    this.invalidInpuClass = 'border-danger'
+                })
            }catch(error) {
-            console.log(error.message)
+            console.error(error.message)
            }
-
         }
     },
 

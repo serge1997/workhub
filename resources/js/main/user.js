@@ -8,7 +8,7 @@ export class User {
         this.position_id = null;
         this.manager_id = null;
         this.app = Container.app();
-        this.Api = this.app.get('ApiModule');
+        this.Api = this.app.getInstance('ApiModule');
         return new Proxy(this, {
             set: (target, prop, val) => {
                 if (!Object.hasOwn(target, prop)){
