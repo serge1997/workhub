@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->string('email')->unique();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');
-                $table->enum('user_type', ['ADM', 'USR']);
+                $table->enum('user_type', ['ADM', 'USR'])->default('USR');
                 $table->string('avatar')->nullable();
                 $table->datetime('banned_at')->nullable();
                 $table->text('banned_reason', 255)->nullable();

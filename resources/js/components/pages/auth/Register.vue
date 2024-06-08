@@ -30,20 +30,26 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12 d-flex flex-column">
-                            <label for="email" class="form-label">Position</label>
+                            <label for="email" class="form-label">Departamento</label>
+                            <Dropdown :options="departments" v-model="user.depatment_id" optionValue="id" optionLabel="name" placeholder="select a position"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12 d-flex flex-column">
+                            <label for="email" class="form-label">User role</label>
                             <Dropdown :options="userType" v-model="user.user_type" optionValue="enum" optionLabel="label" placeholder="select a position"/>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12 d-flex flex-column">
                             <label for="email" class="form-label">Position</label>
-                            <Dropdown :options="positions" v-model="user.position_id" optionLabel="name" placeholder="select a position"/>
+                            <Dropdown :options="positions" v-model="user.position_id" optionValue="id" optionLabel="name" placeholder="select a position"/>
                         </div>
                     </div>
                     <div class="row">
                     <div class="col-md-12 d-flex flex-column">
                         <label for="email" class="form-label">Manager</label>
-                        <Dropdown :options="managers" v-model="user.manager_id" optionLabel="name" placeholder="select a manager"/>
+                        <Dropdown :options="managers" v-model="user.manager_id" optionValue="id" optionLabel="name" placeholder="select a manager"/>
                     </div>
                     </div>
                     <div class="row">
@@ -90,8 +96,9 @@ export default {
         onCreate(e){
            try {
             e.preventDefault();
-            Reflect.setPrototypeOf(this.user, this.$App.getInstance('User'));
-            this.$Api.post('user', this.user)
+            Reflect.setPrototypeOf(this.user, this.App.getInstance('User'));
+            console.log(this.user);
+            this.Api.post('user', this.user)
                 .then(response => {
                     console.log(response)
                 })
@@ -104,17 +111,25 @@ export default {
            }
         },
         onListAllPositions(){
-            this.$Api.get('positions')
+            this.Api.get('positions')
                 .then(async response => {
                         this.positions = await response.data;
                     })
                 .catch(err => console.log(err));
         },
+        onListAllDepartments(){
+            this.Api.get('departments')
+                .then(async response => {
+                    this.departments = await response.data;
+                })
+                .catch(error => console.log(error));
+        }
 
     },
 
     mounted(){
         this.onListAllPositions();
+        this.onListAllDepartments()
         // //Container.app();
         // console.log(this.$Api.get('url'));
         // console.log(this.$App.getInstance('User'));

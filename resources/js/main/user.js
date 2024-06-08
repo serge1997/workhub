@@ -1,15 +1,13 @@
-//import { Container } from './../core/Container.js';
 export class User {
     constructor(){
         this.name = '';
         this.username = '';
         this.email = '';
         this.password = '';
-        this.position_id = null;
-        this.manager_id = null;
+        this.position_id = '';
+        this.manager_id = '';
         this.user_type = ''
-        //this.app = Container.app();
-        //this.Api = this.app.getInstance('ApiModule');
+        this.department_id = ''
         return new Proxy(this, {
             set: (target, prop, val) => {
                 if (!Object.hasOwn(target, prop)){
@@ -18,27 +16,6 @@ export class User {
                 target[prop] = val;
                 return true;
             }
-        })
-    }
-
-    create(url){
-        const postData = {
-            name: this.name,
-            email: this.email,
-            username: this.username,
-            password: this.password,
-            user_type: this.user_type,
-            position_id: this.position_id = null,
-            manager_id: this.manager_id = null
-        }
-        return new Promise((resolve, reject) => {
-            Api.post(url, postData)
-                .then(response => {
-                    if (response.status === 200){
-                        resolve(response.data)
-                    }
-                })
-                .catch(error => reject(error.response.data.errors))
         })
     }
 }
