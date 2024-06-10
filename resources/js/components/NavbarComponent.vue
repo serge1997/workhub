@@ -11,6 +11,12 @@
 export default {
     name: 'NavbarComponent',
 
+    data(){
+        return {
+
+        }
+    },
+
     methods: {
         logOut(){
             this.Api.post('logout')

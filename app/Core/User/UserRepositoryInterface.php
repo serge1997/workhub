@@ -8,4 +8,5 @@ interface UserRepositoryInterface
 {
     public function create($request);
     public function listAll();
+    public function createAvatar($request);
 }

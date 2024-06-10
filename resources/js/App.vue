@@ -6,6 +6,9 @@
 <script>
 export default {
 
+    mounted(){
+        //localStorage.removeItem('token');
+    }
 }
 </script>
 <style>

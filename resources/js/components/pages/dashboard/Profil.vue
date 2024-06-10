@@ -18,6 +18,9 @@ export default {
 
     components: {
         AvatarEdition
+    },
+    mounted(){
+        window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
     }
 }
 </script>

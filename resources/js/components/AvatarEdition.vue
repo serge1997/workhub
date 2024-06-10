@@ -8,6 +8,7 @@
                 </Button>
             </div>
             <input type="file" class="form-control" id="avatar-input" />
+            <Button label="Salvar" @click="setAvatarFileURL" />
         </div>
     </Dialog>
 </template>
@@ -32,9 +33,14 @@ export default{
                 axios.get(path)
                     .then(res => {
                         if (res.status === 200) {
+                            const avatarInput = document.querySelector('#avatar-input');
                             const blob = res.data;
                             const fileName = ph.split('/').pop()
                             const file = new File([blob], fileName, {type: blob.type})
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            avatarInput.files = dataTransfer.files;
+                            console.log(avatarInput)
                             resolve(file);
                         }
                     });
@@ -44,7 +50,7 @@ export default{
         setAvatarFileURL(file) {
             this.loadAvatarAsFile(file)
                 .then(res => {
-                    console.log(res)
+                    console.log(res);
                 })
         }
     }

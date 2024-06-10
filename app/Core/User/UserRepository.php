@@ -17,4 +17,18 @@ class UserRepository implements UserRepositoryInterface
     {
         return UserResource::collection(User::all());
     }
+
+    public function createAvatar($request)
+    {
+        if ($request->hasFile('avatar') && $request->file('avatar')->isValid()){
+            $user = $request->user();
+            $avatar = $request->avatar;
+            $extension = $avatar->extension();
+            $avatarName = md5($avatar->getClientOriginalName() . strtotime('now')) . "." . $extension;
+            $avatar->move(public_path('img/users_avatars'), $avatarName);
+            $user->update([
+                'avatar' => $avatarName
+            ]);
+        }
+    }
 }

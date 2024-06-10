@@ -38,4 +38,17 @@ class UserController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function OnCreateAvatar(Request $request)
+    {
+        try{
+            $message = "Avatar salvou com successo";
+            $this->userRepositoryInterface->createAvatar($request);
+            return response()
+                ->json($message);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

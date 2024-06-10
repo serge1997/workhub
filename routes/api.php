@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(UserController::class)->group(function() {
         Route::post('user', 'OnCreate');
         Route::get('users', 'OnListAll');
+        Route::post('user-avatar', 'OnCreateAvatar');
     });
 
     Route::controller(PositionController::class)->group(function() {
