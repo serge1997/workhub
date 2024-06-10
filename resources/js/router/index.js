@@ -9,34 +9,40 @@ import Profil from "../components/pages/dashboard/Profil.vue";
 
 const routes = [
     {
-        path: '',
+        path: '/',
         name: 'Login',
-        component: Login
+        component: Login,
+        meta: {guest: true}
     },
     {
         path: '/register',
         name: 'Register',
-        component: Register
+        component: Register,
+        meta: {requireAuth: true}
     },
     {
         path: '/home',
         name: 'home',
-        component: Home
+        component: Home,
+        meta: {requiresAuth: true}
     },
     {
         path: '/tasks',
         name: 'Task',
-        component: Task
+        component: Task,
+        meta: {requiresAuth: true}
     },
     {
         path: '/task-inbox',
         name: 'TaskReception',
-        component: TaskReception
+        component: TaskReception,
+        meta: {requiresAuth: true}
     },
     {
         path: '/profil',
         name: 'Profil',
-        component: Profil
+        component: Profil,
+        meta: {requiresAuth: true}
     }
 ]
 

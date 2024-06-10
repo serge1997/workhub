@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,3 +32,9 @@ Route::controller(PositionController::class)->group(function() {
 Route::controller(DepartmentController::class)->group(function(){
     Route::get('departments', 'OnListAll');
 });
+
+Route::controller(LoginController::class)->group(function(){
+    Route::post('login', 'loginAction');
+    Route::post('logout', 'logOutAction')->middleware('auth:sanctum');
+});
+

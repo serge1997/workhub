@@ -20,6 +20,24 @@ import OwnPlugins from './core/OwnPlugins.mjs';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
+function loggedIn(){
+    return localStorage.getItem('token');
+}
+console.log(loggedIn())
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)){
+        if (!loggedIn()){
+            next({
+                path: '/',
+                query: {redirect: to.fullPath}
+            })
+        }else{
+            next()
+        }
+    }else{
+        next()
+    }
+})
 const app = createApp(App);
 
 app.component('Button', Button);
