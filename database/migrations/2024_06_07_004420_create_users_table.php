@@ -23,6 +23,7 @@ return new class extends Migration
                 $table->datetime('banned_at')->nullable();
                 $table->text('banned_reason', 255)->nullable();
                 $table->integer('department_id')->unsigned()->nullable();
+                $table->integer("manager_id")->nullable();
                 $table->integer('position_id')->unsigned()->nullable();
                 $table->foreign('department_id')->references('id')
                     ->on('departments');

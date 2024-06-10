@@ -31,7 +31,7 @@
                     <div class="row mb-3">
                         <div class="col-md-12 d-flex flex-column">
                             <label for="email" class="form-label">Departamento</label>
-                            <Dropdown :options="departments" v-model="user.depatment_id" optionValue="id" optionLabel="name" placeholder="select a position"/>
+                            <Dropdown :options="departments" v-model="user.department_id" optionValue="id" optionLabel="name" placeholder="select a position"/>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -84,7 +84,16 @@ export default {
                 {enum: 'ADM', label: 'Manager'},
                 {enum: 'USR', label: 'Colaborador'}
             ],
-            user: {},
+            user: {
+                name: null,
+                email: null,
+                username: null,
+                password: null,
+                position_id: null,
+                department_id: null,
+                manager_id: null,
+                user_type: null
+            },
             formErrorBag: null,
             invalidInpuClass: null,
             departments: null,
@@ -96,11 +105,12 @@ export default {
         onCreate(e){
            try {
             e.preventDefault();
-            Reflect.setPrototypeOf(this.user, this.App.getInstance('User'));
-            console.log(this.user);
             this.Api.post('user', this.user)
                 .then(response => {
                     console.log(response)
+                    this.toaster(response.data).fire();
+                    this.invalidInpuClass = null
+                    this.user = {}
                 })
                 .catch(error =>{
                     this.formErrorBag = error.response.data.errors;
@@ -123,7 +133,23 @@ export default {
                     this.departments = await response.data;
                 })
                 .catch(error => console.log(error));
-        }
+        },
+        toaster(response){
+            const Toast = this.$swal.mixin({
+                text: response,
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                icon: "success",
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            return Toast
+        },
 
     },
 
