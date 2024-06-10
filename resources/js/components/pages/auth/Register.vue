@@ -72,10 +72,6 @@ export default {
     name: 'Register',
     data(){
         return {
-            managers: [
-                {name: "Serge Gogo"},
-                {name: "Paulo "}
-            ],
             positions: [
                 {name: "Developer"},
                 {name: "Project manager"}
@@ -98,6 +94,7 @@ export default {
             invalidInpuClass: null,
             departments: null,
             positions: null,
+            managers: null,
         }
     },
     //Dev: Serge Gogo
@@ -150,12 +147,19 @@ export default {
             });
             return Toast
         },
-
+        onListManagers() {
+            this.Api.get('users')
+                .then(async response => {
+                    this.managers = await response.data.filter(manager => manager.user_type == "ADM");
+                })
+        }
     },
 
     mounted(){
+        window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
         this.onListAllPositions();
         this.onListAllDepartments()
+        this.onListManagers();
         // //Container.app();
         // console.log(this.$Api.get('url'));
         // console.log(this.$App.getInstance('User'));

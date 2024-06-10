@@ -27,4 +27,15 @@ class UserController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function OnListAll()
+    {
+        try{
+            return response()
+                ->json($this->userRepositoryInterface->listAll());
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

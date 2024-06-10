@@ -13,17 +13,25 @@ export default {
 
     methods: {
         logOut(){
-            localStorage.removeItem('token')
             this.Api.post('logout')
                 .then(response => {
-
+                    localStorage.removeItem('token')
                     console.log(response)
                     this.$router.push('/');
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        },
+        getAuth(){
+            this.Api.get('user')
+                .then(response => {
+                    console.log(response.data)
+                })
         }
+    },
+    mounted(){
+        this.getAuth();
     }
 }
 </script>
