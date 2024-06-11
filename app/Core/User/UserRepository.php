@@ -22,6 +22,7 @@ class UserRepository implements UserRepositoryInterface
     {
         if ($request->hasFile('avatar') && $request->file('avatar')->isValid()){
             $user = $request->user();
+            $oldUserAvatar = $user->avatar;
             $avatar = $request->avatar;
             $extension = $avatar->extension();
             $avatarName = md5($avatar->getClientOriginalName() . strtotime('now')) . "." . $extension;
@@ -29,6 +30,7 @@ class UserRepository implements UserRepositoryInterface
             $user->update([
                 'avatar' => $avatarName
             ]);
+            unlink("img/users_avatars/{$oldUserAvatar}");
         }
     }
 }

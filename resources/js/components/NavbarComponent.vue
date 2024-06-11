@@ -1,8 +1,10 @@
 <template>
     <div style="z-index: 2;" class="row m-auto bg-white d-flex justify-content-end">
-        <div class="icons d-flex justify-content-end col-md-3">
+        <div class="icons d-flex justify-content-end col-md-4">
             <Button text icon="pi pi-th-large" />
-            <Button text icon="pi pi-user" />
+            <Button v-if="auth" text icon="pi pi-user">
+                <img style="width: 80px;" class="img-thumbnail rounded-circle" :src="`/img/users_avatars/${auth.avatar}`" alt="">
+            </Button>
             <Button @click="logOut" text class="text-danger p-0" label="Sair" />
         </div>
     </div>
@@ -13,7 +15,7 @@ export default {
 
     data(){
         return {
-
+            auth: null,
         }
     },
 
@@ -32,7 +34,7 @@ export default {
         getAuth(){
             this.Api.get('user')
                 .then(response => {
-                    console.log(response.data)
+                    this.auth = response.data;
                 })
         }
     },

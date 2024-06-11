@@ -9,6 +9,7 @@ export class ApiModule {
         return await axios.post(this.baseURL + url, data);
     }
     async get(url){
+        window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
         return await axios.get(this.baseURL + url);
     }
 }

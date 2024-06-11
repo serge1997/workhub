@@ -71,6 +71,9 @@ export default {
             ],
             menuCreateToggle: false
         }
+    },
+    mounted(){
+        window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
     }
 }
 </script>
