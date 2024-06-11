@@ -19,6 +19,9 @@ import InputIcon from 'primevue/inputicon';
 import OwnPlugins from './core/OwnPlugins.mjs';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import Textarea from 'primevue/textarea';
+import Calendar from 'primevue/calendar';
+import MultiSelect from 'primevue/multiselect';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -49,6 +52,10 @@ app.component('Menu', Menu);
 app.component('Dialog', Dialog);
 app.component('IconField', IconField);
 app.component('InputIcon', InputIcon);
+app.component('InputText', InputText);
+app.component('Textarea', Textarea);
+app.component('Calendar', Calendar);
+app.component('MultiSelect', MultiSelect);
 
 
 app.use(router)
