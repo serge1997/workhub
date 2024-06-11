@@ -30,7 +30,8 @@ class UserRepository implements UserRepositoryInterface
             $user->update([
                 'avatar' => $avatarName
             ]);
-            unlink("img/users_avatars/{$oldUserAvatar}");
+            if (!is_null($oldUserAvatar)) unlink("img/users_avatars/{$oldUserAvatar}");
+
         }
     }
 }

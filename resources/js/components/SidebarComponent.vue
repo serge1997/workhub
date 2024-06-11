@@ -66,7 +66,7 @@ export default {
     data(){
         return {
             menu: [
-                {label: 'Task', route: '/', icon: 'pi pi-book'},
+                {label: 'Task', route: '/task-create', icon: 'pi pi-book'},
                 {label: 'usuario', route: '/register', icon:'pi pi-users'}
             ],
             menuCreateToggle: false

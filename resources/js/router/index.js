@@ -6,6 +6,7 @@ import Register from './../components/pages/auth/Register.vue';
 import Task from './../components/pages/dashboard/Task.vue';
 import TaskReception from "../components/pages/dashboard/TaskReception.vue";
 import Profil from "../components/pages/dashboard/Profil.vue";
+import TaskCreate from "../components/pages/dashboard/TaskCreate.vue";
 
 const routes = [
     {
@@ -42,6 +43,12 @@ const routes = [
         path: '/profil',
         name: 'Profil',
         component: Profil,
+        meta: {requiresAuth: true}
+    },
+    {
+        path: '/task-create',
+        name: 'TaskCreate',
+        component: TaskCreate,
         meta: {requiresAuth: true}
     }
 ]

@@ -48,7 +48,7 @@
                     </div>
                     <div class="row">
                     <div class="col-md-12 d-flex flex-column">
-                        <label for="email" class="form-label">Manager</label>
+                        <label for="manager" class="form-label">Manager</label>
                         <Dropdown :options="managers" v-model="user.manager_id" optionValue="id" optionLabel="name" placeholder="select a manager"/>
                     </div>
                     </div>
@@ -151,6 +151,7 @@ export default {
             this.Api.get('users')
                 .then(async response => {
                     this.managers = await response.data.filter(manager => manager.user_type == "ADM");
+                    console.log(this.managers)
                 })
         }
     },
