@@ -22,6 +22,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
 import MultiSelect from 'primevue/multiselect';
+import FileUpload from 'primevue/fileupload';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -56,6 +57,7 @@ app.component('InputText', InputText);
 app.component('Textarea', Textarea);
 app.component('Calendar', Calendar);
 app.component('MultiSelect', MultiSelect);
+app.component('FileUpload', FileUpload);
 
 
 app.use(router)

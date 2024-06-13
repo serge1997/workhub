@@ -35,13 +35,15 @@
                                 <Dropdown :options="priorities" optionLabel="label" optionValue="value" class="w-100" id="prioritie" placeholder="Choose prioritie" />
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
-                                <label for="email" class="form-label">Seguidore(s)</label>
+                                <label for="priorities" class="form-label">Seguidore(s)</label>
                                 <MultiSelect :options="priorities" v-model="task.task_folowers" optionLabel="label" optionValue="value" class="w-100" id="task-folowers" placeholder="Choose task folowers" :maxSelectedLabels="3" />
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <input style="background-color: #38bdf8;" type="file" class="form-control" name="" id="">
+                            <div class="col-md-6 d-flex flex-column">
+                                <label for="task-annex" class="form-label">Annexes da tarefa</label>
+                                <input class="form-control" type="file" id="anex-test">
+                                <Button class="w-25 rounded-2" label="Upload" icon="pi pi-file" @click="taskAnnexHandler"/>
                             </div>
                         </div>
                     </div>
@@ -63,8 +65,19 @@ export default{
             ],
             task:{
                 execution_time: null,
-                task_folowers: []
+                task_folowers: [],
+                task_anex: null
             }
+        }
+    },
+    methods: {
+        taskAnnexHandler(event) {
+            const fileInput = document.querySelector('#anex-test');
+            fileInput.click()
+            fileInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                console.log(file);
+            })
         }
     }
 }
