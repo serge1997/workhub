@@ -10,11 +10,11 @@
                         <div class="row">
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="email" class="form-label">Titulo</label>
-                                <InputText type="text" class="w-100" id="email" placeholder="full name" />
+                                <InputText type="text" class="w-100" id="email" placeholder="Task title" />
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="email" class="form-label">Prioridade</label>
-                                <Dropdown :options="priorities" optionLabel="label" optionValue="value" class="w-100" id="prioritie" placeholder="Choose prioritie" />
+                                <Dropdown :options="priorities" optionLabel="label" optionValue="value" class="w-100" id="prioritie" placeholder="Choose priority" />
                             </div>
                         </div>
                         <div class="row">
@@ -39,11 +39,17 @@
                                 <MultiSelect :options="priorities" v-model="task.task_folowers" optionLabel="label" optionValue="value" class="w-100" id="task-folowers" placeholder="Choose task folowers" :maxSelectedLabels="3" />
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-md-6 d-flex flex-column">
                                 <label for="task-annex" class="form-label">Annexes da tarefa</label>
                                 <input class="form-control" type="file" id="anex-test">
                                 <Button style="width: 40%;" class="rounded-2" label="Upload" icon="pi pi-file" @click="taskAnnexHandler"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 d-flex flex-column">
+                                <label for="task-annex" class="form-label">Road map</label>
+                                <CreateTaskRoadMap />
                             </div>
                         </div>
                     </div>
@@ -53,8 +59,13 @@
     </SidebarComponent>
 </template>
 <script>
+import CreateTaskRoadMap from './../../CreateTaskRoadMap.vue';
 export default{
     name: 'TaskCreate',
+
+    components: {
+        CreateTaskRoadMap
+    },
 
     data(){
         return {
