@@ -43,7 +43,7 @@
                             <div class="col-md-6 d-flex flex-column">
                                 <label for="task-annex" class="form-label">Annexes da tarefa</label>
                                 <input class="form-control" type="file" id="anex-test">
-                                <Button class="w-25 rounded-2" label="Upload" icon="pi pi-file" @click="taskAnnexHandler"/>
+                                <Button style="width: 40%;" class="rounded-2" label="Upload" icon="pi pi-file" @click="taskAnnexHandler"/>
                             </div>
                         </div>
                     </div>
@@ -71,12 +71,14 @@ export default{
         }
     },
     methods: {
-        taskAnnexHandler(event) {
+        taskAnnexHandler(ev) {
+            console.log(ev.target.textContent)
             const fileInput = document.querySelector('#anex-test');
             fileInput.click()
             fileInput.addEventListener('change', async (event) => {
                 const file = event.target.files[0];
-                console.log(file);
+                ev.target.textContent += ` ${file.name}`;
+                console.log(file.name);
             })
         }
     }
