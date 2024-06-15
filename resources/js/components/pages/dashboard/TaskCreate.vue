@@ -10,11 +10,13 @@
                         <div class="row">
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="email" class="form-label">Titulo</label>
-                                <InputText type="text" class="w-100" id="email" placeholder="Task title" />
+                                <InputText v-model="task.title" type="text" :class="formErrorBag && formErrorBag.title ? invalidInpuClass : ''" class="w-100" id="email" placeholder="Task title" />
+                                <small class="text-danger" v-if="formErrorBag && formErrorBag.title" v-text="`${formErrorBag.title}`"></small>
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="email" class="form-label">Prioridade</label>
-                                <Dropdown :options="priorities" v-model="task.priority" optionLabel="label" optionValue="value" class="w-100" id="prioritie" placeholder="Choose priority" />
+                                <Dropdown :options="priorities" v-model="task.priority" :class="formErrorBag && formErrorBag.priority ? invalidInpuClass : ''" optionLabel="label" optionValue="value" class="w-100" id="prioritie" placeholder="Choose priority" />
+                                <small class="text-danger" v-if="formErrorBag && formErrorBag.priority" v-text="`${formErrorBag.priority}`"></small>
                             </div>
                         </div>
                         <div class="row">
@@ -26,13 +28,15 @@
                         <div class="row">
                             <div class="col-md-6 d-flex flex-column mb-3">
                                 <label for="email" class="form-label">Tempo de execução</label>
-                                <Calendar id="execution-time" v-model="task.execution_time" placeholder="execution time..." timeOnly />
+                                <Calendar id="execution-time" v-model="task.execution_time" :class="formErrorBag && formErrorBag.execution_time ? invalidInpuClass : ''" placeholder="execution time..." timeOnly />
+                                <small class="text-danger" v-if="formErrorBag && formErrorBag.execution_time" v-text="`${formErrorBag.execution_time}`"></small>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="email" class="form-label">Colaborador</label>
-                                <Dropdown v-model="task.user_id" :options="users" optionLabel="name" optionValue="id" class="w-100" id="prioritie" placeholder="Choose prioritie" />
+                                <Dropdown v-model="task.user_id" :options="users" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.user_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Choose prioritie" />
+                                <small class="text-danger" v-if="formErrorBag && formErrorBag.user_id" v-text="`${formErrorBag.user_id}`"></small>
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="priorities" class="form-label">Seguidore(s)</label>
@@ -50,6 +54,11 @@
                             <div class="col-md-6 d-flex flex-column">
                                 <label for="task-annex" class="form-label">Road map</label>
                                 <CreateTaskRoadMap />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <Button class="w-50" label="Criar tarefa" @click="createTask" />
                             </div>
                         </div>
                     </div>
@@ -85,7 +94,9 @@ export default{
                 execution_time: null,
                 folowers: [],
                 annex: null
-            }
+            },
+            invalidInpuClass: null,
+            formErrorBag: null,
         }
     },
     methods: {
@@ -99,6 +110,20 @@ export default{
                 console.log(file.name);
             })
         },
+        createTask(e){
+            e.preventDefault();
+            this.Api.post('task', this.task)
+            .then(async response => {
+                this.toaster(response.data).fire();
+            })
+            .catch(async err => {
+                if (err.response.status) {
+                    this.formErrorBag = err.response.data.errors
+                    this.invalidInpuClass = 'border-danger'
+                }
+                console.log(err.response.status)
+            })
+        },
         onListAllUsers(){
             this.Api.get('users')
             .then(async (response) => {
@@ -107,7 +132,23 @@ export default{
                 this.users = await response.data;
             })
             .catch(err => console.log(err))
-        }
+        },
+        toaster(response){
+            const Toast = this.$swal.mixin({
+                text: response,
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                icon: "success",
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            return Toast
+        },
     },
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;

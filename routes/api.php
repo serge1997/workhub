@@ -3,6 +3,7 @@
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -28,6 +29,10 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('user', 'OnCreate');
         Route::get('users', 'OnListAll');
         Route::post('user-avatar', 'OnCreateAvatar');
+    });
+
+    Route::controller(TaskController::class)->group(function() {
+        Route::post('task', 'onCreate');
     });
 
     Route::controller(PositionController::class)->group(function() {
