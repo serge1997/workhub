@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('annex');
             $table->integer('task_id')->unsigned();
-            $table->datetime('deleted_at');
+            $table->datetime('deleted_at')->nullable();
             $table->string('deleted_reason')->nullable();
             $table->foreign('task_id')->references('id')
                 ->on('tasks')->onDelete('cascade');
