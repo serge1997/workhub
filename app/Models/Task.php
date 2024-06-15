@@ -17,7 +17,8 @@ class Task extends Model
         'description',
         'manager_id',
         'user_id',
-        'execution_delay'
+        'execution_delay',
+        'deleted_at'
     ];
 
     public function user() : BelongsTo

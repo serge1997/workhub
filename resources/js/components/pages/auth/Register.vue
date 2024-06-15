@@ -161,10 +161,6 @@ export default {
         this.onListAllPositions();
         this.onListAllDepartments()
         this.onListManagers();
-        // //Container.app();
-        // console.log(this.$Api.get('url'));
-        // console.log(this.$App.getInstance('User'));
-
     }
 }
 </script>
