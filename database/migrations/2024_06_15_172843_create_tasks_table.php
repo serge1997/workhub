@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title', 180);
-            $table->string('desctiption', 255)->nullable();
+            $table->string('description', 255)->nullable();
             $table->string('execution_delay', 6);
             $table->string('delay_used', 6)->nullable();
             $table->integer('user_id')->unsigned();

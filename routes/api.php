@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::controller(TaskController::class)->group(function() {
         Route::post('task', 'onCreate');
+        Route::get('tasks', 'onListAll');
     });
 
     Route::controller(PositionController::class)->group(function() {

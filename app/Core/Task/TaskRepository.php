@@ -4,6 +4,7 @@ namespace App\Core\Task;
 use App\core\Annex\AnnexRepositoryInterface;
 use App\Core\Follower\FollowerRepositoryInterface;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 
 class TaskRepository implements TaskRepositoryInterface
@@ -26,7 +27,7 @@ class TaskRepository implements TaskRepositoryInterface
     }
     public function listAll()
     {
-
+        return TaskResource::collection(Task::all());
     }
 
     public function update($request)

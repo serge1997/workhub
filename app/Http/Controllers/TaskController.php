@@ -21,12 +21,23 @@ class TaskController extends Controller
             DB::beginTransaction();
             $message = "Tarefa salvou com successo";
             $this->taskRepositoryInterface->create($request);
+            DB::commit();
             return response()
                 ->json($message);
-            DB::commit();
         }catch(Exception $e) {
             DB::rollBack();
             return response($e->getMessage(), 500);
+        }
+    }
+
+    public function onListAll()
+    {
+        try{
+            return response()
+                ->json($this->taskRepositoryInterface->listAll());
+        }catch(Exception $e){
+            return response()
+                ->json($e->getFile(), 500);
         }
     }
 }
