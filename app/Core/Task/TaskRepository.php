@@ -2,12 +2,14 @@
 namespace App\Core\Task;
 
 use App\core\Annex\AnnexRepositoryInterface;
+use App\Core\Follower\FollowerRepositoryInterface;
 use App\Models\Task;
 
 class TaskRepository implements TaskRepositoryInterface
 {
     public function __construct(
-        protected AnnexRepositoryInterface $annexRepositoryInterface
+        protected AnnexRepositoryInterface $annexRepositoryInterface,
+        protected FollowerRepositoryInterface $followerRepositoryInterface
     ){}
 
     public function create($request)
@@ -17,6 +19,7 @@ class TaskRepository implements TaskRepositoryInterface
         $task->manager_id = $request->user()->id;
         $task->save();
         $this->annexRepositoryInterface->create($request, $task);
+        $this->followerRepositoryInterface->create($request, $task);
     }
     public function listAll()
     {

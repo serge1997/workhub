@@ -29,7 +29,7 @@
                             <div class="col-md-6 d-flex flex-column mb-3">
                                 <label for="email" class="form-label">Tempo de execução</label>
                                 <Calendar id="execution-time" v-model="task.execution_delay_date" :class="formErrorBag && formErrorBag.execution_time ? invalidInpuClass : ''" placeholder="execution time..." timeOnly />
-                                <small class="text-danger" v-if="formErrorBag && formErrorBag.execution_time" v-text="`${formErrorBag.execution_time}`"></small>
+                                <small class="text-danger" v-if="formErrorBag && formErrorBag.execution_delay" v-text="`${formErrorBag.execution_delay}`"></small>
                             </div>
                         </div>
                         <div class="row">
@@ -46,7 +46,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6 d-flex flex-column">
                                 <label for="task-annex" class="form-label">Annexes da tarefa</label>
-                                <input class="form-control" type="file" id="annex-test">
+                                <input class="form-control d-none" type="file" id="annex-test">
                                 <Button style="width: 40%;" class="rounded-2" label="Upload" icon="pi pi-file" @click="taskAnnexHandler"/>
                             </div>
                         </div>
@@ -117,16 +117,7 @@ export default{
         },
         createTask(e){
             e.preventDefault();
-            this.task.execution_delay = DateTime.enFormat(this.task.execution_delay_date);
-            this.task.time_delay = DateTime.time(this.task.execution_delay);
-            const data = new FormData();
-            data.append('annex', this.task.annex);
-            data.append('execution_delay', this.task.execution_delay);
-            data.append('title', this.task.title);
-            data.append('time_delay', this.task.time_delay);
-            data.append('description', this.task.description);
-            data.append('priority', this.task.priority);
-            data.append('user_id', this.task.user_id);
+            const data = this.taskData();
             this.Api.post('task', data)
             .then(async response => {
                 this.toaster(response.data).fire();
@@ -138,6 +129,24 @@ export default{
                 }
                 console.log(err.response.status)
             })
+        },
+        taskData(){
+          try{
+            const data = new FormData();
+            this.task.execution_delay = this.task.execution_delay !== null ? DateTime.enFormat(this.task.execution_delay_date) : null;
+            this.task.time_delay = DateTime.time(this.task.execution_delay);
+            this.task.annex !== null ? data.append('annex', this.task.annex) : null ;
+            this.task.execution_delay !== null ? data.append('execution_delay', this.task.execution_delay) : null;
+            this.task.title !== null ? data.append('title', this.task.title) : null;
+            this.task.time_delay !== null ? data.append('time_delay', this.task.time_delay) : null;
+            this.task.description !== null ? data.append('description', this.task.description) : null;
+            this.task.priority !== null ? data.append('priority', this.task.priority) : null;
+            this.task.user_id !== null ? data.append('user_id', this.task.user_id) : null;
+            this.task.followers !== null ? data.append('followers', this.task.followers) : null;
+            return data;
+          }catch(err) {
+            console.log(err.message)
+          }
         },
         onListAllUsers(){
             this.Api.get('users')

@@ -1,11 +1,25 @@
 <?php
 namespace App\Core\Follower;
 
+use App\Models\Follower;
+use App\Models\Task;
+use Exception;
+
 class FollowerRepository implements FollowerRepositoryInterface
 {
-    public function create($request)
+    public function create($request, Task $task)
     {
-
+        if (count((array) $request->followers) > 0) {
+            foreach ($request->followers as $follower) {
+                $model = new Follower();
+                $model->follower_id = $follower;
+                $model->task_id = $task->id;
+                $model->save();
+                if (!Follower::find($model->id)->exists()) {
+                    throw new Exception("Não foi possivel salvar os seguidores");
+                }
+            }
+        }
     }
 
     public function find($request)
