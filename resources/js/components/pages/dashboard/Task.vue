@@ -7,7 +7,7 @@
                     <div class="row d-flex gap-1 p-1">
                         <div v-for="task in tasks" class="col-md-3 card">
                             <div class="card-header border-0 bg-white p-1">
-                                <small style="font-weight: 510;">{{ task.title.padEnd(28, '...') }}</small>
+                                <small style="font-weight: 510;">{{ task.title.padEnd(20, '...') }}</small>
                             </div>
                             <div class="card-body border-0 p-1">
                                 <small>{{ task.description ?? "Não há descrição"}}</small>
@@ -75,8 +75,8 @@
                                         </div>
                                     </Dialog>
                                 </div>
-                                <div class="w-100 d-flex justify-content-end gap-0">
-                                    <img class="img-thumbnail rounded-circle w-25" src="/img/avatars/hair0.jpeg" alt="">
+                                <div v-if="task.user_name" class="w-100 d-flex justify-content-end gap-0">
+                                    <img class="img-thumbnail rounded-circle w-25" :src="`/img/users_avatars/${task.user_name.avatar}`" alt="">
                                 </div>
                             </div>
                         </div>
