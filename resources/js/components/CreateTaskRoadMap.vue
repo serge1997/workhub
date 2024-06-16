@@ -2,6 +2,8 @@
     <Button @click="visibleCreateRoadMap = !visibleShowTaskModal" text icon="pi pi-map" />
     <Dialog v-model:visible="visibleCreateRoadMap" modal header="Create road map" :style="{ width: '65rem' }">
         <div class="row">
+            <input type="hidden" id="roadMile-title" :value="roadMap.titles">
+            <input type="hidden" id="roadMile-description" :value="roadMap.descriptions">
             <div class="col-md-6 d-flex flex-column">
                 <div v-for="(title, index) of roadMap.titleInputInc" class="w-100">
                     <div class="w-100 d-flex align-items-center">
@@ -30,7 +32,12 @@ export default {
                 descriptions: [],
                 titleInputInc: [1],
                 labelIncrement: [1]
-            }
+            },
+            provide() {
+                return {
+                    roadMap: this.roadMap
+                }
+            },
         }
     },
     methods: {

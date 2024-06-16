@@ -35,7 +35,7 @@ class StoreTaskRequest extends FormRequest
             'title.required' => 'titulo é obrigatorio',
             'execution_delay.required' => 'Tempo de exceução é obrigatorio',
             'priority.required' => 'prioridade obrigatório',
-            //'priority.max' => 'prioridade inavlida',
+            'priority.max' => 'prioridade inavlida',
             'user_id.required' => 'colaborador é obrigatorio'
 
         ];

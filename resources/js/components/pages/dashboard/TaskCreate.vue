@@ -51,10 +51,29 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 d-flex flex-column">
+                            <div class="w-100 d-flex flex-column mb-3 justify-content-start">
                                 <label for="task-annex" class="form-label">Road map</label>
-                                <CreateTaskRoadMap />
+                                <Button @click="visibleCreateRoadMap = !visibleShowTaskModal" text icon="pi pi-map" />
                             </div>
+                            <Dialog v-model:visible="visibleCreateRoadMap" modal header="Create road map" :style="{ width: '65rem' }">
+                                <div class="row">
+                                    <input type="hidden" id="roadMile-title" :value="roadMap.titles">
+                                    <input type="hidden" id="roadMile-description" :value="roadMap.descriptions">
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <div v-for="(title, index) of roadMap.titleInputInc" class="w-100">
+                                            <div class="w-100 d-flex align-items-center">
+                                                <Button @click="removeStep(index)" class="text-danger" icon="pi pi-trash" text />
+                                                <label class="fw-bold" for="">Etapa {{ roadMap.labelIncrement[index] }}</label>
+                                            </div>
+                                            <InputText class="w-100 mb-3" v-model="roadMap.titles[index]" placeholder="add step title" />
+                                            <Textarea  type="text" class="w-100 mb-3" v-model="roadMap.descriptions[index]" placeholder="add step description" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <Button @click="roadMap.titleInputInc.push(1); roadMap.labelIncrement.push(roadMap.labelIncrement[roadMap.labelIncrement.length - 1] + 1)" style="width: 45%;" text icon="pi pi-plus" label="Adicionar Etapa" />
+                                    </div>
+                                </div>
+                            </Dialog>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
@@ -68,13 +87,11 @@
     </SidebarComponent>
 </template>
 <script>
-import CreateTaskRoadMap from './../../CreateTaskRoadMap.vue';
 import { DateTime } from '../../../core/DateTime';
 export default{
     name: 'TaskCreate',
-
     components: {
-        CreateTaskRoadMap
+
     },
 
     data(){
@@ -97,6 +114,13 @@ export default{
                 followers: [],
                 annex: null,
                 time_delay: null
+            },
+            visibleCreateRoadMap: false,
+            roadMap: {
+                titles: [],
+                descriptions: [],
+                titleInputInc: [1],
+                labelIncrement: [1]
             },
             invalidInpuClass: null,
             formErrorBag: null,
@@ -133,8 +157,8 @@ export default{
         taskData(){
           try{
             const data = new FormData();
-            this.task.execution_delay = this.task.execution_delay !== null ? DateTime.enFormat(this.task.execution_delay_date) : null;
-            this.task.time_delay = DateTime.time(this.task.execution_delay);
+            this.task.time_delay = this.task.execution_delay_date !== null ? DateTime.enFormat(this.task.execution_delay_date) : null;
+            this.task.execution_delay  = DateTime.time(this.task.time_delay);
             this.task.annex !== null ? data.append('annex', this.task.annex) : null ;
             this.task.execution_delay !== null ? data.append('execution_delay', this.task.execution_delay) : null;
             this.task.title !== null ? data.append('title', this.task.title) : null;
@@ -143,6 +167,8 @@ export default{
             this.task.priority !== null ? data.append('priority', this.task.priority) : null;
             this.task.user_id !== null ? data.append('user_id', this.task.user_id) : null;
             this.task.followers !== null ? data.append('followers', this.task.followers) : null;
+            this.roadMap.titles.length > 0 ? data.append('road_map_titles',this.roadMap.titles) : null;
+            this.roadMap.descriptions.length > 0 ? data.append('road_map_descriptions', this.roadMap.descriptions) : null
             return data;
           }catch(err) {
             console.log(err.message)
@@ -156,6 +182,11 @@ export default{
                 this.users = await response.data;
             })
             .catch(err => console.log(err))
+        },
+        removeStep(index) {
+            this.roadMap.titleInputInc.splice(index, 1);
+            this.roadMap.titles.splice(index, 1);
+            this.roadMap.descriptions.splice(index, 1);
         },
         toaster(response){
             const Toast = this.$swal.mixin({
@@ -177,6 +208,8 @@ export default{
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
         this.onListAllUsers()
+        let i = document.querySelector('#roadMile-title');
+        console.log(i)
     }
 }
 </script>

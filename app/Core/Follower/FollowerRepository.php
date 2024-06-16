@@ -9,8 +9,9 @@ class FollowerRepository implements FollowerRepositoryInterface
 {
     public function create($request, Task $task)
     {
-        if (count((array) $request->followers) > 0) {
-            foreach ($request->followers as $follower) {
+        $followers = explode(',', $request->followers);
+        if (count($followers) > 0) {
+            foreach ($followers as $follower) {
                 $model = new Follower();
                 $model->follower_id = $follower;
                 $model->task_id = $task->id;

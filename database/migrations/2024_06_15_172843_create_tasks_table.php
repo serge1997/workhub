@@ -15,7 +15,8 @@ return new class extends Migration
             $table->increments('id');
             $table->string('title', 180);
             $table->string('desctiption', 255)->nullable();
-            $table->datetime('execution_delay');
+            $table->string('execution_delay', 6);
+            $table->string('delay_used', 6)->nullable();
             $table->integer('user_id')->unsigned();
             $table->integer('manager_id')->unsigned();
             $table->datetime('deleted_at')->nullable();

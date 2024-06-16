@@ -19,7 +19,8 @@ class Task extends Model
         'manager_id',
         'user_id',
         'execution_delay',
-        'deleted_at'
+        'deleted_at',
+        'delay_used'
     ];
 
     public function user() : BelongsTo
@@ -40,5 +41,10 @@ class Task extends Model
     public function followers() : HasMany
     {
         return $this->hasMany(Follower::class, 'task_id');
+    }
+
+    public function roadMap() : HasMany
+    {
+        return $this->hasMany(TaskRoadMap::class, 'task_id');
     }
 }
