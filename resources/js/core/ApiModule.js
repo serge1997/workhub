@@ -8,8 +8,8 @@ export class ApiModule {
     async post(url, data){
         return await axios.post(this.baseURL + url, data);
     }
-    async get(url){
+    async get(url, params = null){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
-        return await axios.get(this.baseURL + url);
+        return await axios.get(this.baseURL + url, {params: params});
     }
 }

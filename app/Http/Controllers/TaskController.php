@@ -40,4 +40,15 @@ class TaskController extends Controller
                 ->json($e->getFile(), 500);
         }
     }
+
+    public function onFind(Request $request)
+    {
+        try{
+            return response()
+                ->json($this->taskRepositoryInterface->find($request));
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 402);
+        }
+    }
 }

@@ -15,9 +15,8 @@
                         <Button class="text-success icon-list-task" text>
                             <i class="pi pi-play-circle icon-list-task"></i>
                         </Button>
-                        <Button class="icon-list-task" text>
-                            <i class="pi pi-align-center icon-list-task"></i>
-                        </Button>
+                        <ShowTaskComponent @show-task="showTask(task.id)" open-modal-icon="pi-align-center" />
+
                     </span>
                 </div>
             </li>
@@ -69,9 +68,14 @@
     </div>
 </template>
 <script>
+import ShowTaskComponent from '../ShowTaskComponent.vue';
 export default{
     name: 'ListTaskComponent',
     props: ['showStatus'],
+
+    components: {
+        ShowTaskComponent
+    },
     data(){
         return {
             task: {
@@ -93,6 +97,13 @@ export default{
             .catch(async err => {
 
             })
+        },
+        showTask(id){
+            this.Api.get('task', {id: id})
+            .then(async response => {
+                console.log(response.data)
+            })
+            .catch(err => console.log(err));
         }
     },
     mounted(){

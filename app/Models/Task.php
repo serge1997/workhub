@@ -11,6 +11,10 @@ class Task extends Model
 {
     use HasFactory;
 
+    const IN_PROGRESS = 'PRO';
+    const WAITING = 'WAI';
+    const CONCLUDED = 'CON';
+
     protected $table = "tasks";
     protected $fillable = [
         'title',

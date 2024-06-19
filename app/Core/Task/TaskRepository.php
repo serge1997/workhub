@@ -3,6 +3,8 @@ namespace App\Core\Task;
 
 use App\core\Annex\AnnexRepositoryInterface;
 use App\Core\Follower\FollowerRepositoryInterface;
+use App\Core\Task\Actions\FindAction;
+use App\Core\Task\Actions\InProgressAction;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -28,6 +30,16 @@ class TaskRepository implements TaskRepositoryInterface
     public function listAll()
     {
         return TaskResource::collection(Task::all());
+    }
+
+    public function find($request)
+    {
+        return new TaskResource(FindAction::run($request));
+    }
+
+    public function inProgress($request)
+    {
+        InProgressAction::run($request);
     }
 
     public function update($request)

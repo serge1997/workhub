@@ -10,7 +10,7 @@
                                 <small class="fw-medium">{{ task.title.padEnd(20, '...') }}</small>
                             </div>
                             <div class="card-body border-0 p-1">
-                                <small class="task-description">{{ task.description ?? "não há descrição"}}</small>
+                                <small class="task-description">{{ task.short_description ?? "não há descrição"}}</small>
                             </div>
                             <div class="card-footer d-flex justify-content-between border-0 bg-white p-1">
                                 <div class="w-75 d-flex justify-content-start align-items-center gap-0">
