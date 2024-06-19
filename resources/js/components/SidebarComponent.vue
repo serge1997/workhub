@@ -28,8 +28,10 @@
                                 </router-link>
                             </li>
                             <li class="list-group-item border-0">
-                                <i class="pi pi-bolt"></i>
-                                sprint
+                                <router-link class="text-decoration-none" :to="{name: 'Sprint'}">
+                                    <i class="pi pi-bolt"></i>
+                                    sprint
+                                </router-link>
                             </li>
                             <li class="list-group-item border-0">
                                 <span @click="menuCreateToggle = !menuCreateToggle">

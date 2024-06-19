@@ -7,10 +7,10 @@
                     <div class="row d-flex gap-1 p-1">
                         <div v-for="task in tasks" class="col-md-3 card">
                             <div class="card-header border-0 bg-white p-1">
-                                <small style="font-weight: 510;">{{ task.title.padEnd(20, '...') }}</small>
+                                <small class="fw-medium">{{ task.title.padEnd(20, '...') }}</small>
                             </div>
                             <div class="card-body border-0 p-1">
-                                <small>{{ task.description ?? "Não há descrição"}}</small>
+                                <small class="task-description">{{ task.description ?? "não há descrição"}}</small>
                             </div>
                             <div class="card-footer d-flex justify-content-between border-0 bg-white p-1">
                                 <div class="w-75 d-flex justify-content-start align-items-center gap-0">
@@ -121,3 +121,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+.task-description {
+    color: #64748b;
+}
+</style>

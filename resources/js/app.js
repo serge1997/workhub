@@ -23,6 +23,7 @@ import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
 import MultiSelect from 'primevue/multiselect';
 import FileUpload from 'primevue/fileupload';
+import Tag from 'primevue/tag';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -58,6 +59,7 @@ app.component('Textarea', Textarea);
 app.component('Calendar', Calendar);
 app.component('MultiSelect', MultiSelect);
 app.component('FileUpload', FileUpload);
+app.component('Tag', Tag);
 
 
 app.use(router)
