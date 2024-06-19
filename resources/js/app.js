@@ -24,6 +24,7 @@ import Calendar from 'primevue/calendar';
 import MultiSelect from 'primevue/multiselect';
 import FileUpload from 'primevue/fileupload';
 import Tag from 'primevue/tag';
+import Toolbar from 'primevue/toolbar';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -60,6 +61,7 @@ app.component('Calendar', Calendar);
 app.component('MultiSelect', MultiSelect);
 app.component('FileUpload', FileUpload);
 app.component('Tag', Tag);
+app.component('Toolbar', Toolbar);
 
 
 app.use(router)

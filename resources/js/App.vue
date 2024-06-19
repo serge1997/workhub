@@ -20,4 +20,8 @@ body {
     color: #f1f5f9;
 }
 .swal2-container.swal2-backdrop-show,.swal2-container.swal2-noanimation{z-index:11000}
+
+.task-description {
+    color: #64748b;
+}
 </style>
