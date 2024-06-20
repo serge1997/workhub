@@ -29,7 +29,7 @@ class TaskRepository implements TaskRepositoryInterface
     }
     public function listAll()
     {
-        return TaskResource::collection(Task::all());
+        return TaskResource::collection(Task::orderBy('created_at', 'desc')->get());
     }
 
     public function find($request)
