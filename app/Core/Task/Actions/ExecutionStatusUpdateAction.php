@@ -12,12 +12,12 @@ final class ExecutionStatusUpdateAction
 
     }
 
-    public function handle($request)
+    public function handle()
     {
         return match($this->task->execution_status)
         {
-            Task::WAITING => $this->progress($request),
-            Task::IN_PROGRESS => $this->concluded($request),
+            Task::WAITING => $this->progress(),
+            Task::IN_PROGRESS => $this->concluded(),
             Task::CONCLUDED => null
         };
     }

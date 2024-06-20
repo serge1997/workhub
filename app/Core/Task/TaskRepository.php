@@ -40,7 +40,7 @@ class TaskRepository implements TaskRepositoryInterface
     public function handleExecutionStatus($request)
     {
         (new ExecutionStatusUpdateAction(FindAction::run($request)))
-            ->handle($request);
+            ->handle();
     }
 
     public function update($request)
