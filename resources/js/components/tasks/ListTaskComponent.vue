@@ -119,10 +119,27 @@ export default{
         {
             this.Api.put('task/execution-status', {id: id})
             .then(async response => {
+                this.toaster(response.data).fire();
                 return this.onListAllTask()
             })
             .catch(err => console.log(err));
-        }
+        },
+        toaster(response){
+            const Toast = this.$swal.mixin({
+                text: response,
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                icon: "success",
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            return Toast
+        },
     },
     mounted(){
         this.onListAllTask();

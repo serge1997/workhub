@@ -9,7 +9,7 @@ class FollowerRepository implements FollowerRepositoryInterface
 {
     public function create($request, Task $task)
     {
-        if ($request->has('followers')){
+        if ($request->has('followers') && $request->followers !== null){
             $followers = explode(',', $request->followers);
             if (count($followers) > 0) {
                 foreach ($followers as $follower) {

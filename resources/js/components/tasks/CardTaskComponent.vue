@@ -35,24 +35,42 @@
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <div class="w-100 d-flex flex-column">
-                    <div class="w-100 icons d-flex mb-2">
-                        <span>
+                    <div v-if="task.user_name" class="w-100 icons d-flex align-items-center gap-2 mb-2">
+                        <span class="d-flex align-items-center">
                             <i class="pi pi-user icon-list-task"></i>
                         </span>
+                        <small class="w-25">
+                            <img class="img-thumbnail w-50 rounded-circle" :src="`/img/users_avatars/${task.user_name.avatar}`" alt="user avatar">
+                        </small>
                     </div>
-                    <div class="w-100 icons d-flex">
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
                         <span>
                             <i class="pi pi-clock icon-list-task"></i>
                         </span>
+                        <span class="d-flex align-items-center">
+                            <small style="font-size: 0.8rem;" class="task-description">
+                                {{ task.execution_delay }}
+                            </small>
+                        </span>
                     </div>
-                    <div class="w-100 icons d-flex">
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
                         <span>
                             <i class="pi pi-users icon-list-task"></i>
                         </span>
+                        <span class="d-flex gap-1 align-items-center">
+                            <small class="task-description">
+                                {{ task.followers_count }}
+                            </small>
+                        </span>
                     </div>
-                    <div class="w-100 icons d-flex">
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
                         <span>
                             <i class="pi pi-paperclip icon-list-task"></i>
+                        </span>
+                        <span class="d-flex gap-1 align-items-center">
+                            <small class="task-description">
+                                {{ task.annex_count }}
+                            </small>
                         </span>
                     </div>
                 </div>

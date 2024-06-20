@@ -22,7 +22,7 @@ final class ExecutionStatusUpdateAction
         };
     }
 
-    public function progress()
+    private function progress()
     {
         $this->task->update([
             'execution_status' => Task::IN_PROGRESS

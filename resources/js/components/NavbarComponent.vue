@@ -47,10 +47,10 @@ export default {
                     console.log(err)
                 })
         },
-        getAuth(){
+       getAuth(){
             this.Api.get('user')
-                .then(response => {
-                    this.auth = response.data;
+                .then(async response => {
+                    this.auth = await response.data;
                 })
         }
     },

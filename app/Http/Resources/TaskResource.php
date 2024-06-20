@@ -2,12 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Annex;
 use App\Models\TaskRoadMap;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 use App\Utility\Utilities;
 use Illuminate\Support\Str;
+use App\Models\Follower;
 
 class TaskResource extends JsonResource
 {
@@ -31,8 +33,21 @@ class TaskResource extends JsonResource
             'execution_delay' => $this->execution_delay,
             'is_expired' => $this->execution_delay > $this->delay_used,
             'roads_map' => TaskResource::collection(TaskRoadMap::where('task_id', $this->id)->get()),
-            'execution_status' => $this->execution_status
+            'execution_status' => $this->execution_status,
+            'followers' => $this->followers,
+            'followers_count' => $this->countFollowers(),
+            'annex_count' => $this->countAnnex()
 
         ];
+    }
+
+    public function countFollowers()
+    {
+        return Follower::where('task_id', $this->id)->count() ?? 0;
+    }
+
+    public function countAnnex()
+    {
+        return Annex::where('task_id', $this->id)->count() ?? 0;
     }
 }

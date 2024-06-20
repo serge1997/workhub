@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class, 'manager_id');
     }
+
+    public function latestTasks()
+    {
+        return $this->taskUser()->count();
+    }
 }

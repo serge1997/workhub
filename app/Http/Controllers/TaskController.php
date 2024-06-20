@@ -55,7 +55,10 @@ class TaskController extends Controller
     public function onHandleExecutionStatus(Request $request)
     {
         try{
+            $message = "Tarefa foi atualizada para proximo nivel";
             $this->taskRepositoryInterface->handleExecutionStatus($request);
+            return response()
+                ->json($message);
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 500);
