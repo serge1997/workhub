@@ -7,7 +7,7 @@ interface TaskRepositoryInterface
     public function create($request);
     public function listAll();
     public function find($request);
-    public function inProgress($request);
+    public function handleExecutionStatus($request);
     public function update($request);
 
 }

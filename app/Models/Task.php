@@ -12,7 +12,7 @@ class Task extends Model
     use HasFactory;
 
     const IN_PROGRESS = 'PRO';
-    const WAITING = 'WAI';
+    const WAITING = 'WAT';
     const CONCLUDED = 'CON';
 
     protected $table = "tasks";

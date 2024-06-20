@@ -51,4 +51,14 @@ class TaskController extends Controller
                 ->json($e->getMessage(), 402);
         }
     }
+
+    public function onHandleExecutionStatus(Request $request)
+    {
+        try{
+            $this->taskRepositoryInterface->handleExecutionStatus($request);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

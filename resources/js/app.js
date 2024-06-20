@@ -25,6 +25,7 @@ import MultiSelect from 'primevue/multiselect';
 import FileUpload from 'primevue/fileupload';
 import Tag from 'primevue/tag';
 import Toolbar from 'primevue/toolbar';
+import Chip from 'primevue/chip';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -62,6 +63,7 @@ app.component('MultiSelect', MultiSelect);
 app.component('FileUpload', FileUpload);
 app.component('Tag', Tag);
 app.component('Toolbar', Toolbar);
+app.component('Chip', Chip);
 
 
 app.use(router)

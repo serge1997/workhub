@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('task', 'onCreate');
         Route::get('tasks', 'onListAll');
         Route::get('task', 'onFind');
+        Route::put('task/execution-status', 'onHandleExecutionStatus');
     });
 
     Route::controller(PositionController::class)->group(function() {

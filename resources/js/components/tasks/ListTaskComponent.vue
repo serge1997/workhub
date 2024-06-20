@@ -12,10 +12,14 @@
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button class="text-success icon-list-task" text>
+                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
                             <i class="pi pi-play-circle icon-list-task"></i>
                         </Button>
-                        <ShowTaskComponent @show-task="showTask(task.id)" open-modal-icon="pi-align-center" />
+                        <ShowTaskComponent
+                            @show-task="showTask(task.id)"
+                            open-modal-icon="pi-align-center"
+                            :task-finded="task_finded"
+                        />
 
                     </span>
                 </div>
@@ -33,12 +37,14 @@
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button class="text-success icon-list-task" text>
-                            <i class="pi pi-play-circle icon-list-task"></i>
+                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
+                            <i class="pi pi-step-forward-alt icon-list-task"></i>
                         </Button>
-                        <Button class="icon-list-task" text>
-                            <i class="pi pi-align-center icon-list-task"></i>
-                        </Button>
+                        <ShowTaskComponent
+                            @show-task="showTask(task.id)"
+                            open-modal-icon="pi-align-center"
+                            :task-finded="task_finded"
+                        />
                     </span>
                 </div>
             </li>
@@ -56,11 +62,13 @@
                     </span>
                     <span class="d-flex">
                         <Button class="text-success icon-list-task" text>
-                            <i class="pi pi-play-circle icon-list-task"></i>
+                            <i class="pi pi-trophy icon-list-task text-warning"></i>
                         </Button>
-                        <Button class="icon-list-task" text>
-                            <i class="pi pi-align-center icon-list-task"></i>
-                        </Button>
+                        <ShowTaskComponent
+                            @show-task="showTask(task.id)"
+                            open-modal-icon="pi-align-center"
+                            :task-finded="task_finded"
+                        />
                     </span>
                 </div>
             </li>
@@ -82,7 +90,8 @@ export default{
                 progress: null,
                 waiting: null,
                 concluded: null,
-            }
+            },
+            task_finded: null,
         }
     },
     methods: {
@@ -92,16 +101,25 @@ export default{
                 this.task.waiting = await response.data.filter(task => task.execution_status === 'WAT');
                 this.task.progress = await response.data.filter(task => task.execution_status === 'PRO');
                 this.task.concluded = await response.data.filter(task => task.execution_status === 'CON');
-                console.log(response)
             })
             .catch(async err => {
 
             })
         },
         showTask(id){
+            this.task_finded = null;
             this.Api.get('task', {id: id})
             .then(async response => {
-                console.log(response.data)
+                this.task_finded = await response.data;
+                console.log(this.task_finded)
+            })
+            .catch(err => console.log(err));
+        },
+        handleTaskStatus(id)
+        {
+            this.Api.put('task/execution-status', {id: id})
+            .then(async response => {
+                return this.onListAllTask()
             })
             .catch(err => console.log(err));
         }
