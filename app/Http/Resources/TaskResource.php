@@ -6,6 +6,7 @@ use App\Models\Annex;
 use App\Models\TaskRoadMap;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\RoadMapResource;
 use Carbon\Carbon;
 use App\Utility\Utilities;
 use Illuminate\Support\Str;
@@ -32,7 +33,7 @@ class TaskResource extends JsonResource
             'user_name'    => $this->user,
             'execution_delay' => $this->execution_delay,
             'is_expired' => $this->execution_delay > $this->delay_used,
-            'roads_map' => TaskResource::collection(TaskRoadMap::where('task_id', $this->id)->get()),
+            'roads_map' => RoadMapResource::collection(TaskRoadMap::where('task_id', $this->id)->get()),
             'execution_status' => $this->execution_status,
             'followers' => $this->followers,
             'followers_count' => $this->countFollowers(),
@@ -43,11 +44,11 @@ class TaskResource extends JsonResource
 
     public function countFollowers()
     {
-        return Follower::where('task_id', $this->id)->count() ?? 0;
+        return Follower::where('task_id', $this->id)->count() ?? "-";
     }
 
     public function countAnnex()
     {
-        return Annex::where('task_id', $this->id)->count() ?? 0;
+        return Annex::where('task_id', $this->id)->count() ?? "-";
     }
 }

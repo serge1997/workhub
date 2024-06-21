@@ -26,6 +26,7 @@ import FileUpload from 'primevue/fileupload';
 import Tag from 'primevue/tag';
 import Toolbar from 'primevue/toolbar';
 import Chip from 'primevue/chip';
+import AvatarGroup from 'primevue/avatargroup';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -64,6 +65,7 @@ app.component('FileUpload', FileUpload);
 app.component('Tag', Tag);
 app.component('Toolbar', Toolbar);
 app.component('Chip', Chip);
+app.component('AvatarGroup', AvatarGroup)
 
 
 app.use(router)

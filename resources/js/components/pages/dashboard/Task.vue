@@ -18,7 +18,14 @@
                                     <div class="dropdown">
                                         <Button id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" icon="pi pi-ellipsis-v" text />
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><ShowTaskComponent /></li>
+                                            <li>
+                                                <ShowTaskComponent
+                                                    class="p-0"
+                                                    @show-task="showTask(task.id)"
+                                                    open-modal-icon="pi-align-center"
+                                                    :task-finded="task_finded"
+                                                />
+                                            </li>
                                             <li><ShowTaskAnnexComponent /></li>
                                             <li><Button text icon="pi pi-play" /></li>
                                         </ul>
@@ -101,6 +108,7 @@ export default {
             visible: false,
             showCommentResponseInput: false,
             tasks: null,
+            task_finded: null,
         }
     },
     methods:{
@@ -113,7 +121,16 @@ export default {
             .catch(async err => {
 
             })
-        }
+        },
+        showTask(id){
+            this.task_finded = null;
+            this.Api.get('task', {id: id})
+            .then(async response => {
+                this.task_finded = await response.data;
+                console.log(this.task_finded)
+            })
+            .catch(err => console.log(err));
+        },
     },
     mounted() {
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;

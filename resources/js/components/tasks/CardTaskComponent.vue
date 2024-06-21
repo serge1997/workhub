@@ -6,24 +6,60 @@
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <div class="w-100 d-flex flex-column">
-                    <div class="w-100 icons d-flex mb-2">
-                        <span>
-                            <i class="pi pi-user icon-list-task"></i>
-                        </span>
+                    <div class="w-100">
+                        <Button class="" text>
+                            <span class="d-flex align-items-center">
+                                <i class="pi pi-user icon-list-task"></i>
+                            </span>
+                            <small class="w-25">
+                                <img class="img-thumbnail w-50 rounded-circle" :src="`/img/users_avatars/${task.user_name.avatar}`" alt="user avatar">
+                            </small>
+                        </Button>
                     </div>
-                    <div class="w-100 icons d-flex">
-                        <span>
-                            <i class="pi pi-clock icon-list-task"></i>
-                        </span>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-clock icon-list-task"></i>
+                            </span>
+                            <span class="d-flex align-items-center">
+                                <small style="font-size: 0.8rem;" class="task-description">
+                                    {{ task.execution_delay }}
+                                </small>
+                            </span>
+                        </Button>
                     </div>
-                    <div class="w-100 icons d-flex">
-                        <span>
-                            <i class="pi pi-users icon-list-task"></i>
-                        </span>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-users icon-list-task"></i>
+                            </span>
+                            <span class="d-flex gap-1 align-items-center">
+                                <small class="task-description">
+                                    {{ task.followers_count }}
+                                </small>
+                            </span>
+                        </Button>
                     </div>
-                    <div class="w-100 icons d-flex">
-                        <span>
-                            <i class="pi pi-paperclip icon-list-task"></i>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-paperclip icon-list-task"></i>
+                            </span>
+                            <span class="d-flex gap-1 align-items-center">
+                                <small class="task-description">
+                                    {{ task.annex_count }}
+                                </small>
+                            </span>
+                        </Button>
+                    </div>
+                    <div class="w-100 icons d-flex align-items-center">
+                        <span class="d-flex align-items-center">
+                            <ShowTaskComponent
+                                class="p-0"
+                                @show-task="showTask(task.id)"
+                                open-modal-icon="pi-align-center"
+                                :task-finded="task_finded"
+                            />
                         </span>
                     </div>
                 </div>
@@ -35,42 +71,60 @@
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <div class="w-100 d-flex flex-column">
-                    <div v-if="task.user_name" class="w-100 icons d-flex align-items-center gap-2 mb-2">
+                    <div class="w-100">
+                        <Button class="" text>
+                            <span class="d-flex align-items-center">
+                                <i class="pi pi-user icon-list-task"></i>
+                            </span>
+                            <small class="w-25">
+                                <img class="img-thumbnail w-50 rounded-circle" :src="`/img/users_avatars/${task.user_name.avatar}`" alt="user avatar">
+                            </small>
+                        </Button>
+                    </div>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-clock icon-list-task"></i>
+                            </span>
+                            <span class="d-flex align-items-center">
+                                <small style="font-size: 0.8rem;" class="task-description">
+                                    {{ task.execution_delay }}
+                                </small>
+                            </span>
+                        </Button>
+                    </div>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-users icon-list-task"></i>
+                            </span>
+                            <span class="d-flex gap-1 align-items-center">
+                                <small class="task-description">
+                                    {{ task.followers_count }}
+                                </small>
+                            </span>
+                        </Button>
+                    </div>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-paperclip icon-list-task"></i>
+                            </span>
+                            <span class="d-flex gap-1 align-items-center">
+                                <small class="task-description">
+                                    {{ task.annex_count }}
+                                </small>
+                            </span>
+                        </Button>
+                    </div>
+                    <div class="w-100 icons d-flex align-items-center">
                         <span class="d-flex align-items-center">
-                            <i class="pi pi-user icon-list-task"></i>
-                        </span>
-                        <small class="w-25">
-                            <img class="img-thumbnail w-50 rounded-circle" :src="`/img/users_avatars/${task.user_name.avatar}`" alt="user avatar">
-                        </small>
-                    </div>
-                    <div class="w-100 icons d-flex gap-1 align-items-center">
-                        <span>
-                            <i class="pi pi-clock icon-list-task"></i>
-                        </span>
-                        <span class="d-flex align-items-center">
-                            <small style="font-size: 0.8rem;" class="task-description">
-                                {{ task.execution_delay }}
-                            </small>
-                        </span>
-                    </div>
-                    <div class="w-100 icons d-flex gap-1 align-items-center">
-                        <span>
-                            <i class="pi pi-users icon-list-task"></i>
-                        </span>
-                        <span class="d-flex gap-1 align-items-center">
-                            <small class="task-description">
-                                {{ task.followers_count }}
-                            </small>
-                        </span>
-                    </div>
-                    <div class="w-100 icons d-flex gap-1 align-items-center">
-                        <span>
-                            <i class="pi pi-paperclip icon-list-task"></i>
-                        </span>
-                        <span class="d-flex gap-1 align-items-center">
-                            <small class="task-description">
-                                {{ task.annex_count }}
-                            </small>
+                            <ShowTaskComponent
+                                class="p-0"
+                                @show-task="showTask(task.id)"
+                                open-modal-icon="pi-align-center"
+                                :task-finded="task_finded"
+                            />
                         </span>
                     </div>
                 </div>
@@ -82,24 +136,60 @@
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <div class="w-100 d-flex flex-column">
-                    <div class="w-100 icons d-flex mb-2">
-                        <span>
-                            <i class="pi pi-user icon-list-task"></i>
-                        </span>
+                    <div class="w-100">
+                        <Button class="" text>
+                            <span class="d-flex align-items-center">
+                                <i class="pi pi-user icon-list-task"></i>
+                            </span>
+                            <small class="w-25">
+                                <img class="img-thumbnail w-50 rounded-circle" :src="`/img/users_avatars/${task.user_name.avatar}`" alt="user avatar">
+                            </small>
+                        </Button>
                     </div>
-                    <div class="w-100 icons d-flex">
-                        <span>
-                            <i class="pi pi-clock icon-list-task"></i>
-                        </span>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-clock icon-list-task"></i>
+                            </span>
+                            <span class="d-flex align-items-center">
+                                <small style="font-size: 0.8rem;" class="task-description">
+                                    {{ task.execution_delay }}
+                                </small>
+                            </span>
+                        </Button>
                     </div>
-                    <div class="w-100 icons d-flex">
-                        <span>
-                            <i class="pi pi-users icon-list-task"></i>
-                        </span>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-users icon-list-task"></i>
+                            </span>
+                            <span class="d-flex gap-1 align-items-center">
+                                <small class="task-description">
+                                    {{ task.followers_count }}
+                                </small>
+                            </span>
+                        </Button>
                     </div>
-                    <div class="w-100 icons d-flex">
-                        <span>
-                            <i class="pi pi-paperclip icon-list-task"></i>
+                    <div class="w-100 icons d-flex gap-1 align-items-center">
+                        <Button class="d-flex gap-1 align-items-center" text>
+                            <span>
+                                <i class="pi pi-paperclip icon-list-task"></i>
+                            </span>
+                            <span class="d-flex gap-1 align-items-center">
+                                <small class="task-description">
+                                    {{ task.annex_count }}
+                                </small>
+                            </span>
+                        </Button>
+                    </div>
+                    <div class="w-100 icons d-flex align-items-center">
+                        <span class="d-flex align-items-center">
+                            <ShowTaskComponent
+                                class="p-0"
+                                @show-task="showTask(task.id)"
+                                open-modal-icon="pi-align-center"
+                                :task-finded="task_finded"
+                            />
                         </span>
                     </div>
                 </div>
@@ -108,11 +198,12 @@
     </div>
 </template>
 <script>
+import ShowTaskComponent from '../ShowTaskComponent.vue';
 export default{
     name: 'CardTaskComponent',
     props: ['showStatus'],
     components: {
-
+        ShowTaskComponent
     },
     data(){
         return {
@@ -120,7 +211,8 @@ export default{
                 progress: null,
                 waiting: null,
                 concluded: null,
-            }
+            },
+            task_finded: null
         }
     },
     methods:{
@@ -135,7 +227,16 @@ export default{
             .catch(async err => {
 
             })
-        }
+        },
+        showTask(id){
+            this.task_finded = null;
+            this.Api.get('task', {id: id})
+            .then(async response => {
+                this.task_finded = await response.data;
+                console.log(this.task_finded)
+            })
+            .catch(err => console.log(err));
+        },
     },
     mounted(){
         this.onListAllTask();
