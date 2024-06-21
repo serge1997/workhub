@@ -37,7 +37,7 @@
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
+                        <Button v-if="task.task_owner" @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
                             <i class="pi pi-step-forward-alt icon-list-task"></i>
                         </Button>
                         <ShowTaskComponent

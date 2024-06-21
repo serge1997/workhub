@@ -28,4 +28,9 @@ class Follower extends Model
     {
         return $this->deleted_at !== null;
     }
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class, 'follower_id');
+    }
 }
