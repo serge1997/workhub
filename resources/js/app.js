@@ -28,6 +28,7 @@ import Toolbar from 'primevue/toolbar';
 import Chip from 'primevue/chip';
 import AvatarGroup from 'primevue/avatargroup';
 import Avatar from 'primevue/avatar';
+import ConfirmPopup from 'primevue/confirmpopup';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -67,7 +68,8 @@ app.component('Tag', Tag);
 app.component('Toolbar', Toolbar);
 app.component('Chip', Chip);
 app.component('AvatarGroup', AvatarGroup);
-app.component('Avatar', Avatar)
+app.component('Avatar', Avatar);
+app.component('ConfirmPopup', ConfirmPopup);
 
 
 

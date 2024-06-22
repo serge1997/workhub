@@ -18,7 +18,8 @@ class FollowerResource extends JsonResource
             'id' => $this->id,
             'follower_id' => $this->follower_id,
             'task_id' => $this->task_id,
-            'avatar' => $this->user->avatar
+            'avatar' => $this->user->avatar,
+            'follower_name' => $this->user->name
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\TaskController;
@@ -38,6 +39,12 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('tasks', 'onListAll');
         Route::get('task', 'onFind');
         Route::put('task/execution-status', 'onHandleExecutionStatus');
+    });
+
+    Route::controller(FollowerController::class)->group(function() {
+        Route::prefix('followers')->group(function() {
+            Route::get('/', 'onListAllByTask');
+        });
     });
 
     Route::controller(PositionController::class)->group(function() {
