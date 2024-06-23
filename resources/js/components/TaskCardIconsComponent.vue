@@ -10,16 +10,22 @@
                 </small>
             </Button>
         </div>
-        <div class="w-100 icons d-flex gap-1 align-items-center">
+        <div class="w-100 icons d-flex align-items-center">
             <Button class="d-flex gap-1 align-items-center" text>
                 <span>
                     <i class="pi pi-clock icon-list-task"></i>
                 </span>
                 <span class="d-flex align-items-center">
-                    <small style="font-size: 0.8rem;" class="task-description">
+                    <small style="font-size: 0.8rem;" class="task-description d-flex align-items-center gap-1">
                         {{ task.execution_delay }}
                     </small>
                 </span>
+            </Button>
+            <Button @click="startTiming" class="p-0 task-description d-flex gap-1" text>
+                <span>
+                    <i class="pi pi-play-circle"></i>
+                </span>
+                <span class="chrono">{{timing.minutes}}:{{ timing.seconds }}</span>
             </Button>
         </div>
         <div class="w-100 icons d-flex gap-1 align-items-center">
@@ -37,6 +43,9 @@
                 </span>
             </Button>
         </div>
+        <div class="w-100 icons d-flex gap-1 align-items-center">
+            <TaskCommentComponent />
+        </div>
         <div class="w-100 icons d-flex align-items-center">
             <span class="d-flex align-items-center">
                 <ShowTaskComponent
@@ -51,20 +60,27 @@
 </template>
 <script>
 import ShowTaskComponent from './ShowTaskComponent.vue';
-import ShowTaskFollower from './ShowTaskFollower.vue'
+import ShowTaskFollower from './ShowTaskFollower.vue';
+import TaskCommentComponent from './TaskCommentComponent.vue';
+import { DateTime } from './../core/DateTime.js';
 export default{
     name: 'TaskCardIconsComponent',
 
     components: {
         ShowTaskComponent,
-        ShowTaskFollower
+        ShowTaskFollower,
+        TaskCommentComponent
     },
 
     props: ['task'],
 
     data(){
         return{
-            task_finded: null
+            task_finded: null,
+            timing: {
+                seconds: 0,
+                minutes: 0
+            },
         }
     },
     methods: {
@@ -77,6 +93,27 @@ export default{
             })
             .catch(err => console.log(err));
         },
+        startTiming(event){
+            let parent = event.target.offsetParent
+            parent.children[1].innerHTML = "Done"
+            console.log(parent.children[1].querySelector('.chrono'))
+            this.chrono(parent.children[1])
+        },
+        chrono(DOMElement){
+            setInterval(() => {
+                this.timing.seconds++;
+                if (this.timing.seconds == 59) {
+                    this.timing.minutes++;
+                    this.timing.seconds = 0
+                }
+                this.timing.minutes = `${this.timing.minutes}`.padStart(2, '0');
+                this.timing.seconds = `${this.timing.seconds}`.padStart(2, '0');
+                DOMElement.innerHTML = `${this.timing.minutes}:${this.timing.seconds}`
+            }, 1000);
+        }
+
+    },
+    mounted() {
     }
 }
 </script>

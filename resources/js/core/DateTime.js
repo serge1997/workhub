@@ -27,6 +27,15 @@ export class DateTime
             return time.match(/\d\d:\d\d/g)[0];
         }
     }
+    static chrono(){
+        let minutes = 0;
+        let second = 0;
+        setInterval(() => {
+            second++;
+        }, 1000);
+
+        return second;
+    }
 
 
 }
