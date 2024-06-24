@@ -44,7 +44,7 @@
             </Button>
         </div>
         <div class="w-100 icons d-flex gap-1 align-items-center">
-            <TaskCommentComponent />
+            <TaskCommentComponent :task="task.id" />
         </div>
         <div class="w-100 icons d-flex align-items-center">
             <span class="d-flex align-items-center">

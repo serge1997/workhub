@@ -3,6 +3,7 @@
         <Button class="icon-list-task" @click="visibleShowTaskCommentModal = true" text icon="pi pi-comment" />
          <Dialog v-model:visible="visibleShowTaskCommentModal" modal header="Task comment" :style="{ width: '25rem' }">
              <div class="w-100 comment-list mb-3">
+                <input type="text" :value="task">
                  <div class="card border-0 comment-card">
                      <div class="card-header bg-white border-0 p-0 border-0 d-flex align-items-center gap-2">
                          <small>
@@ -46,7 +47,7 @@
             <div class="w-100 d-flex">
                 <IconField iconPosition="left" class="p-0">
                     <InputIcon class="pi pi-comment"> </InputIcon>
-                    <InputText v-model="value1" placeholder="comment..." />
+                    <InputText v-model="commentData.comment" placeholder="comment..." />
                 </IconField>
                 <Button text icon="pi pi-send" />
             </div>
@@ -56,11 +57,16 @@
 <script>
 export default {
     name: 'TaskCommentComponent',
+    props: ['task'],
 
     data(){
         return {
             visibleShowTaskCommentModal: false,
-            showCommentResponseInput: false
+            showCommentResponseInput: false,
+            commentData: {
+                comment: null,
+                task_id: null
+            }
         }
     },
     methods: {

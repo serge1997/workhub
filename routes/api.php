@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
@@ -44,6 +45,12 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(FollowerController::class)->group(function() {
         Route::prefix('followers')->group(function() {
             Route::get('/', 'onListAllByTask');
+        });
+    });
+
+    Route::controller(CommentController::class)->group(function() {
+        Route::prefix("comments")->group(function() {
+            Route::post("/", "onCreate");
         });
     });
 
