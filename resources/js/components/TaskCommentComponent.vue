@@ -3,7 +3,7 @@
         <Button class="icon-list-task" @click="visibleShowTaskCommentModal = true" text icon="pi pi-comment" />
          <Dialog v-model:visible="visibleShowTaskCommentModal" modal header="Task comment" :style="{ width: '25rem' }">
              <div class="w-100 comment-list mb-3">
-                <input type="text" :value="task">
+                <input type="text" id="task-id" :value="task">
                  <div class="card border-0 comment-card">
                      <div class="card-header bg-white border-0 p-0 border-0 d-flex align-items-center gap-2">
                          <small>
@@ -20,8 +20,8 @@
                                      <Button @click="showCommentResponseInput = !showCommentResponseInput" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
                                  </p>
                                  <span v-if="showCommentResponseInput" class="d-flex mb-1">
-                                     <input style="font-size: 0.8rem;" class="form-control p-1 text-secondary" type="text" placeholder="your response....">
-                                     <Button class="p-0" text icon="pi pi-send" />
+                                     <input style="font-size: 0.8rem;" v-model="commentResponse.response" class="form-control p-1 text-secondary" type="text" placeholder="your response....">
+                                     <Button @click="createResponse" class="p-0" text icon="pi pi-send" />
                                  </span>
                                  <span class="comment-response-content">
                                      <div class="card w-75 m-auto border-0 mt-1">
@@ -49,7 +49,7 @@
                     <InputIcon class="pi pi-comment"> </InputIcon>
                     <InputText v-model="commentData.comment" placeholder="comment..." />
                 </IconField>
-                <Button text icon="pi pi-send" />
+                <Button @click="createComment" text icon="pi pi-send" />
             </div>
         </Dialog>
     </div>
@@ -66,11 +66,44 @@ export default {
             commentData: {
                 comment: null,
                 task_id: null
+            },
+            commentResponse:{
+                response: null,
             }
         }
     },
     methods: {
-
+        createComment(){
+            this.commentData.task_id = document.getElementById('task-id').value;
+            this.Api.post("comments", this.commentData)
+            .then(async response =>{
+                await this.toaster(response.data).fire();
+                this.commentData.comment = null;
+            })
+            .catch(err => console.log(err))
+        },
+        createResponse(){
+            this.commentData.task_id = document.getElementById('task-id').value;
+            Reflect.set(this.commentResponse, "task_id", this.commentData.task_id);
+            console.log(this.commentResponse)
+            //this.Api.post("comment-response", )
+        },
+        toaster(response, severity="success"){
+            const Toast = this.$swal.mixin({
+                text: response,
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                icon: severity,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            return Toast
+        },
     }
 }
 </script>

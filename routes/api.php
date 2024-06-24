@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
+use App\Models\CommentResponse;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,14 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(CommentController::class)->group(function() {
         Route::prefix("comments")->group(function() {
             Route::post("/", "onCreate");
+            Route::get("/", "onListAllByTask");
+        });
+    });
+
+    Route::controller(CommentResponse::class)->group(function() {
+        Route::prefix("comment-response")->group(function() {
+            Route::post("/", "onCreate");
+            Route::get("/", "onListAllByComment");
         });
     });
 

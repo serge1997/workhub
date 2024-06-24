@@ -23,7 +23,7 @@ class CommentController extends Controller
                 ->json($message);
         }catch(Exception $e){
             return response()
-                ->json($e->getMessage(), 500);
+                ->json("ddd", 422);
         }
     }
 }
