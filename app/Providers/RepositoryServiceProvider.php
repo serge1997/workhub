@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Core\Annex\AnnexRepository;
 use App\core\Annex\AnnexRepositoryInterface;
+use App\Core\Comment\CommentRepository;
+use App\Core\Comment\CommentRepositoryInterface;
+use App\Core\CommentResponse\CommentResponseRepository;
+use App\Core\CommentResponse\CommentResponseRepositoryInterface;
 use App\Core\Department\DepartmentRepository;
 use App\Core\Department\DepartmentRepositoryInterface;
 use App\Core\Follower\FollowerRepository;
@@ -32,6 +36,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AnnexRepositoryInterface::class, AnnexRepository::class);
         $this->app->bind(FollowerRepositoryInterface::class, FollowerRepository::class);
         $this->app->bind(TaskRoadMapRepositoryInterface::class, TaskRoadMapRepository::class);
+        $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);
+        $this->app->bind(CommentResponseRepositoryInterface::class, CommentResponseRepository::class);
     }
 
     /**
