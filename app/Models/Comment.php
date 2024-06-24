@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
@@ -13,11 +14,22 @@ class Comment extends Model
         'comment',
         'user_id',
         'task_id',
-        'banned_at'
+        'has_response',
+        'deleted_at'
     ];
 
-    public function isBanned(): bool
+    public function task() : BelongsTo
     {
-        return $this->banned_at !== null;
+        return $this->belongsTo(Task::class, 'task_id');
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deleted_at !== null;
+    }
+
+    public function hasResponse() : bool
+    {
+        return $this->has_response === true;
     }
 }

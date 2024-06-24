@@ -53,8 +53,8 @@ class Task extends Model
         return $this->hasMany(TaskRoadMap::class, 'task_id');
     }
 
-    public function countAllFollowers()
-    {
-        return $this->annex()->count();
-    }
+   public function comment() : HasMany
+   {
+        return $this->hasMany(Comment::class, 'task_id');
+   }
 }
