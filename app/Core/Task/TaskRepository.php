@@ -3,7 +3,7 @@ namespace App\Core\Task;
 
 use App\core\Annex\AnnexRepositoryInterface;
 use App\Core\Follower\FollowerRepositoryInterface;
-use App\Core\Task\Actions\FindAction;
+use App\Core\Task\Actions\FindTaskAction;
 use App\Core\Task\Actions\ExecutionStatusUpdateAction;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
 use App\Http\Resources\TaskResource;
@@ -34,12 +34,12 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function find($request)
     {
-        return new TaskResource(FindAction::run($request));
+        return new TaskResource(FindTaskAction::run($request));
     }
 
     public function handleExecutionStatus($request)
     {
-        (new ExecutionStatusUpdateAction(FindAction::run($request)))
+        (new ExecutionStatusUpdateAction(FindTaskAction::run($request)))
             ->handle();
     }
 

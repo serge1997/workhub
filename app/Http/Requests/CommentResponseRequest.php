@@ -23,7 +23,8 @@ class CommentResponseRequest extends FormRequest
     {
         return [
             "response" => ["required"],
-            "task_id" => ["required"]
+            "task_id" => ["required"],
+            "comment_id" => ["required"]
         ];
     }
 
@@ -35,5 +36,10 @@ class CommentResponseRequest extends FormRequest
     public function task()
     {
         return $this->task_id;
+    }
+
+    public function comment()
+    {
+        return $this->comment_id;
     }
 }

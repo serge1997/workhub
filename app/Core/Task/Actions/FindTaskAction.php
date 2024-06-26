@@ -4,10 +4,10 @@ namespace App\Core\Task\Actions;
 use App\Models\Task;
 use App\Http\Resources\TaskResource;
 
-final class FindAction
+final class FindTaskAction
 {
     public static function run($request) : Task
     {
-        return Task::findOrfail($request->id);
+        return Task::findOrFail($request->task_id);
     }
 }

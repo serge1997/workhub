@@ -108,7 +108,7 @@ export default{
         },
         showTask(id){
             this.task_finded = null;
-            this.Api.get('task', {id: id})
+            this.Api.get('task', {task_id: id})
             .then(async response => {
                 this.task_finded = await response.data;
                 console.log(this.task_finded)

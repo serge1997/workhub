@@ -3,7 +3,7 @@ namespace App\Core\Comment\Actions;
 
 use App\Models\Comment;
 
-final class CreateAction
+final class CreateCommentAction
 {
 
     public function handle($request) : Comment

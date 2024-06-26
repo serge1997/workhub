@@ -26,4 +26,15 @@ class CommentController extends Controller
                 ->json("ddd", 422);
         }
     }
+
+    public function onListAllByTask(Request $request)
+    {
+        try{
+            return response()
+                ->json($this->commentRepositoryInterface->listAllByTask($request));
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

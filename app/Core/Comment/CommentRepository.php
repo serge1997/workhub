@@ -1,13 +1,26 @@
 <?php
 namespace App\Core\Comment;
 
-use App\Core\Comment\Actions\CreateAction;
+use App\Core\Comment\Actions\CreateCommentAction;
+use App\Http\Resources\CommentResource;
+use App\Models\Comment;
+
 class CommentRepository implements CommentRepositoryInterface
 {
     public function create($request)
     {
-        CreateAction::run($request);
+        CreateCommentAction::run($request);
     }
+
+    public function listAllByTask($request)
+    {
+        return CommentResource::collection(
+            Comment::query()
+                ->where('task_id', $request->task_id)
+                    ->get()
+        );
+    }
+
     public function update($request)
     {
 
