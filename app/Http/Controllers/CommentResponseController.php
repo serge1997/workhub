@@ -20,17 +20,21 @@ class CommentResponseController extends Controller
 
     public function onCreate(CommentResponseRequest $request) : JsonResponse
     {
-        dd($this->taskRepositoryInterface->find($request->task_id));
-        die;
+        //dd($request->task());die;
+        //dd($this->taskRepositoryInterface->find($request->task_id));
+
         try{
-            die;
+
             $message = "Resposta adicionada";
-            $this->commentResponseRepositoryInterface->create($request);
+            $action = $this->commentResponseRepositoryInterface->create($request);
             return response()
-                ->json($message);
+                ->json([
+                    "message" => $message,
+                    "data" => $action
+                ]);
         }catch(Exception $e){
             return response()
-                ->json($e->getFile(), 500);
+                ->json($e->getFile(). " ". $e->getMessage(), 500);
         }
     }
 }

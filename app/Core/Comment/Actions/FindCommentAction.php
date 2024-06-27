@@ -3,7 +3,7 @@ namespace App\Core\Comment\Actions;
 
 use App\Models\Comment;
 
-final class FindACommentAction
+final class FindCommentAction
 {
     public static function run($request) : Comment
     {

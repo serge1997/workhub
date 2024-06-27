@@ -3,9 +3,9 @@
         <Button class="icon-list-task" @click="listAllCommentByTask(task)" text icon="pi pi-comment" />
          <Dialog v-model:visible="visibleShowTaskCommentModal" modal header="Task comment" :style="{ width: '25rem' }">
              <div class="w-100 comment-list mb-3">
-                <input type="text" id="task-id" :value="task">
-                <div v-for="comment in taskComments" class="card border-0 comment-card">
-                    <input type="text" id="comment-id" :value="comment.id">
+                <input type="hidden" id="task-id" :value="task">
+                <div v-for="(comment, index) of taskComments" class="card border-0 comment-card">
+                    <input type="hidden" :id="`comment-${comment.id}`" :value="comment.id">
                     <div class="card-header bg-white border-0 p-0 border-0 d-flex align-items-center gap-2">
                          <small>
                              <img style="width: 35px;" class="img-thumbnail rounded-circle" :src="`/img/users_avatars/${comment.avatar}`" alt="">
@@ -18,23 +18,23 @@
                                  <p style="font-size: 0.9rem;" class="">
                                     {{ comment.comment }}
                                     <br>
-                                    <Button @click="showCommentResponseInput = !showCommentResponseInput" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
+                                    <Button @click="showResponseInput" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
                                  </p>
-                                 <span v-if="showCommentResponseInput" class="d-flex mb-1">
-                                     <input style="font-size: 0.8rem;" v-model="commentResponse.response" class="form-control p-1 text-secondary" type="text" placeholder="your response....">
-                                     <Button @click="createResponse" class="p-0" text icon="pi pi-send" />
+                                 <span class="d-flex mb-1 d-none">
+                                     <input style="font-size: 0.8rem;" v-model="commentResponse.response[index]" class="form-control p-1 text-secondary" type="text" placeholder="your response....">
+                                     <Button @click="createResponse(comment.id)" class="p-0" text icon="pi pi-send" />
                                  </span>
-                                 <span class="comment-response-content">
-                                     <div class="card w-75 m-auto border-0 mt-1">
+                                 <span v-if="comment.response" class="comment-response-content">
+                                     <div v-for="response in comment.response" class="card w-75 m-auto border-0 mt-1">
                                          <div class="card-header bg-white border-0 p-0 border-0 d-flex align-items-center gap-2">
                                              <small>
-                                                 <img style="width: 35px;" class="img-thumbnail rounded-circle" src="/img/avatars/white-woman.jpeg" alt="">
+                                                <img style="width: 35px;" class="img-thumbnail rounded-circle" :src="`/img/users_avatars/${response.avatar}`" alt="">
                                              </small>
-                                             <small style="font-size: 12px;" class="fw-bold">Andressa Lacerda</small>
+                                             <small style="font-size: 12px;" class="fw-bold">{{response.user_name}}</small>
                                         </div>
                                         <div class="card-body p-0 px-2">
                                             <p style="font-size: 0.9rem;" class="text-rigth">
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.
+                                                {{ response.response }}
                                             </p>
                                         </div>
                                     </div>
@@ -70,7 +70,7 @@ export default {
                 task_id: null
             },
             commentResponse:{
-                response: null,
+                response: [],
                 comment_id: null,
             }
         }
@@ -81,16 +81,25 @@ export default {
             this.Api.post("comments", this.commentData)
             .then(async response =>{
                 this.commentData.comment = null;
-                await this.toaster(response.data).fire();
+                this.toaster(await response.data.message).fire();
+                this.taskComments = await response.data.data
             })
             .catch(err => console.log(err))
         },
-        createResponse(){
+        showResponseInput(event){
+            console.log(event.target)
+        },
+        createResponse(id){
             this.commentData.task_id = document.getElementById('task-id').value;
-            this.commentResponse.comment_id = document.getElementById('comment-id').value;
+            this.commentResponse.comment_id = document.getElementById(`comment-${id}`).value;
+            this.commentResponse.response = this.commentResponse.response[0];
             Reflect.set(this.commentResponse, "task_id", this.commentData.task_id);
             this.Api.post("comment-response", this.commentResponse)
-            .then(async response => console.log(response))
+            .then(async response => {
+                this.toaster(response.data.message).fire()
+                this.taskComments = await response.data.data
+                this.commentResponse.response = []
+            })
             .catch(err => console.log(err))
         },
 
@@ -98,7 +107,7 @@ export default {
             this.Api.get('comments', {task_id: id})
             .then(async response => {
                 this.taskComments = await response.data;
-                this.visibleShowTaskCommentModal = true
+                this.visibleShowTaskCommentModal = true;
             })
             .catch(err => console.log(err))
         },

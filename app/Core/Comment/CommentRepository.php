@@ -10,6 +10,7 @@ class CommentRepository implements CommentRepositoryInterface
     public function create($request)
     {
         CreateCommentAction::run($request);
+        return $this->listAllByTask($request);
     }
 
     public function listAllByTask($request)

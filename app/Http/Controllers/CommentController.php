@@ -20,7 +20,10 @@ class CommentController extends Controller
             $message = "Commentario adicionado";
             $this->commentRepositoryInterface->create($request);
             return response()
-                ->json($message);
+                ->json([
+                    "message" => $message,
+                    "data" => $this->commentRepositoryInterface->listAllByTask($request)
+                ]);
         }catch(Exception $e){
             return response()
                 ->json("ddd", 422);

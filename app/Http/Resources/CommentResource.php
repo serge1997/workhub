@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\CommentResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,12 +16,17 @@ class CommentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "comment" => $this->comment,
+            "id"        => $this->id,
+            "comment"   => $this->comment,
             "user_name" => $this->user->name,
-            "avatar" => $this->user->avatar,
-            "user_id" => $this->user_id,
-            "response" => $this->when($this->has_response, $this->commentResponse)
+            "avatar"    => $this->user->avatar,
+            "user_id"   => $this->user_id,
+            "response"  => $this->when($this->has_response,
+                CommentResponseResource::collection(
+                    CommentResponse::where('comment_id', $this->id)
+                        ->orderBy('created_at', 'desc')
+                            ->get()
+                        ))
         ];
     }
 }
