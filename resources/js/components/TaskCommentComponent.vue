@@ -18,10 +18,10 @@
                                  <p style="font-size: 0.9rem;" class="">
                                     {{ comment.comment }}
                                     <br>
-                                    <Button @click="showResponseInput" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
+                                    <Button @click="showResponseInput(comment.id)" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
                                  </p>
-                                 <span class="d-flex mb-1 d-none">
-                                     <input style="font-size: 0.8rem;" v-model="commentResponse.response[index]" class="form-control p-1 text-secondary" type="text" placeholder="your response....">
+                                 <span class="d-flex mb-1 d-none" :id="`input-response-box-${comment.id}`">
+                                     <input style="font-size: 0.8rem;" v-model="commentResponse.response" class="form-control p-1 text-secondary" type="text" placeholder="your response....">
                                      <Button @click="createResponse(comment.id)" class="p-0" text icon="pi pi-send" />
                                  </span>
                                  <span v-if="comment.response" class="comment-response-content">
@@ -70,7 +70,7 @@ export default {
                 task_id: null
             },
             commentResponse:{
-                response: [],
+                response: null,
                 comment_id: null,
             }
         }
@@ -86,16 +86,21 @@ export default {
             })
             .catch(err => console.log(err))
         },
-        showResponseInput(event){
-            console.log(event.target)
+        showResponseInput(id){
+            const inputResponse = document.getElementById(`input-response-box-${id}`);
+            const classes = inputResponse.className
+            classes.includes("d-none") ?
+                inputResponse.classList.remove("d-none")
+                    : inputResponse.classList.add("d-none")
         },
         createResponse(id){
             this.commentData.task_id = document.getElementById('task-id').value;
             this.commentResponse.comment_id = document.getElementById(`comment-${id}`).value;
-            this.commentResponse.response = this.commentResponse.response[0];
+            //this.commentResponse.response = this.commentResponse.response;
             Reflect.set(this.commentResponse, "task_id", this.commentData.task_id);
             this.Api.post("comment-response", this.commentResponse)
             .then(async response => {
+                this.showResponseInput(id);
                 this.toaster(response.data.message).fire()
                 this.taskComments = await response.data.data
                 this.commentResponse.response = []

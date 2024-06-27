@@ -24,7 +24,7 @@ class CommentResource extends JsonResource
             "response"  => $this->when($this->has_response,
                 CommentResponseResource::collection(
                     CommentResponse::where('comment_id', $this->id)
-                        ->orderBy('created_at', 'desc')
+                        ->orderBy('created_at', 'asc')
                             ->get()
                         ))
         ];
