@@ -117,7 +117,7 @@ export default{
         },
         handleTaskStatus(id)
         {
-            this.Api.put('task/execution-status', {id: id})
+            this.Api.put('task/execution-status', {task_id: id})
             .then(async response => {
                 this.toaster(response.data).fire();
                 return this.onListAllTask()
