@@ -32,8 +32,8 @@
                                                 </small>
                                             </span>
                                         </span>
-                                        <small class="d-flex gap-3 mt-1">
-                                            <Button class="text-danger p-0" text>
+                                        <small v-if="comment.owner" class="d-flex gap-3 mt-1">
+                                            <Button @click="SoftDeleteComment(comment.id)" class="text-danger p-0" text>
                                                 <i style="font-size: .8rem;" class="pi pi-trash"></i>
                                             </Button>
                                             <Button @click="getComment(comment.id)" class="p-0" text>
@@ -157,6 +157,16 @@ export default {
         hideCurrentCommentEditBox(id){
             let editBox = document.getElementById('edit-comment-box-'+id);
             editBox.classList.add('d-none')
+        },
+
+        SoftDeleteComment(id){
+            this.Api.delete('comments', {comment_id: id})
+            .then(async response => {
+
+            })
+            .catch(err => {
+
+            })
         },
         toaster(response, severity="success"){
             const Toast = this.$swal.mixin({

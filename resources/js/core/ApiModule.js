@@ -16,4 +16,8 @@ export class ApiModule {
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
         return await axios.get(this.baseURL + url, {params: params});
     }
+
+    async delete(url, params = null){
+        return await axios.delete(this.baseURL + url, {params: params})
+    }
 }

@@ -9,5 +9,6 @@ interface CommentRepositoryInterface
     public function listAllByTask($request);
     public function find($request);
     public function update($request);
+    public function softDelete($request);
     public function delete($request);
 }

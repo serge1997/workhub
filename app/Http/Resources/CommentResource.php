@@ -21,6 +21,7 @@ class CommentResource extends JsonResource
             "user_name" => $this->user->name,
             "avatar"    => $this->user->avatar,
             "user_id"   => $this->user_id,
+            "owner"     => $this->when($request->user()->id == $this->user_id, true),
             "response"  => $this->when($this->has_response,
                 CommentResponseResource::collection(
                     CommentResponse::where('comment_id', $this->id)
