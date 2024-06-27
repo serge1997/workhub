@@ -13,10 +13,34 @@
                          <small style="font-size: 12px;" class="fw-bold">{{ comment.user_name }}</small>
                      </div>
                      <div class="card-body p-0 px-2">
-                         <div class="comment d-flex flex-column gap-0">
+                        <div class="comment d-flex flex-column gap-0">
                              <span>
                                  <p style="font-size: 0.9rem;" class="">
                                     {{ comment.comment }}
+                                    <br>
+                                    <span>
+                                        <span class="d-flex gap-1 align-items-center d-none" :id="`edit-comment-box-${comment.id}`">
+                                            <input style="font-size: 0.8rem;" :id="`comment-edit-${comment.id}`" class="form-control p-1 text-secondary" type="text">
+                                            <span>
+                                                <small class="d-flex align-items-center gap-1">
+                                                    <Button class="p-0" text>
+                                                        <i style="font-size: .8rem;" class="pi pi-save task-description"></i>
+                                                    </Button>
+                                                    <Button @click="hideCurrentCommentEditBox(comment.id)" class="text-danger p-0" text>
+                                                        <i style="font-size: .8rem;" class="pi pi-times"></i>
+                                                    </Button>
+                                                </small>
+                                            </span>
+                                        </span>
+                                        <small class="d-flex gap-3 mt-1">
+                                            <Button class="text-danger p-0" text>
+                                                <i style="font-size: .8rem;" class="pi pi-trash"></i>
+                                            </Button>
+                                            <Button @click="getComment(comment.id)" class="p-0" text>
+                                                <i style="font-size: .8rem;" class="pi pi-pencil task-description"></i>
+                                            </Button>
+                                        </small>
+                                    </span>
                                     <br>
                                     <Button @click="showResponseInput(comment.id)" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
                                  </p>
@@ -67,7 +91,8 @@ export default {
             taskComments: null,
             commentData: {
                 comment: null,
-                task_id: null
+                task_id: null,
+                comment_edit: null,
             },
             commentResponse:{
                 response: null,
@@ -116,7 +141,23 @@ export default {
             })
             .catch(err => console.log(err))
         },
+        getComment(id){
+            this.Api.get('comment', {comment_id: id})
+            .then(async response => {
+                let editBox = document.getElementById('edit-comment-box-'+id);
+                let EditInput = document.getElementById(`comment-edit-${id}`)
+                this.commentData.comment_edit = await response.data;
+                EditInput.value = await this.commentData.comment_edit.comment
+                editBox.classList.remove("d-none")
+            })
+            .catch(err => {
 
+            })
+        },
+        hideCurrentCommentEditBox(id){
+            let editBox = document.getElementById('edit-comment-box-'+id);
+            editBox.classList.add('d-none')
+        },
         toaster(response, severity="success"){
             const Toast = this.$swal.mixin({
                 text: response,

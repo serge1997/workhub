@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::controller(CommentController::class)->group(function() {
+        Route::get('comment', 'onFind')->name('comment.find');
         Route::prefix("comments")->group(function() {
             Route::post("/", "onCreate");
             Route::get("/", "onListAllByTask");

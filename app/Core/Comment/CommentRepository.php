@@ -4,6 +4,7 @@ namespace App\Core\Comment;
 use App\Core\Comment\Actions\CreateCommentAction;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
+use App\Core\Comment\Actions\FindCommentAction;
 
 class CommentRepository implements CommentRepositoryInterface
 {
@@ -21,6 +22,11 @@ class CommentRepository implements CommentRepositoryInterface
                     ->orderBy('created_at', 'asc')
                         ->get()
         );
+    }
+
+    public function find($request)
+    {
+        return new CommentResource(FindCommentAction::run($request));
     }
 
     public function update($request)
