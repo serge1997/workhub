@@ -26,7 +26,7 @@ class CommentController extends Controller
                 ]);
         }catch(Exception $e){
             return response()
-                ->json("ddd", 422);
+                ->json($e->getMessage(), 422);
         }
     }
 
@@ -49,6 +49,22 @@ class CommentController extends Controller
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 500);
+        }
+    }
+
+    public function onSoftDelete(Request $request)
+    {
+        try{
+            $message = "Adionado na lixeira";
+            $this->commentRepositoryInterface->softDelete($request);
+            return response()
+                ->json([
+                    "message" => $message,
+                    "data" => $this->commentRepositoryInterface->listAllByTask($request)
+                ]);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 403);
         }
     }
 }

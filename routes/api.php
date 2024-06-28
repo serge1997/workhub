@@ -52,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::controller(CommentController::class)->group(function() {
         Route::get('comment', 'onFind')->name('comment.find');
+        Route::put('comment', 'onSoftDelete')->name('comment.softdelete');
         Route::prefix("comments")->group(function() {
             Route::post("/", "onCreate");
             Route::get("/", "onListAllByTask");

@@ -151,7 +151,7 @@ export default {
                 editBox.classList.remove("d-none")
             })
             .catch(err => {
-
+                console.log(err)
             })
         },
         hideCurrentCommentEditBox(id){
@@ -160,12 +160,14 @@ export default {
         },
 
         SoftDeleteComment(id){
-            this.Api.delete('comments', {comment_id: id})
+            let task = document.getElementById('task-id').value;
+            this.Api.put('comment', {comment_id: id, task_id: task})
             .then(async response => {
-
+                this.taskComments = await response.data.data;
+                this.toaster(response.data.message).fire()
             })
-            .catch(err => {
-
+            .catch(error => {
+                error.response.status === 403 ? this.toaster(error.response.data, "error").fire() : null
             })
         },
         toaster(response, severity="success"){

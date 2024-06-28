@@ -6,6 +6,7 @@ use App\Core\Comment\Actions\DeleteCommentAction;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Core\Comment\Actions\FindCommentAction;
+use Illuminate\Support\Facades\Gate;
 
 class CommentRepository implements CommentRepositoryInterface
 {
@@ -19,7 +20,7 @@ class CommentRepository implements CommentRepositoryInterface
     {
         return CommentResource::collection(
             Comment::query()
-                ->where('task_id', $request->task_id)
+                ->where([['task_id', $request->task_id], ['deleted_at', null]])
                     ->orderBy('created_at', 'asc')
                         ->get()
         );
@@ -36,7 +37,9 @@ class CommentRepository implements CommentRepositoryInterface
     }
     public function softDelete($request)
     {
-        (new DeleteCommentAction(FindCommentAction::run($request)))
+        $comment = FindCommentAction::run($request);
+        Gate::authorize("delete", $comment);
+        (new DeleteCommentAction($comment))
             ->soft();
     }
 
