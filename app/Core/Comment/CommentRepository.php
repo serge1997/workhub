@@ -6,6 +6,7 @@ use App\Core\Comment\Actions\DeleteCommentAction;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Core\Comment\Actions\FindCommentAction;
+use App\Core\Comment\Actions\UpdateCommentContentAction;
 use Illuminate\Support\Facades\Gate;
 
 class CommentRepository implements CommentRepositoryInterface
@@ -33,7 +34,8 @@ class CommentRepository implements CommentRepositoryInterface
 
     public function update($request)
     {
-
+        (new UpdateCommentContentAction(FindCommentAction::run($request), $request))
+            ->run();
     }
     public function softDelete($request)
     {

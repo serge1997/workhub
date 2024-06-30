@@ -67,4 +67,20 @@ class CommentController extends Controller
                 ->json($e->getMessage(), 403);
         }
     }
+
+    public function onUpdate(Request $request)
+    {
+        try{
+            $message = "Commentario editado com successo";
+            $this->commentRepositoryInterface->update($request);
+            return response()
+                ->json([
+                    "message" => $message,
+                    "data" => $this->commentRepositoryInterface->listAllByTask($request)
+                ]);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }
