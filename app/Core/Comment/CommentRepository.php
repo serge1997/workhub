@@ -49,4 +49,13 @@ class CommentRepository implements CommentRepositoryInterface
     {
 
     }
+
+    public function listAllSoftDeleted($request)
+    {
+        return CommentResource::collection(
+            Comment::query()
+                ->where([['deleted_at', '<>', null], ['user_id', $request->user()->id]])
+                    ->get()
+        );
+    }
 }

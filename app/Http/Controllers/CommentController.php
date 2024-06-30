@@ -83,4 +83,15 @@ class CommentController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onListAllSoftDeleted(Request $request)
+    {
+        try{
+            return response()
+                ->json($this->commentRepositoryInterface->listAllSoftDeleted($request));
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

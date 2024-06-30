@@ -67,6 +67,7 @@ export default{
             }
             this.Api.put('comment-content', null, data)
             .then(async response => {
+                this.hideCurrentCommentEditBox(id);
                 this.toaster(response.data.message).fire();
             })
             .catch(error => {

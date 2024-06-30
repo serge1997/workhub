@@ -49,6 +49,12 @@
                                     </template>
                                 </Menu>
                             </li>
+                            <li class="list-group-item border-0">
+                                <router-link class="text-decoration-none" :to="{name: 'Trash'}">
+                                    <i class="pi pi-trash"></i>
+                                    Lixeira
+                                </router-link>
+                            </li>
                             <li class="list-group-item border-0">A fourth item</li>
                             <li class="list-group-item border-0">And a fifth one</li>
                         </ul>

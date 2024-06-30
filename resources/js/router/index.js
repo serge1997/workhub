@@ -8,6 +8,7 @@ import TaskReception from "../components/pages/dashboard/TaskReception.vue";
 import Profil from "../components/pages/dashboard/Profil.vue";
 import TaskCreate from "../components/pages/dashboard/TaskCreate.vue";
 import Sprint from "../components/pages/dashboard/Sprint.vue";
+import Trash from "../components/pages/dashboard/Trash.vue";
 
 const routes = [
     {
@@ -56,6 +57,12 @@ const routes = [
         path: '/sprint',
         name: 'Sprint',
         component: Sprint,
+        meta: {requiresAuth: true}
+    },
+    {
+        path: '/trash',
+        name: 'Trash',
+        component: Trash,
         meta: {requiresAuth: true}
     }
 ]
