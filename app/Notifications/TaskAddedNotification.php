@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Models\Task;
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -14,7 +16,10 @@ class TaskAddedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(
+        private User $user,
+        private Task $task
+    )
     {
         //
     }
@@ -26,7 +31,7 @@ class TaskAddedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['database'];
     }
 
     /**
@@ -48,7 +53,8 @@ class TaskAddedNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            "task_title" => $this->task->title,
+            "by" => $this->task->manager->name
         ];
     }
 }

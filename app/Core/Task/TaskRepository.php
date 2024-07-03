@@ -8,6 +8,8 @@ use App\Core\Task\Actions\ExecutionStatusUpdateAction;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Notifications\TaskAddedNotification;
+use Illuminate\Support\Facades\Notification;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -26,6 +28,7 @@ class TaskRepository implements TaskRepositoryInterface
         $this->annexRepositoryInterface->create($request, $task);
         $this->followerRepositoryInterface->create($request, $task);
         $this->taskRoadMapRepositoryInterface->create($request, $task);
+        Notification::send($request->user(), new TaskAddedNotification($request->user(), $task));
     }
     public function listAll()
     {
