@@ -53,6 +53,7 @@ class TaskAddedNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
+            "message" => "New task has attribuided",
             "task_title" => $this->task->title,
             "by" => $this->task->manager->name
         ];

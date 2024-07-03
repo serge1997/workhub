@@ -51,4 +51,19 @@ class UserController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onUnreadNotification(Request $request)
+    {
+        try{
+            $data = $this->userRepositoryInterface->unreadNotification($request);
+            return response()
+                ->json([
+                    "notifications" => $data[0] ,
+                    "count" => $data[1],
+                ]);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

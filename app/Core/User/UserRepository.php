@@ -1,6 +1,7 @@
 <?php
 namespace App\Core\User;
 
+use App\Core\User\Actions\ListUnreadNotificationAction;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,5 +34,10 @@ class UserRepository implements UserRepositoryInterface
             if (!is_null($oldUserAvatar)) unlink("img/users_avatars/{$oldUserAvatar}");
 
         }
+    }
+
+    public function unreadNotification($request) : array
+    {
+        return (new ListUnreadNotificationAction())->get($request);
     }
 }

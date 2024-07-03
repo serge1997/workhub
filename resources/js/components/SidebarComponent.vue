@@ -10,9 +10,16 @@
                     <div class="sidebar-body">
                         <ul class="list-group text-capitalize">
                             <li class="list-group-item border-0">
-                                <router-link class="text-decoration-none" :to="{name: 'TaskReception'}">
-                                    <i class="pi pi-inbox"></i>
-                                    Caixa de entrada
+                                <router-link class="text-decoration-none d-flex gap-1" :to="{name: 'TaskReception'}">
+                                    <span class="d-flex justify-items-center gap-1">
+                                        <span>
+                                            <i class="pi pi-inbox"></i>
+                                        </span>
+                                        <span>Caixa de entrada</span>
+                                    </span>
+                                    <span>
+                                        <Badge :value="notification.count" />
+                                    </span>
                                 </router-link>
                             </li>
                             <li class="list-group-item border-0">
@@ -62,12 +69,29 @@
                 </div>
             </div>
             <div class="col-md-10 m-auto position-realtive">
+                <Dialog v-model:visible="visibleTaskNotificationModal" modal header="Alert" :style="{ width: '28rem' }">
+                    <ul class="list-group">
+                        <li style="background-color: #f1f5f9;" v-for="notification in notification.content" class="list-group-item p-4 border-0 border-bottom">
+                            <div class="w-100 d-flex flex-column">
+                                <span class="task-description">{{ notification.data.message }} por {{ notification.data.by }}</span>
+                                <span>
+                                    <small class="task-description">
+                                        <i class="pi pi-clock"></i>
+                                        {{ notification.created_formated }}
+                                    </small>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </Dialog>
                 <slot></slot>
             </div>
         </div>
     </div>
 </template>
 <script>
+import { formToJSON } from 'axios'
+
 export default {
     name: 'SidebarComponent',
 
@@ -77,11 +101,32 @@ export default {
                 {label: 'Task', route: '/task-create', icon: 'pi pi-book'},
                 {label: 'usuario', route: '/register', icon:'pi pi-users'}
             ],
-            menuCreateToggle: false
+            menuCreateToggle: false,
+            notification:{
+                inbox: null,
+                count: null,
+                content: null,
+            },
+            visibleTaskNotificationModal: false,
+        }
+    },
+    methods: {
+        getUnreadNotification(){
+            this.Api.get('task-notification')
+            .then(async response => {
+                this.notification.count = await response.data.count;
+                this.notification.content = await response.data.notifications;
+                this.visibleTaskNotificationModal = true
+            })
         }
     },
     mounted(){
-        window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+        window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        this.getUnreadNotification();
+        setInterval(() => {
+            this.getUnreadNotification();
+        }, 10000)
+
     }
 }
 </script>
