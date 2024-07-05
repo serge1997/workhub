@@ -90,11 +90,10 @@
     </div>
 </template>
 <script>
-import { formToJSON } from 'axios'
+import _ from 'lodash'
 
 export default {
     name: 'SidebarComponent',
-
     data(){
         return {
             menu: [
@@ -102,30 +101,38 @@ export default {
                 {label: 'usuario', route: '/register', icon:'pi pi-users'}
             ],
             menuCreateToggle: false,
+            teste: null,
             notification:{
                 inbox: null,
-                count: null,
+                count: 0,
                 content: null,
             },
             visibleTaskNotificationModal: false,
         }
     },
+    watch: {
+        'notification.content': _.debounce(function(newNotif) {
+            this.getUnreadNotification()
+        }, 3000)
+    },
     methods: {
         getUnreadNotification(){
             this.Api.get('task-notification')
             .then(async response => {
-                this.notification.count = await response.data.count;
-                this.notification.content = await response.data.notifications;
-                this.visibleTaskNotificationModal = true
+                const countNotif = await response.data.notifications.filter(notif => notif !== null).length;
+                if (this.notification.count < countNotif){
+                    this.visibleTaskNotificationModal = true;
+                }
+                this.notification.content = await response.data.notifications.filter(notif => notif !== null);
+                this.notification.count = countNotif;
             })
         }
     },
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
         this.getUnreadNotification();
-        setInterval(() => {
-            this.getUnreadNotification();
-        }, 10000)
+        this.getUnreadNotification();
+
 
     }
 }

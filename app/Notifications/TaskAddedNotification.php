@@ -55,7 +55,8 @@ class TaskAddedNotification extends Notification
         return [
             "message" => "New task has attribuided",
             "task_title" => $this->task->title,
-            "by" => $this->task->manager->name
+            "user_id" => $this->task->user->id,
+            "by" => $this->task->manager->name,
         ];
     }
 }

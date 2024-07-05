@@ -8,22 +8,19 @@ final class ListUnreadNotificationAction
 
     public function get($request) : array
     {
-        $loop = Loop::get();
-        $data = [];
-        $timer = $loop->addPeriodicTimer(2, function() use($data, $request){
-            $collections = $request->user()->unreadNotifications->map(function ($notif){
-                $notif->created_formated = date('d/m/Y H:i', strtotime($notif->created_at));
-                return $notif;
-            });
-            $data[] = $collections;
-        });
 
-        $loop->addTimer(2, function() use($loop, $timer){
-            $loop->cancelTimer($timer);
-            echo "Done";
+        $collections = $request->user()->unreadNotifications->map(function($notif, $key) use($request){
+            $notif->created_formated = date('d/m/Y H:i', strtotime($notif->created_at));
+            $data = json_decode(json_encode($notif->data));
+            if($data->user_id === $request->user()->id && !is_null($key)){
+                return $notif;
+            }
+            //return null;
         });
-        $data[] = $request->user()->unreadNotifications->count();
-        return $data;
-        $loop->run();
+        return [
+            $collections,
+            count($collections)
+            //$request->user()->unreadNotifications->count() ?? 0
+        ];
     }
 }
