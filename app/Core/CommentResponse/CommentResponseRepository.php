@@ -3,7 +3,9 @@ namespace App\Core\CommentResponse;
 
 use App\Core\Comment\CommentRepositoryInterface;
 use App\Core\CommentResponse\Actions\CreateCommentResponse;
+use App\Core\CommentResponse\Actions\FindCommentResponseAction;
 use App\Core\Task\Actions\FindTaskAction;
+use App\Http\Resources\CommentResponseResource;
 use App\Models\Task;
 
 class CommentResponseRepository implements CommentResponseRepositoryInterface
@@ -17,6 +19,14 @@ class CommentResponseRepository implements CommentResponseRepositoryInterface
         return $this->commentRepositoryInterface
             ->listAllByTask($request);
     }
+
+    public function find($request)
+    {
+        return new CommentResponseResource(
+            FindCommentResponseAction::get($request)
+        );
+    }
+
     public function update($request)
     {
 

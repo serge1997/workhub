@@ -22,6 +22,7 @@
                                         :comment="comment"
                                         :task_id="task"
                                         @soft-delete-comment="SoftDeleteComment"
+                                        :isComment="true"
 
                                     />
                                     <br>
@@ -43,6 +44,9 @@
                                             <p style="font-size: 0.9rem;" class="text-rigth">
                                                 {{ response.response }}
                                             </p>
+                                            <CommentResponseEditionComponent
+                                                :response="response"
+                                            />
                                         </div>
                                     </div>
                                 </span>
@@ -64,12 +68,14 @@
 </template>
 <script>
 import CommentEditionComponent from './CommentEditionComponent.vue'
+import CommentResponseEditionComponent from './CommentResponseEditionComponent.vue';
 export default {
     name: 'TaskCommentComponent',
     props: ['task'],
 
     components: {
-        CommentEditionComponent
+        CommentEditionComponent,
+        CommentResponseEditionComponent
     },
     data(){
         return {

@@ -1,24 +1,24 @@
 <template>
-    <span>
+    <span v-if="response.owner">
         <input id="task-id" type="hidden" :value="task_id">
-        <span class="d-flex gap-1 align-items-center d-none" :id="`edit-comment-box-${comment.id}`">
-            <input style="font-size: 0.8rem;" :id="`comment-edit-${comment.id}`" class="form-control p-1 text-secondary" type="text">
+        <span class="d-flex gap-1 align-items-center d-none" :id="`edit-response-box-${response.id}`">
+            <input style="font-size: 0.8rem;" :id="`response-edit-${response.id}`" class="form-control p-1 text-secondary" type="text">
             <span>
                 <small class="d-flex align-items-center gap-1">
-                    <Button @click="updateComment(comment.id)" class="p-0" text>
+                    <Button @click="updateCommentResponse(response.id)" class="p-0" text>
                         <i style="font-size: .8rem;" class="pi pi-save task-description"></i>
                     </Button>
-                    <Button @click="hideCurrentCommentEditBox(comment.id)" class="text-danger p-0" text>
+                    <Button @click="hideCurrentCommentResponseEditBox(response.id)" class="text-danger p-0" text>
                         <i style="font-size: .8rem;" class="pi pi-times"></i>
                     </Button>
                 </small>
             </span>
         </span>
-        <small v-if="comment.owner" class="d-flex gap-3 mt-1">
-            <Button @click="$emit('softDeleteComment', comment.id)" class="text-danger p-0" text>
+        <small class="d-flex gap-3 mt-1">
+            <Button @click="$emit('softDeleteComment', response.id)" class="text-danger p-0" text>
                 <i style="font-size: .8rem;" class="pi pi-trash"></i>
             </Button>
-            <Button @click="getComment(comment.id)" class="p-0" text>
+            <Button @click="getCommentResponse(response.id)" class="p-0" text>
                 <i style="font-size: .8rem;" class="pi pi-pencil task-description"></i>
             </Button>
         </small>
@@ -26,49 +26,48 @@
 </template>
 <script>
 export default{
-    name: 'CommentEditionComponent',
+    name: 'CommentResponseEditionComponent',
 
     props:{
         task_id: Number,
         isOwner: Boolean,
-        response: String,
-        comment: Object,
+        response: Object,
         isComment: Boolean
     },
     data(){
         return {
-            commentData: {
-                comment_edit: null
+            commentResponseData: {
+                response_edit: null
             }
         }
     },
     methods: {
-        hideCurrentCommentEditBox(id){
-            let editBox = document.getElementById('edit-comment-box-'+id);
+        hideCurrentCommentResponseEditBox(id){
+            let editBox = document.getElementById('edit-response-box-'+id);
             editBox.classList.add('d-none')
         },
-        getComment(id){
-            this.Api.get('comment', {comment_id: id})
+        getCommentResponse(id){
+            this.Api.get('comment-response/response', {response_id: id})
             .then(async response => {
-                let editBox = document.getElementById('edit-comment-box-'+id);
-                let EditInput = document.getElementById(`comment-edit-${id}`)
-                this.commentData.comment_edit = await response.data;
-                EditInput.value = await this.commentData.comment_edit.comment
+                let editBox = document.getElementById('edit-response-box-'+id);
+                let EditInput = document.getElementById(`response-edit-${id}`)
+                this.commentResponseData.response_edit = await response.data;
+                EditInput.value = await this.commentResponseData.response_edit.response
                 editBox.classList.remove("d-none")
             })
             .catch(err => {
                 console.log(err)
             })
         },
-        updateComment(id){
+        updateCommentResponse(id){
             const data = {
-                comment: document.getElementById(`comment-edit-${id}`).value,
+                comment: document.getElementById(`response-edit-${id}`).value,
                 comment_id: id,
                 task_id: document.getElementById('task-id').value,
             }
             this.Api.put('comment-content', null, data)
             .then(async response => {
-                this.hideCurrentCommentEditBox(id);
+                this.hideCurrentCommentResponseEditBox(id);
                 this.toaster(response.data.message).fire();
             })
             .catch(error => {
