@@ -66,6 +66,8 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::post("/", "onCreate");
             Route::get("/", "onListAllByComment");
             Route::get('/response', 'onFind')->name('find.comment.response');
+            Route::put('/', 'onUpdate');
+            Route::delete('/{response_id?}/{comment_id?}', 'onUpdate');
         });
     });
 

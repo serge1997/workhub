@@ -45,4 +45,20 @@ class CommentResponseController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onUpdate(Request $request)
+    {
+        try{
+            $message = "commentario editado com successo";
+            $this->commentResponseRepositoryInterface->update($request);
+            return response()
+                ->json([
+                    "data" => $this->commentResponseRepositoryInterface->update($request),
+                    "message" => $message
+                ]);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

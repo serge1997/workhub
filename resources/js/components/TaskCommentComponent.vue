@@ -46,6 +46,9 @@
                                             </p>
                                             <CommentResponseEditionComponent
                                                 :response="response"
+                                                @update-comment-response = "updateCommentResponse"
+                                                @soft-delete-comment-response="SoftDeleteCommentResponse"
+                                                @hide-current-comment-response-edit-box = "hideCurrentCommentResponseEditBox"
                                             />
                                         </div>
                                     </div>
@@ -144,6 +147,27 @@ export default {
             })
             .catch(error => {
                 error.response.status === 403 ? this.toaster(error.response.data, "error").fire() : null
+            })
+        },
+        hideCurrentCommentResponseEditBox(id){
+            let editBox = document.getElementById('edit-response-box-'+id);
+            editBox.classList.add('d-none')
+        },
+        updateCommentResponse(id){
+            const data = {
+                response: document.getElementById(`response-edit-${id}`).value,
+                response_id: id,
+                task_id: document.getElementById('task-id').value,
+                comment_id: document.getElementById('comment-id').value
+            }
+            this.Api.put('comment-response', null, data)
+            .then(async response => {
+                this.hideCurrentCommentResponseEditBox(id);
+                this.taskComments = await response.data.data
+                this.toaster(response.data.message).fire();
+            })
+            .catch(error => {
+                console.log(error)
             })
         },
         toaster(response, severity="success"){
