@@ -10,6 +10,18 @@
                 </small>
             </Button>
         </div>
+        <div class="w-100">
+            <Button class="d-flex gap-2" text>
+                <span class="d-flex align-items-center">
+                    <i class="pi pi-circle icon-list-task"></i>
+                </span>
+                <span class="d-flex align-items-center">
+                    <small style="font-size: 0.8rem;" class="task-description d-flex align-items-center gap-1">
+                        {{ task.priority_fullDescription }}
+                    </small>
+                </span>
+            </Button>
+        </div>
         <div class="w-100 icons d-flex align-items-center">
             <Button class="d-flex gap-1 align-items-center" text>
                 <span>

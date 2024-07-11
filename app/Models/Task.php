@@ -15,6 +15,11 @@ class Task extends Model
     const WAITING = 'WAT';
     const CONCLUDED = 'CON';
 
+    const URG = "URG";
+    const ALT = 'ALT';
+    const MED = 'MED';
+    const LOW = 'BAX';
+
     protected $table = "tasks";
     protected $fillable = [
         'title',

@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Utility\Utilities;
 use Illuminate\Support\Str;
 use App\Models\Follower;
+use App\Models\Task;
 
 class TaskResource extends JsonResource
 {
@@ -27,6 +28,7 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'short_description' => Str::limit($this->description, 60),
             'priority' => $this->priority,
+            'priority_fullDescription' => $this->prioriryFullDescription($this->priority),
             'manager_id' => $this->manager_id,
             'user_id'    => $this->user_id,
             'manager_name' => $this->manager,
@@ -57,7 +59,10 @@ class TaskResource extends JsonResource
     {
         return match($priority)
         {
-
+            Task::URG => "Urgente",
+            Task::ALT => "Alta",
+            Task::MED => "Media",
+            Task::LOW => "Baixa"
         };
     }
 }
