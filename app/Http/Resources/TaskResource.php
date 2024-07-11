@@ -52,4 +52,12 @@ class TaskResource extends JsonResource
     {
         return Annex::where('task_id', $this->id)->count() ?? "-";
     }
+
+    public function prioriryFullDescription(string $priority) : string
+    {
+        return match($priority)
+        {
+
+        };
+    }
 }

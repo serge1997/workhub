@@ -10,14 +10,14 @@
                         <i style="font-size: .8rem;" class="pi pi-save task-description"></i>
                     </Button>
                     <Button @click="$emit('hideCurrentCommentResponseEditBox', response.id)" class="text-danger p-0" text>
-                        <i style="font-size: .8rem;" class="pi pi-times"></i>
+                        <i style="font-size: .8rem;" class="pi pi-times task-description"></i>
                     </Button>
                 </small>
             </span>
         </span>
         <small class="d-flex gap-3 mt-1">
             <Button @click="$emit('softDeleteCommentResponse', response.id)" class="text-danger p-0" text>
-                <i style="font-size: .8rem;" class="pi pi-trash"></i>
+                <i style="font-size: .8rem;" class="pi pi-trash task-description"></i>
             </Button>
             <Button @click="getCommentResponse(response.id)" class="p-0" text>
                 <i style="font-size: .8rem;" class="pi pi-pencil task-description"></i>

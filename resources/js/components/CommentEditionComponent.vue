@@ -9,14 +9,14 @@
                         <i style="font-size: .8rem;" class="pi pi-save task-description"></i>
                     </Button>
                     <Button @click="hideCurrentCommentEditBox(comment.id)" class="text-danger p-0" text>
-                        <i style="font-size: .8rem;" class="pi pi-times"></i>
+                        <i style="font-size: .8rem;" class="pi pi-times task-description"></i>
                     </Button>
                 </small>
             </span>
         </span>
         <small v-if="comment.owner" class="d-flex gap-3 mt-1">
             <Button @click="$emit('softDeleteComment', comment.id)" class="text-danger p-0" text>
-                <i style="font-size: .8rem;" class="pi pi-trash"></i>
+                <i style="font-size: .8rem;" class="pi pi-trash task-description"></i>
             </Button>
             <Button @click="getComment(comment.id)" class="p-0" text>
                 <i style="font-size: .8rem;" class="pi pi-pencil task-description"></i>

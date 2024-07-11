@@ -15,16 +15,17 @@
                      <div class="card-body p-0 px-2">
                         <div class="comment d-flex flex-column gap-0">
                              <span>
-                                 <p style="font-size: 0.9rem;" class="">
+                                 <p style="font-size: 0.9rem;" class="" id="comment-content" @mouseover="showCommentActionButton(comment.id)" @mouseleave="hideCommentActionButton(comment.id)">
                                     {{ comment.comment }}
                                     <br>
-                                    <CommentEditionComponent
+                                    <div :id="`action-box-${comment.id}`" class="w-100 d-none">
+                                        <CommentEditionComponent
                                         :comment="comment"
                                         :task_id="task"
                                         @soft-delete-comment="SoftDeleteComment"
                                         :isComment="true"
-
                                     />
+                                    </div>
                                     <br>
                                     <Button @click="showResponseInput(comment.id)" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
                                  </p>
@@ -41,15 +42,21 @@
                                              <small style="font-size: 12px;" class="fw-bold">{{response.user_name}}</small>
                                         </div>
                                         <div class="card-body p-0 px-2">
-                                            <p style="font-size: 0.9rem;" class="text-rigth">
-                                                {{ response.response }}
-                                            </p>
-                                            <CommentResponseEditionComponent
-                                                :response="response"
-                                                @update-comment-response = "updateCommentResponse"
-                                                @soft-delete-comment-response="SoftDeleteCommentResponse"
-                                                @hide-current-comment-response-edit-box = "hideCurrentCommentResponseEditBox"
-                                            />
+                                            <span style="font-size: 0.9rem;" class="text-rigth">
+                                                <p @mouseover="showCommentResponseActionButton(response.id)" @mouseleave="hideCommentResponseActionButton(response.id)">
+                                                    {{ response.response }}
+                                                    <br>
+                                                    <div :id="`action-box-response-${response.id}`" class="w-100 p-0 d-none">
+                                                        <CommentResponseEditionComponent
+                                                            :response="response"
+                                                            @update-comment-response = "updateCommentResponse"
+                                                            @soft-delete-comment-response="SoftDeleteCommentResponse"
+                                                            @hide-current-comment-response-edit-box = "hideCurrentCommentResponseEditBox"
+                                                        />
+                                                    </div>
+                                                </p>
+                                            </span>
+
                                         </div>
                                     </div>
                                 </span>
@@ -169,6 +176,22 @@ export default {
             .catch(error => {
                 console.log(error)
             })
+        },
+        showCommentActionButton(id){
+            const box = document.getElementById('action-box-'+id);
+            box.classList.remove('d-none')
+        },
+        hideCommentActionButton(id){
+            const box = document.getElementById('action-box-'+id);
+            box.classList.add('d-none')
+        },
+        showCommentResponseActionButton(id){
+            const box = document.getElementById('action-box-response-'+id);
+            box.classList.remove('d-none')
+        },
+        hideCommentResponseActionButton(id){
+            const box = document.getElementById('action-box-response-'+id);
+            box.classList.add('d-none')
         },
         toaster(response, severity="success"){
             const Toast = this.$swal.mixin({
