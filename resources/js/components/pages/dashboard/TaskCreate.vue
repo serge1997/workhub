@@ -6,6 +6,7 @@
             </div>
             <div class="col-md-10">
                 <div class="card w-100 border-0">
+                    <form @submit.prevent="createTask" id="task-form">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3 d-flex flex-column">
@@ -46,8 +47,15 @@
                         <div class="row mb-3">
                             <div class="col-md-6 d-flex flex-column">
                                 <label for="task-annex" class="form-label">Annexes da tarefa</label>
-                                <input class="form-control d-none" type="file" id="annex-test">
-                                <Button style="width: 40%;" class="rounded-2" label="Upload" icon="pi pi-file" @click="taskAnnexHandler"/>
+                                <input class="form-control d-none" type="file" name="files[]" ref="inputFiles" id="annex-test" multiple @change="onChangeTaskAnnex">
+                                <Button id="input-file-upload" style="width: 40%;" class="rounded-2 d-flex flex-column" @click="taskAnnexHandler">
+                                    <span class="d-flex gap-2 align-items-center m-auto">
+                                        <i class="pi pi-file"></i>
+                                        <span>Upload</span>
+                                    </span>
+                                    <span class="d-flex flex-column" id="selected-annexes">
+                                    </span>
+                                </Button>
                             </div>
                         </div>
                         <div class="row">
@@ -77,10 +85,11 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <Button class="w-50" label="Criar tarefa" @click="createTask" />
+                                <Button type="submit" class="w-50" label="Criar tarefa" />
                             </div>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -112,7 +121,7 @@ export default{
                 execution_delay: null,
                 execution_delay_date: null,
                 followers: [],
-                annex: null,
+                annex: [],
                 time_delay: null
             },
             visibleCreateRoadMap: false,
@@ -124,23 +133,22 @@ export default{
             },
             invalidInpuClass: null,
             formErrorBag: null,
+            selectedAnnexName: []
         }
     },
     methods: {
-        taskAnnexHandler(ev) {
-            console.log(ev.target.textContent)
+        taskAnnexHandler() {
             const fileInput = document.querySelector('#annex-test');
             fileInput.click()
-            fileInput.addEventListener('change', async (event) => {
-                const file = event.target.files[0];
-                this.task.annex = event.target.files[0];
-                console.log(this.task.annex)
-                ev.target.textContent += ` ${file.name}`;
-                console.log(file.name);
-            })
         },
-        createTask(e){
-            e.preventDefault();
+        onChangeTaskAnnex(){
+            let btn = document.querySelector('#input-file-upload #selected-annexes');
+            for (let i = 0; i < this.$refs.inputFiles.files.length; i++) {
+                let file = this.$refs.inputFiles.files[i];
+                btn.innerHTML += `<small>${file.name}</small>`
+            }
+        },
+        createTask(){
             const data = this.taskData();
             this.Api.post('task', data)
             .then(async response => {
@@ -159,7 +167,10 @@ export default{
             const data = new FormData();
             this.task.time_delay = this.task.execution_delay_date !== null ? DateTime.enFormat(this.task.execution_delay_date) : null;
             this.task.execution_delay  = DateTime.time(this.task.time_delay);
-            this.task.annex !== null ? data.append('annex', this.task.annex) : null ;
+            for (let i = 0; i < this.$refs.inputFiles.files.length; i++) {
+                let file = this.$refs.inputFiles.files[i];
+                data.append('annex[]', file)
+            }
             this.task.execution_delay !== null ? data.append('execution_delay', this.task.execution_delay) : null;
             this.task.title !== null ? data.append('title', this.task.title) : null;
             this.task.time_delay !== null ? data.append('time_delay', this.task.time_delay) : null;
