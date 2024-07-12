@@ -40,6 +40,7 @@ class TaskResource extends JsonResource
             'followers' => FollowerResource::collection($this->followers),
             'followers_count' => $this->countFollowers(),
             'annex_count' => $this->countAnnex(),
+            'annexes' => AnnexResource::collection($this->annexes),
             'task_owner' => $this->when($request->user()->id == $this->user_id, true)
 
         ];

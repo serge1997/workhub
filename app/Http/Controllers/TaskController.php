@@ -37,7 +37,7 @@ class TaskController extends Controller
                 ->json($this->taskRepositoryInterface->listAll());
         }catch(Exception $e){
             return response()
-                ->json($e->getFile(), 500);
+                ->json($e->getMessage(). " ". $e->getLine(), 500);
         }
     }
 

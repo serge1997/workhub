@@ -74,6 +74,7 @@
 import ShowTaskComponent from './ShowTaskComponent.vue';
 import ShowTaskFollower from './ShowTaskFollower.vue';
 import TaskCommentComponent from './TaskCommentComponent.vue';
+import ShowTaskAnnexComponent from './ShowTaskAnnexComponent.vue';
 import { DateTime } from './../core/DateTime.js';
 export default{
     name: 'TaskCardIconsComponent',
@@ -81,7 +82,8 @@ export default{
     components: {
         ShowTaskComponent,
         ShowTaskFollower,
-        TaskCommentComponent
+        TaskCommentComponent,
+        ShowTaskAnnexComponent
     },
 
     props: ['task'],

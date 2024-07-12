@@ -35,12 +35,14 @@
 <script>
 import ShowTaskComponent from '../ShowTaskComponent.vue';
 import TaskCardIconsComponent from '../TaskCardIconsComponent.vue';
+import ShowTaskAnnexComponent from '../ShowTaskAnnexComponent.vue';
 export default{
     name: 'CardTaskComponent',
     props: ['showStatus'],
     components: {
         ShowTaskComponent,
         TaskCardIconsComponent,
+        ShowTaskAnnexComponent
     },
     data(){
         return {

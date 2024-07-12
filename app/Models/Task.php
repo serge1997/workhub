@@ -43,7 +43,7 @@ class Task extends Model
         return $this->belongsTo(User::class, 'manager_id');
     }
 
-    public function annex() : HasMany
+    public function annexes() : HasMany
     {
         return $this->hasMany(Annex::class, 'task_id');
     }

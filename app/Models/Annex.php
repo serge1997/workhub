@@ -11,7 +11,7 @@ class Annex extends Model
     use HasFactory;
 
     protected $table = 'task_annexes';
-    public static array $extension = ['pdf', 'docx'];
+    public static array $extension = ['pdf', 'docx', 'jpg', 'png'];
 
 
     protected $fillable = [
@@ -29,5 +29,12 @@ class Annex extends Model
     public function isDeleted() : bool
     {
         return $this->deleted_at !== null;
+    }
+
+    public function extention()
+    {
+        $annex = explode('.', $this->annex);
+        $exentsion = array_pop($annex);
+        return $exentsion;
     }
 }

@@ -11,7 +11,7 @@
                             <Chip :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
                         </span>
                         <span>
-                            <Tag severity="primary" value="Status" />
+                            <Tag severity="primary" :value="taskFinded.priority_fullDescription" />
                         </span>
                     </div>
                     <div class="col-md-12 mb-1">
@@ -29,9 +29,24 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="taskFinded.annexes" class="row" id="task-annexes">
+                    <div v-for="annex of taskFinded.annexes" class="vol-md-12">
+                        <Button @click="showAnnex(annex.annex)" class="border rounded-2 p-3 d-flex flex-column w-25 gap-1" text>
+                            <span>
+                                <i class="pi pi-file-pdf fs-3 task-description"></i>
+                            </span>
+                            <span>
+                                <small class="task-description">{{ annex.annex_type }}</small>
+                            </span>
+                        </Button>
+                    </div>
+                </div>
             </div>
         </div>
         <Button text icon="pi pi-map" />
+        <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100" maximizable modal header="" :style="{ width: '100%' }">
+            <iframe class="iframe min-vh-100" :src="`/task-annex/${annex}`" width="100%" height="100%" frameborder="0"></iframe>
+        </Dialog>
     </Dialog>
 </template>
 <script>
@@ -43,6 +58,7 @@ export default {
     data(){
         return {
             visibleShowTaskModal: false,
+            visibleShowAnnex: false,
             task: {
                 progress: "PRO",
                 waiting: "WAT",
@@ -50,8 +66,8 @@ export default {
                 height: "ALT",
                 medium: "MED",
                 low: "BAX"
-
             },
+            annex: null,
         }
     },
     methods:{
@@ -63,6 +79,15 @@ export default {
         },
         handleTaskStatus(){
 
+        },
+        showAnnex(annex){
+            this.annex = annex;
+            this.visibleShowAnnex = true;
+            setTimeout(() => {
+                const iframHeader = document.querySelector('.iframe')
+                console.log(iframHeader)
+                //iframHeader.classList.add('d-none')
+            }, 1000)
         }
     }
 }
