@@ -24,6 +24,7 @@
                                         :task_id="task"
                                         @soft-delete-comment="SoftDeleteComment"
                                         :isComment="true"
+                                        @update-comment="updateComment"
                                     />
                                     </div>
                                     <br>
@@ -159,6 +160,26 @@ export default {
         hideCurrentCommentResponseEditBox(id){
             let editBox = document.getElementById('edit-response-box-'+id);
             editBox.classList.add('d-none')
+        },
+        hideCurrentCommentEditBox(id){
+            let editBox = document.getElementById('edit-comment-box-'+id);
+            editBox.classList.add('d-none')
+        },
+        updateComment(id){
+            const data = {
+                comment: document.getElementById(`comment-edit-${id}`).value,
+                comment_id: id,
+                task_id: document.getElementById('task-id').value,
+            }
+            this.Api.put('comment-content', null, data)
+            .then(async response => {
+                this.hideCurrentCommentEditBox(id);
+                this.toaster(response.data.message).fire();
+                this.taskComments = await response.data.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
         },
         updateCommentResponse(id){
             const data = {

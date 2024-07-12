@@ -5,7 +5,7 @@
             <input style="font-size: 0.8rem;" :id="`comment-edit-${comment.id}`" class="form-control p-1 text-secondary" type="text">
             <span>
                 <small class="d-flex align-items-center gap-1">
-                    <Button @click="updateComment(comment.id)" class="p-0" text>
+                    <Button @click="$emit('updateComment', comment.id)" class="p-0" text>
                         <i style="font-size: .8rem;" class="pi pi-save task-description"></i>
                     </Button>
                     <Button @click="hideCurrentCommentEditBox(comment.id)" class="text-danger p-0" text>
@@ -43,10 +43,6 @@ export default{
         }
     },
     methods: {
-        hideCurrentCommentEditBox(id){
-            let editBox = document.getElementById('edit-comment-box-'+id);
-            editBox.classList.add('d-none')
-        },
         getComment(id){
             this.Api.get('comment', {comment_id: id})
             .then(async response => {
@@ -58,21 +54,6 @@ export default{
             })
             .catch(err => {
                 console.log(err)
-            })
-        },
-        updateComment(id){
-            const data = {
-                comment: document.getElementById(`comment-edit-${id}`).value,
-                comment_id: id,
-                task_id: document.getElementById('task-id').value,
-            }
-            this.Api.put('comment-content', null, data)
-            .then(async response => {
-                this.hideCurrentCommentEditBox(id);
-                this.toaster(response.data.message).fire();
-            })
-            .catch(error => {
-                console.log(error)
             })
         },
          toaster(response, severity="success"){
