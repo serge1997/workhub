@@ -13,7 +13,7 @@
         <div class="w-100">
             <Button class="d-flex gap-2" text>
                 <span class="d-flex align-items-center">
-                    <i class="pi pi-circle icon-list-task"></i>
+                    <i :class="setSeverity(task.priority)" class="pi pi-circle-fill icon-list-task"></i>
                 </span>
                 <span class="d-flex align-items-center">
                     <small style="font-size: 0.8rem;" class="task-description d-flex align-items-center gap-1">
@@ -124,6 +124,11 @@ export default{
                 this.timing.seconds = `${this.timing.seconds}`.padStart(2, '0');
                 DOMElement.innerHTML = `${this.timing.minutes}:${this.timing.seconds}`
             }, 1000);
+        },
+        setSeverity(priority){
+            if(priority === "ALT")  return "text-danger";
+            if (priority === "MED") return "text-warning";
+            return "text-success";
         }
 
     },

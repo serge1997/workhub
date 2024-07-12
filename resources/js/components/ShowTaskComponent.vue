@@ -11,7 +11,7 @@
                             <Chip :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
                         </span>
                         <span>
-                            <Tag severity="primary" :value="taskFinded.priority_fullDescription" />
+                            <Tag :severity="setSeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
                         </span>
                     </div>
                     <div class="col-md-12 mb-1">
@@ -88,6 +88,11 @@ export default {
                 console.log(iframHeader)
                 //iframHeader.classList.add('d-none')
             }, 1000)
+        },
+        setSeverity(priority){
+            if(priority === "ALT")  return "danger";
+            if (priority === "MED") return "warning";
+            return "success";
         }
     }
 }
