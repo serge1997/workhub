@@ -12,7 +12,7 @@ final class UpdateCommentContentAction
 
     public function run()
     {
-        $this->comment->query()->update([
+        $this->comment->update([
             'comment' => $this->request->comment
         ]);
     }

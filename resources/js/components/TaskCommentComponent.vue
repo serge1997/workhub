@@ -24,7 +24,8 @@
                                         :task_id="task"
                                         @soft-delete-comment="SoftDeleteComment"
                                         :isComment="true"
-                                        @update-comment="updateComment"
+                                        @update-comment="updateComment(comment.id)"
+                                        @hide-current-comment-edit-box="hideCurrentCommentEditBox"
                                     />
                                     </div>
                                     <br>

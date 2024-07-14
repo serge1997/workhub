@@ -8,7 +8,7 @@
                     <Button @click="$emit('updateComment', comment.id)" class="p-0" text>
                         <i style="font-size: .8rem;" class="pi pi-save task-description"></i>
                     </Button>
-                    <Button @click="hideCurrentCommentEditBox(comment.id)" class="text-danger p-0" text>
+                    <Button @click="$emit('hideCurrentCommentEditBox', comment.id)" class="text-danger p-0" text>
                         <i style="font-size: .8rem;" class="pi pi-times task-description"></i>
                     </Button>
                 </small>

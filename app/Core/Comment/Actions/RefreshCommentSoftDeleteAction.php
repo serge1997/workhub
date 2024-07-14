@@ -12,7 +12,7 @@ final class RefreshCommentSoftDeleteAction
 
     public function handle()
     {
-        $this->comment->query()->update([
+        $this->comment->update([
             'deleted_at' => null
         ]);
     }
