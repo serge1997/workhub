@@ -24,7 +24,7 @@
                                     <small class="task-description">{{ comment.comment }}</small>
                                     <small class="task-description">
                                         <span>
-                                            <Button icon="pi pi-sync" text class="task-description" />
+                                            <Button @click="refreshComment(comment.id)" icon="pi pi-sync" text class="task-description" />
                                         </span>
                                     </small>
                                 </div>
@@ -53,6 +53,16 @@ export default {
             this.Api.get('comments/soft-deleted')
             .then(async response => {
                 this.comments = await response.data;
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
+        refreshComment(id){
+            this.Api.put('comments/refresh', {comment_id: id})
+            .then(async response => {
+                console.log(response.data)
+                this.getSoftDeletedComment()
             })
             .catch(error => {
                 console.log(error)

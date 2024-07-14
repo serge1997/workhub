@@ -58,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::post("/", "onCreate");
             Route::get("/", "onListAllByTask");
             Route::get('/soft-deleted', "onListAllSoftDeleted");
+            Route::put('/refresh/{comment_id?}', 'onRefreshSoftDelete');
         });
     });
 

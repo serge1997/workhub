@@ -94,4 +94,17 @@ class CommentController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onRefreshSoftDelete(Request $request)
+    {
+        try{
+            $message = "Commentario restaurado com successo";
+            $this->commentRepositoryInterface->refreshSodftDelete($request);
+            return response()
+                ->json($message);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

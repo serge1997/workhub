@@ -12,4 +12,5 @@ interface CommentRepositoryInterface
     public function softDelete($request);
     public function delete($request);
     public function listAllSoftDeleted($request);
+    public function refreshSodftDelete($request);
 }

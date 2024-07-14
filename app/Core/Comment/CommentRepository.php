@@ -7,6 +7,7 @@ use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Core\Comment\Actions\FindCommentAction;
 use App\Core\Comment\Actions\UpdateCommentContentAction;
+use App\Core\Comment\Actions\RefreshCommentSoftDeleteAction;
 use Illuminate\Support\Facades\Gate;
 
 class CommentRepository implements CommentRepositoryInterface
@@ -57,5 +58,12 @@ class CommentRepository implements CommentRepositoryInterface
                 ->where([['deleted_at', '<>', null], ['user_id', $request->user()->id]])
                     ->get()
         );
+    }
+
+    public function refreshSodftDelete($request)
+    {
+        (new RefreshCommentSoftDeleteAction(
+            FindCommentAction::run($request))
+        )->handle();
     }
 }
