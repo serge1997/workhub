@@ -46,6 +46,12 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-4">
+            <div v-for="custom in customColumns" class="col-md-12 d-flex align-items-center gap-2 mb-4">
+                <label for="">{{ custom.label}}</label>
+                <InputText class="col-md-8" placeholder="custom column value"/>
+            </div>
+        </div>
         <Button text icon="pi pi-map" />
         <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100" maximizable modal header="" :style="{ width: '100%' }">
             <iframe class="iframe min-vh-100" :src="`/task-annex/${annex}`" width="100%" height="100%" frameborder="0"></iframe>
@@ -64,7 +70,7 @@
 export default {
     name: 'ShowTaskComponent',
 
-    props: ['openModalIcon', 'task_id', 'taskFinded'],
+    props: ['openModalIcon', 'task_id', 'taskFinded', 'customColumns'],
 
     data(){
         return {
@@ -114,6 +120,8 @@ export default {
             if (priority === "MED") return "warning";
             return "success";
         }
+    },
+    mounted(){
     }
 }
 </script>

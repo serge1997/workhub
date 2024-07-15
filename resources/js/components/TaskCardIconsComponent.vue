@@ -64,7 +64,8 @@
                     class="p-0"
                     @show-task="showTask(task.id)"
                     open-modal-icon="pi-align-center"
-                    :task-finded="task_finded"
+                    :task-finded="task_finded",
+                    :custom-columns="customColumns"
                 />
             </span>
         </div>
@@ -91,6 +92,7 @@ export default{
     data(){
         return{
             task_finded: null,
+            customColumns: null,
             timing: {
                 seconds: 0,
                 minutes: 0
@@ -103,7 +105,7 @@ export default{
             this.Api.get('task', {task_id: id})
             .then(async response => {
                 this.task_finded = await response.data;
-                console.log(this.task_finded)
+                this.getAllCustomColumns()
             })
             .catch(err => console.log(err));
         },
@@ -129,7 +131,17 @@ export default{
             if(priority === "ALT")  return "text-danger";
             if (priority === "MED") return "text-warning";
             return "text-success";
-        }
+        },
+        getAllCustomColumns(){
+            this.Api.get('custom-column')
+            .then(async response => {
+                this.customColumns = await response.data;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+        },
 
     },
     mounted() {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CommentResponseController;
+use App\Http\Controllers\CustomColumnController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
@@ -69,6 +70,13 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::get('/response', 'onFind')->name('find.comment.response');
             Route::put('/', 'onUpdate');
             Route::delete('/{response_id?}/{comment_id?}', 'onUpdate');
+        });
+    });
+
+    Route::controller(CustomColumnController::class)->group(function(){
+        Route::prefix('custom-column')->group(function(){
+            Route::post('/', 'onCreate');
+            Route::get('/', 'onListAll');
         });
     });
 

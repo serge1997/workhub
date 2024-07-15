@@ -19,32 +19,21 @@
                     <Button class="w-75 border rounded-2 fs-4 text-warning" text icon="pi pi-bolt" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <Button @click="visibleCustomFiledDialog = true" class="w-75 border rounded-2 fs-4 task-description" text icon="pi pi-plus-circle" />
-                </div>
-            </div>
-        </Dialog>
-        <Dialog v-model:visible="visibleCustomFiledDialog" header="Criar campo personlizado" :style="{ width: '25rem' }" position="topcenter" :modal="true" :draggable="false">
-            <div class="row">
-                <div class="col-md-12 d-flex flex-column  gap-2">
-                    <label for="username" class="font-semibold">Nome do campo</label>
-                    <InputText id="username" class="w-100" autocomplete="off" />
-                </div>
-                <div class="col-md-12 d-flex flex-column  gap-2 mt-3">
-                    <label for="costumField-description" class="font-semibold">Descripção do campo</label>
-                    <Textarea id="username" class="w-100" autocomplete="off" />
-                </div>
-                <div class="col-md-12 d-flex justify-content-end mt-3">
-                    <Button icon="pi pi-save task-description" text></Button>
+                    <CustomColumnComponent />
                 </div>
             </div>
         </Dialog>
     </div>
 </template>
 <script>
-import { Button } from 'bootstrap'
+import CustomColumnComponent from './CustomColumnComponent.vue'
 
 export default {
     name: 'NavbarComponent',
+
+    components:{
+        CustomColumnComponent
+    },
 
     data(){
         return {
