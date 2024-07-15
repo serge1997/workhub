@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="email" class="form-label">Titulo</label>
-                                <InputText v-model="task.title" type="text" :class="formErrorBag && formErrorBag.title ? invalidInpuClass : ''" class="w-100" id="email" placeholder="Task title" />
+                                <InputText v-model="task.title" type="text" :class="formErrorBag && formErrorBag.title ? invalidInpuClass : ''" class="w-100" id="title" placeholder="Task title" />
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.title" v-text="`${formErrorBag.title}`"></small>
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
@@ -219,8 +219,8 @@ export default{
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
         this.onListAllUsers()
-        let i = document.querySelector('#roadMile-title');
-        console.log(i)
+        let input = document.getElementById('title')
+        input.focus()
     }
 }
 </script>
