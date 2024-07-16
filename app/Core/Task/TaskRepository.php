@@ -2,6 +2,7 @@
 namespace App\Core\Task;
 
 use App\core\Annex\AnnexRepositoryInterface;
+use App\Core\CustomColumnsValue\CustomColumnsValueRepositoryInterface;
 use App\Core\Follower\FollowerRepositoryInterface;
 use App\Core\Task\Actions\FindTaskAction;
 use App\Core\Task\Actions\ExecutionStatusUpdateAction;
@@ -14,7 +15,8 @@ class TaskRepository implements TaskRepositoryInterface
     public function __construct(
         protected AnnexRepositoryInterface $annexRepositoryInterface,
         protected FollowerRepositoryInterface $followerRepositoryInterface,
-        protected TaskRoadMapRepositoryInterface $taskRoadMapRepositoryInterface
+        protected TaskRoadMapRepositoryInterface $taskRoadMapRepositoryInterface,
+        protected CustomColumnsValueRepositoryInterface $customColumnsValueRepositoryInterface
     ){}
 
     public function create($request)
@@ -23,6 +25,7 @@ class TaskRepository implements TaskRepositoryInterface
         $task = new Task($values);
         $task->manager_id = $request->user()->id;
         $task->save();
+        $this->customColumnsValueRepositoryInterface->create($task, $request);
         $this->annexRepositoryInterface->create($request, $task);
         $this->followerRepositoryInterface->create($request, $task);
         $this->taskRoadMapRepositoryInterface->create($request, $task);

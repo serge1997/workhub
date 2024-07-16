@@ -10,6 +10,8 @@ use App\Core\CommentResponse\CommentResponseRepository;
 use App\Core\CommentResponse\CommentResponseRepositoryInterface;
 use App\Core\CustomColumn\CustomColumnRepository;
 use App\Core\CustomColumn\CustomColumnRepositoryInterface;
+use App\Core\CustomColumnsValue\CustomColumnsValueRepository;
+use App\Core\CustomColumnsValue\CustomColumnsValueRepositoryInterface;
 use App\Core\Department\DepartmentRepository;
 use App\Core\Department\DepartmentRepositoryInterface;
 use App\Core\Follower\FollowerRepository;
@@ -41,6 +43,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CommentRepositoryInterface::class, CommentRepository::class);
         $this->app->bind(CommentResponseRepositoryInterface::class, CommentResponseRepository::class);
         $this->app->bind(CustomColumnRepositoryInterface::class, CustomColumnRepository::class);
+        $this->app->bind(CustomColumnsValueRepositoryInterface::class, CustomColumnsValueRepository::class);
     }
 
     /**

@@ -5,6 +5,7 @@
     <Dialog v-model:visible="visibleShowTaskModal" modal header="" :style="{ width: '45rem' }">
         <div class="row">
             <div v-if="taskFinded" class="col-md-12 m-auto">
+                <input type="text" id="task-id-show" :value="taskFinded.id">
                 <div class="row">
                     <div v-if="taskFinded.user_name" class="col-md-12 mb-3 d-flex align-items-center gap-2 border-bottom p-2" id="task-header">
                         <span>
@@ -49,7 +50,7 @@
         <div class="row mt-4">
             <div v-for="custom in customColumns" class="col-md-12 d-flex align-items-center gap-2 mb-4">
                 <label for="">{{ custom.label}}</label>
-                <InputText class="col-md-8" placeholder="custom column value"/>
+                <InputText @blur="createCustomValue(custom.label, custom.id)" :id.trim="custom.label" class="col-md-8 border-0 border-bottom rounded-0" placeholder="custom column value"/>
             </div>
         </div>
         <Button text icon="pi pi-map" />
@@ -114,6 +115,16 @@ export default {
                 console.log(iframHeader)
                 //iframHeader.classList.add('d-none')
             }, 1000)
+        },
+        createCustomValue(label, id){
+            const value = document.getElementById(label).value;
+            const data = {
+                label: label,
+                value: value,
+                custom_column_id: id,
+                task_id: document.getElementById('task-id-show').value
+            };
+            console.log(data);
         },
         setSeverity(priority){
             if(priority === "ALT")  return "danger";
