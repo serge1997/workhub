@@ -5,12 +5,14 @@
     <Dialog v-model:visible="visibleShowTaskModal" modal header="" :style="{ width: '45rem' }">
         <div class="row">
             <div v-if="taskFinded" class="col-md-12 m-auto">
+                <input type="hidden" id="task-id-show" :value="taskFinded.id">
                 <div class="row">
                     <div v-if="taskFinded.user_name" class="col-md-12 mb-3 d-flex align-items-center gap-2 border-bottom p-2" id="task-header">
                         <span>
                             <Chip :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
                         </span>
-                        <span>
+                        <span class="d-flex">
+                            <span><Chip class="rounded-0" label="Prioridade"/></span>
                             <Tag :severity="setSeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
                         </span>
                         <span>
@@ -18,7 +20,7 @@
                         </span>
                     </div>
                     <div class="col-md-12 mb-1">
-                        <h3>{{ taskFinded.title }}</h3>
+                        <h2 class="task-title text-capitalize">{{ taskFinded.title }}</h2>
                     </div>
                     <div class="col-md-12 p-2">
                         <p>{{ taskFinded.description }}</p>
@@ -46,6 +48,18 @@
                 </div>
             </div>
         </div>
+        <div v-if="taskFinded" class="row mt-4">
+            <div class="com-md-12 mb-3 border-0 border-bottom">
+                <div class="d-flex align-items-center gap-3">
+                    <h4 class="">Colunas personalizadas</h4>
+                    <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
+                </div>
+            </div>
+            <div v-for="custom in taskFinded.customColumnValue" class="col-md-12 d-flex align-items-center gap-2 mb-4">
+                <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
+                <InputText @blur="$emit('createCustomValue', custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="col-md-8 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+            </div>
+        </div>
         <Button text icon="pi pi-map" />
         <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100" maximizable modal header="" :style="{ width: '100%' }">
             <iframe class="iframe min-vh-100" :src="`/task-annex/${annex}`" width="100%" height="100%" frameborder="0"></iframe>
@@ -64,7 +78,7 @@
 export default {
     name: 'ShowTaskComponent',
 
-    props: ['openModalIcon', 'task_id', 'taskFinded'],
+    props: ['openModalIcon', 'task_id', 'taskFinded', 'customColumns'],
 
     data(){
         return {
@@ -114,6 +128,20 @@ export default {
             if (priority === "MED") return "warning";
             return "success";
         }
+    },
+    mounted(){
     }
 }
 </script>
+<style scoped>
+.task-title{
+    font-weight: 600;
+}
+.custom-column-label{
+    font-weight: 600;
+}
+
+.custom-column-input{
+    background-color: #f1f5f9;
+}
+</style>

@@ -62,4 +62,9 @@ class Task extends Model
    {
         return $this->hasMany(Comment::class, 'task_id');
    }
+
+   public function customColumnValue() : HasMany
+   {
+    return $this->hasMany(CustomColumnsValue::class, 'task_id');
+   }
 }
