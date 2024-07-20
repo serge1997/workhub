@@ -28,7 +28,7 @@ class LoginController extends Controller
                 ->json($data);
         }catch(Exception $e){
             return response()
-                ->json($e->getMessage(), 500);
+                ->json("Não foi possvel realizar o login, recarrega a pagina e tente novamente", 500);
         }
     }
 
