@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CommentResponseController;
 use App\Http\Controllers\CustomColumnController;
+use App\Http\Controllers\CustomColumnsValueController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
@@ -78,6 +79,10 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::post('/', 'onCreate');
             Route::get('/', 'onListAll');
         });
+    });
+
+    Route::controller(CustomColumnsValueController::class)->group(function(){
+        Route::get('custom-column-value', 'onFindByTask');
     });
 
     Route::controller(PositionController::class)->group(function() {

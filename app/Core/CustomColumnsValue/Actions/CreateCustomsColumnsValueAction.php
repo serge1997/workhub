@@ -30,7 +30,7 @@ final class CreateCustomsColumnsValueAction
                 foreach ($customColumns as $column) {
                     CustomColumnsValue::query()->create([
                         'task_id' => $this->task->id,
-                        'column_id' => $column->id
+                        'custom_column_id' => $column->id
                     ]);
                 }
             }

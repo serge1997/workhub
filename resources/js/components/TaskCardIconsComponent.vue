@@ -105,7 +105,7 @@ export default{
             this.Api.get('task', {task_id: id})
             .then(async response => {
                 this.task_finded = await response.data;
-                this.getAllCustomColumns()
+                return this.getAllCustomColumns()
             })
             .catch(err => console.log(err));
         },
@@ -133,7 +133,7 @@ export default{
             return "text-success";
         },
         getAllCustomColumns(){
-            this.Api.get('custom-column')
+            this.Api.get('custom-column-value', {task_id: this.task.id})
             .then(async response => {
                 this.customColumns = await response.data;
             })

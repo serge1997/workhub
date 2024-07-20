@@ -11,4 +11,5 @@ interface CustomColumnsValueRepositoryInterface
     public function beforeSave(CustomColumnsValue $custom);
     public function listAll($request);
     public function findByColumnAndTask($request) : ?CustomColumnsValue;
+    public function findByTask($request);
 }

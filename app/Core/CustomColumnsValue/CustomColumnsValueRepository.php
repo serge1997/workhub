@@ -4,6 +4,7 @@ namespace App\Core\CustomColumnsValue;
 use App\Core\CustomColumn\CustomColumnRepositoryInterface;
 use App\Models\Task;
 use App\Core\CustomColumnsValue\Actions\CreateCustomsColumnsValueAction;
+use App\Http\Resources\CustomsColumnsValueResource;
 use App\Models\CustomColumnsValue;
 use Exception;
 
@@ -43,5 +44,13 @@ class CustomColumnsValueRepository implements CustomColumnsValueRepositoryInterf
             ])->first();
         }
         return null;
+    }
+
+    public function findByTask($request)
+    {
+        return CustomsColumnsValueResource::collection(
+            CustomColumnsValue::where('task_id', $request->task_id)
+            ->get()
+        );
     }
 }
