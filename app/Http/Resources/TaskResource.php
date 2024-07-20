@@ -41,7 +41,8 @@ class TaskResource extends JsonResource
             'followers_count' => $this->countFollowers(),
             'annex_count' => $this->countAnnex(),
             'annexes' => AnnexResource::collection($this->annexes),
-            'task_owner' => $this->when($request->user()->id == $this->user_id, true)
+            'task_owner' => $this->when($request->user()->id == $this->user_id, true),
+            'customColumnValue' => CustomsColumnsValueResource::collection($this->customColumnValue),
 
         ];
     }

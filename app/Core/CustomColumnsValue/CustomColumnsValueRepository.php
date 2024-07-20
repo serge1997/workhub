@@ -4,6 +4,9 @@ namespace App\Core\CustomColumnsValue;
 use App\Core\CustomColumn\CustomColumnRepositoryInterface;
 use App\Models\Task;
 use App\Core\CustomColumnsValue\Actions\CreateCustomsColumnsValueAction;
+use App\Core\CustomColumnsValue\Actions\UpdateCustomColumnsValueAction;
+use App\Core\Task\TaskRepository;
+use App\Core\Task\TaskRepositoryInterface;
 use App\Http\Resources\CustomsColumnsValueResource;
 use App\Models\CustomColumnsValue;
 use Exception;
@@ -11,7 +14,7 @@ use Exception;
 class CustomColumnsValueRepository implements CustomColumnsValueRepositoryInterface
 {
     public function __construct(
-        private CustomColumnRepositoryInterface $customColumnRepositoryInterface
+        protected CustomColumnRepositoryInterface $customColumnRepositoryInterface,
     ){}
 
     public function create(Task $task, $request)
@@ -52,5 +55,15 @@ class CustomColumnsValueRepository implements CustomColumnsValueRepositoryInterf
             CustomColumnsValue::where('task_id', $request->task_id)
             ->get()
         );
+    }
+
+    public function update($request)
+    {
+        (new UpdateCustomColumnsValueAction(
+            $this->findByColumnAndTask($request),
+            $request)
+        )->handle();
+        $task = app()->make(TaskRepository::class);
+        return $task->find($request);
     }
 }

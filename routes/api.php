@@ -83,6 +83,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::controller(CustomColumnsValueController::class)->group(function(){
         Route::get('custom-column-value', 'onFindByTask');
+        Route::put('custom-column-value', 'onUpdate');
     });
 
     Route::controller(PositionController::class)->group(function() {

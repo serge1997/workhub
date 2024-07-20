@@ -5,21 +5,25 @@
     <Dialog v-model:visible="visibleShowTaskModal" modal header="" :style="{ width: '45rem' }">
         <div class="row">
             <div v-if="taskFinded" class="col-md-12 m-auto">
-                <input type="text" id="task-id-show" :value="taskFinded.id">
+                <input type="hidden" id="task-id-show" :value="taskFinded.id">
                 <div class="row">
                     <div v-if="taskFinded.user_name" class="col-md-12 mb-3 d-flex align-items-center gap-2 border-bottom p-2" id="task-header">
                         <span>
                             <Chip :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
                         </span>
-                        <span>
+                        <span class="d-flex">
+                            <span><Chip class="rounded-0" label="Prioridade"/></span>
                             <Tag :severity="setSeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
                         </span>
                         <span>
                             <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
                         </span>
+                        <span>
+                            <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-objects-column" text/>
+                        </span>
                     </div>
                     <div class="col-md-12 mb-1">
-                        <h3>{{ taskFinded.title }}</h3>
+                        <h2 class="task-title text-capitalize">{{ taskFinded.title }}</h2>
                     </div>
                     <div class="col-md-12 p-2">
                         <p>{{ taskFinded.description }}</p>
@@ -47,10 +51,13 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
-            <div v-for="custom in customColumns" class="col-md-12 d-flex align-items-center gap-2 mb-4">
-                <label for="">{{ custom.label}}</label>
-                <InputText @blur="createCustomValue(custom.label, custom.id)" :id.trim="custom.label" class="col-md-8 border-0 border-bottom rounded-0" placeholder="custom column value"/>
+        <div v-if="taskFinded" class="row mt-4">
+            <div v-if="taskFinded.customColumnValue.length > 0" class="com-md-12 mb-3 border-0 border-bottom">
+                <h4 class="">Colunas personalizadas</h4>
+            </div>
+            <div v-for="custom in taskFinded.customColumnValue" class="col-md-12 d-flex align-items-center gap-2 mb-4">
+                <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
+                <InputText @blur="$emit('createCustomValue', custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="col-md-8 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
             </div>
         </div>
         <Button text icon="pi pi-map" />
@@ -116,16 +123,6 @@ export default {
                 //iframHeader.classList.add('d-none')
             }, 1000)
         },
-        createCustomValue(label, id){
-            const value = document.getElementById(label).value;
-            const data = {
-                label: label,
-                value: value,
-                custom_column_id: id,
-                task_id: document.getElementById('task-id-show').value
-            };
-            console.log(data);
-        },
         setSeverity(priority){
             if(priority === "ALT")  return "danger";
             if (priority === "MED") return "warning";
@@ -136,3 +133,15 @@ export default {
     }
 }
 </script>
+<style scoped>
+.task-title{
+    font-weight: 600;
+}
+.custom-column-label{
+    font-weight: 600;
+}
+
+.custom-column-input{
+    background-color: #f1f5f9;
+}
+</style>

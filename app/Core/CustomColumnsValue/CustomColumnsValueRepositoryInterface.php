@@ -12,4 +12,5 @@ interface CustomColumnsValueRepositoryInterface
     public function listAll($request);
     public function findByColumnAndTask($request) : ?CustomColumnsValue;
     public function findByTask($request);
+    public function update($request);
 }

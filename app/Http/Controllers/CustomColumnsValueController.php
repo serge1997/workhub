@@ -23,4 +23,20 @@ class CustomColumnsValueController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onUpdate(Request $request)
+    {
+        try{
+            $message = "Valor costumizado adicionado com successo";
+            $update = $this->customColumnsValueRepositoryInterface->update($request);
+            return response()
+                ->json([
+                    'message' => $message,
+                    'data' => $update
+                ]);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

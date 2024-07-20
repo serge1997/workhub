@@ -66,6 +66,7 @@
                     open-modal-icon="pi-align-center"
                     :task-finded="task_finded",
                     :custom-columns="customColumns"
+                    @create-custom-value="createCustomValue"
                 />
             </span>
         </div>
@@ -105,7 +106,7 @@ export default{
             this.Api.get('task', {task_id: id})
             .then(async response => {
                 this.task_finded = await response.data;
-                return this.getAllCustomColumns()
+                this.getAllCustomColumns()
             })
             .catch(err => console.log(err));
         },
@@ -141,6 +142,20 @@ export default{
                 console.log(error);
             })
 
+        },
+        createCustomValue(column_id){
+            const value = document.getElementById(`custom-value-${column_id}`).value;
+            const data = {
+                value: value,
+                custom_column_id: column_id,
+                task_id: this.task.id
+            };
+            if (value !== null && value !== undefined){
+                this.Api.put('custom-column-value', null, data)
+                .then(async response => {
+                    this.task_finded = await response.data.data;
+                })
+            }
         },
 
     },
