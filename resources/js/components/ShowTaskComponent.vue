@@ -18,9 +18,6 @@
                         <span>
                             <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
                         </span>
-                        <span>
-                            <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-objects-column" text/>
-                        </span>
                     </div>
                     <div class="col-md-12 mb-1">
                         <h2 class="task-title text-capitalize">{{ taskFinded.title }}</h2>
@@ -52,8 +49,11 @@
             </div>
         </div>
         <div v-if="taskFinded" class="row mt-4">
-            <div v-if="taskFinded.customColumnValue.length > 0" class="com-md-12 mb-3 border-0 border-bottom">
-                <h4 class="">Colunas personalizadas</h4>
+            <div class="com-md-12 mb-3 border-0 border-bottom">
+                <div class="d-flex align-items-center gap-3">
+                    <h4 class="">Colunas personalizadas</h4>
+                    <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
+                </div>
             </div>
             <div v-for="custom in taskFinded.customColumnValue" class="col-md-12 d-flex align-items-center gap-2 mb-4">
                 <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
