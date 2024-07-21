@@ -19,6 +19,7 @@
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
                             :task-finded="task_finded"
+                             @create-custom-value="createCustomValue"
                         />
 
                     </span>
@@ -44,6 +45,7 @@
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
                             :task-finded="task_finded"
+                             @create-custom-value="createCustomValue"
                         />
                     </span>
                 </div>
@@ -68,6 +70,7 @@
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
                             :task-finded="task_finded"
+                            @create-custom-value="createCustomValue"
                         />
                     </span>
                 </div>
@@ -111,18 +114,31 @@ export default{
             this.Api.get('task', {task_id: id})
             .then(async response => {
                 this.task_finded = await response.data;
-                console.log(this.task_finded)
             })
             .catch(err => console.log(err));
         },
-        handleTaskStatus(id)
-        {
+        handleTaskStatus(id){
             this.Api.put('task/execution-status', {task_id: id})
             .then(async response => {
                 this.toaster(response.data).fire();
                 return this.onListAllTask()
             })
             .catch(err => console.log(err));
+        },
+        createCustomValue(column_id, length){
+            const value = document.getElementById(`custom-value-${column_id}`).value;
+            const data = {
+                value: value,
+                custom_column_id: column_id,
+                task_id: this.task_finded.id
+            };
+            if (value !== null && value !== undefined && value.length > length || value.length < length){
+                this.Api.put('custom-column-value', null, data)
+                .then(async response => {
+                    this.task_finded = await response.data.data;
+                    this.toaster(response.data.message).fire();
+                })
+            }
         },
         toaster(response){
             const Toast = this.$swal.mixin({

@@ -143,19 +143,37 @@ export default{
             })
 
         },
-        createCustomValue(column_id){
+        createCustomValue(column_id, length){
             const value = document.getElementById(`custom-value-${column_id}`).value;
             const data = {
                 value: value,
                 custom_column_id: column_id,
                 task_id: this.task.id
             };
-            if (value !== null && value !== undefined){
+            if (value !== null && value !== undefined && value.length > length || value.length < length){
                 this.Api.put('custom-column-value', null, data)
                 .then(async response => {
                     this.task_finded = await response.data.data;
+                    this.toaster(response.data.message).fire();
                 })
             }
+        },
+
+        toaster(response){
+            const Toast = this.$swal.mixin({
+                text: response,
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                icon: "success",
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            return Toast
         },
 
     },

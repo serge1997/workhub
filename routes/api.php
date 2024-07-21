@@ -78,12 +78,14 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::prefix('custom-column')->group(function(){
             Route::post('/', 'onCreate');
             Route::get('/', 'onListAll');
+            Route::get('/task', 'onListByTaskId');
         });
     });
 
     Route::controller(CustomColumnsValueController::class)->group(function(){
         Route::get('custom-column-value', 'onFindByTask');
         Route::put('custom-column-value', 'onUpdate');
+        Route::post('custom-column-value/task', 'onCreateByTask');
     });
 
     Route::controller(PositionController::class)->group(function() {

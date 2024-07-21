@@ -2,6 +2,7 @@
 namespace App\Core\CustomColumnsValue;
 
 use App\Core\CustomColumn\CustomColumnRepositoryInterface;
+use App\Core\CustomColumnsValue\Actions\CreateCustomColumnValueByTask;
 use App\Models\Task;
 use App\Core\CustomColumnsValue\Actions\CreateCustomsColumnsValueAction;
 use App\Core\CustomColumnsValue\Actions\UpdateCustomColumnsValueAction;
@@ -65,5 +66,10 @@ class CustomColumnsValueRepository implements CustomColumnsValueRepositoryInterf
         )->handle();
         $task = app()->make(TaskRepository::class);
         return $task->find($request);
+    }
+
+    public function createByTask($request)
+    {
+        CreateCustomColumnValueByTask::run($request);
     }
 }

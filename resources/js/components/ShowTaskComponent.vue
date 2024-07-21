@@ -52,12 +52,12 @@
             <div class="com-md-12 mb-3 border-0 border-bottom">
                 <div class="d-flex align-items-center gap-3">
                     <h4 class="">Colunas personalizadas</h4>
-                    <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
+                    <ListCustomColumnsComponents :task_id="taskFinded.id"/>
                 </div>
             </div>
-            <div v-for="custom in taskFinded.customColumnValue" class="col-md-12 d-flex align-items-center gap-2 mb-4">
+            <div v-for="custom in taskFinded.customColumnValue" class="col-md-10 d-flex justify-content-between align-items-center gap-2 mb-4">
                 <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
-                <InputText @blur="$emit('createCustomValue', custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="col-md-8 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
             </div>
         </div>
         <Button text icon="pi pi-map" />
@@ -75,10 +75,14 @@
     </Dialog>
 </template>
 <script>
+import ListCustomColumnsComponents from './ListCustomColumnsComponents.vue';
 export default {
     name: 'ShowTaskComponent',
 
     props: ['openModalIcon', 'task_id', 'taskFinded', 'customColumns'],
+    components: {
+        ListCustomColumnsComponents
+    },
 
     data(){
         return {
@@ -111,7 +115,6 @@ export default {
             setTimeout(() => {
                 let input = document.getElementById('add-roadmap-input')
                 input.focus()
-                console.log(input);
             }, 100)
         },
         showAnnex(annex){
@@ -119,7 +122,6 @@ export default {
             this.visibleShowAnnex = true;
             setTimeout(() => {
                 const iframHeader = document.querySelector('.iframe')
-                console.log(iframHeader)
                 //iframHeader.classList.add('d-none')
             }, 1000)
         },
@@ -128,6 +130,9 @@ export default {
             if (priority === "MED") return "warning";
             return "success";
         }
+    },
+    created(){
+
     },
     mounted(){
     }
