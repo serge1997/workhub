@@ -52,7 +52,7 @@
             <div class="com-md-12 mb-3 border-0 border-bottom">
                 <div class="d-flex align-items-center gap-3">
                     <h4 class="">Colunas personalizadas</h4>
-                    <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
+                    <ListCustomColumnsComponents :task_id="taskFinded.id"/>
                 </div>
             </div>
             <div v-for="custom in taskFinded.customColumnValue" class="col-md-12 d-flex align-items-center gap-2 mb-4">
@@ -75,10 +75,14 @@
     </Dialog>
 </template>
 <script>
+import ListCustomColumnsComponents from './ListCustomColumnsComponents.vue';
 export default {
     name: 'ShowTaskComponent',
 
     props: ['openModalIcon', 'task_id', 'taskFinded', 'customColumns'],
+    components: {
+        ListCustomColumnsComponents
+    },
 
     data(){
         return {

@@ -78,6 +78,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::prefix('custom-column')->group(function(){
             Route::post('/', 'onCreate');
             Route::get('/', 'onListAll');
+            Route::get('/task', 'onListByTaskId');
         });
     });
 

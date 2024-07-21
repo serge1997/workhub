@@ -37,4 +37,15 @@ class CustomColumnController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onListByTaskId(Request $request)
+    {
+        try{
+            return response()
+                ->json($this->customColumnRepositoryInterface->listByTaskId($request));
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

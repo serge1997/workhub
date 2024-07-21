@@ -3,6 +3,7 @@ namespace App\Core\CustomColumn;
 
 use App\Core\CustomColumn\Actions\CreateCustomColumnAction;
 use App\Core\CustomColumn\Actions\ListAllCustomColumnAction;
+use App\Core\CustomColumn\Actions\ListCustomColumnByTaskAction;
 use App\Http\Resources\CustomColumnResource;
 
 class CustomColumnRepository implements CustomColumnRepositoryInterface
@@ -19,4 +20,11 @@ class CustomColumnRepository implements CustomColumnRepositoryInterface
     }
     public function update($request){}
     public function delete($request){}
+
+    public function listByTaskId($request)
+    {
+        return CustomColumnResource::collection(
+            app()->make(ListCustomColumnByTaskAction::class)->handle($request)
+        );
+    }
 }
