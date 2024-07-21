@@ -7,4 +7,5 @@ interface CustomColumnRepositoryInterface
     public function listAll();
     public function update($request);
     public function delete($request);
+    public function listByTaskId($request);
 }

@@ -39,4 +39,17 @@ class CustomColumnsValueController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onCreateByTask(Request $request)
+    {
+        try{
+            $message = "Campo personalizado(s) adicionado(s) com successo";
+            $this->customColumnsValueRepositoryInterface->createByTask($request);
+            return response()
+                ->json($message);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }
