@@ -3,8 +3,8 @@
         <i :class="`pi ${openModalIcon} icon-list-task`"></i>
     </Button>
     <Dialog v-model:visible="visibleShowTaskModal" modal header="" :style="{ width: '85rem' }">
-        <div class="row">
-            <div v-if="taskFinded" class="col-md-12 m-auto">
+        <div v-if="taskFinded" class="row">
+            <div class="col-md-8">
                 <input type="hidden" id="task-id-show" :value="taskFinded.id">
                 <div class="row">
                     <div v-if="taskFinded.user_name" class="col-md-12 mb-3 d-flex align-items-center gap-2 border-bottom p-2" id="task-header">
@@ -33,7 +33,7 @@
                 <div v-if="taskFinded.roads_map" class="row" id="road-map">
                     <div v-for="road of taskFinded.roads_map" class="col-md-12">
                         <h6 class="fw-bolder">{{ road.title }}</h6>
-                        <div class="w-100">
+                        <div class="w-75">
                             <p>{{ road.description }}</p>
                         </div>
                     </div>
@@ -50,18 +50,25 @@
                         </Button>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div v-if="taskFinded" class="row mt-4">
-            <div class="com-md-12 mb-3 border-0 border-bottom">
-                <div class="d-flex align-items-center gap-3">
-                    <h4 class="">Colunas personalizadas</h4>
-                    <ListCustomColumnsComponents :task_id="taskFinded.id"/>
+                <div v-if="taskFinded.customColumnValue" class="row mt-4">
+                    <div class="com-md-12 mb-3 border-0 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <h4 class="">Colunas personalizadas</h4>
+                            <ListCustomColumnsComponents :task_id="taskFinded.id"/>
+                        </div>
+                    </div>
+                    <div v-for="custom in taskFinded.customColumnValue" class="col-md-10 d-flex justify-content-between align-items-center gap-2 mb-4">
+                        <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
+                        <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                    </div>
                 </div>
             </div>
-            <div v-for="custom in taskFinded.customColumnValue" class="col-md-10 d-flex justify-content-between align-items-center gap-2 mb-4">
-                <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
-                <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+            <div class="col-md-4 task-activities-box rounded-1">
+                <div class="row">
+                    <div class="col-md-10 p-4">
+                        <h6>Atividades no task</h6>
+                    </div>
+                </div>
             </div>
         </div>
         <Button text icon="pi pi-map" />
@@ -156,6 +163,9 @@ export default {
 }
 
 .custom-column-input{
+    background-color: #f1f5f9;
+}
+.task-activities-box{
     background-color: #f1f5f9;
 }
 </style>
