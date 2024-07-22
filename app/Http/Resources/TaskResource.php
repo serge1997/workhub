@@ -43,6 +43,7 @@ class TaskResource extends JsonResource
             'annexes' => AnnexResource::collection($this->annexes),
             'task_owner' => $this->when($request->user()->id == $this->user_id, true),
             'customColumnValue' => CustomsColumnsValueResource::collection($this->customColumnValue),
+            'full_task_execution_status' => $this->fullExecutionLabel(),
 
         ];
     }

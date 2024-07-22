@@ -67,4 +67,14 @@ class Task extends Model
    {
     return $this->hasMany(CustomColumnsValue::class, 'task_id');
    }
+
+   public function fullExecutionLabel() : string
+   {
+    return match($this->execution_status)
+    {
+        "WAT" => "Pendente",
+        "PRO" => "Progress",
+        "CON" => "Concuido"
+    };
+   }
 }

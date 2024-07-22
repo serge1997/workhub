@@ -2,7 +2,7 @@
     <Button @click="visibleShowTaskModal = !visibleShowTaskModal; $emit('showTask', task_id)" text>
         <i :class="`pi ${openModalIcon} icon-list-task`"></i>
     </Button>
-    <Dialog v-model:visible="visibleShowTaskModal" modal header="" :style="{ width: '45rem' }">
+    <Dialog v-model:visible="visibleShowTaskModal" modal header="" :style="{ width: '85rem' }">
         <div class="row">
             <div v-if="taskFinded" class="col-md-12 m-auto">
                 <input type="hidden" id="task-id-show" :value="taskFinded.id">
@@ -12,8 +12,12 @@
                             <Chip :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
                         </span>
                         <span class="d-flex">
-                            <span><Chip class="rounded-0" label="Prioridade"/></span>
+                            <span><Chip class="rounded-0" label="prioridade"/></span>
                             <Tag :severity="setSeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
+                        </span>
+                        <span class="d-flex">
+                            <span><Chip class="rounded-0" label="status"/></span>
+                            <Tag class="py-0" :severity="setStatusSeverity(taskFinded.execution_status)" :value="taskFinded.full_task_execution_status" />
                         </span>
                         <span>
                             <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
@@ -128,6 +132,11 @@ export default {
         setSeverity(priority){
             if(priority === "ALT")  return "danger";
             if (priority === "MED") return "warning";
+            return "success";
+        },
+        setStatusSeverity(status){
+            if(status === "WAT")  return "warning";
+            if (status === "PRO") return "primary";
             return "success";
         }
     },
