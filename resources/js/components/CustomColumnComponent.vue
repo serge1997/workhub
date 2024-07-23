@@ -1,5 +1,6 @@
 <template>
-    <Button @click="visibleCustomFiledDialog = true" class="w-75 border rounded-2 fs-4 task-description" text icon="pi pi-plus-circle" />
+    <Button @click="visibleCustomFiledDialog = true" class="w-50 navbar-dialog-btn rounded-2 fs-4 task-description" text icon="pi pi-plus-circle" />
+    <small class="task-description navbar-dialog-btn-desc">Column</small>
     <Dialog v-model:visible="visibleCustomFiledDialog" header="Criar campo personlizado" :style="{ width: '25rem' }" position="topcenter" :modal="true" :draggable="false">
         <div class="row">
             <div class="col-md-12 d-flex flex-column  gap-2">
