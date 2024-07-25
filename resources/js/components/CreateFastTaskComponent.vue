@@ -9,11 +9,15 @@
             <div class="col-md-10 m-auto d-flex gap-2 fast-task-form-icon-group">
                 <div class="d-flex flex-column gap-2">
                     <Button text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
-                        <span class="d-flex align-items-center">
+                        <span v-if="!fastTask.user_id" class="d-flex align-items-center">
                             <i class="pi pi-user fast-task-form-icon"></i>
                         </span>
+                        <span v-else class="d-flex align-items-center">
+                            <img :alt="fastTask.user_id.name" :src="`img/users_avatars/${fastTask.user_id.avatar}`" style="width: 18px" />
+                            <i class="fast-task-form-icon"></i>
+                        </span>
                         <span class="d-flex align-items-center">
-                            <small class="task-description">usuario responsavel</small>
+                            <small class="task-description">{{ fastTask.user_id === null ? 'usuario responsavel' : fastTask.user_id.name }}</small>
                         </span>
                     </Button>
                     <Listbox v-model="fastTask.user_id" :options="users" optionLabel="name" filter class="w-full md:w-56">
@@ -50,7 +54,7 @@
                             <small class="task-description">Prioridade</small>
                         </span>
                     </Button>
-                    <Listbox @change="onSelectedPriority" v-model="fastTask.priority" :options="priorities" filter optionLabel="label" class="w-full md:w-56">
+                    <Listbox v-model="fastTask.priority" :options="priorities" filter optionLabel="label" class="w-full md:w-56">
                         <template #option="slotProps">
                             <div class="d-flex align-items-center gap-2">
                                 <i class="pi pi-circle-fill" :class="`text-${slotProps.option.severity}`"></i>
@@ -92,6 +96,9 @@ export default {
     methods:{
         onSelectedPriority(){
             console.log(this.fastTask.priority.label);
+        },
+        onSelectedResponsavel(){
+            console.log(this.fastTask.user_id.name)
         },
         onListAllUsers(){
             this.Api.get('users')
