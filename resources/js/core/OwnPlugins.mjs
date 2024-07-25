@@ -5,6 +5,6 @@ export default {
         const container = Container.app();
         app.config.globalProperties.App = container;
         app.config.globalProperties.Api = container.getInstance('ApiModule');;
-        app.config.globalProperties.ApiV2 = container.getInstance('ApiModuleV2');
+        app.config.globalProperties.Apiv2 = container.getInstance('ApiModuleV2');
     }
 }
