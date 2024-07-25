@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\NotDeletScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy(NotDeletScope::class)]
 class Comment extends Model
 {
     use HasFactory;
@@ -42,5 +46,10 @@ class Comment extends Model
     public function hasResponse() : bool
     {
         return $this->has_response === true;
+    }
+
+    public function scopeCommentOf(Builder $builder, int $user_id)
+    {
+        return $builder->where('user_id', $user_id);
     }
 }

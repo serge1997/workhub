@@ -55,8 +55,10 @@ class CommentRepository implements CommentRepositoryInterface
     {
         return CommentResource::collection(
             Comment::query()
-                ->where([['deleted_at', '<>', null], ['user_id', $request->user()->id]])
-                    ->get()
+                ->withoutGlobalScopes()
+                    ->where('deleted_at', '<>', null)
+                        ->commentOf($request->user()->id)
+                            ->get()
         );
     }
 
