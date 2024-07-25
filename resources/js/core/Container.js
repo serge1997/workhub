@@ -1,4 +1,6 @@
 import { ApiModule } from "./ApiModule.js";
+import { ApiModuleV2 } from "./ApiModuleV2.js";
+
 import { User } from "../main/user.js";
 export class Container{
     constructor(){
@@ -16,6 +18,9 @@ export class Container{
         })
         this.bind('User', () => {
             return new User();
+        })
+        this.bind('ApiModuleV2', () => {
+            return new ApiModuleV2();
         })
     }
 

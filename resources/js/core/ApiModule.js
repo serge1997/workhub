@@ -2,7 +2,7 @@ import axios from "axios";
 export class ApiModule {
     constructor(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
-        this.baseURL = `${location.origin}/api/`;
+        this.baseURL = `${location.origin}/api/v1/`;
     }
 
     async post(url, data){
