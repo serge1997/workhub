@@ -16,11 +16,11 @@
                             <small class="task-description">usuario responsavel</small>
                         </span>
                     </Button>
-                    <Listbox v-model="fastTask.user_id" :options="users" filter class="w-full md:w-56">
-                        <template #data="{option}">
-                            <div class="d-flex">
-                                <img :alt="option.name" :src="`img/users_avatars/${option.avatar}`" style="width: 18px" />
-                                <div>{{ option.name }}</div>
+                    <Listbox v-model="fastTask.user_id" :options="users" optionLabel="name" filter class="w-full md:w-56">
+                        <template #option="slotProps">
+                            <div class="d-flex gap-2">
+                                <img :alt="slotProps.option.name" :src="`img/users_avatars/${slotProps.option.avatar}`" style="width: 28px" />
+                                <div>{{ slotProps.option.name }}</div>
                             </div>
                         </template>
                     </Listbox>
@@ -41,7 +41,7 @@
                 <div class="d-flex flex-column gap-2">
                     <Button text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
                         <span class="d-flex align-items-center">
-                            <i class="pi pi-circle-fill fast-task-form-icon"></i>
+                            <i class="pi pi-circle-fill" :class="fastTask.priority !== null ? 'text-'+fastTask.priority.severity : 'fast-task-form-icon'"></i>
                         </span>
                         <span v-if="fastTask.priority !== null" class="d-flex align-items-center">
                             <small class="task-description">Prioridade {{ fastTask.priority.label }}</small>
@@ -50,7 +50,14 @@
                             <small class="task-description">Prioridade</small>
                         </span>
                     </Button>
-                    <Listbox @change="onSelectedPriority" v-model="fastTask.priority" :options="priorities" filter optionLabel="label" class="w-full md:w-56" />
+                    <Listbox @change="onSelectedPriority" v-model="fastTask.priority" :options="priorities" filter optionLabel="label" class="w-full md:w-56">
+                        <template #option="slotProps">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="pi pi-circle-fill" :class="`text-${slotProps.option.severity}`"></i>
+                                <div>{{ slotProps.option.label }}</div>
+                            </div>
+                        </template>
+                    </Listbox>
                 </div>
             </div>
             <div class="col-md-10 m-auto mt-4">
@@ -67,9 +74,9 @@ export default {
         return{
             visibleFastTaskDialog: false,
             priorities: [
-                {value: "ALT", label: "Alta"},
-                {value: "MED", label: "Media"},
-                {value: "BAX", label: "Baixa"}
+                {value: "ALT", label: "Alta", severity: "danger"},
+                {value: "MED", label: "Media", severity: "warning"},
+                {value: "BAX", label: "Baixa", severity: "success"}
             ],
             visibleTaskTimeInputDialog: false,
             fastTask:{
