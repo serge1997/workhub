@@ -9,5 +9,6 @@ interface TaskRepositoryInterface
     public function find($request);
     public function handleExecutionStatus($request);
     public function update($request);
+    public function softDelete($request);
 
 }

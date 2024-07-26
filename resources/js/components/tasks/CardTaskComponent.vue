@@ -1,32 +1,35 @@
 <template>
     <div class="w-100">
-        <div v-if="showStatus == 'WAT'" v-for="task in task.waiting" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'WAT'" v-for="task in tasksWait" class="card shadow-sm border-0 mb-3">
             <div class="card-body">
                 <div class="w-100 mb-3">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
                     :task="task"
+                    @confirm-delete = "$emit('confirmDelete', task.id)"
                 />
             </div>
         </div>
-        <div v-if="showStatus == 'PRO'" v-for="task in task.progress" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'PRO'" v-for="task in tasksProgress" class="card shadow-sm border-0 mb-3">
             <div class="card-body">
                 <div class="w-100 mb-3">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
                     :task="task"
+                    @confirm-delete = "$emit('confirmDelete', task.id)"
                 />
             </div>
         </div>
-        <div v-if="showStatus == 'CON'" v-for="task in task.concluded" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'CON'" v-for="task in tasksConcluded" class="card shadow-sm border-0 mb-3">
             <div class="card-body">
                 <div class="w-100 mb-3">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
                     :task="task"
+                    @confirm-delete = "$emit('confirmDelete', task.id)"
                 />
             </div>
         </div>
@@ -38,7 +41,12 @@ import TaskCardIconsComponent from '../TaskCardIconsComponent.vue';
 import ShowTaskAnnexComponent from '../ShowTaskAnnexComponent.vue';
 export default{
     name: 'CardTaskComponent',
-    props: ['showStatus'],
+    props: {
+        showStatus: String,
+        tasksProgress: Object,
+        tasksWait: Object,
+        tasksConcluded: Object
+    },
     components: {
         ShowTaskComponent,
         TaskCardIconsComponent,
@@ -55,18 +63,6 @@ export default{
         }
     },
     methods:{
-        onListAllTask(){
-            this.Api.get('tasks')
-            .then(async response => {
-                this.task.waiting = await response.data.filter(task => task.execution_status === 'WAT');
-                this.task.progress = await response.data.filter(task => task.execution_status === 'PRO');
-                this.task.concluded = await response.data.filter(task => task.execution_status === 'CON');
-                console.log(response)
-            })
-            .catch(async err => {
-
-            })
-        },
         showTask(id){
             this.task_finded = null;
             this.Api.get('task', {id: id})
@@ -78,7 +74,6 @@ export default{
         }
     },
     mounted(){
-        this.onListAllTask();
     }
 }
 </script>

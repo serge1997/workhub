@@ -71,7 +71,7 @@
             </span>
         </div>
         <div v-if="task.can_delete" class="w-100 icons d-flex gap-1 align-items-center">
-            <Button @click="deleteTask(task.id)" class="d-flex gap-1 align-items-center" text>
+            <Button @click="$emit('confirmDelete', task.id)" class="d-flex gap-1 align-items-center" text>
                 <span>
                     <i class="pi pi-trash icon-list-task"></i>
                 </span>
@@ -164,16 +164,6 @@ export default{
                     this.toaster(response.data.message).fire();
                 })
             }
-        },
-        deleteTask(id){
-            return;
-            this.Api.delete('task', {task_id: id})
-            .then(async response => {
-                this.toaster(response.data).fire();
-            })
-            .catch(erro => {
-                console.log(erro);
-            })
         },
         toaster(response){
             const Toast = this.$swal.mixin({

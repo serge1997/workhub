@@ -30,7 +30,10 @@ import AvatarGroup from 'primevue/avatargroup';
 import Avatar from 'primevue/avatar';
 import ConfirmPopup from 'primevue/confirmpopup';
 import Listbox from 'primevue/listbox';
-
+import ConfirmDialog from 'primevue/confirmdialog';
+import Toast from 'primevue/toast';
+import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -73,13 +76,17 @@ app.component('AvatarGroup', AvatarGroup);
 app.component('Avatar', Avatar);
 app.component('ConfirmPopup', ConfirmPopup);
 app.component('Listbox', Listbox);
+app.component('ConfirmDialog', ConfirmDialog)
+app.component('Toast', Toast);
 
 
 
 
 app.use(router)
-        .use(VueAxios, axios)
-            .use(PrimeVue)
-                .use(OwnPlugins)
-                    .use(VueSweetalert2)
-                        .mount('#app');
+    .use(VueAxios, axios)
+    .use(PrimeVue)
+    .use(ConfirmationService)
+    .use(ToastService)
+    .use(OwnPlugins)
+    .use(VueSweetalert2)
+    .mount('#app');

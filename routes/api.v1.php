@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('tasks', 'onListAll');
         Route::get('task', 'onFind');
         Route::put('task/execution-status', 'onHandleExecutionStatus');
+        Route::delete('task', 'onSoftDelete')->name('task.delete');
     });
 
     Route::controller(FollowerController::class)->group(function() {

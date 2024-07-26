@@ -64,4 +64,17 @@ class TaskController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onSoftDelete(Request $request)
+    {
+        try{
+            $message = "Tarefa deletado com successo";
+            $this->taskRepositoryInterface->softDelete($request);
+            return response()
+                ->json($message);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

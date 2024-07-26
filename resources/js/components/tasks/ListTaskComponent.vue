@@ -1,7 +1,7 @@
 <template>
     <div class="w-100">
         <ul v-if="showStatus == 'WAT'" class="list-group">
-            <li class="list-group-item border-0 border-bottom" v-for="task in task.waiting">
+            <li class="list-group-item border-0 border-bottom" v-for="task in tasksWait">
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
@@ -27,7 +27,7 @@
             </li>
         </ul>
         <ul v-if="showStatus == 'PRO'" class="list-group">
-            <li class="list-group-item border-0 border-bottom" v-for="task in task.progress">
+            <li class="list-group-item border-0 border-bottom" v-for="task in tasksProgress">
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
@@ -52,7 +52,7 @@
             </li>
         </ul>
         <ul v-if="showStatus == 'CON'" class="list-group">
-            <li class="list-group-item border-0 border-bottom" v-for="task in task.concluded">
+            <li class="list-group-item border-0 border-bottom" v-for="task in tasksConcluded">
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
@@ -82,33 +82,22 @@
 import ShowTaskComponent from '../ShowTaskComponent.vue';
 export default{
     name: 'ListTaskComponent',
-    props: ['showStatus'],
+    props: {
+        showStatus: String,
+        tasksProgress: Object,
+        tasksWait: Object,
+        tasksConcluded: Object
+    },
 
     components: {
         ShowTaskComponent
     },
     data(){
         return {
-            task: {
-                progress: null,
-                waiting: null,
-                concluded: null,
-            },
             task_finded: null,
         }
     },
     methods: {
-        onListAllTask(){
-            this.Api.get('tasks')
-            .then(async response => {
-                this.task.waiting = await response.data.filter(task => task.execution_status === 'WAT');
-                this.task.progress = await response.data.filter(task => task.execution_status === 'PRO');
-                this.task.concluded = await response.data.filter(task => task.execution_status === 'CON');
-            })
-            .catch(async err => {
-
-            })
-        },
         showTask(id){
             this.task_finded = null;
             this.Api.get('task', {task_id: id})
@@ -158,7 +147,6 @@ export default{
         },
     },
     mounted(){
-        this.onListAllTask();
     }
 }
 </script>

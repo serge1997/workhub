@@ -20,7 +20,12 @@
                             </div>
                             <div class="card-body mt-4">
                                 <keep-alive>
-                                    <component show-status="WAT" :is="componentIs"></component>
+                                    <component
+                                        :tasks-wait="tasksWait"
+                                        show-status="WAT"
+                                        :is="componentIs"
+                                        @confirm-delete="confirmDelete">
+                                    </component>
                                 </keep-alive>
                             </div>
                         </div>
@@ -32,7 +37,12 @@
                             </div>
                             <div class="card-body mt-4">
                                 <keep-alive>
-                                    <component show-status="PRO" :is="componentIs"></component>
+                                    <component
+                                        :tasks-progress="tasksProgress"
+                                        show-status="PRO"
+                                        :is="componentIs"
+                                        @confirm-delete="confirmDelete">
+                                    </component>
                                 </keep-alive>
                             </div>
                         </div>
@@ -44,19 +54,28 @@
                             </div>
                             <div class="card-body mt-4">
                                 <keep-alive>
-                                    <component show-status="CON" :is="componentIs"></component>
+                                    <component
+                                        show-status="CON"
+                                        :tasks-concluded="tasksConcluded"
+                                        :is="componentIs"
+                                        @confirm-delete="confirmDelete">
+                                    </component>
                                 </keep-alive>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <ConfirmDialog />
+            <Toast />
         </div>
     </SidebarComponent>
 </template>
 <script>
 import ListTaskComponent from './../../tasks/ListTaskComponent.vue';
 import CardTaskComponent from './../../tasks/CardTaskComponent.vue';
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 export default{
     name: 'Sprint',
 
@@ -72,13 +91,62 @@ export default{
                 concluded: null,
             },
             componentIs: 'ListTaskComponent',
+            conf: useConfirm(),
+            toast: useToast(),
+            tasksProgress: null,
+            tasksWait: null,
+            tasksConcluded: null
         }
     },
     methods: {
+        onListAllTask(){
+            this.Api.get('tasks')
+            .then(async response => {
+                this.tasksWait = await response.data.filter(task => task.execution_status === 'WAT');
+                this.tasksProgress = await response.data.filter(task => task.execution_status === 'PRO');
+                this.tasksConcluded = await response.data.filter(task => task.execution_status === 'CON');
+                console.log(response)
+            })
+            .catch(async err => {
 
+            })
+        },
+        confirmDelete(id){
+            this.conf.require({
+                message: 'Você quer deletar essa task?',
+                header: 'Aviso',
+                icon: 'pi pi-exclamation-triangle',
+                rejectProps: {
+                    label: 'Cancel',
+                    severity: 'secondary',
+                    outlined: true
+                },
+                acceptProps: {
+                    label: 'Save'
+                },
+                accept: () => {
+
+                    this.deleteTask(id);
+                },
+                reject: () => {
+                    this.toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+                }
+            });
+        },
+        deleteTask(id){
+            this.Api.delete('task', {task_id: id})
+            .then(async response => {
+                this.toast.add({ severity: 'info', summary: 'Message', detail: response.data, life: 3000 });
+                this.onListAllTask()
+            })
+            .catch(erro => {
+                console.log(erro);
+            })
+        },
     },
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        this.onListAllTask();
     }
 }
 
