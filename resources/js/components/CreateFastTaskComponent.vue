@@ -6,6 +6,9 @@
             <div class="col-md-10 m-auto mb-3">
                 <InputText v-model="fastTask.title" style="background-color: #f3f4f6;" class="w-100 border-0 p-3" placeholder="Titulo da tarefa" />
             </div>
+            <div class="col-md-10 m-auto mb-3">
+                <Textarea v-model="fastTask.description" style="background-color: #f3f4f6;" class="w-100 border-0 p-3" placeholder="Descrição da tarefa" />
+            </div>
             <div class="col-md-10 m-auto d-flex gap-2 fast-task-form-icon-group">
                 <div class="d-flex flex-column gap-2">
                     <Button text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
@@ -65,15 +68,24 @@
                 </div>
             </div>
             <div class="col-md-10 m-auto mt-4">
-                <Button class="btn-block w-100" label="Salvar" />
+                <Button v-if="disbaleBtnCreate()" @click="createFastTask" disabled class="btn-block w-100" id="btn-create-fast" label="Salvar" />
+                <Button v-else @click="createFastTask" class="btn-block w-100" id="btn-create-fast" label="Salvar" />
             </div>
         </div>
     </Dialog>
 </template>
 <script>
+import { DateTime } from '../core/DateTime';
 export default {
     name: 'CreateFastTaskComponent',
 
+    watch: {
+        'fastTask.title': {
+            handler: function(newval, old){
+                this.disbaleBtnCreate()
+            }
+        },
+    },
     data(){
         return{
             visibleFastTaskDialog: false,
@@ -87,25 +99,69 @@ export default {
                 title: null,
                 priority: null,
                 user_id: null,
-                execution_delay: null
+                execution_delay: null,
+                description: null,
             },
             users: null,
+            disableBtn: 'disabled',
         }
     },
 
     methods:{
-        onSelectedPriority(){
-            console.log(this.fastTask.priority.label);
-        },
-        onSelectedResponsavel(){
-            console.log(this.fastTask.user_id.name)
-        },
         onListAllUsers(){
             this.Api.get('users')
             .then(async (response) => {
                 this.users = await response.data.filter(manager => manager.user_type !== "ADM");
             })
             .catch(err => console.log(err))
+        },
+        createFastTask(){
+            const enFormat = DateTime.enFormat(this.fastTask.execution_delay);
+            const data = {
+                title: this.fastTask.title,
+                priority: this.fastTask.priority.value,
+                user_id: this.fastTask.user_id.id,
+                execution_delay: DateTime.time(enFormat),
+                description: this.fastTask.description
+            }
+            this.Api.post('task', data)
+            .then(async response => {
+                this.toaster(response.data).fire();
+                this.fastTask.title = null;
+                this.fastTask.priority = null;
+                this.fastTask.user_id = null;
+                this.fastTask.execution_delay = null;
+                this.fastTask.description =  null;
+                data = null;
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
+        disbaleBtnCreate(){
+            return this.fastTask.title === null
+                || this.fastTask.execution_delay === null
+                || this.fastTask.priority === null
+                || this.fastTask.user_id === null
+                || this.fastTask.title == ""
+                || this.fastTask.execution_delay == ""
+                ? true : false;
+        },
+        toaster(response){
+            const Toast = this.$swal.mixin({
+                text: response,
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                icon: "success",
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            return Toast
         },
     },
     mounted(){
