@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Enums\UserTypeEnum;
 
 class User extends Authenticatable
 {
@@ -76,5 +77,10 @@ class User extends Authenticatable
     public function latestTasks()
     {
         return $this->taskUser()->count();
+    }
+
+    public function isAdmin() : bool
+    {
+        return $this->user_type === UserTypeEnum::ADMIN->value;
     }
 }

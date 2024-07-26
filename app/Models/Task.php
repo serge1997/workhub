@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Enums\UserTypeEnum;
 
 class Task extends Model
 {
@@ -65,16 +66,22 @@ class Task extends Model
 
    public function customColumnValue() : HasMany
    {
-    return $this->hasMany(CustomColumnsValue::class, 'task_id');
+        return $this->hasMany(CustomColumnsValue::class, 'task_id');
    }
 
    public function fullExecutionLabel() : string
    {
-    return match($this->execution_status)
-    {
-        "WAT" => "Pendente",
-        "PRO" => "Progress",
-        "CON" => "Concuido"
-    };
+        return match($this->execution_status)
+        {
+            "WAT" => "Pendente",
+            "PRO" => "Progress",
+            "CON" => "Concuido"
+        };
    }
+
+public function isAdminAndTaskOwner(int $auth_id) : bool
+{
+    return $this->manager->user_type === UserTypeEnum::ADMIN->value
+        && $this->manager_id === $auth_id;
+}
 }
