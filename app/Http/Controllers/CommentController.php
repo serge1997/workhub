@@ -88,7 +88,7 @@ class CommentController extends Controller
     {
         try{
             return response()
-                ->json($this->commentRepositoryInterface->listAllSoftDeleted($request));
+                ->json($this->commentRepositoryInterface->listAllCommentTrash($request));
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 500);

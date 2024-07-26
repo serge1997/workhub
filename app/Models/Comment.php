@@ -52,4 +52,9 @@ class Comment extends Model
     {
         return $builder->where('user_id', $user_id);
     }
+
+    public function scopeDeleted(Builder $builder)
+    {
+        return $builder->where('deleted_at','<>', null);
+    }
 }

@@ -11,6 +11,6 @@ interface CommentRepositoryInterface
     public function update($request);
     public function softDelete($request);
     public function delete($request);
-    public function listAllSoftDeleted($request);
+    public function listAllCommentTrash($request);
     public function refreshSodftDelete($request);
 }
