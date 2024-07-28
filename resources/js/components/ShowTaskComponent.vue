@@ -19,10 +19,16 @@
                             <span><Chip class="rounded-0" label="status"/></span>
                             <Tag class="py-0" :severity="setStatusSeverity(taskFinded.execution_status)" :value="taskFinded.full_task_execution_status" />
                         </span>
+                        <span class="d-flex">
+                            <Tag class="py-2 bg-secondary" icon="pi pi-clock" :value="taskFinded.execution_delay" />
+                        </span>
                         <span>
-                            <AddTaskRoadMapFastly
+                            <AddTaskRoadMapFastlyComponent
                                 :task="taskFinded"
                             />
+                        </span>
+                        <span>
+                            <AddFileFastlyComponent />
                         </span>
                     </div>
                     <div class="col-md-12 mb-1">
@@ -82,14 +88,16 @@
 </template>
 <script>
 import ListCustomColumnsComponents from './ListCustomColumnsComponents.vue';
-import AddTaskRoadMapFastly from './AddTaskRoadMapFastly.vue';
+import AddTaskRoadMapFastlyComponent from './AddTaskRoadMapFastlyComponent.vue';
+import AddFileFastlyComponent from './AddFileFastlyComponent.vue';
 export default {
     name: 'ShowTaskComponent',
 
     props: ['openModalIcon', 'task_id', 'taskFinded', 'customColumns'],
     components: {
         ListCustomColumnsComponents,
-        AddTaskRoadMapFastly
+        AddTaskRoadMapFastlyComponent,
+        AddFileFastlyComponent
     },
 
     data(){

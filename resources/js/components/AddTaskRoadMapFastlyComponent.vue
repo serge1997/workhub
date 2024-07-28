@@ -1,5 +1,5 @@
 <template>
-    <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
+    <Button @click="openAddRoadMapModal" class="task-description btn-icon-show-task" icon="pi pi-plus-circle" text/>
     <Dialog v-model:visible="visibleAddTaskRoadMap" maximizable modal header="" :style="{ width: '25em' }">
         <div class="col-md-12 mt-3">
             <div class="w-100 mb-3 d-flex flex-column gap-1">
@@ -18,7 +18,7 @@
 <script>
 import { useToast } from "primevue/usetoast";
 export default{
-    name: 'AddTaskRoadMapFastly',
+    name: 'AddTaskRoadMapFastlyComponent',
     props: {
         task: Object
     },
@@ -47,11 +47,15 @@ export default{
             Reflect.set(this.roadMap, 'task_id', this.task.id);
             this.Api.post('task-road-map', this.roadMap)
             .then(async response => {
+                this.invalid = null;
+                this.formError = null;
+                this.roadMap.road_map_descriptions = null;
+                this.roadMap.road_map_titles = null;
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
             })
             .catch(error => {
                 this.formError = error.response.data.errors;
-                this.invalid = 'border border-danger'
+                this.invalid = 'border border-dange'
             })
         }
     },

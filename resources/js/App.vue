@@ -25,4 +25,9 @@ body {
 .task-description {
     color: #64748b;
 }
+
+.btn-icon-show-task{
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
 </style>
