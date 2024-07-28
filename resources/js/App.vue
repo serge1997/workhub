@@ -6,7 +6,11 @@
 </template>
 <script>
 export default {
+    data(){
+        return {
 
+        }
+    },
     mounted(){
         //localStorage.removeItem('token');
     }

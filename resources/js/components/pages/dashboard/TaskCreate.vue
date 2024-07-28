@@ -97,6 +97,7 @@
 </template>
 <script>
 import { DateTime } from '../../../core/DateTime';
+import { useToast } from "primevue/usetoast";
 export default{
     name: 'TaskCreate',
     components: {
@@ -133,7 +134,8 @@ export default{
             },
             invalidInpuClass: null,
             formErrorBag: null,
-            selectedAnnexName: []
+            selectedAnnexName: [],
+            toast: useToast(),
         }
     },
     methods: {
@@ -152,7 +154,7 @@ export default{
             const data = this.taskData();
             this.Api.post('task', data)
             .then(async response => {
-                this.toaster(response.data).fire();
+                this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
             })
             .catch(async err => {
                 if (err.response.status) {
