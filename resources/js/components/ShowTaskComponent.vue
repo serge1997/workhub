@@ -20,7 +20,9 @@
                             <Tag class="py-0" :severity="setStatusSeverity(taskFinded.execution_status)" :value="taskFinded.full_task_execution_status" />
                         </span>
                         <span>
-                            <Button @click="openAddRoadMapModal" class="task-description" icon="pi pi-plus-circle" text/>
+                            <AddTaskRoadMapFastly
+                                :task="taskFinded"
+                            />
                         </span>
                     </div>
                     <div class="col-md-12 mb-1">
@@ -75,31 +77,25 @@
         <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100" maximizable modal header="" :style="{ width: '100%' }">
             <iframe class="iframe min-vh-100" :src="`/task-annex/${annex}`" width="100%" height="100%" frameborder="0"></iframe>
         </Dialog>
-        <Dialog v-model:visible="visibleAddTaskRoadMap" maximizable modal header="" :style="{ width: '25em' }">
-            <div class="col-md-12">
-                <InputText class="w-100 border-0 border-bottom rounded-0" id="add-roadmap-input" placeholder="Addiconnar guia para a tarefa"/>
-            </div>
-            <div class="col-md-12 d-flex justify-content-end">
-                <Button class="task-description" icon="pi pi-save" text/>
-            </div>
-        </Dialog>
+
     </Dialog>
 </template>
 <script>
 import ListCustomColumnsComponents from './ListCustomColumnsComponents.vue';
+import AddTaskRoadMapFastly from './AddTaskRoadMapFastly.vue';
 export default {
     name: 'ShowTaskComponent',
 
     props: ['openModalIcon', 'task_id', 'taskFinded', 'customColumns'],
     components: {
-        ListCustomColumnsComponents
+        ListCustomColumnsComponents,
+        AddTaskRoadMapFastly
     },
 
     data(){
         return {
             visibleShowTaskModal: false,
             visibleShowAnnex: false,
-            visibleAddTaskRoadMap: false,
             task: {
                 progress: "PRO",
                 waiting: "WAT",
@@ -120,13 +116,6 @@ export default {
         },
         handleTaskStatus(){
 
-        },
-        openAddRoadMapModal(){
-            this.visibleAddTaskRoadMap = true;
-            setTimeout(() => {
-                let input = document.getElementById('add-roadmap-input')
-                input.focus()
-            }, 100)
         },
         showAnnex(annex){
             this.annex = annex;

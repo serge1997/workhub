@@ -5,6 +5,6 @@ use App\Models\Task;
 
 interface TaskRoadMapRepositoryInterface
 {
-    public function create($request, Task $task);
+    public function create($request, ?Task $task = null);
     public function find($request);
 }

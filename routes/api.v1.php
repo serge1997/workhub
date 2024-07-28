@@ -9,6 +9,7 @@ use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskRoadMapController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -87,6 +88,12 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('custom-column-value', 'onFindByTask');
         Route::put('custom-column-value', 'onUpdate');
         Route::post('custom-column-value/task', 'onCreateByTask');
+    });
+
+    Route::controller(TaskRoadMapController::class)->group(function() {
+        Route::prefix('task-road-map')->group(function() {
+            Route::post('/', 'onCreate');
+        });
     });
 
     Route::controller(PositionController::class)->group(function() {

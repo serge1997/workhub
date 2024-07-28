@@ -1,6 +1,7 @@
 <template>
     <div>
         <router-view></router-view>
+        <Toast />
     </div>
 </template>
 <script>

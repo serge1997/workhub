@@ -7,7 +7,7 @@ use Exception;
 
 class TaskRoadMapRepository implements TaskRoadMapRepositoryInterface
 {
-    public function create($request, Task $task)
+    public function create($request, ?Task $task = null)
     {
         if ($request->has('road_map_titles') && !is_null($request->road_map_titles)) {
             $titles = explode(',', $request->road_map_titles);
@@ -17,7 +17,7 @@ class TaskRoadMapRepository implements TaskRoadMapRepositoryInterface
                     $roadMap = new TaskRoadMap();
                     $roadMap->title = $title;
                     $roadMap->description = $descriptions[$key];
-                    $roadMap->task_id = $task->id;
+                    $roadMap->task_id = $task === null ? $request->task_id : $task->id;
                     $roadMap->save();
                     if (! TaskRoadMap::find($roadMap->id)->exists()) {
                         throw new Exception("Erro ao salvar a guia da tarefa");
