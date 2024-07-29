@@ -20,6 +20,8 @@ use App\Core\Position\PositionRepository;
 use App\Core\Position\PositionRepositoryInterface;
 use App\Core\Task\TaskRepository;
 use App\Core\Task\TaskRepositoryInterface;
+use App\Core\TaskActivity\TaskActivityRepository;
+use App\Core\TaskActivity\TaskActivityRepositoryInterface;
 use App\Core\TaskRoadMap\TaskRoadMapRepository;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
 use App\Core\User\UserRepository;
@@ -44,6 +46,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CommentResponseRepositoryInterface::class, CommentResponseRepository::class);
         $this->app->bind(CustomColumnRepositoryInterface::class, CustomColumnRepository::class);
         $this->app->bind(CustomColumnsValueRepositoryInterface::class, CustomColumnsValueRepository::class);
+        $this->app->bind(TaskActivityRepositoryInterface::class, TaskActivityRepository::class);
     }
 
     /**

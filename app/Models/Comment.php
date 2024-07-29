@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Scopes\NotDeletScope;
+use App\Observers\CommentObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ObservedBy(CommentObserver::class)]
 #[ScopedBy(NotDeletScope::class)]
 class Comment extends Model
 {
