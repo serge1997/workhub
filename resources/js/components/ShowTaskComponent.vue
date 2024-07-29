@@ -81,6 +81,16 @@
                     <div class="col-md-10 p-4">
                         <h6>Atividades no task</h6>
                     </div>
+                    <div v-for="activity in taskFinded.activities " class="col-md-12 mb-2">
+                        <span class="d-flex align-items-center gap-1">
+                            <span class="d-flex align-items-center">
+                                <i style="font-size: 0.3em;" class="pi pi-circle-fill task-description text-success"></i>
+                            </span>
+                            <span class="d-flex align-items-center">
+                                <small class="task-activity"><b>{{ activity.author }}</b> {{ activity.activity }} {{ activity.created_at }}</small>
+                            </span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,5 +179,9 @@ export default {
 }
 .task-activities-box{
     background-color: #f1f5f9;
+}
+.task-activity {
+    font-size: 0.8em;
+    color: #64748b;
 }
 </style>

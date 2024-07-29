@@ -21,7 +21,7 @@ class TaskRoadMapObserver
             description: 'Road map',
             author_id: $taskRoadMap->user_id,
             task_id: $taskRoadMap->task_id,
-            content: $taskRoadMap->user->name . " adicionou uma guia"
+            content: "adicionou uma guia"
         );
     }
 
@@ -42,7 +42,7 @@ class TaskRoadMapObserver
             description: 'Road map',
             author_id: $taskRoadMap->user_id,
             task_id: $taskRoadMap->task_id,
-            content: $taskRoadMap->user->name . " deletou uma guia"
+            content: "deletou uma guia"
         );
     }
 

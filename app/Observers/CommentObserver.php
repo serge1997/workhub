@@ -22,7 +22,7 @@ class CommentObserver
             description: 'comment',
             author_id: $comment->user_id,
             task_id: $comment->task_id,
-            content: $comment->user->name . " adicionou um commentario"
+            content: "adicionou um commentario"
         );
     }
 
@@ -35,7 +35,7 @@ class CommentObserver
             description: 'comment',
             author_id: $comment->user_id,
             task_id: $comment->task_id,
-            content: $comment->user->name . " Atualizou um commentario"
+            content: "Atualizou um commentario"
         );
     }
 
@@ -48,7 +48,7 @@ class CommentObserver
             description: 'comment',
             author_id: $comment->user_id,
             task_id: $comment->task_id,
-            content: $comment->user->name . " apagou um commentario"
+            content: "apagou um commentario"
         );
     }
 

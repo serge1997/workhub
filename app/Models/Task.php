@@ -82,9 +82,14 @@ class Task extends Model
         };
    }
 
-public function isAdminAndTaskOwner(int $auth_id) : bool
-{
-    return $this->manager->user_type === UserTypeEnum::ADMIN->value
-        && $this->manager_id === $auth_id;
-}
+    public function isAdminAndTaskOwner(int $auth_id) : bool
+    {
+        return $this->manager->user_type === UserTypeEnum::ADMIN->value
+            && $this->manager_id === $auth_id;
+    }
+
+    public function taskActivity() : HasMany
+    {
+        return $this->hasMany(TaskActivity::class, 'task_id');
+    }
 }
