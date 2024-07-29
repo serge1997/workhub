@@ -7,6 +7,6 @@ final class FindCommentAction
 {
     public static function run($request) : Comment
     {
-        return Comment::findOrFail($request->comment_id);
+        return Comment::withoutGlobalScopes()->findOrFail($request->comment_id);
     }
 }

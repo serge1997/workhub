@@ -1,9 +1,19 @@
 <template>
     <div class="w-100 p-1">
-        <Button class="icon-list-task" @click="listAllCommentByTask(task)" text icon="pi pi-comment" />
+        <Button v-if="task.comment_count" class="d-flex gap-1 px-2" @click="listAllCommentByTask(task.id)" text>
+            <span>
+                <i class="pi pi pi-comment icon-list-task"></i>
+            </span>
+            <span class="d-flex gap-1 align-items-center">
+                <small class="task-description">
+                    {{task.comment_count}}
+                </small>
+            </span>
+        </Button>
+        <Button v-else class="icon-list-task" @click="listAllCommentByTask(task.id)" text icon="pi pi-comment" />
          <Dialog v-model:visible="visibleShowTaskCommentModal" modal header="Task comment" :style="{ width: '25rem' }">
              <div class="w-100 comment-list mb-3">
-                <input type="hidden" id="task-id" :value="task">
+                <input type="hidden" id="task-id" :value="task.id">
                 <div v-for="(comment, index) of taskComments" class="card border-0 comment-card">
                     <input type="hidden" :id="`comment-${comment.id}`" :value="comment.id">
                     <div class="card-header bg-white border-0 p-0 border-0 d-flex align-items-center gap-2">

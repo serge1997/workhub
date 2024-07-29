@@ -48,9 +48,12 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="taskFinded.annexes" class="row d-flex justify-content-center flex-wrap" id="task-annexes">
-                    <div v-for="annex of taskFinded.annexes" class="col-md-4">
-                        <Button @click="showAnnex(annex.annex)" class="border rounded-2 p-3 d-flex flex-column w-100 gap-1" text>
+                <div v-if="taskFinded.annexes" class="row d-flex justify-content-center flex-wrap mt-3" id="task-annexes">
+                    <div class="row border-bottom mb-3">
+                        <h4 class="">Annexos</h4>
+                    </div>
+                    <div class="row d-flex justify-content-center flex-wrap gap-2">
+                        <Button v-for="annex of taskFinded.annexes" @click="showAnnex(annex.annex)" class="border rounded-2 p-3 d-flex flex-column col-md-2 gap-1" text>
                             <span>
                                 <i class="pi pi-file-pdf fs-3 task-description"></i>
                             </span>
