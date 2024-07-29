@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnexController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CommentResponseController;
 use App\Http\Controllers\CustomColumnController;
@@ -92,6 +93,12 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::controller(TaskRoadMapController::class)->group(function() {
         Route::prefix('task-road-map')->group(function() {
+            Route::post('/', 'onCreate');
+        });
+    });
+
+    Route::controller(AnnexController::class)->group(function(){
+        Route::prefix('annex')->group(function(){
             Route::post('/', 'onCreate');
         });
     });

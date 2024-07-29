@@ -28,7 +28,9 @@
                             />
                         </span>
                         <span>
-                            <AddFileFastlyComponent />
+                            <AddFileFastlyComponent
+                                :task="taskFinded"
+                            />
                         </span>
                     </div>
                     <div class="col-md-12 mb-1">

@@ -8,7 +8,7 @@ use Exception;
 
 class AnnexRepository implements AnnexRepositoryInterface
 {
-    public function create($request, Task $task)
+    public function create($request, ?Task $task = null)
     {
         if ($request->hasFile('annex')) {
             $files = $request->annex;
@@ -18,7 +18,7 @@ class AnnexRepository implements AnnexRepositoryInterface
                 $annexName = md5($annex->getClientOriginalName() . strtotime('now')) . "." . $extension;
                 $annex->move(public_path('task-annex/'), $annexName);
                 $model->annex = $annexName;
-                $model->task_id = $task->id;
+                $model->task_id = $task !== null ? $task->id : $request->task_id;
                 $model->save();
                 if (!Annex::find($model->id)->exists()) {
                     throw new Exception("Não foi possivel criar o annex");

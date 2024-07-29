@@ -53,10 +53,9 @@
                                         <i class="pi pi-file"></i>
                                         <span>Upload</span>
                                     </span>
-                                    <span class="d-flex flex-column" id="selected-annexes">
-                                    </span>
                                 </Button>
                             </div>
+                            <span class="d-flex flex-column" id="selected-annexes"></span>
                         </div>
                         <div class="row">
                             <div class="w-100 d-flex flex-column mb-3 justify-content-start">
@@ -144,10 +143,10 @@ export default{
             fileInput.click()
         },
         onChangeTaskAnnex(){
-            let btn = document.querySelector('#input-file-upload #selected-annexes');
+            let btn = document.querySelector('#selected-annexes');
             for (let i = 0; i < this.$refs.inputFiles.files.length; i++) {
                 let file = this.$refs.inputFiles.files[i];
-                btn.innerHTML += `<small>${file.name}</small>`
+                btn.innerHTML += `<small class="task-description">${file.name}</small>`
             }
         },
         createTask(){
