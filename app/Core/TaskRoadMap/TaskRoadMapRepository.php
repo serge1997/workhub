@@ -18,6 +18,7 @@ class TaskRoadMapRepository implements TaskRoadMapRepositoryInterface
                     $roadMap->title = $title;
                     $roadMap->description = $descriptions[$key];
                     $roadMap->task_id = $task === null ? $request->task_id : $task->id;
+                    $roadMap->user_id = $request->user()->id;
                     $roadMap->save();
                     if (! TaskRoadMap::find($roadMap->id)->exists()) {
                         throw new Exception("Erro ao salvar a guia da tarefa");

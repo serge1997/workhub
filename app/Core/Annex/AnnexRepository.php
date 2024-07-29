@@ -18,6 +18,7 @@ class AnnexRepository implements AnnexRepositoryInterface
                 $annexName = md5($annex->getClientOriginalName() . strtotime('now')) . "." . $extension;
                 $annex->move(public_path('task-annex/'), $annexName);
                 $model->annex = $annexName;
+                $model->user_id = $request->user()->id;
                 $model->task_id = $task !== null ? $task->id : $request->task_id;
                 $model->save();
                 if (!Annex::find($model->id)->exists()) {

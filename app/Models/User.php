@@ -83,4 +83,14 @@ class User extends Authenticatable
     {
         return $this->user_type === UserTypeEnum::ADMIN->value;
     }
+
+    public function annexes() : HasMany
+    {
+        return $this->hasMany(Annex::class, 'user_id');
+    }
+
+    public function roadmap() : HasMany
+    {
+        return $this->hasMany(TaskRoadMap::class, 'user_id');
+    }
 }

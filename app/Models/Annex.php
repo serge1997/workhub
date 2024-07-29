@@ -18,6 +18,7 @@ class Annex extends Model
         'task_id',
         'annex',
         'deleted_at',
+        'user_id',
         'deleted_reason'
     ];
 
@@ -36,5 +37,10 @@ class Annex extends Model
         $annex = explode('.', $this->annex);
         $exentsion = array_pop($annex);
         return $exentsion;
+    }
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

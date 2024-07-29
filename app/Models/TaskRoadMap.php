@@ -16,6 +16,7 @@ class TaskRoadMap extends Model
         'title',
         'description',
         'task_id',
+        'user_id',
         'deleted_at',
         'deleted_reason'
     ];
