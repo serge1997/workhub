@@ -41,7 +41,7 @@
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="priorities" class="form-label">Seguidore(s)</label>
-                                <MultiSelect :options="followers" v-model="task.followers" optionLabel="name" optionValue="id" class="w-100" id="task-folowers" placeholder="Choose task folowers" :maxSelectedLabels="3" />
+                                <MultiSelect display="chip" :options="followers" v-model="task.followers" optionLabel="name" optionValue="id" class="w-100" id="task-folowers" placeholder="Choose task folowers" :maxSelectedLabels="3" />
                             </div>
                         </div>
                         <div class="row mb-3">

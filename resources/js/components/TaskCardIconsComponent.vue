@@ -22,6 +22,26 @@
                 </span>
             </Button>
         </div>
+        <div class="w-100 px-2">
+            <Chip class="rounded-0 bg-white">
+                <div class="d-flex align-items-center">
+                    <span class="task-description d-flex align-items-center gap-2">
+                        <i :class="setSeverity(task.execution_status)" class="pi pi-circle-fill icon-list-task"></i>
+                        {{ task.full_task_execution_status }}
+                    </span>
+                    <Button @click="toogleStatusListBox(task.id)" class="task-description p-0" icon="pi pi-angle-right" text />
+                </div>
+
+            </Chip>
+            <Listbox :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="taskStatus" filter optionLabel="label" class="w-75 d-none">
+                <template #option="slotProps">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="pi pi-circle-fill" :class="`text-${slotProps.option.severity}`"></i>
+                        <div>{{ slotProps.option.label }}</div>
+                    </div>
+                </template>
+            </Listbox>
+        </div>
         <div class="w-100 icons d-flex align-items-center">
             <Button class="d-flex gap-1 align-items-center" text>
                 <span>
@@ -105,6 +125,12 @@ export default{
                 seconds: 0,
                 minutes: 0
             },
+            taskStatus: [
+                {value: "WAT", label: "Fila", severity: 'danger'},
+                {value: "PRO", label: "Progress", severity: 'secondary'},
+                {value: "CON", label: "Concluido", severity: 'success'}
+            ],
+            selectedStatus: null
         }
     },
     methods: {
@@ -136,8 +162,8 @@ export default{
             }, 1000);
         },
         setSeverity(priority){
-            if(priority === "ALT")  return "text-danger";
-            if (priority === "MED") return "text-warning";
+            if(priority === "WAT")  return "text-danger";
+            if (priority === "PRO") return "text-warning";
             return "text-success";
         },
         getAllCustomColumns(){
@@ -164,6 +190,14 @@ export default{
                     this.toaster(response.data.message).fire();
                 })
             }
+        },
+        toogleStatusListBox(id){
+            let box = document.getElementById(`task-status-listbox-${id}`);
+            if (box.classList.contains('d-none')){
+                return box.classList.remove('d-none')
+            }
+            box.classList.add('d-none')
+
         },
         toaster(response){
             const Toast = this.$swal.mixin({
