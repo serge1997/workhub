@@ -92,4 +92,9 @@ class Task extends Model
     {
         return $this->hasMany(TaskActivity::class, 'task_id');
     }
+
+    public function executionStatus() : BelongsTo
+    {
+        return $this->belongsTo(TaskExecutionStatus::class, 'execution_status_id');
+    }
 }

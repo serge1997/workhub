@@ -10,18 +10,6 @@
                 </small>
             </Button>
         </div>
-        <div class="w-100">
-            <Button class="d-flex gap-2" text>
-                <span class="d-flex align-items-center">
-                    <i :class="setSeverity(task.priority)" class="pi pi-circle-fill icon-list-task"></i>
-                </span>
-                <span class="d-flex align-items-center">
-                    <small style="font-size: 0.8rem;" class="task-description d-flex align-items-center gap-1">
-                        {{ task.priority_fullDescription }}
-                    </small>
-                </span>
-            </Button>
-        </div>
         <div class="w-100 px-2">
             <Chip class="rounded-0 bg-white">
                 <div class="d-flex align-items-center">
@@ -33,10 +21,10 @@
                 </div>
 
             </Chip>
-            <Listbox :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="taskStatus" filter optionLabel="label" class="w-75 d-none">
+            <Listbox :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="taskStatus" optionLabel="label" class="w-75 border rounded-2 shadow-sm d-none">
                 <template #option="slotProps">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="pi pi-circle-fill" :class="`text-${slotProps.option.severity}`"></i>
+                    <div class="d-flex align-items-center gap-2 border-bottom p-1">
+                        <i class="pi pi-circle-fill task-description" :class="`text-${slotProps.option.severity}`"></i>
                         <div>{{ slotProps.option.label }}</div>
                     </div>
                 </template>
