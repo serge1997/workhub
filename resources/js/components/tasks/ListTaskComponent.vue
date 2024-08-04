@@ -19,7 +19,8 @@
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
                             :task-finded="task_finded"
-                             @create-custom-value="createCustomValue"
+                            @create-custom-value="createCustomValue"
+                            :task-execution-status="taskExecutionStatus"
                         />
 
                     </span>
@@ -45,7 +46,8 @@
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
                             :task-finded="task_finded"
-                             @create-custom-value="createCustomValue"
+                            @create-custom-value="createCustomValue"
+                            :task-execution-status="taskExecutionStatus"
                         />
                     </span>
                 </div>
@@ -71,6 +73,7 @@
                             open-modal-icon="pi-align-center"
                             :task-finded="task_finded"
                             @create-custom-value="createCustomValue"
+                            :task-execution-status="taskExecutionStatus"
                         />
                     </span>
                 </div>
@@ -86,7 +89,8 @@ export default{
         showStatus: String,
         tasksProgress: Object,
         tasksWait: Object,
-        tasksConcluded: Object
+        tasksConcluded: Object,
+        taskExecutionStatus: Object
     },
 
     components: {

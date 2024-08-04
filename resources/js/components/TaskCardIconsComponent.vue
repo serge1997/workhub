@@ -1,5 +1,5 @@
 <template>
-    <div class="w-100 d-flex flex-column">
+    <div v-if="task !== null" class="w-100 d-flex flex-column">
         <div class="w-100">
             <Button class="" text>
                 <span class="d-flex align-items-center">
@@ -21,11 +21,11 @@
                 </div>
 
             </Chip>
-            <Listbox :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="taskStatus" optionLabel="label" class="w-75 border rounded-2 shadow-sm d-none">
+            <Listbox :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="task_status" optionLabel="name" class="w-75 border rounded-2 shadow-sm d-none">
                 <template #option="slotProps">
                     <div class="d-flex align-items-center gap-2 border-bottom p-1">
-                        <i class="pi pi-circle-fill task-description" :class="`text-${slotProps.option.severity}`"></i>
-                        <div>{{ slotProps.option.label }}</div>
+                        <i class="pi pi-circle-fill task-description" :style="{'color': slotProps.option.severity}"></i>
+                        <div>{{ slotProps.option.name }}</div>
                     </div>
                 </template>
             </Listbox>
@@ -95,6 +95,10 @@ import ShowTaskAnnexComponent from './ShowTaskAnnexComponent.vue';
 import { DateTime } from './../core/DateTime.js';
 export default{
     name: 'TaskCardIconsComponent',
+    inject: ['task_exec_status'],
+    props: {
+        task: Object
+    },
 
     components: {
         ShowTaskComponent,
@@ -118,7 +122,8 @@ export default{
                 {value: "PRO", label: "Progress", severity: 'secondary'},
                 {value: "CON", label: "Concluido", severity: 'success'}
             ],
-            selectedStatus: null
+            selectedStatus: null,
+            task_status: null
         }
     },
     methods: {
@@ -187,6 +192,15 @@ export default{
             box.classList.add('d-none')
 
         },
+        onListAllTaskExecutionStatus(){
+            this.Api.get('task-execution-status')
+            .then(async response => {
+                this.task_status = await response.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        },
         toaster(response){
             const Toast = this.$swal.mixin({
                 text: response,
@@ -204,6 +218,9 @@ export default{
             return Toast
         },
 
+    },
+    created(){
+        this.task_status = this.task_exec_status;
     },
     mounted() {
     }

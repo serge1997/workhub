@@ -17,15 +17,15 @@
                         <div style="height: 600px; min-width: 360px; overflow: scroll;">
                             <div class="card w-100">
                                 <div class="card-header border-0 bg-white">
-                                    <Tag class="w-100 bg-secondary" :value="status.name" />
+                                    <Tag class="w-100" :style="{'background-color': executionStatusBg(status.status)}" :value="status.name" />
                                 </div>
                                 <div class="card-body mt-4">
                                     <keep-alive>
                                         <component
-                                            :tasks-wait="tasksWait"
-                                            show-status="WAT"
+                                            :tasks="tasks"
+                                            :show-status="status.status"
                                             :is="componentIs"
-                                            @confirm-delete="confirmDelete">
+                                            @confirm-delete="confirmDelete"
                                         </component>
                                     </keep-alive>
                                 </div>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <!-- <div class="row mt-3">
                     <div style="height: 600px; overflow: scroll;" class="col-md-4">
                         <div class="card w-100">
                             <div class="card-header border-0 bg-white">
@@ -45,7 +45,8 @@
                                         :tasks-wait="tasksWait"
                                         show-status="WAT"
                                         :is="componentIs"
-                                        @confirm-delete="confirmDelete">
+                                        @confirm-delete="confirmDelete"
+                                        :task-execution-status="task_status">
                                     </component>
                                 </keep-alive>
                             </div>
@@ -62,7 +63,8 @@
                                         :tasks-progress="tasksProgress"
                                         show-status="PRO"
                                         :is="componentIs"
-                                        @confirm-delete="confirmDelete">
+                                        @confirm-delete="confirmDelete"
+                                        :task-execution-status="task_status">
                                     </component>
                                 </keep-alive>
                             </div>
@@ -79,13 +81,14 @@
                                         show-status="CON"
                                         :tasks-concluded="tasksConcluded"
                                         :is="componentIs"
-                                        @confirm-delete="confirmDelete">
+                                        @confirm-delete="confirmDelete"
+                                        :task-execution-status="task_status">
                                     </component>
                                 </keep-alive>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <ConfirmDialog />
             <Toast />
@@ -111,19 +114,21 @@ export default{
                 waiting: null,
                 concluded: null,
             },
-            componentIs: 'ListTaskComponent',
+            componentIs: 'CardTaskComponent',
             conf: useConfirm(),
             toast: useToast(),
+            tasks: null,
             tasksProgress: null,
             tasksWait: null,
             tasksConcluded: null,
-            task_status: null
+            task_status: null,
         }
     },
     methods: {
         onListAllTask(){
             this.Api.get('tasks')
             .then(async response => {
+                this.tasks = await response.data;
                 this.tasksWait = await response.data.filter(task => task.execution_status === 'WAT');
                 this.tasksProgress = await response.data.filter(task => task.execution_status === 'PRO');
                 this.tasksConcluded = await response.data.filter(task => task.execution_status === 'CON');
@@ -174,11 +179,31 @@ export default{
                 console.log(erro);
             })
         },
+        executionStatusBg(status){
+            switch(status){
+                case "WAT" :
+                    return "#7c3aed"
+                case "PRO" :
+                    return "#0ea5e9"
+                case "CDR" :
+                    return "#9333ea"
+                case "CON" :
+                    return "#10b981"
+                case "TST" :
+                    return "#f59e0b"
+                case "BKL" :
+                    return "#94a3b8"
+                case "PRQ" :
+                    return "#e11d48"
+                default : "#333"
+            }
+        }
     },
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
         this.onListAllTask();
         this.onListAllTaskExecutionStatus()
+
     }
 }
 
