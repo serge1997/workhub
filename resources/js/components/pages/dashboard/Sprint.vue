@@ -12,6 +12,27 @@
                         </template>
                     </Toolbar>
                 </div>
+                <div class="w-100 d-flex gap-4" style="overflow-x: scroll;">
+                    <div v-for="status in task_status" class="w-75 mt-3">
+                        <div style="height: 600px; min-width: 360px; overflow: scroll;">
+                            <div class="card w-100">
+                                <div class="card-header border-0 bg-white">
+                                    <Tag class="w-100 bg-secondary" :value="status.name" />
+                                </div>
+                                <div class="card-body mt-4">
+                                    <keep-alive>
+                                        <component
+                                            :tasks-wait="tasksWait"
+                                            show-status="WAT"
+                                            :is="componentIs"
+                                            @confirm-delete="confirmDelete">
+                                        </component>
+                                    </keep-alive>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row mt-3">
                     <div style="height: 600px; overflow: scroll;" class="col-md-4">
                         <div class="card w-100">
@@ -95,7 +116,8 @@ export default{
             toast: useToast(),
             tasksProgress: null,
             tasksWait: null,
-            tasksConcluded: null
+            tasksConcluded: null,
+            task_status: null
         }
     },
     methods: {
@@ -109,6 +131,15 @@ export default{
             })
             .catch(async err => {
 
+            })
+        },
+        onListAllTaskExecutionStatus(){
+            this.Api.get('task-execution-status')
+            .then(async response => {
+                this.task_status = await response.data;
+            })
+            .catch(err => {
+                console.log(err);
             })
         },
         confirmDelete(id){
@@ -147,6 +178,7 @@ export default{
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
         this.onListAllTask();
+        this.onListAllTaskExecutionStatus()
     }
 }
 

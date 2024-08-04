@@ -10,6 +10,7 @@ use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskExecutionStatusController;
 use App\Http\Controllers\TaskRoadMapController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -100,6 +101,12 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(AnnexController::class)->group(function(){
         Route::prefix('annex')->group(function(){
             Route::post('/', 'onCreate');
+        });
+    });
+
+    Route::controller(TaskExecutionStatusController::class)->group(function(){
+        Route::prefix('task-execution-status')->group(function(){
+            Route::get('/', 'onListAll');
         });
     });
 

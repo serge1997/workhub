@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('task_execution_status', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 30);
+            $table->enum('status', ['WAT', 'PRO', 'CON', 'CDR', 'TST', 'BKL', 'PRQ'])->unique();
             $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
