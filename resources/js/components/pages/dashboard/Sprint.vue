@@ -26,6 +26,8 @@
                                             :show-status="status.status"
                                             :is="componentIs"
                                             @confirm-delete="confirmDelete"
+                                            @list-all-task="onListAllTask"
+                                            :task-execution-status="task_status">
                                         </component>
                                     </keep-alive>
                                 </div>
@@ -134,8 +136,8 @@ export default{
                 this.tasksConcluded = await response.data.filter(task => task.execution_status === 'CON');
                 console.log(response)
             })
-            .catch(async err => {
-
+            .catch(err => {
+                console.log(err)
             })
         },
         onListAllTaskExecutionStatus(){
@@ -197,7 +199,10 @@ export default{
                     return "#e11d48"
                 default : "#333"
             }
-        }
+        },
+        handleTaskStatus(data){
+            console.log(data);
+        },
     },
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;

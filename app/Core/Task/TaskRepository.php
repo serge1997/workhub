@@ -7,6 +7,7 @@ use App\Core\Follower\FollowerRepositoryInterface;
 use App\Core\Task\Actions\FindTaskAction;
 use App\Core\Task\Actions\ExecutionStatusUpdateAction;
 use App\Core\Task\Actions\SoftDeleteTaskAction;
+use App\Core\TaskActivity\TaskActivityRepositoryInterface;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -17,7 +18,8 @@ class TaskRepository implements TaskRepositoryInterface
         protected AnnexRepositoryInterface $annexRepositoryInterface,
         protected FollowerRepositoryInterface $followerRepositoryInterface,
         protected TaskRoadMapRepositoryInterface $taskRoadMapRepositoryInterface,
-        protected CustomColumnsValueRepositoryInterface $customColumnsValueRepositoryInterface
+        protected CustomColumnsValueRepositoryInterface $customColumnsValueRepositoryInterface,
+        protected TaskActivityRepositoryInterface $taskActivityRepositoryInterface
     ){}
 
     public function create($request)
@@ -44,8 +46,12 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function handleExecutionStatus($request)
     {
-        (new ExecutionStatusUpdateAction(FindTaskAction::run($request)))
-            ->handle();
+        (new ExecutionStatusUpdateAction(
+            FindTaskAction::run($request),
+            $request,
+            $this->taskActivityRepositoryInterface,
+            )
+        )->handle();
     }
 
     public function update($request)

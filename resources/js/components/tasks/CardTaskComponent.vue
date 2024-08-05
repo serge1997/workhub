@@ -8,7 +8,7 @@
                 <TaskCardIconsComponent
                     :task="task"
                     @confirm-delete = "$emit('confirmDelete', task.id)"
-                    :task-execution-status="taskExecutionStatus"
+                    @list-all-task="$emit('listAllTask')"
                 />
             </div>
         </div>
@@ -20,7 +20,7 @@
                 <TaskCardIconsComponent
                     :task="task"
                     @confirm-delete = "$emit('confirmDelete', task.id)"
-                    :task-execution-status="taskExecutionStatus"
+                    @handle-task-status="$emit('handleTaskStatus')"
                 />
             </div>
         </div>
@@ -32,7 +32,7 @@
                 <TaskCardIconsComponent
                     :task="task"
                     @confirm-delete = "$emit('confirmDelete', task.id)"
-                    :task-execution-status="taskExecutionStatus"
+                    @handle-task-status="$emit('handleTaskStatus')"
                 />
             </div>
         </div>

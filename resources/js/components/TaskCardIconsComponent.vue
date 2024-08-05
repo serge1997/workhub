@@ -21,7 +21,7 @@
                 </div>
 
             </Chip>
-            <Listbox :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="task_status" optionLabel="name" class="w-75 border rounded-2 shadow-sm d-none">
+            <Listbox @change="handleTaskStatus(task.id)" :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="task_status" optionLabel="name" class="w-75 border rounded-2 shadow-sm d-none">
                 <template #option="slotProps">
                     <div class="d-flex align-items-center gap-2 border-bottom p-1">
                         <i class="pi pi-circle-fill task-description" :style="{'color': slotProps.option.severity}"></i>
@@ -93,6 +93,7 @@ import ShowTaskFollower from './ShowTaskFollower.vue';
 import TaskCommentComponent from './TaskCommentComponent.vue';
 import ShowTaskAnnexComponent from './ShowTaskAnnexComponent.vue';
 import { DateTime } from './../core/DateTime.js';
+import { useToast } from 'primevue/usetoast';
 export default{
     name: 'TaskCardIconsComponent',
     inject: ['task_exec_status'],
@@ -108,6 +109,7 @@ export default{
     },
 
     props: ['task'],
+    emits:['listAllTask'],
 
     data(){
         return{
@@ -123,7 +125,8 @@ export default{
                 {value: "CON", label: "Concluido", severity: 'success'}
             ],
             selectedStatus: null,
-            task_status: null
+            task_status: null,
+            toast: useToast(),
         }
     },
     methods: {
@@ -199,6 +202,20 @@ export default{
             })
             .catch(err => {
                 console.log(err);
+            })
+        },
+        handleTaskStatus(id){
+            const data = {
+                execution_status_id: this.selectedStatus.id,
+                task_id: id
+            }
+            this.Api.put('task/execution-status', data)
+            .then(async response => {
+                this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
+                return this.$emit('listAllTask');
+            })
+            .catch(error => {
+                console.log(error)
             })
         },
         toaster(response){
