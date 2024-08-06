@@ -1,7 +1,34 @@
 <template>
     <div class="w-100">
+        <ul v-if="showStatus == 'BKL'" class="list-group">
+            <li class="list-group-item border-0 border-bottom" v-for="task in filterBacklog(tasks)">
+                <div class="w-100 d-flex justify-content-between">
+                    <span class="d-flex gap-2 p-1">
+                        <span>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                        </span>
+                        <span class="task-description">
+                            <small>{{ task.title }}</small>
+                        </span>
+                    </span>
+                    <span class="d-flex align-items-center">
+                        <ListTaskExecutionStatusComponent
+                            :task="task"
+                        />
+                        <ShowTaskComponent
+                            @show-task="showTask(task.id)"
+                            open-modal-icon="pi-align-center"
+                            :task-finded="task_finded"
+                            @create-custom-value="createCustomValue"
+                            :task-execution-status="taskExecutionStatus"
+                        />
+
+                    </span>
+                </div>
+            </li>
+        </ul>
         <ul v-if="showStatus == 'WAT'" class="list-group">
-            <li class="list-group-item border-0 border-bottom" v-for="task in tasksWait">
+            <li class="list-group-item border-0 border-bottom" v-for="task in filterAwait(tasks)">
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
@@ -28,7 +55,7 @@
             </li>
         </ul>
         <ul v-if="showStatus == 'PRO'" class="list-group">
-            <li class="list-group-item border-0 border-bottom" v-for="task in tasksProgress">
+            <li class="list-group-item border-0 border-bottom" v-for="task in filterInProgress(tasks)">
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
@@ -49,6 +76,87 @@
                             @create-custom-value="createCustomValue"
                             :task-execution-status="taskExecutionStatus"
                         />
+                    </span>
+                </div>
+            </li>
+        </ul>
+        <ul v-if="showStatus == 'CDR'" class="list-group">
+            <li class="list-group-item border-0 border-bottom" v-for="task in filterCodeReview(tasks)">
+                <div class="w-100 d-flex justify-content-between">
+                    <span class="d-flex gap-2 p-1">
+                        <span>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                        </span>
+                        <span class="task-description">
+                            <small>{{ task.title }}</small>
+                        </span>
+                    </span>
+                    <span class="d-flex">
+                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
+                            <i class="pi pi-play-circle icon-list-task"></i>
+                        </Button>
+                        <ShowTaskComponent
+                            @show-task="showTask(task.id)"
+                            open-modal-icon="pi-align-center"
+                            :task-finded="task_finded"
+                            @create-custom-value="createCustomValue"
+                            :task-execution-status="taskExecutionStatus"
+                        />
+
+                    </span>
+                </div>
+            </li>
+        </ul>
+        <ul v-if="showStatus == 'TST'" class="list-group">
+            <li class="list-group-item border-0 border-bottom" v-for="task in filterTeste(tasks)">
+                <div class="w-100 d-flex justify-content-between">
+                    <span class="d-flex gap-2 p-1">
+                        <span>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                        </span>
+                        <span class="task-description">
+                            <small>{{ task.title }}</small>
+                        </span>
+                    </span>
+                    <span class="d-flex">
+                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
+                            <i class="pi pi-play-circle icon-list-task"></i>
+                        </Button>
+                        <ShowTaskComponent
+                            @show-task="showTask(task.id)"
+                            open-modal-icon="pi-align-center"
+                            :task-finded="task_finded"
+                            @create-custom-value="createCustomValue"
+                            :task-execution-status="taskExecutionStatus"
+                        />
+
+                    </span>
+                </div>
+            </li>
+        </ul>
+        <ul v-if="showStatus == 'PRQ'" class="list-group">
+            <li class="list-group-item border-0 border-bottom" v-for="task in filterPullrequest(tasks)">
+                <div class="w-100 d-flex justify-content-between">
+                    <span class="d-flex gap-2 p-1">
+                        <span>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                        </span>
+                        <span class="task-description">
+                            <small>{{ task.title }}</small>
+                        </span>
+                    </span>
+                    <span class="d-flex">
+                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
+                            <i class="pi pi-play-circle icon-list-task"></i>
+                        </Button>
+                        <ShowTaskComponent
+                            @show-task="showTask(task.id)"
+                            open-modal-icon="pi-align-center"
+                            :task-finded="task_finded"
+                            @create-custom-value="createCustomValue"
+                            :task-execution-status="taskExecutionStatus"
+                        />
+
                     </span>
                 </div>
             </li>
@@ -83,6 +191,7 @@
 </template>
 <script>
 import ShowTaskComponent from '../ShowTaskComponent.vue';
+import ListTaskExecutionStatusComponent from '../ListTaskExecutionStatusComponent.vue';
 export default{
     name: 'ListTaskComponent',
     props: {
@@ -90,11 +199,13 @@ export default{
         tasksProgress: Object,
         tasksWait: Object,
         tasksConcluded: Object,
-        taskExecutionStatus: Object
+        taskExecutionStatus: Object,
+        tasks: Object
     },
 
     components: {
-        ShowTaskComponent
+        ShowTaskComponent,
+        ListTaskExecutionStatusComponent
     },
     data(){
         return {
@@ -132,6 +243,34 @@ export default{
                     this.toaster(response.data.message).fire();
                 })
             }
+        },
+        filterAwait(tasks){
+            const wait = tasks.filter(task => task.execution_status == 'WAT');
+            return wait;
+        },
+        filterInProgress(tasks){
+            const progress = tasks.filter(task => task.execution_status == 'PRO');
+            return progress;
+        },
+        filterConcluded(tasks){
+            const concluded = tasks.filter(task => task.execution_status == 'CON');
+            return concluded;
+        },
+        filterCodeReview(tasks){
+            const codereview = tasks.filter(task => task.execution_status == 'CDR');
+            return codereview;
+        },
+        filterTeste(tasks){
+            const teste = tasks.filter(task => task.execution_status == 'TST');
+            return teste;
+        },
+        filterPullrequest(tasks){
+            const pullrequest = tasks.filter(task => task.execution_status == 'PRQ');
+            return pullrequest;
+        },
+        filterBacklog(tasks){
+            const backlog = tasks.filter(task => task.execution_status == 'BKL');
+            return backlog;
         },
         toaster(response){
             const Toast = this.$swal.mixin({
