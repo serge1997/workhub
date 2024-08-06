@@ -28,7 +28,7 @@ class TaskRepository implements TaskRepositoryInterface
         $task = new Task($values);
         $task->manager_id = $request->user()->id;
         $task->save();
-        $task->executionStatus->fullStatusName->taskActivities();
+        //$task->executionStatus->fullStatusName->taskActivities();
         $this->customColumnsValueRepositoryInterface->create($task, $request);
         $this->annexRepositoryInterface->create($request, $task);
         $this->followerRepositoryInterface->create($request, $task);

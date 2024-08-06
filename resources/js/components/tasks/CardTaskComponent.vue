@@ -1,5 +1,17 @@
 <template>
     <div class="w-100">
+        <div v-if="showStatus == 'BKL'" v-for="task in filterBacklog(tasks)" class="card shadow-sm border-0 mb-3">
+            <div class="card-body">
+                <div class="w-100 mb-3">
+                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                </div>
+                <TaskCardIconsComponent
+                    :task="task"
+                    @confirm-delete = "$emit('confirmDelete', task.id)"
+                    @list-all-task="$emit('listAllTask')"
+                />
+            </div>
+        </div>
         <div v-if="showStatus == 'WAT'" v-for="task in filterAwait(tasks)" class="card shadow-sm border-0 mb-3">
             <div class="card-body">
                 <div class="w-100 mb-3">
@@ -21,6 +33,47 @@
                     :task="task"
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @handle-task-status="$emit('handleTaskStatus')"
+                    @list-all-task="$emit('listAllTask')"
+
+                />
+            </div>
+        </div>
+        <div v-if="showStatus == 'CDR'" v-for="task in filterCodeReview(tasks)" class="card shadow-sm border-0 mb-3">
+            <div class="card-body">
+                <div class="w-100 mb-3">
+                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                </div>
+                <TaskCardIconsComponent
+                    :task="task"
+                    @confirm-delete = "$emit('confirmDelete', task.id)"
+                    @handle-task-status="$emit('handleTaskStatus')"
+                    @list-all-task="$emit('listAllTask')"
+                />
+            </div>
+        </div>
+        <div v-if="showStatus == 'TST'" v-for="task in filterTeste(tasks)" class="card shadow-sm border-0 mb-3">
+            <div class="card-body">
+                <div class="w-100 mb-3">
+                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                </div>
+                <TaskCardIconsComponent
+                    :task="task"
+                    @confirm-delete = "$emit('confirmDelete', task.id)"
+                    @handle-task-status="$emit('handleTaskStatus')"
+                    @list-all-task="$emit('listAllTask')"
+                />
+            </div>
+        </div>
+        <div v-if="showStatus == 'PRQ'" v-for="task in filterPullrequest(tasks)" class="card shadow-sm border-0 mb-3">
+            <div class="card-body">
+                <div class="w-100 mb-3">
+                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                </div>
+                <TaskCardIconsComponent
+                    :task="task"
+                    @confirm-delete = "$emit('confirmDelete', task.id)"
+                    @handle-task-status="$emit('handleTaskStatus')"
+                    @list-all-task="$emit('listAllTask')"
                 />
             </div>
         </div>
@@ -33,6 +86,7 @@
                     :task="task"
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @handle-task-status="$emit('handleTaskStatus')"
+                    @list-all-task="$emit('listAllTask')"
                 />
             </div>
         </div>
@@ -94,6 +148,22 @@ export default{
         filterConcluded(tasks){
             const concluded = tasks.filter(task => task.execution_status == 'CON');
             return concluded;
+        },
+        filterCodeReview(tasks){
+            const codereview = tasks.filter(task => task.execution_status == 'CDR');
+            return codereview;
+        },
+        filterTeste(tasks){
+            const teste = tasks.filter(task => task.execution_status == 'TST');
+            return teste;
+        },
+        filterPullrequest(tasks){
+            const pullrequest = tasks.filter(task => task.execution_status == 'PRQ');
+            return pullrequest;
+        },
+        filterBacklog(tasks){
+            const backlog = tasks.filter(task => task.execution_status == 'BKL');
+            return backlog;
         }
     },
     mounted(){

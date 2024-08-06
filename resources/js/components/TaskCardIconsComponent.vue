@@ -211,6 +211,8 @@ export default{
             }
             this.Api.put('task/execution-status', data)
             .then(async response => {
+                let box = document.getElementById(`task-status-listbox-${id}`);
+                box.classList.add('d-none')
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
                 return this.$emit('listAllTask');
             })
