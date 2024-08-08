@@ -9,6 +9,7 @@
                     :task="task"
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @list-all-task="$emit('listAllTask')"
+                    :task-status="taskStatus"
                 />
             </div>
         </div>
@@ -21,6 +22,7 @@
                     :task="task"
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @list-all-task="$emit('listAllTask')"
+                    :task-status="taskStatus"
                 />
             </div>
         </div>
@@ -34,6 +36,7 @@
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @handle-task-status="$emit('handleTaskStatus')"
                     @list-all-task="$emit('listAllTask')"
+                    :task-status="taskStatus"
 
                 />
             </div>
@@ -48,6 +51,7 @@
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @handle-task-status="$emit('handleTaskStatus')"
                     @list-all-task="$emit('listAllTask')"
+                    :task-status="taskStatus"
                 />
             </div>
         </div>
@@ -61,6 +65,7 @@
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @handle-task-status="$emit('handleTaskStatus')"
                     @list-all-task="$emit('listAllTask')"
+                    :task-status="taskStatus"
                 />
             </div>
         </div>
@@ -74,6 +79,7 @@
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @handle-task-status="$emit('handleTaskStatus')"
                     @list-all-task="$emit('listAllTask')"
+                    :task-status="taskStatus"
                 />
             </div>
         </div>
@@ -87,6 +93,7 @@
                     @confirm-delete = "$emit('confirmDelete', task.id)"
                     @handle-task-status="$emit('handleTaskStatus')"
                     @list-all-task="$emit('listAllTask')"
+                    :task-status="taskStatus"
                 />
             </div>
         </div>
@@ -104,7 +111,8 @@ export default{
         tasksWait: Object,
         tasksConcluded: Object,
         taskExecutionStatus: Object,
-        tasks: Object
+        tasks: Object,
+        taskStatus: Object
     },
     components: {
         ShowTaskComponent,

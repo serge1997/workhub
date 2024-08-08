@@ -24,6 +24,10 @@ class TaskExecutionStatus extends Model
         return $this->hasMany(Task::class, 'execution_status_id');
     }
 
+    public function count_task() : int
+    {
+        return $this->task->count();
+    }
     public function fullStatusName() : TaskExecutionStatusEnum
     {
         return match($this->name)

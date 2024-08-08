@@ -1,7 +1,7 @@
 <template>
     <div class="w-100">
         <Button @click="toogleStatusListBox(task.id)" class="task-description p-0" icon="pi pi-angle-right" text />
-        <Listbox class="w-75 border rounded-2 shadow-sm d-none position-absolute" style="z-index: 999;left: 15%;" @change="handleTaskStatus(task.id)" :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="task_status" optionLabel="name">
+        <Listbox class="w-75 border rounded-2 shadow-sm d-none position-absolute" style="z-index: 999;left: 15%;" @change="handleTaskStatus(task.id)" :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="taskStatus" optionLabel="name">
             <template #option="slotProps">
                 <div class="d-flex align-items-center gap-2 border-bottom p-1">
                     <i class="pi pi-circle-fill task-description" :style="{'color': slotProps.option.severity}"></i>
@@ -17,11 +17,11 @@ export default{
     name: 'ListTaskExecutionStatusComponent',
 
     props:{
-        task: Object
+        task: Object,
+        taskStatus: Object
     },
     data(){
         return{
-            task_status: null,
             toast: useToast()
         }
     },
@@ -35,15 +35,7 @@ export default{
             box.classList.add('d-none')
 
         },
-        onListAllTaskExecutionStatus(){
-            this.Api.get('task-execution-status')
-            .then(async response => {
-                this.task_status = await response.data;
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        },
+
         handleTaskStatus(id){
             const data = {
                 execution_status_id: this.selectedStatus.id,
@@ -62,7 +54,7 @@ export default{
         },
     },
     mounted(){
-        this.onListAllTaskExecutionStatus()
+
     }
 }
 </script>

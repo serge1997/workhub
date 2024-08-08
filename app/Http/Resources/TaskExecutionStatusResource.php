@@ -20,6 +20,7 @@ class TaskExecutionStatusResource extends JsonResource
             'status' => $this->status,
             'description' => $this->description,
             'severity' => $this->executionStatusSeveriry(),
+            'task_count' => $this->count_task()
         ];
     }
 }

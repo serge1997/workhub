@@ -15,6 +15,7 @@
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
+                            :task-status="taskStatus"
                         />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
@@ -43,6 +44,7 @@
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
+                            :task-status="taskStatus"
                         />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
@@ -71,6 +73,7 @@
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
+                            :task-status="taskStatus"
                         />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
@@ -105,6 +108,7 @@
                             :task-finded="task_finded"
                             @create-custom-value="createCustomValue"
                             :task-execution-status="taskExecutionStatus"
+                            :task-status="taskStatus"
                         />
 
                     </span>
@@ -126,6 +130,7 @@
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
+                            :task-status="taskStatus"
                         />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
@@ -154,6 +159,7 @@
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
+                            :task-status="taskStatus"
                         />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
@@ -182,6 +188,7 @@
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
+                            :task-status="taskStatus"
                         />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
@@ -207,7 +214,8 @@ export default{
         tasksWait: Object,
         tasksConcluded: Object,
         taskExecutionStatus: Object,
-        tasks: Object
+        tasks: Object,
+        taskStatus: Object
     },
 
     components: {

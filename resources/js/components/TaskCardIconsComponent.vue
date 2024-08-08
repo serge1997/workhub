@@ -22,6 +22,7 @@
             <ListTaskExecutionStatusComponent
                 :task="task"
                 @list-all-task="$emit('listAllTask')"
+                :task-status="taskStatus"
             />
         </div>
         <div class="w-100 icons d-flex align-items-center">
@@ -93,7 +94,8 @@ export default{
     name: 'TaskCardIconsComponent',
     inject: ['task_exec_status'],
     props: {
-        task: Object
+        task: Object,
+        taskStatus: Object
     },
 
     components: {
@@ -104,7 +106,7 @@ export default{
         ListTaskExecutionStatusComponent
     },
 
-    props: ['task'],
+    props: ['task', 'taskStatus'],
     emits:['listAllTask'],
 
     data(){
@@ -115,11 +117,6 @@ export default{
                 seconds: 0,
                 minutes: 0
             },
-            taskStatus: [
-                {value: "WAT", label: "Fila", severity: 'danger'},
-                {value: "PRO", label: "Progress", severity: 'secondary'},
-                {value: "CON", label: "Concluido", severity: 'success'}
-            ],
             selectedStatus: null,
             task_status: null,
             toast: useToast(),

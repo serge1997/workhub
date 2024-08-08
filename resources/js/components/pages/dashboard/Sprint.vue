@@ -27,6 +27,7 @@
                                             :is="componentIs"
                                             @confirm-delete="confirmDelete"
                                             @list-all-task="onListAllTask"
+                                            :task-status="taskStatus"
                                             :task-execution-status="task_status">
                                         </component>
                                     </keep-alive>
@@ -124,6 +125,7 @@ export default{
             tasksWait: null,
             tasksConcluded: null,
             task_status: null,
+            taskStatus: null
         }
     },
     methods: {
@@ -144,6 +146,7 @@ export default{
             this.Api.get('task-execution-status')
             .then(async response => {
                 this.task_status = await response.data;
+                this.taskStatus = await response.data;
             })
             .catch(err => {
                 console.log(err);
