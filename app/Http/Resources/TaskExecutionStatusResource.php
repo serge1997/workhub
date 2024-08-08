@@ -19,7 +19,7 @@ class TaskExecutionStatusResource extends JsonResource
             'name' => $this->name,
             'status' => $this->status,
             'description' => $this->description,
-            'severity' => $this->executionStatusBg(),
+            'severity' => $this->executionStatusSeveriry(),
         ];
     }
 }

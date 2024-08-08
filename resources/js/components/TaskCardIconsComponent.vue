@@ -1,5 +1,5 @@
 <template>
-    <div v-if="task !== null" class="w-100 d-flex flex-column">
+    <div class="w-100 d-flex flex-column">
         <div class="w-100">
             <Button class="" text>
                 <span class="d-flex align-items-center">
@@ -10,25 +10,19 @@
                 </small>
             </Button>
         </div>
-        <div class="w-100 px-2">
+        <div class="w-100 d-flex px-2">
             <Chip class="rounded-0 bg-white">
                 <div class="d-flex align-items-center">
                     <span class="task-description d-flex align-items-center gap-2">
-                        <i :class="setSeverity(task.execution_status)" class="pi pi-circle-fill icon-list-task"></i>
+                        <i :style="{'color': task.execution_status_severity}" class="pi pi-circle-fill icon-list-task"></i>
                         {{ task.full_task_execution_status }}
                     </span>
-                    <Button @click="toogleStatusListBox(task.id)" class="task-description p-0" icon="pi pi-angle-right" text />
                 </div>
-
             </Chip>
-            <Listbox @change="handleTaskStatus(task.id)" :id="`task-status-listbox-${task.id}`" v-model="selectedStatus" :options="task_status" optionLabel="name" class="w-75 border rounded-2 shadow-sm d-none">
-                <template #option="slotProps">
-                    <div class="d-flex align-items-center gap-2 border-bottom p-1">
-                        <i class="pi pi-circle-fill task-description" :style="{'color': slotProps.option.severity}"></i>
-                        <div>{{ slotProps.option.name }}</div>
-                    </div>
-                </template>
-            </Listbox>
+            <ListTaskExecutionStatusComponent
+                :task="task"
+                @list-all-task="$emit('listAllTask')"
+            />
         </div>
         <div class="w-100 icons d-flex align-items-center">
             <Button class="d-flex gap-1 align-items-center" text>
@@ -92,6 +86,7 @@ import ShowTaskComponent from './ShowTaskComponent.vue';
 import ShowTaskFollower from './ShowTaskFollower.vue';
 import TaskCommentComponent from './TaskCommentComponent.vue';
 import ShowTaskAnnexComponent from './ShowTaskAnnexComponent.vue';
+import ListTaskExecutionStatusComponent from './ListTaskExecutionStatusComponent.vue';
 import { DateTime } from './../core/DateTime.js';
 import { useToast } from 'primevue/usetoast';
 export default{
@@ -105,7 +100,8 @@ export default{
         ShowTaskComponent,
         ShowTaskFollower,
         TaskCommentComponent,
-        ShowTaskAnnexComponent
+        ShowTaskAnnexComponent,
+        ListTaskExecutionStatusComponent
     },
 
     props: ['task'],
@@ -204,7 +200,7 @@ export default{
                 console.log(err);
             })
         },
-        handleTaskStatus(id){
+        handleTaskStatu(id){
             const data = {
                 execution_status_id: this.selectedStatus.id,
                 task_id: id

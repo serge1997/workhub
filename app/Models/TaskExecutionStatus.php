@@ -38,7 +38,7 @@ class TaskExecutionStatus extends Model
         };
     }
 
-    public function executionStatusBg() : string
+    public function executionStatusSeveriry() : string
     {
         return match($this->status){
              "WAT"  => "#7c3aed",

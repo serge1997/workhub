@@ -39,6 +39,7 @@ class TaskResource extends JsonResource
             'is_expired' => $this->execution_delay > $this->delay_used,
             'roads_map' => RoadMapResource::collection(TaskRoadMap::where('task_id', $this->id)->get()),
             'execution_status' => $this->executionStatus->status,
+            'execution_status_severity' => $this->executionStatus->executionStatusSeveriry(),
             'followers' => FollowerResource::collection($this->followers),
             'followers_count' => $this->countFollowers(),
             'annex_count' => $this->countAnnex(),

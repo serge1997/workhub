@@ -5,7 +5,7 @@
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
-                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
                         <span class="task-description">
                             <small>{{ task.title }}</small>
@@ -14,6 +14,7 @@
                     <span class="d-flex align-items-center">
                         <ListTaskExecutionStatusComponent
                             :task="task"
+                            @list-all-task="$emit('listAllTask')"
                         />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
@@ -32,16 +33,17 @@
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
-                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
                         <span class="task-description">
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
-                            <i class="pi pi-play-circle icon-list-task"></i>
-                        </Button>
+                        <ListTaskExecutionStatusComponent
+                            :task="task"
+                            @list-all-task="$emit('listAllTask')"
+                        />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
@@ -59,16 +61,17 @@
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
-                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-primary"></i>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
                         <span class="task-description">
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button v-if="task.task_owner" @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
-                            <i class="pi pi-step-forward-alt icon-list-task"></i>
-                        </Button>
+                        <ListTaskExecutionStatusComponent
+                            :task="task"
+                            @list-all-task="$emit('listAllTask')"
+                        />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
@@ -85,16 +88,17 @@
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
-                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
                         <span class="task-description">
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
-                            <i class="pi pi-play-circle icon-list-task"></i>
-                        </Button>
+                        <ListTaskExecutionStatusComponent
+                            :task="task"
+                            @list-all-task="$emit('listAllTask')"
+                        />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
@@ -112,16 +116,17 @@
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
-                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
                         <span class="task-description">
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
-                            <i class="pi pi-play-circle icon-list-task"></i>
-                        </Button>
+                        <ListTaskExecutionStatusComponent
+                            :task="task"
+                            @list-all-task="$emit('listAllTask')"
+                        />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
@@ -139,16 +144,17 @@
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
-                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-warning"></i>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
                         <span class="task-description">
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button @click="handleTaskStatus(task.id)" class="text-success icon-list-task" text>
-                            <i class="pi pi-play-circle icon-list-task"></i>
-                        </Button>
+                        <ListTaskExecutionStatusComponent
+                            :task="task"
+                            @list-all-task="$emit('listAllTask')"
+                        />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
@@ -166,16 +172,17 @@
                 <div class="w-100 d-flex justify-content-between">
                     <span class="d-flex gap-2 p-1">
                         <span>
-                            <i style="font-size: 0.6em;" class="pi pi-flag-fill text-success"></i>
+                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
                         <span class="task-description">
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
                     <span class="d-flex">
-                        <Button class="text-success icon-list-task" text>
-                            <i class="pi pi-trophy icon-list-task text-warning"></i>
-                        </Button>
+                        <ListTaskExecutionStatusComponent
+                            :task="task"
+                            @list-all-task="$emit('listAllTask')"
+                        />
                         <ShowTaskComponent
                             @show-task="showTask(task.id)"
                             open-modal-icon="pi-align-center"
