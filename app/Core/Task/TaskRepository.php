@@ -12,6 +12,7 @@ use App\Core\TaskActivity\TaskActivityRepositoryInterface;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Services\Servers\WsServer;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -26,14 +27,16 @@ class TaskRepository implements TaskRepositoryInterface
     public function create($request)
     {
         $values = $request->all();
+        $ws = new WsServer("ws://localhost:8155/teste");
         $task = new Task($values);
         $task->manager_id = $request->user()->id;
         $task->save();
-        //$task->executionStatus->fullStatusName->taskActivities();
+
         $this->customColumnsValueRepositoryInterface->create($task, $request);
         $this->annexRepositoryInterface->create($request, $task);
         $this->followerRepositoryInterface->create($request, $task);
         $this->taskRoadMapRepositoryInterface->create($request, $task);
+        $ws->notify($task);
     }
     public function listAll()
     {

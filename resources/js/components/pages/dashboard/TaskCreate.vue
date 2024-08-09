@@ -237,6 +237,26 @@ export default{
             });
             return Toast
         },
+        wssocket(url){
+            const ws = new WebSocket(url);
+
+            ws.onopen = e => console.log("websocket task-notify connected");
+
+            ws.onmessage = data => console.log(data);
+            ws.onclose = e => {
+                console.log("Websocket closed ");
+                setTimeout(() => {
+                    this.wssocket(url);
+                }, 10000)
+            }
+
+            ws.onerror = e => {
+                console.log("Websocket close. try new connection in 20s");
+                setTimeout(() => {
+                    this.wssocket(url);
+                }, 20000)
+            }
+        }
     },
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
@@ -244,6 +264,7 @@ export default{
         let input = document.getElementById('title')
         input.focus()
         this.onListAllTaskExecutionStatus();
+
     }
 }
 </script>

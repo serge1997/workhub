@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreTaskRequest;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use WebSocket\Client;
 class TaskController extends Controller
 {
     public function __construct(
@@ -16,8 +17,8 @@ class TaskController extends Controller
 
     public function onCreate(StoreTaskRequest $request)
     {
-        $request->validated();
         try{
+            $request->validated();
             DB::beginTransaction();
             $message = "Tarefa salvou com successo";
             $this->taskRepositoryInterface->create($request);

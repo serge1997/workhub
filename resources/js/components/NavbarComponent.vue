@@ -28,8 +28,10 @@
     </div>
 </template>
 <script>
-import CustomColumnComponent from './CustomColumnComponent.vue'
-import CreateFastTaskComponent from './CreateFastTaskComponent.vue'
+import CustomColumnComponent from './CustomColumnComponent.vue';
+import CreateFastTaskComponent from './CreateFastTaskComponent.vue';
+import { useToast } from 'primevue/usetoast';
+
 export default {
     name: 'NavbarComponent',
 
@@ -43,6 +45,7 @@ export default {
             auth: null,
             visibleNavBarDialog: false,
             visibleCustomFiledDialog: false,
+            toast: useToast()
         }
     },
 
@@ -63,10 +66,39 @@ export default {
                 .then(async response => {
                     this.auth = await response.data;
                 })
+        },
+        wssocket(url){
+            const ws = new WebSocket(url);
+
+            ws.onopen = e => console.log("websocket task-notify connected");
+
+            ws.onmessage = async (event) => {
+                let obj = JSON.parse(`${event.data}`);
+                console.log(obj)
+                if (obj.data){
+                    this.toast.add({ severity: 'success', summary: 'Message', detail: obj.data.title, life: 3000 });
+                }
+            };
+            ws.onclose = e => {
+                console.log("Websocket closed ");
+                setTimeout(() => {
+                    this.wssocket(url);
+                }, 10000)
+            }
+
+            ws.onerror = e => {
+                console.log("Websocket close. try new connection in 20s");
+                setTimeout(() => {
+                    this.wssocket(url);
+                }, 20000)
+            }
         }
     },
     mounted(){
         this.getAuth();
+        this.wssocket("ws://localhost:8155/teste");
+        const tst = "{\"data\":{\"execution_delay\":\"19:17\",\"title\":\"teste toast websoket\",\"description\":\"teste\",\"priority\":\"MED\",\"user_id\":\"2\",\"execution_status_id\":\"3\",\"manager_id\":1,\"updated_at\":\"2024-08-09T21:18:17.000000Z\",\"created_at\":\"2024-08-09T21:18:17.000000Z\",\"id\":97}}"
+        console.log(JSON.parse(tst))
     }
 }
 </script>
