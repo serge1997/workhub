@@ -46,7 +46,7 @@ class TaskResource extends JsonResource
             'annexes' => AnnexResource::collection($this->annexes),
             'task_owner' => $this->when($request->user()->id == $this->user_id, true),
             'customColumnValue' => CustomsColumnsValueResource::collection($this->customColumnValue),
-            'full_task_execution_status' => $this->fullExecutionLabel(),
+            'full_task_execution_status' => strtolower($this->executionStatus->name),
             'can_delete' => $this->when($this->isAdminAndTaskOwner($request->user()->id), true),
             'comment_count' => $this->when($this->countComment() > 0, $this->countComment()),
             'activities' => TaskActivityResource::collection($this->taskActivity)

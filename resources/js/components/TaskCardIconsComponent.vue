@@ -11,7 +11,7 @@
             </Button>
         </div>
         <div class="w-100 d-flex px-2">
-            <Chip class="rounded-0 bg-white">
+            <Chip class="rounded-0 bg-white w-75">
                 <div class="d-flex align-items-center">
                     <span class="task-description d-flex align-items-center gap-2">
                         <i :style="{'color': task.execution_status_severity}" class="pi pi-circle-fill icon-list-task"></i>

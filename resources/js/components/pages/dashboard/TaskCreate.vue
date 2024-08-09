@@ -28,9 +28,15 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 d-flex flex-column mb-3">
-                                <label for="email" class="form-label">Tempo de execução</label>
+                                <label for="execution-time" class="form-label">Tempo de execução</label>
                                 <Calendar id="execution-time" v-model="task.execution_delay_date" :class="formErrorBag && formErrorBag.execution_time ? invalidInpuClass : ''" placeholder="execution time..." timeOnly />
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.execution_delay" v-text="`${formErrorBag.execution_delay}`"></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 d-flex flex-column mb-3">
+                                <label for="email" class="form-label">Task status</label>
+                                <Dropdown v-model="task.execution_status_id" :options="task_status" optionLabel="name" optionValue="id" class="w-100" placeholder="Choose task status" />
                             </div>
                         </div>
                         <div class="row">
@@ -122,7 +128,8 @@ export default{
                 execution_delay_date: null,
                 followers: [],
                 annex: [],
-                time_delay: null
+                time_delay: null,
+                execution_status_id: null
             },
             visibleCreateRoadMap: false,
             roadMap: {
@@ -135,6 +142,7 @@ export default{
             formErrorBag: null,
             selectedAnnexName: [],
             toast: useToast(),
+            task_status: null
         }
     },
     methods: {
@@ -154,20 +162,23 @@ export default{
             this.Api.post('task', data)
             .then(async response => {
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
+                this.formErrorBag = null;
             })
             .catch(async err => {
-                if (err.response.status) {
+                if (err.response.status === 422) {
                     this.formErrorBag = err.response.data.errors
                     this.invalidInpuClass = 'border-danger'
+                    return;
                 }
-                console.log(err.response.status)
+                this.formErrorBag = null;
             })
         },
         taskData(){
           try{
+            let executiontimeInput = document.querySelector('#execution-time input');
             const data = new FormData();
             this.task.time_delay = this.task.execution_delay_date !== null ? DateTime.enFormat(this.task.execution_delay_date) : null;
-            this.task.execution_delay  = DateTime.time(this.task.time_delay);
+            this.task.execution_delay  = executiontimeInput.value != "" ? DateTime.time(this.task.time_delay) : null;
             for (let i = 0; i < this.$refs.inputFiles.files.length; i++) {
                 let file = this.$refs.inputFiles.files[i];
                 data.append('annex[]', file)
@@ -180,11 +191,21 @@ export default{
             this.task.user_id !== null ? data.append('user_id', this.task.user_id) : null;
             this.task.followers !== null ? data.append('followers', this.task.followers) : null;
             this.roadMap.titles.length > 0 ? data.append('road_map_titles',this.roadMap.titles) : null;
+            data.append('execution_status_id', this.task.execution_status_id);
             this.roadMap.descriptions.length > 0 ? data.append('road_map_descriptions', this.roadMap.descriptions) : null
             return data;
           }catch(err) {
             console.log(err.message)
           }
+        },
+        onListAllTaskExecutionStatus(){
+            this.Api.get('task-execution-status')
+            .then(async response => {
+                this.task_status = await response.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
         },
         onListAllUsers(){
             this.Api.get('users')
@@ -222,6 +243,7 @@ export default{
         this.onListAllUsers()
         let input = document.getElementById('title')
         input.focus()
+        this.onListAllTaskExecutionStatus();
     }
 }
 </script>
