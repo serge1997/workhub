@@ -133,9 +133,6 @@ export default{
             this.Api.get('tasks')
             .then(async response => {
                 this.tasks = await response.data;
-                this.tasksWait = await response.data.filter(task => task.execution_status === 'WAT');
-                this.tasksProgress = await response.data.filter(task => task.execution_status === 'PRO');
-                this.tasksConcluded = await response.data.filter(task => task.execution_status === 'CON');
                 console.log(response)
             })
             .catch(err => {

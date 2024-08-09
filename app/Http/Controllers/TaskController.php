@@ -77,4 +77,15 @@ class TaskController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function onListByUser(Request $request)
+    {
+        try{
+            return response()
+                ->json($this->taskRepositoryInterface->listByUser($request));
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 404);
+        }
+    }
 }

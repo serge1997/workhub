@@ -6,6 +6,7 @@ use App\Core\CustomColumnsValue\CustomColumnsValueRepositoryInterface;
 use App\Core\Follower\FollowerRepositoryInterface;
 use App\Core\Task\Actions\FindTaskAction;
 use App\Core\Task\Actions\ExecutionStatusUpdateAction;
+use App\Core\Task\Actions\ListTaskByUserAction;
 use App\Core\Task\Actions\SoftDeleteTaskAction;
 use App\Core\TaskActivity\TaskActivityRepositoryInterface;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
@@ -63,5 +64,12 @@ class TaskRepository implements TaskRepositoryInterface
     {
         (new SoftDeleteTaskAction(FindTaskAction::run($request), $request))
             ->handle();
+    }
+
+    public function listByUser($request)
+    {
+        return TaskResource::collection(
+            ListTaskByUserAction::list($request)
+        );
     }
 }
