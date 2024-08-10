@@ -16,7 +16,7 @@ class WsServer
 
     public function notify($data) : void
     {
-        $data = json_decode($data);
+        $data = json_encode($data);
         $this->server->send($data);
     }
 }

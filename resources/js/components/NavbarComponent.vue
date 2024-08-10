@@ -1,6 +1,20 @@
 <template>
     <div style="z-index: 2;" class="row m-auto bg-white d-flex justify-content-end">
         <div class="icons d-flex justify-content-end col-md-4">
+            <Button @click="showNotifyBox = !showNotifyBox" text class="bg-transparent d-flex gap-0">
+                <span>
+                    <i class="pi pi-bell"></i>
+                </span>
+                <Badge class="position-absolute" severity="secondary" value="2" />
+            </Button>
+            <Listbox v-if="showNotifyBox" class="border shadow-sm position-absolute py-4" style="width: 280px;border-radius: 18px;z-index: 999; right: inherit; top: 7%;" :options="notifications" optionLabel="name">
+                <template #option="slotProps">
+                    <div class="d-flex align-items-center gap-2 border-bottom p-1">
+                        <i class="pi pi-circle-fill task-description" :style="{'color': slotProps.option.severity}"></i>
+                        <div style="font-size: .8em;" class="task-description">{{ slotProps.option.name }}</div>
+                    </div>
+                </template>
+            </Listbox>
             <Button @click="visibleNavBarDialog = !visibleNavBarDialog" text icon="pi pi-th-large" />
             <Button v-if="auth" text icon="pi pi-user">
                 <img style="width: 80px;" class="img-thumbnail rounded-circle" :src="`/img/users_avatars/${auth.avatar}`" alt="">
@@ -45,7 +59,12 @@ export default {
             auth: null,
             visibleNavBarDialog: false,
             visibleCustomFiledDialog: false,
-            toast: useToast()
+            toast: useToast(),
+            notifications: [
+                {name: "notify one", severity: "#443ab"},
+                {name: "notify one", severity: "#443ab"},
+            ],
+            showNotifyBox: false
         }
     },
 
@@ -73,10 +92,10 @@ export default {
             ws.onopen = e => console.log("websocket task-notify connected");
 
             ws.onmessage = async (event) => {
-                let obj = JSON.parse(`${event.data}`);
+                let obj = JSON.parse(JSON.parse(event.data));
                 console.log(obj)
-                if (obj.data){
-                    this.toast.add({ severity: 'success', summary: 'Message', detail: obj.data.title, life: 3000 });
+                if (obj.id){
+                    this.toast.add({ severity: 'info', icon: '', summary: 'notification', detail: obj.title, life: 3000 });
                 }
             };
             ws.onclose = e => {
@@ -97,8 +116,6 @@ export default {
     mounted(){
         this.getAuth();
         this.wssocket("ws://localhost:8155/teste");
-        const tst = "{\"data\":{\"execution_delay\":\"19:17\",\"title\":\"teste toast websoket\",\"description\":\"teste\",\"priority\":\"MED\",\"user_id\":\"2\",\"execution_status_id\":\"3\",\"manager_id\":1,\"updated_at\":\"2024-08-09T21:18:17.000000Z\",\"created_at\":\"2024-08-09T21:18:17.000000Z\",\"id\":97}}"
-        console.log(JSON.parse(tst))
     }
 }
 </script>
