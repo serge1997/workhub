@@ -4,11 +4,15 @@ export class WsServer {
         this.#server = new WebSocket(url);
     }
 
-    handle(){
+    listen(toast){
         this.#server.onopen = e => console.log("Websocket connected ");
 
         this.#server.onmessage = data => {
-            console.log(data);
+            let obj = JSON.parse(`${event.data}`);
+                console.log(obj)
+                if (obj.data){
+                  toast(data.title);
+                }
         }
 
         this.#server.onclose = e => {
