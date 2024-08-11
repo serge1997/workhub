@@ -24,6 +24,7 @@ class LoginController extends Controller
             $request->session()->put('auth_user', $user->id);
             $data['token'] = $user->createToken('browser')->plainTextToken;
             $data['token_expire'] = $data['tokenExpireTime'] = Carbon::now()->addMinutes(60)->isoFormat('Y-MM-DD HH:mm');
+            $data['auth'] = $user;
             return response()
                 ->json($data);
         }catch(Exception $e){
