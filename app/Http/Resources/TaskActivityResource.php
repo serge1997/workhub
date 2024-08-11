@@ -19,6 +19,7 @@ class TaskActivityResource extends JsonResource
             'description' => $this->description,
             'activity' => $this->activity,
             'author' => $this->user->name,
+            'task_executed_by' => $this->task->user_id,
             'created_at' => date('d/m/y H:i:s', strtotime($this->created_at))
         ];
     }
