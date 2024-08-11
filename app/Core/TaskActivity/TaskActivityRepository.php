@@ -20,4 +20,12 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
     {
 
     }
+
+    public function notifyByTaskExecutor($request)
+    {
+        return TaskActivity::query()
+            ->join('tasks', 'tasks_activities.task_id', '=', 'taskss.id')
+                ->where('tasks.user_id', $request->user()->id)
+                    ->get();
+    }
 }

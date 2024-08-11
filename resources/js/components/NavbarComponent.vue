@@ -5,7 +5,7 @@
                 <span>
                     <i class="pi pi-bell"></i>
                 </span>
-                <Badge class="position-absolute" severity="secondary" value="2" />
+                <Badge class="position-absolute bg-danger" severity="secondary" value="2" />
             </Button>
             <Listbox v-if="showNotifyBox" class="border shadow-sm position-absolute py-4" style="width: 280px;border-radius: 18px;z-index: 999; right: inherit; top: 7%;" :options="notifications" optionLabel="name">
                 <template #option="slotProps">
@@ -95,7 +95,7 @@ export default {
                 let obj = JSON.parse(JSON.parse(event.data));
                 console.log(obj)
                 if (obj.id){
-                    this.toast.add({ severity: 'info', icon: '', summary: 'notification', detail: obj.title, life: 3000 });
+                    this.toast.add({ severity: 'info', icon: '', summary: 'notification', detail: obj.activity, life: 10000 });
                 }
             };
             ws.onclose = e => {

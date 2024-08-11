@@ -38,7 +38,7 @@ final class CreateTaskAction
             "Created a task for you",
             "Task"
        );
-
+        $notification->activity = "{$notification->user->name} {$notification->activity}";
         $ws->notify(new TaskActivityResource($notification));
 
     }
