@@ -1,17 +1,17 @@
 <template>
     <div style="z-index: 2;" class="row m-auto bg-white d-flex justify-content-end">
         <div class="icons d-flex justify-content-end col-md-4">
-            <Button @click="showNotifyBox = !showNotifyBox" text class="bg-transparent d-flex gap-0">
+            <Button @click="showNotifyBox = !showNotifyBox" text class="bg-transparent gap-0 w-25">
                 <span>
                     <i class="pi pi-bell"></i>
                 </span>
-                <Badge class="position-absolute bg-danger" severity="secondary" value="2" />
+                <Badge class="position-absolute bg-danger w-25" severity="secondary" :value="notification.count" />
             </Button>
-            <Listbox v-if="showNotifyBox" class="border shadow-sm position-absolute py-4" style="width: 280px;border-radius: 18px;z-index: 999; right: inherit; top: 7%;" :options="notifications" optionLabel="name">
+            <Listbox v-if="showNotifyBox" class="border shadow-sm notification-list-box overflow-scroll position-absolute py-4" :options="notification.contents" optionLabel="name">
                 <template #option="slotProps">
                     <div class="d-flex align-items-center gap-2 border-bottom p-1">
-                        <i class="pi pi-circle-fill task-description" :style="{'color': slotProps.option.severity}"></i>
-                        <div style="font-size: .8em;" class="task-description">{{ slotProps.option.name }}</div>
+                        <i class="pi pi-bell task-description" style="font-size: 0.7em;" :style="{'color': slotProps.option.severity}"></i>
+                        <div style="font-size: .8em;" class="task-description">{{ slotProps.option.notification }}</div>
                     </div>
                 </template>
             </Listbox>
@@ -60,10 +60,10 @@ export default {
             visibleNavBarDialog: false,
             visibleCustomFiledDialog: false,
             toast: useToast(),
-            notifications: [
-                {name: "notify one", severity: "#443ab"},
-                {name: "notify one", severity: "#443ab"},
-            ],
+            notification: {
+                count: null,
+                contents: null
+            },
             showNotifyBox: false
         }
     },
@@ -111,11 +111,19 @@ export default {
                     this.wssocket(url);
                 }, 20000)
             }
+        },
+        listNotificationByTaskExecutor(){
+            this.Api.get('task-activity/by-task-executor')
+            .then(async response => {
+                this.notification.contents = await response.data
+                this.notification.count = this.notification.contents.length;
+            })
         }
     },
     mounted(){
         this.getAuth();
         this.wssocket("ws://localhost:8155/teste");
+        this.listNotificationByTaskExecutor()
     }
 }
 </script>
@@ -126,5 +134,13 @@ export default {
 }
 .navbar-dialog-btn-desc{
     font-weight: 500;
+}
+.notification-list-box{
+    width: 290px;
+    height: 600px;
+    border-radius: 18px;
+    z-index: 999;
+    right: inherit;
+    top: 7%;
 }
 </style>

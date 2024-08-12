@@ -9,6 +9,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\TaskActivityController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskExecutionStatusController;
 use App\Http\Controllers\TaskRoadMapController;
@@ -108,6 +109,12 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(TaskExecutionStatusController::class)->group(function(){
         Route::prefix('task-execution-status')->group(function(){
             Route::get('/', 'onListAll');
+        });
+    });
+
+    Route::controller(TaskActivityController::class)->group(function(){
+        Route::prefix('task-activity')->group(function(){
+            Route::get('/by-task-executor', 'onNotifyByTaskExecutor');
         });
     });
 

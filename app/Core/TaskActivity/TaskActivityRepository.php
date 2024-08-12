@@ -1,6 +1,7 @@
 <?php
 namespace App\Core\TaskActivity;
 
+use App\Http\Resources\TaskActivityResource;
 use App\Models\TaskActivity;
 
 class TaskActivityRepository implements TaskActivityRepositoryInterface
@@ -23,9 +24,14 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
 
     public function notifyByTaskExecutor($request)
     {
-        return TaskActivity::query()
-            ->join('tasks', 'tasks_activities.task_id', '=', 'taskss.id')
-                ->where('tasks.user_id', $request->user()->id)
-                    ->get();
+        $taskActivities = TaskActivity::query()
+                    ->select('tasks_activities.id', 'tasks_activities.created_at')
+                        ->join('tasks', 'tasks_activities.task_id', '=', 'tasks.id')
+                            ->where('tasks.user_id', $request->user()->id)
+                                ->orderBy('tasks_activities.created_at', 'desc')
+                                    ->get();
+
+
+        return $taskActivities;
     }
 }
