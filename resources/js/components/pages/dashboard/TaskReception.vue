@@ -1,7 +1,7 @@
 <template>
     <SidebarComponent>
         <div class="row m-auto position-relative overflow-scroll">
-            <div class="col-md-10">
+            <div class="col-md-10" id="inbox-section">
                 <h1 class="fw-light text-center p-2">Task reception</h1>
                 <div v-for="task in tasks" class="card rounded-5 w-100 mb-3">
                     <div class="card-body d-flex justify-content-between p-2">

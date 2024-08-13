@@ -21,7 +21,8 @@ class TaskRoadMapObserver
             description: 'Road map',
             author_id: $taskRoadMap->user_id,
             task_id: $taskRoadMap->task_id,
-            content: "adicionou uma guia"
+            content: "adicionou uma guia",
+            origin_id: $taskRoadMap->id
         );
     }
 

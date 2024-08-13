@@ -12,6 +12,8 @@ use App\Core\TaskActivity\TaskActivityRepositoryInterface;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Services\Servers\WsServer;
+use App\Core\Task\Actions\CreateTaskAction;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -25,15 +27,14 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function create($request)
     {
-        $values = $request->all();
-        $task = new Task($values);
-        $task->manager_id = $request->user()->id;
-        $task->save();
-        //$task->executionStatus->fullStatusName->taskActivities();
-        $this->customColumnsValueRepositoryInterface->create($task, $request);
-        $this->annexRepositoryInterface->create($request, $task);
-        $this->followerRepositoryInterface->create($request, $task);
-        $this->taskRoadMapRepositoryInterface->create($request, $task);
+        $action = new CreateTaskAction(
+            $this->annexRepositoryInterface,
+            $this->followerRepositoryInterface,
+            $this->taskRoadMapRepositoryInterface,
+            $this->customColumnsValueRepositoryInterface,
+            $this->taskActivityRepositoryInterface
+        );
+        $action->run($request);
     }
     public function listAll()
     {

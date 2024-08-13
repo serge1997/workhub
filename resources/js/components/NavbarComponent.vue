@@ -1,6 +1,20 @@
 <template>
     <div style="z-index: 2;" class="row m-auto bg-white d-flex justify-content-end">
         <div class="icons d-flex justify-content-end col-md-4">
+            <Button @click="showNotifyBox = !showNotifyBox" text class="bg-transparent gap-0 w-25">
+                <span>
+                    <i class="pi pi-bell"></i>
+                </span>
+                <Badge class="position-absolute bg-danger w-25" severity="secondary" :value="notification.count" />
+            </Button>
+            <Listbox @change="showTask" v-if="showNotifyBox" v-model="notificationSelected" class="border shadow-sm notification-list-box overflow-scroll position-absolute py-4" :options="notification.contents" optionLabel="name">
+                <template #option="slotProps">
+                    <div class="d-flex align-items-center gap-2 border-bottom p-1">
+                        <i class="pi pi-bell task-description" style="font-size: 0.7em;" :style="{'color': slotProps.option.severity}"></i>
+                        <div style="font-size: .8em;" class="task-description">{{ slotProps.option.notification }}...</div>
+                    </div>
+                </template>
+            </Listbox>
             <Button @click="visibleNavBarDialog = !visibleNavBarDialog" text icon="pi pi-th-large" />
             <Button v-if="auth" text icon="pi pi-user">
                 <img style="width: 80px;" class="img-thumbnail rounded-circle" :src="`/img/users_avatars/${auth.avatar}`" alt="">
@@ -28,10 +42,13 @@
     </div>
 </template>
 <script>
-import CustomColumnComponent from './CustomColumnComponent.vue'
-import CreateFastTaskComponent from './CreateFastTaskComponent.vue'
+import CustomColumnComponent from './CustomColumnComponent.vue';
+import CreateFastTaskComponent from './CreateFastTaskComponent.vue';
+import { useToast } from 'primevue/usetoast';
+
 export default {
     name: 'NavbarComponent',
+    emits: ['watchRouteParams'],
 
     components:{
         CustomColumnComponent,
@@ -43,6 +60,13 @@ export default {
             auth: null,
             visibleNavBarDialog: false,
             visibleCustomFiledDialog: false,
+            toast: useToast(),
+            notification: {
+                count: null,
+                contents: null
+            },
+            notificationSelected: null,
+            showNotifyBox: false
         }
     },
 
@@ -63,10 +87,58 @@ export default {
                 .then(async response => {
                     this.auth = await response.data;
                 })
-        }
+        },
+        wssocket(url){
+            const ws = new WebSocket(url);
+
+            ws.onopen = e => console.log("websocket task-notify connected");
+
+            ws.onmessage = async (event) => {
+                let obj = JSON.parse(JSON.parse(event.data));
+                console.log(obj)
+                if (obj.id){
+                    this.toast.add({ severity: 'info', icon: '', summary: 'notification', detail: obj.activity, life: 10000 });
+                    this.listNotificationByTaskExecutor()
+                }
+            };
+            ws.onclose = e => {
+                console.log("Websocket closed ");
+                setTimeout(() => {
+                    this.wssocket(url);
+                }, 10000)
+            }
+
+            ws.onerror = e => {
+                console.log("Websocket close. try new connection in 20s");
+                setTimeout(() => {
+                    this.wssocket(url);
+                }, 20000)
+            }
+        },
+        listNotificationByTaskExecutor(){
+            this.Api.get('task-activity/by-task-executor')
+            .then(async response => {
+                this.notification.contents = await response.data
+                this.notification.count = this.notification.contents.length;
+            })
+            .catch(e => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded notification data", life: 3000 });
+            })
+        },
+        showTask(){
+            if (this.notificationSelected != null){
+                let type = this.notificationSelected.description.toLowerCase();
+                let origin_id = this.notificationSelected.origin_id ?? "none";
+                console.log(this.notificationSelected)
+                this.$router.push(`/task-show/${origin_id}/${type}/${this.notificationSelected.task_id}`)
+                return this.$emit('watchRouteParams')
+            }
+        },
     },
     mounted(){
         this.getAuth();
+        this.wssocket("ws://localhost:8155/teste");
+        this.listNotificationByTaskExecutor()
     }
 }
 </script>
@@ -77,5 +149,13 @@ export default {
 }
 .navbar-dialog-btn-desc{
     font-weight: 500;
+}
+.notification-list-box{
+    width: 290px;
+    height: 600px;
+    border-radius: 18px;
+    z-index: 999;
+    right: inherit;
+    top: 7%;
 }
 </style>

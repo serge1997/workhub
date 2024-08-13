@@ -16,7 +16,9 @@ class TaskActivity extends Model
         'activity',
         'description',
         'user_id',
-        'task_id'
+        'task_id',
+        'origin_id',
+        'is_readed'
     ];
 
     public function user() : BelongsTo

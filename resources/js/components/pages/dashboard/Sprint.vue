@@ -137,6 +137,7 @@ export default{
             })
             .catch(err => {
                 console.log(err)
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded tasks data", life: 3000 });
             })
         },
         onListAllTaskExecutionStatus(){
@@ -147,6 +148,7 @@ export default{
             })
             .catch(err => {
                 console.log(err);
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded task status data", life: 3000 });
             })
         },
         confirmDelete(id){
