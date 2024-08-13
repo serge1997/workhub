@@ -3,8 +3,10 @@
 namespace App\Observers;
 
 use App\Core\TaskActivity\TaskActivityRepositoryInterface;
+use App\Http\Resources\TaskActivityResource;
 use App\Models\Comment;
 use App\Models\TaskActivity;
+use App\Services\Servers\WsServer;
 
 class CommentObserver
 {
@@ -18,12 +20,14 @@ class CommentObserver
      */
     public function created(Comment $comment): void
     {
-        $this->taskActivityRepositoryInterface->create(
+       $ws = new WsServer("ws://localhost:8155/teste");
+       $activity = $this->taskActivityRepositoryInterface->create(
             description: 'comment',
             author_id: $comment->user_id,
             task_id: $comment->task_id,
             content: "adicionou um commentario"
         );
+        $ws->notify(new TaskActivityResource($activity));
     }
 
     /**

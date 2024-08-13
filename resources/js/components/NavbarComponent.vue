@@ -48,6 +48,7 @@ import { useToast } from 'primevue/usetoast';
 
 export default {
     name: 'NavbarComponent',
+    emits: ['watchRouteParams'],
 
     components:{
         CustomColumnComponent,
@@ -97,6 +98,7 @@ export default {
                 console.log(obj)
                 if (obj.id){
                     this.toast.add({ severity: 'info', icon: '', summary: 'notification', detail: obj.activity, life: 10000 });
+                    this.listNotificationByTaskExecutor()
                 }
             };
             ws.onclose = e => {
@@ -118,19 +120,22 @@ export default {
             .then(async response => {
                 this.notification.contents = await response.data
                 this.notification.count = this.notification.contents.length;
+                console.log(this.notification.count)
             })
             .catch(e => {
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded notification data", life: 3000 });
             })
         },
         showTask(){
-            //alert(this.notificationSelected.task_id)
-            this.$router.push(`/task-show/${this.notificationSelected.task_id}`)
+            if (this.notificationSelected != null){
+                this.$router.push(`/task-show/${this.notificationSelected.task_id}`)
+                return this.$emit('watchRouteParams')
+            }
         }
     },
     mounted(){
         this.getAuth();
-        //this.wssocket("ws://localhost:8155/teste");
+        this.wssocket("ws://localhost:8155/teste");
         this.listNotificationByTaskExecutor()
     }
 }
