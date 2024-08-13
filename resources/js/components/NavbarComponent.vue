@@ -120,7 +120,6 @@ export default {
             .then(async response => {
                 this.notification.contents = await response.data
                 this.notification.count = this.notification.contents.length;
-                console.log(this.notification.count)
             })
             .catch(e => {
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded notification data", life: 3000 });

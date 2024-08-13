@@ -125,13 +125,14 @@ export default{
 
     methods:{
         getTask(){
-            this.taskFinded = null;
+           this.taskFinded = null;
+           setTimeout(() => {
             this.Api.get('task', {task_id: this.$route.params.task_id})
             .then(async response => {
                 this.taskFinded = await response.data;
-                console.log(this.taskFinded)
             })
             .catch(err => console.log(err));
+           }, 500)
         },
         showAnnex(annex){
             this.annex = annex;
@@ -152,9 +153,13 @@ export default{
             return "success";
         }
     },
-
+    created(){
+        this.paramId = this.$route.params.task_id;
+        console.log(this.paramId);
+    },
     mounted(){
         this.getTask()
+        console.log(this.paramId);
     }
 }
 </script>
