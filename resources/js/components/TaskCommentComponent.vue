@@ -10,7 +10,7 @@
                 </small>
             </span>
         </Button>
-        <Button v-else class="icon-list-task" @click="listAllCommentByTask(task.id)" text icon="pi pi-comment" />
+        <Button v-else class="icon-list-task" @click="listAllCommentByTask(task.id)" text :icon="icon != null ? icon :'pi pi-comment'" />
          <Dialog v-model:visible="visibleShowTaskCommentModal" modal header="Task comment" :style="{ width: '25rem' }">
              <div class="w-100 comment-list mb-3">
                 <input type="hidden" id="task-id" :value="task.id">
@@ -93,7 +93,7 @@ import CommentEditionComponent from './CommentEditionComponent.vue'
 import CommentResponseEditionComponent from './CommentResponseEditionComponent.vue';
 export default {
     name: 'TaskCommentComponent',
-    props: ['task'],
+    props: ['task', 'icon'],
 
     components: {
         CommentEditionComponent,

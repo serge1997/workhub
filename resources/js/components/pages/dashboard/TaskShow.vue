@@ -93,8 +93,44 @@
                 </div>
             </div>
            <div class="row">
-                <Dialog v-model:visible="visibleNofidedCommentModal" modal :style="{ width: '25rem' }">
-
+                <Dialog v-model:visible="visibleNofidedCommentModal" modal style="border-radius: 18px;" :style="{ width: '25rem' }">
+                    <div v-if="comment" class="card border-0 comment-card">
+                        <div class="row mb-3">
+                            <TaskCommentComponent :task="task" icon="pi pi-arrow-up-right" />
+                        </div>
+                        <input type="hidden" :id="`comment-${comment.id}`" :value="comment.id">
+                        <div class="card-header bg-white border-0 p-0 border-0 d-flex align-items-center gap-2">
+                            <small>
+                                <img style="width: 35px;" class="img-thumbnail rounded-circle" :src="`/img/users_avatars/${comment.avatar}`" alt="">
+                            </small>
+                            <small style="font-size: 12px;" class="fw-bold">{{ comment.user_name }}</small>
+                        </div>
+                        <div class="card-body p-0 px-2">
+                            <div class="comment d-flex flex-column gap-0">
+                                <span>
+                                    <p style="font-size: 0.9rem;" class="" id="comment-content" @mouseover="showCommentActionButton(comment.id)">
+                                        {{ comment.comment }}
+                                        <br>
+                                        <div :id="`action-box-${comment.id}`" class="w-100 d-none">
+                                            <CommentEditionComponent
+                                                :comment="comment"
+                                                @soft-delete-comment="SoftDeleteComment"
+                                                :isComment="true"
+                                                @update-comment="updateComment(comment.id)"
+                                                @hide-current-comment-edit-box="hideCurrentCommentEditBox"
+                                            />
+                                        </div>
+                                        <br>
+                                        <Button @click="showResponseInput(comment.id)" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
+                                    </p>
+                                    <span class="d-flex mb-1 d-none" :id="`input-response-box-${comment.id}`">
+                                        <input style="font-size: 0.8rem;" v-model="commentResponse.response" class="form-control p-1 text-secondary" type="text" placeholder="your response....">
+                                        <Button @click="createResponse(comment.id)" class="p-0" text icon="pi pi-send" />
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </Dialog>
            </div>
         </div>
@@ -104,13 +140,18 @@
 import ListCustomColumnsComponents from './../../ListCustomColumnsComponents.vue';
 import AddTaskRoadMapFastlyComponent from './../../AddTaskRoadMapFastlyComponent.vue';
 import AddFileFastlyComponent from './../../AddFileFastlyComponent.vue';
+import CommentEditionComponent from './../../CommentEditionComponent.vue';
+import TaskCommentComponent from './../../TaskCommentComponent.vue';
+import { useToast } from 'primevue/usetoast';
 export default{
     name: 'TaskShow',
 
     components:{
         ListCustomColumnsComponents,
         AddTaskRoadMapFastlyComponent,
-        AddTaskRoadMapFastlyComponent
+        AddTaskRoadMapFastlyComponent,
+        CommentEditionComponent,
+        TaskCommentComponent
 
     },
     watch:{
@@ -124,7 +165,16 @@ export default{
         return {
             paramId: this.$route.params.task_id,
             taskFinded: null,
-            visibleNofidedCommentModal: false
+            visibleNofidedCommentModal: false,
+            comment: null,
+            commentResponse:{
+                response: null,
+                comment_id: null,
+            },
+            toast: useToast(),
+            task:{
+                id: null
+            }
         }
     },
 
@@ -134,9 +184,8 @@ export default{
            setTimeout(() => {
             this.Api.get('task', {task_id: this.$route.params.task_id})
             .then(async response => {
-                if (this.$route.params.type == "comment"){
-                    this.visibleNofidedCommentModal = true;
-                }
+                this.task.id = this.$route.params.task_id;
+                this.getNotificationContent(this.$route.params.type, this.$route.params.origin_id);
                 this.taskFinded = await response.data;
             })
             .catch(err => console.log(err));
@@ -147,7 +196,6 @@ export default{
             this.visibleShowAnnex = true;
             setTimeout(() => {
                 const iframHeader = document.querySelector('.iframe')
-                //iframHeader.classList.add('d-none')
             }, 1000)
         },
         setSeverity(priority){
@@ -159,7 +207,76 @@ export default{
             if(status === "WAT")  return "warning";
             if (status === "PRO") return "primary";
             return "success";
-        }
+        },
+        findComment(comment){
+            this.Api.get('comment', {comment_id: comment})
+            .then(async response => {
+                this.comment = await response.data;
+                this.visibleNofidedCommentModal = true;
+                console.log(await response.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
+        getNotificationContent(type, origin_id){
+            switch(type) {
+                case "comment" :
+                    this.findComment(origin_id)
+                    break;
+            }
+        },
+        SoftDeleteComment(id){
+            let task = document.getElementById('task-id').value;
+            this.Api.put('comment', {comment_id: id, task_id: task})
+            .then(async response => {
+                this.taskComments = await response.data.data;
+                this.toaster(response.data.message).fire()
+            })
+            .catch(error => {
+                error.response.status === 403 ? this.toaster(error.response.data, "error").fire() : null
+            })
+        },
+        updateComment(id){
+            const data = {
+                comment: document.getElementById(`comment-edit-${id}`).value,
+                comment_id: id,
+                task_id: this.$route.params.task_id
+            }
+            this.Api.put('comment-content', null, data)
+            .then(async response => {
+                this.hideCurrentCommentEditBox(id);
+                return this.findComment(id);
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
+        hideCurrentCommentEditBox(id){
+            let editBox = document.getElementById('edit-comment-box-'+id);
+            editBox.classList.add('d-none')
+        },
+        showCommentActionButton(id){
+            const box = document.getElementById('action-box-'+id);
+            box.classList.remove('d-none')
+        },
+        showResponseInput(id){
+            const inputResponse = document.getElementById(`input-response-box-${id}`);
+            const classes = inputResponse.className
+            classes.includes("d-none") ?
+                inputResponse.classList.remove("d-none")
+                    : inputResponse.classList.add("d-none")
+        },
+        createResponse(id){
+            this.commentResponse.comment_id = id;
+            Reflect.set(this.commentResponse, "task_id", this.$route.params.task_id);
+            this.Api.post("comment-response", this.commentResponse)
+            .then(async response => {
+                this.showResponseInput(id);
+                this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data.message, life: 3000 });
+            })
+            .catch(err => console.log(err))
+        },
     },
     created(){
         this.paramId = this.$route.params.task_id;

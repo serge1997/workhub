@@ -40,7 +40,8 @@ class CommentObserver
             description: 'comment',
             author_id: $comment->user_id,
             task_id: $comment->task_id,
-            content: "Atualizou um commentario"
+            content: "Atualizou um commentario",
+            origin_id: $comment->id
         );
     }
 
@@ -53,7 +54,8 @@ class CommentObserver
             description: 'comment',
             author_id: $comment->user_id,
             task_id: $comment->task_id,
-            content: "apagou um commentario"
+            content: "apagou um commentario",
+            origin_id: $comment->id
         );
     }
 

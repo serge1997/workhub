@@ -33,6 +33,7 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
                         'tasks_activities.id',
                         'tasks_activities.created_at',
                         'tasks_activities.description',
+                        'tasks_activities.origin_id',
                         'tasks.id as task_id',
                         DB::raw("RPAD(CONCAT(users.name,' ',tasks_activities.activity), 25,'') as notification")
                         )

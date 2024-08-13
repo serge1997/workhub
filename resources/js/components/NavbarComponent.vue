@@ -128,11 +128,12 @@ export default {
         showTask(){
             if (this.notificationSelected != null){
                 let type = this.notificationSelected.description.toLowerCase();
-                let activity_id = this.notificationSelected.id;
-                this.$router.push(`/task-show/${activity_id}/${type}/${this.notificationSelected.task_id}`)
+                let origin_id = this.notificationSelected.origin_id ?? "none";
+                console.log(this.notificationSelected)
+                this.$router.push(`/task-show/${origin_id}/${type}/${this.notificationSelected.task_id}`)
                 return this.$emit('watchRouteParams')
             }
-        }
+        },
     },
     mounted(){
         this.getAuth();
