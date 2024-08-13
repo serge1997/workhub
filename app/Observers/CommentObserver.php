@@ -25,7 +25,8 @@ class CommentObserver
             description: 'comment',
             author_id: $comment->user_id,
             task_id: $comment->task_id,
-            content: "adicionou um commentario"
+            content: "adicionou um commentario",
+            origin_id: $comment->id
         );
         $ws->notify(new TaskActivityResource($activity));
     }

@@ -92,7 +92,11 @@
                     </div>
                 </div>
             </div>
-            <Button text icon="pi pi-map" />
+           <div class="row">
+                <Dialog v-model:visible="visibleNofidedCommentModal" modal :style="{ width: '25rem' }">
+
+                </Dialog>
+           </div>
         </div>
     </SidebarComponent>
 </template>
@@ -119,7 +123,8 @@ export default{
     data(){
         return {
             paramId: this.$route.params.task_id,
-            taskFinded: null
+            taskFinded: null,
+            visibleNofidedCommentModal: false
         }
     },
 
@@ -129,6 +134,9 @@ export default{
            setTimeout(() => {
             this.Api.get('task', {task_id: this.$route.params.task_id})
             .then(async response => {
+                if (this.$route.params.type == "comment"){
+                    this.visibleNofidedCommentModal = true;
+                }
                 this.taskFinded = await response.data;
             })
             .catch(err => console.log(err));

@@ -9,13 +9,14 @@ use Illuminate\Support\Str;
 
 class TaskActivityRepository implements TaskActivityRepositoryInterface
 {
-    public function create(int $author_id, int $task_id, string $content, ?string $description) : TaskActivity
+    public function create(int $author_id, int $task_id, string $content, ?string $description, ?int $origin_id = null) : TaskActivity
     {
         $activity = TaskActivity::query()->create([
                     'description' => $description,
                     'user_id' => $author_id,
                     'task_id' => $task_id,
                     'activity' => $content,
+                    'origin_id' => $origin_id
                 ]);
         return $activity;
     }

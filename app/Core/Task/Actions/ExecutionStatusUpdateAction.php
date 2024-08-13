@@ -24,7 +24,8 @@ final class ExecutionStatusUpdateAction
             $this->request->user()->id,
             $this->task->id,
             "Atualizou a tarefa para " . $this->task->executionStatus->name,
-            "Task"
+            "Task",
+            $this->task->id
        );
     }
 
