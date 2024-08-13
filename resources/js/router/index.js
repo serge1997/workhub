@@ -67,7 +67,7 @@ const routes = [
         meta: {requiresAuth: true}
     },
     {
-        path: '/task-show/:task_id',
+        path: '/task-show/:activity_id/:type/:task_id',
         name: 'TaskShow',
         component: TaskShow,
         meta: {requiresAuth: true}

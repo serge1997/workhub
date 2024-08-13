@@ -127,7 +127,9 @@ export default {
         },
         showTask(){
             if (this.notificationSelected != null){
-                this.$router.push(`/task-show/${this.notificationSelected.task_id}`)
+                let type = this.notificationSelected.description.toLowerCase();
+                let activity_id = this.notificationSelected.id;
+                this.$router.push(`/task-show/${activity_id}/${type}/${this.notificationSelected.task_id}`)
                 return this.$emit('watchRouteParams')
             }
         }
