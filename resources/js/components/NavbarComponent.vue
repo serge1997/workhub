@@ -7,7 +7,7 @@
                 </span>
                 <Badge class="position-absolute bg-danger w-25" severity="secondary" :value="notification.count" />
             </Button>
-            <Listbox v-if="showNotifyBox" class="border shadow-sm notification-list-box overflow-scroll position-absolute py-4" :options="notification.contents" optionLabel="name">
+            <Listbox @change="showTask" v-if="showNotifyBox" v-model="notificationSelected" class="border shadow-sm notification-list-box overflow-scroll position-absolute py-4" :options="notification.contents" optionLabel="name">
                 <template #option="slotProps">
                     <div class="d-flex align-items-center gap-2 border-bottom p-1">
                         <i class="pi pi-bell task-description" style="font-size: 0.7em;" :style="{'color': slotProps.option.severity}"></i>
@@ -64,6 +64,7 @@ export default {
                 count: null,
                 contents: null
             },
+            notificationSelected: null,
             showNotifyBox: false
         }
     },
@@ -118,11 +119,18 @@ export default {
                 this.notification.contents = await response.data
                 this.notification.count = this.notification.contents.length;
             })
+            .catch(e => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded notification data", life: 3000 });
+            })
+        },
+        showTask(){
+            //alert(this.notificationSelected.task_id)
+            this.$router.push(`/task-show/${this.notificationSelected.task_id}`)
         }
     },
     mounted(){
         this.getAuth();
-        this.wssocket("ws://localhost:8155/teste");
+        //this.wssocket("ws://localhost:8155/teste");
         this.listNotificationByTaskExecutor()
     }
 }

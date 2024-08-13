@@ -9,6 +9,7 @@ import Profil from "../components/pages/dashboard/Profil.vue";
 import TaskCreate from "../components/pages/dashboard/TaskCreate.vue";
 import Sprint from "../components/pages/dashboard/Sprint.vue";
 import Trash from "../components/pages/dashboard/Trash.vue";
+import TaskShow from "../components/pages/dashboard/TaskShow.vue";
 
 const routes = [
     {
@@ -63,6 +64,12 @@ const routes = [
         path: '/trash',
         name: 'Trash',
         component: Trash,
+        meta: {requiresAuth: true}
+    },
+    {
+        path: '/task-show/:task_id',
+        name: 'TaskShow',
+        component: TaskShow,
         meta: {requiresAuth: true}
     }
 ]
