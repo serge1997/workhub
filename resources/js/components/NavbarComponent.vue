@@ -11,7 +11,7 @@
                 <template #option="slotProps">
                     <div class="d-flex align-items-center gap-2 border-bottom p-1">
                         <i class="pi pi-bell task-description" style="font-size: 0.7em;" :style="{'color': slotProps.option.severity}"></i>
-                        <div style="font-size: .8em;" class="task-description">{{ slotProps.option.notification }}</div>
+                        <div style="font-size: .8em;" class="task-description">{{ slotProps.option.notification }}...</div>
                     </div>
                 </template>
             </Listbox>
