@@ -74,18 +74,11 @@ export default {
         logOut(){
             this.Api.post('logout')
                 .then(response => {
-                    localStorage.removeItem('token')
-                    console.log(response)
+                    this.Auth.logout();
                     this.$router.push('/');
                 })
                 .catch(err => {
                     console.log(err)
-                })
-        },
-       getAuth(){
-            this.Api.get('user')
-                .then(async response => {
-                    this.auth = await response.data;
                 })
         },
         wssocket(url){
@@ -135,10 +128,12 @@ export default {
             }
         },
     },
+    created(){
+        this.auth = this.Auth.user();
+    },
     mounted(){
-        this.getAuth();
         this.wssocket("ws://localhost:8155/teste");
-        this.listNotificationByTaskExecutor()
+        this.listNotificationByTaskExecutor();
     }
 }
 </script>

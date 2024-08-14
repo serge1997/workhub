@@ -43,8 +43,7 @@
             login(){
                 this.Api.post('login', this.auth)
                     .then(async response => {
-                        localStorage.setItem('token', response.data.token);
-                        localStorage.setItem('auth', JSON.stringify(response.data.auth));
+                        this.Auth.create(response.data);
                         this.$router.push({name: 'TaskReception'});
                     })
                     .catch(err => {

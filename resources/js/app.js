@@ -16,7 +16,7 @@ import NavbarComponent from './components/NavbarComponent.vue';
 import Dialog from 'primevue/dialog';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
-import OwnPlugins from './core/OwnPlugins.mjs';
+import Provider from './core/Provider.mjs';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Textarea from 'primevue/textarea';
@@ -89,6 +89,6 @@ app.use(router)
     .use(PrimeVue)
     .use(ConfirmationService)
     .use(ToastService)
-    .use(OwnPlugins)
+    .use(Provider)
     .use(VueSweetalert2)
     .mount('#app');
