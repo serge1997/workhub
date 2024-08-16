@@ -35,8 +35,11 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
                         'tasks_activities.description',
                         'tasks_activities.origin_id',
                         'tasks.id as task_id',
-                        DB::raw("RPAD(CONCAT(users.name,' ',tasks_activities.activity), 25,'') as notification")
-                        )
+                        DB::raw("CASE
+                            WHEN tasks_activities.user_id =". $request->user()->id . " THEN RPAD(CONCAT('você',' ',tasks_activities.activity), 25,'')
+                            ELSE RPAD(CONCAT(users.name,' ',tasks_activities.activity), 25,'')
+                            END as notification"
+                        ))
                         ->join('tasks', 'tasks_activities.task_id', '=', 'tasks.id')
                             ->join('users', 'tasks_activities.user_id', '=', 'users.id')
                                 ->where('tasks.user_id', $request->user()->id)
