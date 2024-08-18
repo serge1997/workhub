@@ -43,8 +43,9 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
                         ->join('tasks', 'tasks_activities.task_id', '=', 'tasks.id')
                             ->join('users', 'tasks_activities.user_id', '=', 'users.id')
                                 ->where('tasks.user_id', $request->user()->id)
-                                    ->orderBy('tasks_activities.created_at', 'desc')
-                                        ->get();
+                                    ->orWhere('tasks.manager_id', $request->user()->id)
+                                        ->orderBy('tasks_activities.created_at', 'desc')
+                                            ->get();
 
         return $taskActivities;
     }

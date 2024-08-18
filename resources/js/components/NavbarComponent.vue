@@ -120,7 +120,7 @@ export default {
         },
         showTask(){
             if (this.notificationSelected != null){
-                let type = this.notificationSelected.description.toLowerCase();
+                let type = this.notificationSelected.description.toLowerCase().split(' ').join('-');
                 let origin_id = this.notificationSelected.origin_id ?? "none";
                 console.log(this.notificationSelected)
                 this.$router.push(`/task-show/${origin_id}/${type}/${this.notificationSelected.task_id}`)

@@ -35,7 +35,7 @@ final class CreateTaskAction
         $notification = $this->taskActivityRepository->create(
             $request->user()->id,
             $task->id,
-            "Created a task for you",
+            "Criou uma tarefa para " . $task->user->name,
             "Task",
             $task->id
        );
