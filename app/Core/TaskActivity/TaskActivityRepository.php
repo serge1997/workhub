@@ -28,16 +28,16 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
 
     public function notifyByTaskExecutor($request)
     {
-        $taskActivities = TaskActivity::query()
+        return TaskActivity::query()
                     ->select(
-                        'tasks_activities.id',
+                        DB::raw('tasks_activities.id as id'),
                         'tasks_activities.created_at',
                         'tasks_activities.description',
                         'tasks_activities.origin_id',
                         'tasks.id as task_id',
                         DB::raw("CASE
-                            WHEN tasks_activities.user_id =". $request->user()->id . " THEN RPAD(CONCAT('você',' ',tasks_activities.activity), 25,'')
-                            ELSE RPAD(CONCAT(users.name,' ',tasks_activities.activity), 25,'')
+                            WHEN tasks_activities.user_id =". $request->user()->id . " THEN RPAD(CONCAT('você',' ',tasks_activities.activity), 23,'')
+                            ELSE RPAD(CONCAT(users.name,' ',tasks_activities.activity), 23,'')
                             END as notification"
                         ))
                         ->join('tasks', 'tasks_activities.task_id', '=', 'tasks.id')
@@ -47,6 +47,5 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
                                         ->orderBy('tasks_activities.created_at', 'desc')
                                             ->get();
 
-        return $taskActivities;
     }
 }
