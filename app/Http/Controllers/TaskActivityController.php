@@ -26,4 +26,13 @@ class TaskActivityController extends Controller
                 ->json($e->getMessage(), 422);
         }
     }
+
+    public function onMarkAsReaded(Request $request)
+    {
+        try{
+            $this->taskActivityRepositoryInterface->markAsReaded($request);
+        }catch(Exception $e){
+            return response()->json($e->getMessage(), 404);
+        }
+    }
 }

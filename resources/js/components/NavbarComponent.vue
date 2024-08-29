@@ -5,7 +5,7 @@
                 <span>
                     <i class="pi pi-bell"></i>
                 </span>
-                <Badge class="position-absolute bg-danger w-25" severity="secondary" :value="notification.count" />
+                <Badge class="position-absolute bg-danger" severity="secondary" :value="notification.count" />
             </Button>
             <Listbox @change="showTask" v-if="showNotifyBox" v-model="notificationSelected" class="border shadow-sm notification-list-box overflow-scroll position-absolute py-4" :options="notification.contents" optionLabel="name">
                 <template #option="slotProps">
@@ -118,15 +118,20 @@ export default {
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded notification data", life: 3000 });
             })
         },
-        showTask(){
+        async showTask(){
             if (this.notificationSelected != null){
                 let type = this.notificationSelected.description.toLowerCase().split(' ').join('-');
                 let origin_id = this.notificationSelected.origin_id ?? "none";
                 console.log(this.notificationSelected)
+                await this.markReadedNotification(this.notificationSelected)
                 this.$router.push(`/task-show/${origin_id}/${type}/${this.notificationSelected.task_id}`)
                 return this.$emit('watchRouteParams')
             }
         },
+        async markReadedNotification(data){
+            this.Api.put('task-activity/readed', {task_activity_id: data.id})
+
+        }
     },
     created(){
         this.auth = this.Auth.user();

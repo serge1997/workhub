@@ -4,7 +4,7 @@
             <div class="w-100">
                 <div class="col-md-12">
                     <h3 class="text-center fw-light">List of tasks</h3>
-                    <div class="row d-flex gap-1 p-1">
+                    <div class="row d-flex justify-content-center gap-1 p-1">
                         <div v-for="task in tasks" class="col-md-3 card">
                             <div class="card-header border-0 bg-white p-1">
                                 <small class="fw-medium">{{ task.title.padEnd(20, '...') }}</small>
