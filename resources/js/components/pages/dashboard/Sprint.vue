@@ -3,11 +3,23 @@
         <div class="row">
             <div class="col-md-10 mt-3 m-auto p-0">
                 <div class="row w-100 p-0 m-auto">
-                    <Toolbar class="p-0">
+                    <Toolbar class="p-1">
                         <template #start>
                             <div class="w-100 d-flex">
                                 <Button @click="componentIs = 'CardTaskComponent'" icon="pi pi-th-large" text/>
                                 <Button @click="componentIs = 'ListTaskComponent'" icon="pi pi-list" text />
+                            </div>
+                        </template>
+                        <template #center>
+                            <div class="w-100 d-flex">
+                                <AutoComplete @change="getUserTask" v-model="user_filtered" optionLabel="name" placeholder="select a user..." dropdown :suggestions="users_filter" @complete="onListAllUsers">
+                                    <template #option="slotProps">
+                                        <div class="d-flex gap-1 w-50">
+                                            <img style="width: 28px;" :alt="slotProps.option.name" :src="`img/users_avatars/${slotProps.option.avatar}`" />
+                                            <div>{{ slotProps.option.name }}</div>
+                                        </div>
+                                    </template>
+                                </AutoComplete>
                             </div>
                         </template>
                     </Toolbar>
@@ -36,62 +48,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row mt-3">
-                    <div style="height: 600px; overflow: scroll;" class="col-md-4">
-                        <div class="card w-100">
-                            <div class="card-header border-0 bg-white">
-                                <Tag class="w-100" value="Fila Tarefa" severity="warning" />
-                            </div>
-                            <div class="card-body mt-4">
-                                <keep-alive>
-                                    <component
-                                        :tasks-wait="tasksWait"
-                                        show-status="WAT"
-                                        :is="componentIs"
-                                        @confirm-delete="confirmDelete"
-                                        :task-execution-status="task_status">
-                                    </component>
-                                </keep-alive>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="height: 600px; overflow: scroll;" class="col-md-4">
-                        <div class="card w-100">
-                            <div class="card-header border-0 bg-transparent">
-                                <Tag class="w-100" value="In Progress" severity="primary" />
-                            </div>
-                            <div class="card-body mt-4">
-                                <keep-alive>
-                                    <component
-                                        :tasks-progress="tasksProgress"
-                                        show-status="PRO"
-                                        :is="componentIs"
-                                        @confirm-delete="confirmDelete"
-                                        :task-execution-status="task_status">
-                                    </component>
-                                </keep-alive>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="height: 600px; overflow: scroll;" class="col-md-4">
-                        <div class="card w-100">
-                            <div class="card-header border-0 bg-transparent">
-                                <Tag class="w-100" value="Concluido" severity="success" />
-                            </div>
-                            <div class="card-body mt-4">
-                                <keep-alive>
-                                    <component
-                                        show-status="CON"
-                                        :tasks-concluded="tasksConcluded"
-                                        :is="componentIs"
-                                        @confirm-delete="confirmDelete"
-                                        :task-execution-status="task_status">
-                                    </component>
-                                </keep-alive>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <ConfirmDialog />
             <Toast />
@@ -125,7 +81,9 @@ export default{
             tasksWait: null,
             tasksConcluded: null,
             task_status: null,
-            taskStatus: null
+            taskStatus: null,
+            users_filter: null,
+            user_filtered: null
         }
     },
     methods: {
@@ -205,6 +163,21 @@ export default{
         handleTaskStatus(data){
             console.log(data);
         },
+        onListAllUsers(){
+            this.Api.get('users')
+            .then(async (response) => {
+                this.users_filter = await response.data;
+            })
+            .catch(err => console.log(err))
+        },
+        getUserTask(){
+            console.log(this.user_filtered);
+            this.Api.get('task-by-filtered-user', {user_id: this.user_filtered.id})
+            .then(async response => {
+                this.tasks = await response.data
+            })
+            .catch(err => console.log(err))
+        }
     },
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;

@@ -10,6 +10,7 @@ interface TaskRepositoryInterface
     public function handleExecutionStatus($request);
     public function update($request);
     public function softDelete($request);
-    public function listByUser($request);
+    public function listByAuthUser($request);
+    public function listTaskByFilteredUser($request);
 
 }

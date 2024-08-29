@@ -108,7 +108,7 @@ export default {
                 }, 20000)
             }
         },
-        listNotificationByTaskExecutor(){
+        async listNotificationByTaskExecutor(){
             this.Api.get('task-activity/by-task-executor')
             .then(async response => {
                 this.notification.contents = await response.data
@@ -122,7 +122,7 @@ export default {
             if (this.notificationSelected != null){
                 let type = this.notificationSelected.description.toLowerCase().split(' ').join('-');
                 let origin_id = this.notificationSelected.origin_id ?? "none";
-                console.log(this.notificationSelected)
+                await this.listNotificationByTaskExecutor()
                 await this.markReadedNotification(this.notificationSelected)
                 this.$router.push(`/task-show/${origin_id}/${type}/${this.notificationSelected.task_id}`)
                 return this.$emit('watchRouteParams')

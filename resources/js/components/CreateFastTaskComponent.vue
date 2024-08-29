@@ -111,7 +111,7 @@ export default {
         onListAllUsers(){
             this.Api.get('users')
             .then(async (response) => {
-                this.users = await response.data.filter(manager => manager.user_type !== "ADM");
+                this.users = await response.data;
             })
             .catch(err => console.log(err))
         },

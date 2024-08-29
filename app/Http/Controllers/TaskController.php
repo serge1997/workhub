@@ -79,11 +79,22 @@ class TaskController extends Controller
         }
     }
 
-    public function onListByUser(Request $request)
+    public function onListByAuthUser(Request $request)
     {
         try{
             return response()
-                ->json($this->taskRepositoryInterface->listByUser($request));
+                ->json($this->taskRepositoryInterface->listByAuthUser($request));
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 404);
+        }
+    }
+
+    public function onListByFilteredUser(Request $request)
+    {
+        try{
+            return response()
+                ->json($this->taskRepositoryInterface->listTaskByFilteredUser($request));
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 404);

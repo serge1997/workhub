@@ -14,6 +14,7 @@ use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Services\Servers\WsServer;
 use App\Core\Task\Actions\CreateTaskAction;
+use App\Core\Task\Actions\ListTaskByFilteredUserAction;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -67,10 +68,17 @@ class TaskRepository implements TaskRepositoryInterface
             ->handle();
     }
 
-    public function listByUser($request)
+    public function listByAuthUser($request)
     {
         return TaskResource::collection(
             ListTaskByUserAction::list($request)
+        );
+    }
+
+    public function listTaskByFilteredUser($request)
+    {
+        return TaskResource::collection(
+            ListTaskByFilteredUserAction::list($request)
         );
     }
 }

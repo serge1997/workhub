@@ -35,6 +35,7 @@ import Toast from 'primevue/toast';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 import Badge from 'primevue/badge';
+import AutoComplete from 'primevue/autocomplete';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -80,6 +81,7 @@ app.component('Listbox', Listbox);
 app.component('ConfirmDialog', ConfirmDialog)
 app.component('Toast', Toast);
 app.component('Badge', Badge)
+app.component('AutoComplete', AutoComplete);
 
 
 
