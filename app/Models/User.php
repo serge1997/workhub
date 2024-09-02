@@ -93,4 +93,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(TaskRoadMap::class, 'user_id');
     }
+
+    public function userNotification() : HasMany
+    {
+        return $this->hasMany(UserNotification::class, 'user_id');
+    }
 }

@@ -28,6 +28,8 @@ use App\Core\TaskRoadMap\TaskRoadMapRepository;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
 use App\Core\User\UserRepository;
 use App\Core\User\UserRepositoryInterface;
+use App\Core\UserNotification\UserNotificationRepositoryInterface;
+use App\Core\UserNotification\UserNotificationRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -50,6 +52,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CustomColumnsValueRepositoryInterface::class, CustomColumnsValueRepository::class);
         $this->app->bind(TaskActivityRepositoryInterface::class, TaskActivityRepository::class);
         $this->app->bind(TaskExecutionStatusRepositoryInterface::class, TaskExecutionStatusRepository::class);
+        $this->app->bind(UserNotificationRepositoryInterface::class, UserNotificationRepository::class);
     }
 
     /**

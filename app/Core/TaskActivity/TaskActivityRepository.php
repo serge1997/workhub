@@ -1,6 +1,7 @@
 <?php
 namespace App\Core\TaskActivity;
 
+use App\Core\UserNotification\UserNotificationRepositoryInterface;
 use App\Http\Resources\TaskActivityResource;
 use App\Models\TaskActivity;
 use Carbon\Carbon;
@@ -11,8 +12,13 @@ use Illuminate\Support\Str;
 
 class TaskActivityRepository implements TaskActivityRepositoryInterface
 {
+    public function __construct(
+        private readonly UserNotificationRepositoryInterface $userNotificationRepositoryInterface
+    ){}
+
     public function create(int $author_id, int $task_id, string $content, ?string $description, ?int $origin_id = null) : TaskActivity
     {
+
         $activity = TaskActivity::query()->create([
                     'description' => $description,
                     'user_id' => $author_id,
@@ -20,6 +26,7 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
                     'activity' => $content,
                     'origin_id' => $origin_id
                 ]);
+        //$this->userNotificationRepositoryInterface->create([...$author_id], $activity->id);
         return $activity;
     }
 
