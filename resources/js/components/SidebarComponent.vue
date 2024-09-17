@@ -37,10 +37,10 @@
                             </li>
                             <li class="list-group-item border-0">
                                 <span @click="menuCreateToggle = !menuCreateToggle">
-                                    <i class="pi pi-angle-down"></i>
+                                    <i class="pi pi-bars"></i>
                                     create
                                 </span>
-                                <Menu v-if="menuCreateToggle" :model="menu" class="p-2 rounded-0 shadow-sm">
+                                <Menu v-if="menuCreateToggle" :model="menu" class="p-2 rounded-0 border-0">
                                     <template #item="{ item, props }">
                                         <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
                                             <span class="sub-menu-item" style="color: #475569;">
@@ -50,6 +50,26 @@
                                         </router-link>
                                     </template>
                                 </Menu>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <span @click="menuSprintsToggle = !menuSprintsToggle">
+                                    <i class="pi pi-bars"></i>
+                                    sprints
+                                </span>
+                                <ul class="list-group border-0 p-1">
+                                    <Menu v-if="menuSprintsToggle" :model="sprints" class="p-2 rounded-0 border-0">
+                                            <template #item="{ item, props }">
+                                               <li class="list-group-item border-0 p-1">
+                                                    <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
+                                                        <span class="sub-menu-item" style="color: #475569;">
+                                                            <i :class="item.icon" class="mb-3 px-1"></i>
+                                                            {{ item.label }}
+                                                        </span>
+                                                    </router-link>
+                                               </li>
+                                            </template>
+                                    </Menu>
+                                </ul>
                             </li>
                             <li class="list-group-item border-0">
                                 <router-link class="text-decoration-none" :to="{name: 'Trash'}">
@@ -79,7 +99,12 @@ export default {
                 {label: 'Task', route: '/task-create', icon: 'pi pi-book'},
                 {label: 'usuario', route: '/register', icon:'pi pi-users'}
             ],
-            menuCreateToggle: false
+            menuCreateToggle: false,
+            sprints: [
+                {label: "sprint 1", icon: "pi pi-list-check"},
+                {label: "sprint 2", icon: "pi pi-list-check"}
+            ],
+            menuSprintsToggle: false,
         }
     },
     mounted(){

@@ -31,8 +31,7 @@
                     <CreateFastTaskComponent />
                 </div>
                 <div class="col-md-6 mb-3 d-flex flex-column justify-content-center align-items-center">
-                    <Button class="w-50 navbar-dialog-btn rounded-2 fs-4 text-warning" text icon="pi pi-bolt" />
-                    <small class="task-description navbar-dialog-btn-desc">Sprint</small>
+                    <CreateSprintModalComponent />
                 </div>
                 <div class="col-md-6 mb-3 d-flex flex-column justify-content-center align-items-center">
                     <CustomColumnComponent />
@@ -45,6 +44,7 @@
 import CustomColumnComponent from './CustomColumnComponent.vue';
 import CreateFastTaskComponent from './CreateFastTaskComponent.vue';
 import { useToast } from 'primevue/usetoast';
+import CreateSprintModalComponent from './CreateSprintModalComponent.vue';
 
 export default {
     name: 'NavbarComponent',
@@ -52,7 +52,8 @@ export default {
 
     components:{
         CustomColumnComponent,
-        CreateFastTaskComponent
+        CreateFastTaskComponent,
+        CreateSprintModalComponent
     },
 
     data(){
