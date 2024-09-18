@@ -7,9 +7,24 @@
                     <label for="name">Sprint name</label>
                     <InputText class="w-100" placeholder="sprint name" v-model="sprint.name" />
                 </div>
-                <div class="w-75">
+               <div class="w-75">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="name">Start at</label>
+                            <Calendar class="w-100" v-model="sprint.start_at" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="name">Closed at</label>
+                            <Calendar class="w-100" v-model="sprint.close_at" />
+                        </div>
+                    </div>
+               </div>
+                <div class="w-75 mb-3">
                     <label for="desc">Description</label>
                     <Textarea class="w-100" placeholder="description" />
+                </div>
+                <div class="w-75">
+                    <Button label="Salvar" />
                 </div>
            </div>
         </div>

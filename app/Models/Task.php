@@ -98,4 +98,9 @@ class Task extends Model
     {
         return $this->belongsTo(TaskExecutionStatus::class, 'execution_status_id');
     }
+
+    public function sprint() : BelongsTo
+    {
+        return $this->belongsTo(Sprint::class, 'sprint_id');
+    }
 }
