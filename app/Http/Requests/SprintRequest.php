@@ -22,7 +22,10 @@ class SprintRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string']
+            'name' => ['required', 'string'],
+            'desc' => ['nullable'],
+            'start_at' => ['nullable'],
+            'close_at' => ['nullable']
         ];
     }
 

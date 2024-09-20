@@ -21,10 +21,10 @@
                </div>
                 <div class="w-75 mb-3">
                     <label for="desc">Description</label>
-                    <Textarea class="w-100" placeholder="description" />
+                    <Textarea v-model="sprint.desc"class="w-100" placeholder="description" />
                 </div>
                 <div class="w-75">
-                    <Button label="Salvar" />
+                    <Button @click="createSprint" label="Salvar" />
                 </div>
            </div>
         </div>
@@ -48,7 +48,15 @@ export default {
         }
     },
     methods: {
+        createSprint(){
+            this.Api.post('sprint', this.sprint)
+            .then(async response => {
 
+            })
+            .catch(error => {
+
+            })
+        }
     },
     mounted(){
 

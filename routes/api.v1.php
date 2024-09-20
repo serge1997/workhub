@@ -9,6 +9,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\SprintController;
 use App\Http\Controllers\TaskActivityController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskExecutionStatusController;
@@ -103,6 +104,12 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::controller(AnnexController::class)->group(function(){
         Route::prefix('annex')->group(function(){
+            Route::post('/', 'onCreate');
+        });
+    });
+
+    Route::controller(SprintController::class)->group(function() {
+        Route::prefix('sprint')->group(function() {
             Route::post('/', 'onCreate');
         });
     });

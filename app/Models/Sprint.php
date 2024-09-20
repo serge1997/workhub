@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Sprint extends Model
 {
@@ -18,8 +20,23 @@ class Sprint extends Model
         'deleted_at'
     ];
 
+    protected function startAt() : Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => date('Y-m-d', strtotime(substr($value, 0, 11)))
+        );
+    }
+
+    public function closeAt() : Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => date('Y-m-d', strtotime(substr($value, 0, 11)))
+        );
+    }
+
     public function tasks() : HasMany
     {
+
         return $this->hasMany(Task::class, 'sprint_id');
     }
 }
