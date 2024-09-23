@@ -55,10 +55,13 @@ const routes = [
         meta: {requiresAuth: true}
     },
     {
-        path: '/sprint',
+        path: '/sprint/:id?',
         name: 'Sprint',
         component: Sprint,
-        meta: {requiresAuth: true}
+        meta: {
+            reload: true,
+            requiresAuth: true
+        }
     },
     {
         path: '/trash',

@@ -12,5 +12,6 @@ interface TaskRepositoryInterface
     public function softDelete($request);
     public function listByAuthUser($request);
     public function listTaskByFilteredUser($request);
+    public function listBySprint($request);
 
 }

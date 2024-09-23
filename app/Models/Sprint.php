@@ -34,6 +34,13 @@ class Sprint extends Model
         );
     }
 
+    public function name() : Attribute
+    {
+        return Attribute::make(
+            set: fn(string $value) => strtolower($value)
+        );
+    }
+
     public function tasks() : HasMany
     {
 

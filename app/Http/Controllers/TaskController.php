@@ -100,4 +100,15 @@ class TaskController extends Controller
                 ->json($e->getMessage(), 404);
         }
     }
+
+    public function onListBySprint(Request $request)
+    {
+        try{
+            return response()
+                ->json($this->taskRepositoryInterface->listBySprint($request));
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 404);
+        }
+    }
 }

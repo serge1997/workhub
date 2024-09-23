@@ -81,4 +81,12 @@ class TaskRepository implements TaskRepositoryInterface
             ListTaskByFilteredUserAction::list($request)
         );
     }
+
+    public function listBySprint($request)
+    {
+        return TaskResource::collection(
+            Task::where('sprint_id', $request->sprint_id)
+                ->get()
+        );
+    }
 }

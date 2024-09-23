@@ -61,10 +61,10 @@
                                     sprints
                                 </span>
                                 <ul class="list-group border-0 p-0">
-                                    <Menu v-if="menuSprintsToggle" :model="sprints" class="p-2 rounded-0 border-0">
+                                    <Menu v-if="menuSprintsToggle" @click="redirectToSprint" :model="sprints" class="p-2 rounded-0 border-0">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
-                                                <router-link @click="generateTask" class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
+                                                <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
                                                     <span class="sub-menu-item" style="color: #475569;">
                                                         <i class="pi pi-list-check mb-3 px-1"></i>
                                                         {{ item.name }}
@@ -130,6 +130,12 @@ export default {
                 }, 700)
             }
         },
+        redirectToSprint(){
+            console.log(location.pathname) //verificar se cuurent url é sprint para evitar abor das requisição do axios
+            if (location.pathname.includes("sprint")){
+                this.$router.go(0)
+            }
+        },
         getSprints(){
             this.Api.get('sprint')
             .then(async response => {
@@ -138,6 +144,13 @@ export default {
             .catch(error => {
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded sprints", life: 3000 });
             })
+        },
+        cleanSprintPathUrl(path){
+            if (location.pathname.includes("sprint")){
+                let regex = /[sprint, \s]/g;
+                return path.replaceAll(regex, "");
+            }
+            return path.replace(" ", "/");
         }
     },
     mounted(){

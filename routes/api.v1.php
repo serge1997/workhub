@@ -52,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::delete('task', 'onSoftDelete')->name('task.delete');
         Route::get('task-by-user', 'onListByAuthUser');
         Route::get('task-by-filtered-user', 'onListByFilteredUser');
+        Route::get('tasks/by-sprint', 'onListBySprint');
     });
 
     Route::controller(FollowerController::class)->group(function() {

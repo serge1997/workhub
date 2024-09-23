@@ -146,32 +146,46 @@ export default{
             .catch(err => console.log(err));
         },
         filterAwait(tasks){
-            const wait = tasks.filter(task => task.execution_status == 'WAT');
-            return wait;
+           if (tasks != null){
+                const wait = tasks.filter(task => task.execution_status == 'WAT');
+                return wait;
+           }
         },
         filterInProgress(tasks){
-            const progress = tasks.filter(task => task.execution_status == 'PRO');
-            return progress;
+            if (tasks != null){
+                const progress = tasks.filter(task => task.execution_status == 'PRO');
+                return progress;
+            }
         },
         filterConcluded(tasks){
-            const concluded = tasks.filter(task => task.execution_status == 'CON');
-            return concluded;
+           if (tasks != null){
+                const concluded = tasks.filter(task => task.execution_status == 'CON');
+                return concluded;
+           }
         },
         filterCodeReview(tasks){
-            const codereview = tasks.filter(task => task.execution_status == 'CDR');
-            return codereview;
+            if (tasks != null){
+                const codereview = tasks.filter(task => task.execution_status == 'CDR');
+                return codereview;
+            }
         },
         filterTeste(tasks){
-            const teste = tasks.filter(task => task.execution_status == 'TST');
-            return teste;
+           if (tasks != null){
+                const teste = tasks.filter(task => task.execution_status == 'TST');
+                return teste;
+           }
         },
         filterPullrequest(tasks){
-            const pullrequest = tasks.filter(task => task.execution_status == 'PRQ');
-            return pullrequest;
+           if (tasks != null){
+                const pullrequest = tasks.filter(task => task.execution_status == 'PRQ');
+                return pullrequest;
+           }
         },
         filterBacklog(tasks){
-            const backlog = tasks.filter(task => task.execution_status == 'BKL');
-            return backlog;
+            if (tasks != null){
+                const backlog = tasks.filter(task => task.execution_status == 'BKL');
+                return backlog;
+            }
         }
     },
     mounted(){

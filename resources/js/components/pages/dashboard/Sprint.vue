@@ -88,10 +88,9 @@ export default{
     },
     methods: {
         onListAllTask(){
-            this.Api.get('tasks')
+            this.Api.get('tasks/by-sprint', {sprint_id: this.$route.params.id})
             .then(async response => {
                 this.tasks = await response.data;
-                console.log(response)
             })
             .catch(err => {
                 console.log(err)

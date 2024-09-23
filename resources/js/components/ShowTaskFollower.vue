@@ -7,7 +7,7 @@
             <span class="d-flex gap-1 align-items-center">
                 <small class="task-description">
                     <AvatarGroup v-if="task.followers">
-                        <Avatar v-for="follower in task.followers" shape="circle" :image="`img/users_avatars/${follower.avatar}`"/>
+                        <Avatar v-for="follower in task.followers" shape="circle" :image="`/img/users_avatars/${follower.avatar}`"/>
                         <Avatar :label="task.followers_count" shape="circle" size="normal" />
                     </AvatarGroup>
                 </small>
