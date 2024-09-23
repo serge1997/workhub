@@ -111,6 +111,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(SprintController::class)->group(function() {
         Route::prefix('sprint')->group(function() {
             Route::post('/', 'onCreate');
+            Route::get('/', 'onListAll');
         });
     });
 

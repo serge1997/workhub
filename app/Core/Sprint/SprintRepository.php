@@ -1,6 +1,7 @@
 <?php
 namespace App\Core\Sprint;
 
+use App\Http\Resources\SprintResource;
 use App\Models\Sprint;
 
 class SprintRepository implements SprintRepositoryInterface
@@ -11,9 +12,13 @@ class SprintRepository implements SprintRepositoryInterface
             $sprint = Sprint::create($request->validated());
             return $sprint;
         }
-        return Sprint::create([
-            'name' => 'Sprint '. $this->findLatest()->id + 1
-        ]);
+
+        if ($request->generate() === true){
+            return Sprint::create([
+                'name' => 'Sprint '. $this->findLatest()->id + 1
+            ]);
+        }
+
 
     }
 
@@ -24,6 +29,6 @@ class SprintRepository implements SprintRepositoryInterface
 
     public function listAll()
     {
-
+        return SprintResource::collection(Sprint::all());
     }
 }

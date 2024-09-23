@@ -14,13 +14,29 @@ class SprintController extends Controller
 
     public function onCreate(SprintRequest $request)
     {
-        //dd($request->validated());
         try{
-            $request->validated();
             $message = "Sprint created successfully";
-            $this->sprintRepositoryInterface->create($request);
+
+            if ($request->has('generate')){
+                $this->sprintRepositoryInterface->create($request);
+            }
+            if ($request->has('name')){
+                $request->validated();
+                $this->sprintRepositoryInterface->create($request);
+            }
             return response()
                 ->json($message);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
+
+    public function onListAll()
+    {
+        try{
+            return response()
+                ->json($this->sprintRepositoryInterface->listAll());
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 500);

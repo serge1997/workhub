@@ -40,34 +40,38 @@
                                     <i class="pi pi-bars"></i>
                                     create
                                 </span>
-                                <Menu v-if="menuCreateToggle" :model="menu" class="p-2 rounded-0 border-0">
-                                    <template #item="{ item, props }">
-                                        <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
-                                            <span class="sub-menu-item" style="color: #475569;">
-                                                <i :class="item.icon" class="mb-3 px-1"></i>
-                                                {{ item.label }}
-                                            </span>
-                                        </router-link>
-                                    </template>
-                                </Menu>
+                                <ul class="list-group border-0 p-0">
+                                    <Menu v-if="menuCreateToggle" @click="generateTask" :model="menu" class="p-2 rounded-0 border-0">
+                                        <template #item="{ item, props }">
+                                           <li class="list-group-item border-0 p-0">
+                                                <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
+                                                    <span class="sub-menu-item" style="color: #475569;">
+                                                        <i :class="item.icon" class="mb-3 px-1"></i>
+                                                        {{ item.label }}
+                                                    </span>
+                                                </router-link>
+                                           </li>
+                                        </template>
+                                    </Menu>
+                                </ul>
                             </li>
                             <li class="list-group-item border-0">
                                 <span @click="menuSprintsToggle = !menuSprintsToggle">
                                     <i class="pi pi-bars"></i>
                                     sprints
                                 </span>
-                                <ul class="list-group border-0 p-1">
+                                <ul class="list-group border-0 p-0">
                                     <Menu v-if="menuSprintsToggle" :model="sprints" class="p-2 rounded-0 border-0">
-                                            <template #item="{ item, props }">
-                                               <li class="list-group-item border-0 p-1">
-                                                    <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
-                                                        <span class="sub-menu-item" style="color: #475569;">
-                                                            <i :class="item.icon" class="mb-3 px-1"></i>
-                                                            {{ item.label }}
-                                                        </span>
-                                                    </router-link>
-                                               </li>
-                                            </template>
+                                        <template #item="{ item, props }">
+                                           <li class="list-group-item border-0 p-0">
+                                                <router-link @click="generateTask" class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
+                                                    <span class="sub-menu-item" style="color: #475569;">
+                                                        <i class="pi pi-list-check mb-3 px-1"></i>
+                                                        {{ item.name }}
+                                                    </span>
+                                                </router-link>
+                                           </li>
+                                        </template>
                                     </Menu>
                                 </ul>
                             </li>
@@ -90,6 +94,7 @@
     </div>
 </template>
 <script>
+import { useToast } from 'primevue/usetoast';
 export default {
     name: 'SidebarComponent',
 
@@ -97,18 +102,47 @@ export default {
         return {
             menu: [
                 {label: 'Task', route: '/task-create', icon: 'pi pi-book'},
-                {label: 'usuario', route: '/register', icon:'pi pi-users'}
+                {label: 'usuario', route: '/register', icon:'pi pi-users'},
+                {label: 'Gerar novo sprint', route: '/generate-task', icon:'pi pi-bolt'}
             ],
             menuCreateToggle: false,
-            sprints: [
-                {label: "sprint 1", icon: "pi pi-list-check"},
-                {label: "sprint 2", icon: "pi pi-list-check"}
-            ],
+            sprints: null,
             menuSprintsToggle: false,
+            toast: useToast(),
+        }
+    },
+    methods: {
+        generateTask(e){
+            e.preventDefault();
+            const actionUrl = new URL(e.target.baseURI)
+            const pathName = actionUrl.pathname.replace(/\W/g, '');
+
+            if (pathName == 'generatetask'){
+                this.Api.post('sprint', {generate: true})
+                .then(async response => {
+                    this.toast.add({ severity: 'success', summary: 'Error', detail: await response.data, life: 3000 });
+                })
+                .catch(error => {
+                    this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when generated a sprint", life: 3000 });
+                })
+                setTimeout(() => {
+                    location.assign('/sprint')
+                }, 700)
+            }
+        },
+        getSprints(){
+            this.Api.get('sprint')
+            .then(async response => {
+                this.sprints = await response.data;
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded sprints", life: 3000 });
+            })
         }
     },
     mounted(){
-        window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`
+        window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+        this.getSprints()
     }
 }
 </script>

@@ -19,8 +19,7 @@ class SprintResource extends JsonResource
             'name' => $this->name,
             'start_at' => $this->start_at,
             'close_at' => $this->close_at,
-            'deleted_at' => $this->deleted_at,
-            'tasks' => TaskResource::collection($this->tasks)
+            'deleted_at' => $this->deleted_at
         ];
     }
 }

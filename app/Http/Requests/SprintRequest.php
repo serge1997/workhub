@@ -22,10 +22,11 @@ class SprintRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
+            'name' => ['required_if:generate,false', 'string'],
             'desc' => ['nullable'],
             'start_at' => ['nullable'],
-            'close_at' => ['nullable']
+            'close_at' => ['nullable'],
+            'generate' => ['nullable']
         ];
     }
 
@@ -39,5 +40,10 @@ class SprintRequest extends FormRequest
     public function name() : string
     {
         return $this->name;
+    }
+
+    public function generate() : bool
+    {
+        return $this->generate;
     }
 }

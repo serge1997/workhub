@@ -23,14 +23,14 @@ class Sprint extends Model
     protected function startAt() : Attribute
     {
         return Attribute::make(
-            set: fn(string $value) => date('Y-m-d', strtotime(substr($value, 0, 11)))
+            set: fn(?string $value) => !empty($value) ? date('Y-m-d', strtotime(substr($value, 0, 11))) : null
         );
     }
 
     public function closeAt() : Attribute
     {
         return Attribute::make(
-            set: fn(string $value) => date('Y-m-d', strtotime(substr($value, 0, 11)))
+            set: fn(?string $value) => !empty($value) ? date('Y-m-d', strtotime(substr($value, 0, 11))) : null
         );
     }
 
