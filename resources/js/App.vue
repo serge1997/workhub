@@ -11,6 +11,11 @@ export default {
 
         }
     },
+    provide(){
+        return{
+            messagep: "from provide"
+        }
+    },
     mounted(){
         //localStorage.removeItem('token');
     }

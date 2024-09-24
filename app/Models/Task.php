@@ -35,7 +35,8 @@ class Task extends Model
         'deleted_at',
         'delay_used',
         'execution_status',
-        'execution_status_id'
+        'execution_status_id',
+        'sprint_id'
     ];
 
     public function user() : BelongsTo

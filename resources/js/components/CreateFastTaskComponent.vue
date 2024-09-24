@@ -16,7 +16,7 @@
                             <i class="pi pi-user fast-task-form-icon"></i>
                         </span>
                         <span v-else class="d-flex align-items-center">
-                            <img :alt="fastTask.user_id.name" :src="`img/users_avatars/${fastTask.user_id.avatar}`" style="width: 18px" />
+                            <img :alt="fastTask.user_id.name" :src="`/img/users_avatars/${fastTask.user_id.avatar}`" style="width: 18px" />
                             <i class="fast-task-form-icon"></i>
                         </span>
                         <span class="d-flex align-items-center">
@@ -26,7 +26,7 @@
                     <Listbox v-model="fastTask.user_id" :options="users" optionLabel="name" filter class="w-full md:w-56">
                         <template #option="slotProps">
                             <div class="d-flex gap-2">
-                                <img :alt="slotProps.option.name" :src="`img/users_avatars/${slotProps.option.avatar}`" style="width: 28px" />
+                                <img :alt="slotProps.option.name" :src="`/img/users_avatars/${slotProps.option.avatar}`" style="width: 28px" />
                                 <div>{{ slotProps.option.name }}</div>
                             </div>
                         </template>

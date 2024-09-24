@@ -32,6 +32,11 @@
                                 <Calendar id="execution-time" v-model="task.execution_delay_date" :class="formErrorBag && formErrorBag.execution_time ? invalidInpuClass : ''" placeholder="execution time..." timeOnly />
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.execution_delay" v-text="`${formErrorBag.execution_delay}`"></small>
                             </div>
+                            <div class="col-md-6 mb-3 d-flex flex-column">
+                                <label for="email" class="form-label">Sprint </label>
+                                <Dropdown v-model="task.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Choose a sprint..." />
+                                <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 d-flex flex-column mb-3">
@@ -129,7 +134,8 @@ export default{
                 followers: [],
                 annex: [],
                 time_delay: null,
-                execution_status_id: null
+                execution_status_id: null,
+                sprint_id: null
             },
             visibleCreateRoadMap: false,
             roadMap: {
@@ -142,7 +148,8 @@ export default{
             formErrorBag: null,
             selectedAnnexName: [],
             toast: useToast(),
-            task_status: null
+            task_status: null,
+            sprints: null
         }
     },
     methods: {
@@ -237,6 +244,15 @@ export default{
             });
             return Toast
         },
+        getSprints(){
+            this.Api.get('sprint')
+            .then(async response => {
+                this.sprints = await response.data;
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded sprints", life: 3000 });
+            })
+        },
         wssocket(url){
             const ws = new WebSocket(url);
 
@@ -264,7 +280,7 @@ export default{
         let input = document.getElementById('title')
         input.focus()
         this.onListAllTaskExecutionStatus();
-
-    }
+        this.getSprints();
+    },
 }
 </script>

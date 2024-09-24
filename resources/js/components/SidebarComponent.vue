@@ -95,6 +95,7 @@
 </template>
 <script>
 import { useToast } from 'primevue/usetoast';
+import { provide } from 'vue';
 export default {
     name: 'SidebarComponent',
 
@@ -109,6 +110,11 @@ export default {
             sprints: null,
             menuSprintsToggle: false,
             toast: useToast(),
+        }
+    },
+    provide() {
+        return {
+            sprintsp: "this.sprints"
         }
     },
     methods: {
