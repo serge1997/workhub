@@ -29,7 +29,7 @@
                                     tasks
                                 </router-link>
                             </li>
-                            <li class="list-group-item border-0">
+                            <li class="list-group-item border-0 d-none">
                                 <router-link class="text-decoration-none" :to="{name: 'Sprint'}">
                                     <i class="pi pi-bolt"></i>
                                     sprint
@@ -61,7 +61,7 @@
                                     sprints
                                 </span>
                                 <ul class="list-group border-0 p-0">
-                                    <Menu v-if="menuSprintsToggle" @click="redirectToSprint" :model="sprints" class="p-2 rounded-0 border-0">
+                                    <Menu v-if="menuSprintsToggle" @click="$emit('reloadSprintTaks')" :model="sprints" class="p-2 rounded-0 border-0">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
                                                 <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
@@ -128,12 +128,6 @@ export default {
                 setTimeout(() => {
                     location.assign('/sprint')
                 }, 700)
-            }
-        },
-        redirectToSprint(){
-            console.log(location.pathname) //verificar se cuurent url é sprint para evitar abor das requisição do axios
-            if (location.pathname.includes("sprint")){
-                this.$router.go(0)
             }
         },
         getSprints(){

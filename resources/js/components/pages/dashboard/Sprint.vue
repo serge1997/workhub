@@ -1,5 +1,5 @@
 <template>
-    <SidebarComponent>
+    <SidebarComponent @reload-sprint-taks="onListAllTask">
         <div class="row">
             <div class="col-md-10 mt-3 m-auto p-0">
                 <div class="row w-100 p-0 m-auto">
