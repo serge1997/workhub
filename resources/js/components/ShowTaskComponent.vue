@@ -70,9 +70,27 @@
                             <ListCustomColumnsComponents :task_id="taskFinded.id"/>
                         </div>
                     </div>
-                    <div v-for="custom in taskFinded.customColumnValue" class="col-md-10 d-flex justify-content-between align-items-center gap-2 mb-4">
-                        <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
-                        <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                    <div v-for="custom in taskFinded.customColumnValue" class="col-md-10">
+                        <div v-if="custom.label.includes('review')" class="w-100">
+                            <div class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
+                                <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
+                                <InputText @input="seachReviewers(custom.custom_column_id)" @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                            </div>
+                            <div v-if="hasSearchReviewerSymbol" style="left: 17%; top: 88%; width: 35%; z-index: 10;"class="position-absolute bg-white border shadow-sm p-2">
+                               <ul class="list-group border-0">
+                                    <li class="list-group-item border-0 li-reviewer">
+                                        Serge
+                                    </li>
+                                    <li class="list-group-item border-0 li-reviewer">
+                                        Serge
+                                    </li>
+                               </ul>
+                            </div>
+                        </div>
+                        <div v-else class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
+                            <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
+                            <InputText @input="seachReviewers" @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,6 +146,12 @@ export default {
                 low: "BAX"
             },
             annex: null,
+            reviewersSeleteced: [],
+            reviewers: [
+                {name: "Serge", id: 1},
+                {name: "Jonh", id: 2}
+            ],
+            hasSearchReviewerSymbol: false
         }
     },
     methods:{
@@ -157,6 +181,15 @@ export default {
             if(status === "WAT")  return "warning";
             if (status === "PRO") return "primary";
             return "success";
+        },
+        seachReviewers(id){
+            let input = document.getElementById(`custom-value-${id}`);
+            input.style.color = "#1275d8";
+            if (input.value[0] === "@"){
+                setTimeout(() => {
+                    this.hasSearchReviewerSymbol = true;
+                },200)
+            }
         }
     },
     created(){
@@ -183,5 +216,8 @@ export default {
 .task-activity {
     font-size: 0.8em;
     color: #64748b;
+}
+.li-reviewer{
+    cursor: pointer;
 }
 </style>
