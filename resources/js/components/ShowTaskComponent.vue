@@ -73,23 +73,20 @@
                     <div v-for="custom in taskFinded.customColumnValue" class="col-md-10">
                         <div v-if="custom.label.includes('review')" class="w-100">
                             <div class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
-                                <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
-                                <InputText @input="seachReviewers(custom.custom_column_id)" @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                                <label class="text-capitalize custom-column-label" :for="`custom-value-${custom.custom_column_id}`">{{ custom.label}}</label>
+                                <InputText @input="seachReviewers(custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
                             </div>
-                            <div v-if="hasSearchReviewerSymbol" style="left: 17%; top: 88%; width: 35%; z-index: 10;"class="position-absolute bg-white border shadow-sm p-2">
+                            <div style="left: 25%; bottom: 18%; width: 35%; z-index: 10;"class="position-absolute bg-white border shadow-sm p-2 d-none search-reviewer-box rounded-2">
                                <ul class="list-group border-0">
-                                    <li class="list-group-item border-0 li-reviewer">
-                                        Serge
-                                    </li>
-                                    <li class="list-group-item border-0 li-reviewer">
-                                        Serge
+                                    <li v-for="user in reviewers" class="list-group-item border-0 li-reviewer">
+                                        <Chip class="bg-white" :image="`/img/users_avatars/${user.avatar}`" :label="user.name" />
                                     </li>
                                </ul>
                             </div>
                         </div>
                         <div v-else class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
                             <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
-                            <InputText @input="seachReviewers" @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                            <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
                         </div>
                     </div>
                 </div>
@@ -147,10 +144,7 @@ export default {
             },
             annex: null,
             reviewersSeleteced: [],
-            reviewers: [
-                {name: "Serge", id: 1},
-                {name: "Jonh", id: 2}
-            ],
+            reviewers: null,
             hasSearchReviewerSymbol: false
         }
     },
@@ -185,17 +179,28 @@ export default {
         seachReviewers(id){
             let input = document.getElementById(`custom-value-${id}`);
             input.style.color = "#1275d8";
-            if (input.value[0] === "@"){
-                setTimeout(() => {
-                    this.hasSearchReviewerSymbol = true;
-                },200)
+            console.log(input.value)
+            if (input.value.includes("@")){
+                let param = input.value;
+              this.listReviewers(param)
             }
+        },
+        listReviewers(param){
+
+            let box = document.querySelector('.search-reviewer-box');
+            this.Api.get('user-search', {user_name: param})
+            .then(async response => {
+                this.reviewers = await response.data;
+                box.classList.remove('d-none')
+            })
+
         }
     },
     created(){
 
     },
     mounted(){
+        //this.listReviewers();
     }
 }
 </script>

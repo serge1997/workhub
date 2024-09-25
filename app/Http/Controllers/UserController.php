@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Core\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
 use Exception;
 
 class UserController extends Controller
@@ -51,4 +52,20 @@ class UserController extends Controller
                 ->json($e->getMessage(), 500);
         }
     }
+
+    public function OnSearch(Request $request)
+    {
+        try{
+            $users = UserResource::collection(
+                $this->userRepositoryInterface->search($request)
+            );
+            return response()
+                ->json($users);
+        }catch(Exception $e){
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
+
+
 }

@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('user', 'OnCreate');
         Route::get('users', 'OnListAll');
         Route::post('user-avatar', 'OnCreateAvatar');
+        Route::get('user-search', 'OnSearch')->name('user.search');
     });
 
     Route::controller(TaskController::class)->group(function() {

@@ -34,4 +34,11 @@ class UserRepository implements UserRepositoryInterface
 
         }
     }
+
+    public function search($request)
+    {
+        $param = str_replace('@', '', $request->user_name);
+        return User::whereRaw("name LIKE '%{$param}%'")
+            ->get();
+    }
 }
