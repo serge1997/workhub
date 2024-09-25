@@ -5,9 +5,10 @@
                 <div class="row w-100 p-0 m-auto">
                     <Toolbar class="p-1">
                         <template #start>
-                            <div class="w-100 d-flex">
+                            <div class="w-100 d-flex align-items-center">
                                 <Button @click="componentIs = 'CardTaskComponent'" icon="pi pi-th-large" text/>
                                 <Button @click="componentIs = 'ListTaskComponent'" icon="pi pi-list" text />
+                                <Button :label="currentSprintName" class="task-description text-capitalize" text />
                             </div>
                         </template>
                         <template #center>
@@ -15,7 +16,7 @@
                                 <AutoComplete @change="getUserTask" v-model="user_filtered" optionLabel="name" placeholder="select a user..." dropdown :suggestions="users_filter" @complete="onListAllUsers">
                                     <template #option="slotProps">
                                         <div class="d-flex gap-1 w-50">
-                                            <img style="width: 28px;" :alt="slotProps.option.name" :src="`img/users_avatars/${slotProps.option.avatar}`" />
+                                            <img style="width: 28px;" :alt="slotProps.option.name" :src="`/img/users_avatars/${slotProps.option.avatar}`" />
                                             <div>{{ slotProps.option.name }}</div>
                                         </div>
                                     </template>
@@ -83,11 +84,14 @@ export default{
             task_status: null,
             taskStatus: null,
             users_filter: null,
-            user_filtered: null
+            user_filtered: null,
+            currentSprintName: null,
         }
     },
     methods: {
         onListAllTask(){
+            let pathname = location.pathname;
+            this.currentSprintName = pathname.replaceAll(/\W/g, ' ');
             this.Api.get('tasks/by-sprint', {sprint_id: this.$route.params.id})
             .then(async response => {
                 this.tasks = await response.data;

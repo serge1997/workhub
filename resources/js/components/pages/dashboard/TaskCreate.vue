@@ -192,6 +192,7 @@ export default{
             }
             this.task.execution_delay !== null ? data.append('execution_delay', this.task.execution_delay) : null;
             this.task.title !== null ? data.append('title', this.task.title) : null;
+            this.task.sprint_id !== null ? data.append('sprint_id', this.task.sprint_id) : null;
             this.task.time_delay !== null ? data.append('time_delay', this.task.time_delay) : null;
             this.task.description !== null ? data.append('description', this.task.description) : null;
             this.task.priority !== null ? data.append('priority', this.task.priority) : null;
