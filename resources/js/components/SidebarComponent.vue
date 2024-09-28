@@ -4,8 +4,8 @@
             @watch-route-params="$emit('watchRouteParams')"
         />
         <div class="row m-auto">
-            <div class="col-md-2 d-flex overflow-scroll">
-                <div style="top: 0; left: 0; z-index: 10;" class="col-md-2 position-fixed bg-white z-3 min-vh-100">
+            <div class="col-md-2 d-flex">
+                <div style="top: 0; left: 0; z-index: 10;height: 690px; overflow-y: scroll;" class="col-md-2 position-fixed bg-white z-3 min-vh-100">
                     <div class="sidebar-header p-3">
                         <h6>Logo</h6>
                     </div>
