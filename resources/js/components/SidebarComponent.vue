@@ -41,7 +41,7 @@
                                     create
                                 </span>
                                 <ul class="list-group border-0 p-0">
-                                    <Menu v-if="menuCreateToggle" @click="generateTask" :model="menu" class="p-2 rounded-0 border-0">
+                                    <Menu v-if="menuCreateToggle" :model="menu" class="p-2 rounded-0 border-0">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
                                                 <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
