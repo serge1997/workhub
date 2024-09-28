@@ -122,19 +122,20 @@ export default {
             e.preventDefault();
             const actionUrl = new URL(e.target.baseURI)
             const pathName = actionUrl.pathname.replace(/\W/g, '');
+            let result;
 
-            if (pathName == 'generatetask'){
-                this.Api.post('sprint', {generate: true})
-                .then(async response => {
-                    this.toast.add({ severity: 'success', summary: 'Error', detail: await response.data, life: 3000 });
-                })
-                .catch(error => {
-                    this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when generated a sprint", life: 3000 });
-                })
-                setTimeout(() => {
-                    location.assign('/sprint')
-                }, 700)
-            }
+            this.Api.post('sprint', {generate: true})
+            .then(async response => {
+                result = await response.data.data;
+                this.toast.add({ severity: 'success', summary: 'Error', detail: await response.data.message, life: 3000 });
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when generated a sprint", life: 3000 });
+            })
+            setTimeout(() => {
+                location.assign(`/sprint/${result.id}`);
+            }, 700)
+
         },
         getSprints(){
             this.Api.get('sprint')

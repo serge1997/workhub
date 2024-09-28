@@ -12,10 +12,9 @@ class SprintRepository implements SprintRepositoryInterface
             $sprint = Sprint::create($request->validated());
             return $sprint;
         }
-
         if ($request->generate() === true){
             return Sprint::create([
-                'name' => 'Sprint '. $this->findLatest()->id + 1
+                'name' => 'Sprint '. $this->findLatest()->id+1
             ]);
         }
 

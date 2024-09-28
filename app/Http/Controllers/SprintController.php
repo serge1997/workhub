@@ -18,14 +18,14 @@ class SprintController extends Controller
             $message = "Sprint created successfully";
 
             if ($request->has('generate')){
-                $this->sprintRepositoryInterface->create($request);
+                $data = $this->sprintRepositoryInterface->create($request);
             }
             if ($request->has('name')){
                 $request->validated();
-                $this->sprintRepositoryInterface->create($request);
+                $data = $this->sprintRepositoryInterface->create($request);
             }
             return response()
-                ->json($message);
+                ->json(['data' => $data, 'message' => $message]);
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 500);
