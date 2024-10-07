@@ -74,14 +74,10 @@
                         <div v-if="custom.label.includes('review')" class="w-100">
                             <div class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
                                 <label class="text-capitalize custom-column-label" :for="`custom-value-${custom.custom_column_id}`">{{ custom.label}}</label>
-                                <InputText @input="seachReviewers(custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                                <InputText @input="seachReviewers(custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input-reviewers custom-column-input" :value="custom.value"/>
                             </div>
-                            <div style="left: 25%; bottom: 18%; width: 35%; z-index: 10;"class="position-absolute bg-white border shadow-sm p-2 d-none search-reviewer-box rounded-2">
-                               <ul class="list-group border-0">
-                                    <li v-for="user in reviewers" class="list-group-item border-0 li-reviewer">
-                                        <Chip class="bg-white" :image="`/img/users_avatars/${user.avatar}`" :label="user.name" />
-                                    </li>
-                               </ul>
+                            <div id="reviewers-list-box" style="left: 25%; bottom: 18%; width: 35%; z-index: 10;"class="position-absolute bg-white border shadow-sm p-2 d-none search-reviewer-box rounded-2">
+
                             </div>
                         </div>
                         <div v-else class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
@@ -187,13 +183,52 @@ export default {
         },
         listReviewers(param){
 
-            let box = document.querySelector('.search-reviewer-box');
+            //let box = document.querySelector('.search-reviewer-box');
             this.Api.get('user-search', {user_name: param})
             .then(async response => {
                 this.reviewers = await response.data;
-                box.classList.remove('d-none')
-            })
+                let box = document.getElementById('reviewers-list-box');
+                if (box.hasChildNodes()){
+                    document.querySelector('#reviewers-list-box .list-group').remove();
+                }
+                let ul = document.createElement('ul');
+                ul.classList.add('list-group')
 
+
+
+                for(let user of this.reviewers){
+                    let li = document.createElement('li');
+                    li.setAttribute('class', 'list_reviewer_item')
+                    let content = `<img src="/img/users_avatars/${user.avatar}" style='width: 30px' class='img-thumbnail rounded-circle' />
+                        <span data-desc='${user.name}' data-id='${user.id}'>${user.name}</span>`;
+                    li.classList.add('list-group-item')
+                    li.classList.add('border-0')
+                    li.classList.add('d-flex')
+                    li.classList.add('gap-2')
+                    li.style.cursor = 'pointer'
+                    li.innerHTML = content;
+                    ul.appendChild(li)
+                }
+                box.appendChild(ul);
+                box.classList.remove('d-none')
+                this.onSelectReviewers()
+            })
+        },
+        onSelectReviewers(){
+            let self = this;
+            setTimeout(() => {
+                let els = document.querySelectorAll('.list_reviewer_item');
+                let input = document.querySelector('.custom-column-input-reviewers');
+                els.forEach((el, index) => {
+                    el.addEventListener('click', function(e) {
+                       let reviewer_name = e.target.getAttribute('data-desc');
+                       if (!self.reviewersSeleteced.includes(reviewer_name)){
+                            self.reviewersSeleteced.push(reviewer_name);
+                       }
+                       input.value = `@${self.reviewersSeleteced.toString().replaceAll(',', ' @')}`;
+                    })
+                })
+            }, 100)
         }
     },
     created(){
