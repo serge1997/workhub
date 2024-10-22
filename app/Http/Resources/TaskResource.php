@@ -48,7 +48,7 @@ class TaskResource extends JsonResource
             'customColumnValue' => CustomsColumnsValueResource::collection($this->customColumnValue),
             'full_task_execution_status' => strtolower($this->executionStatus->name),
             'can_delete' => $this->when($this->isAdminAndTaskOwner($request->user()->id), true),
-            'comment_count' => $this->when($this->countComment() > 0, $this->countComment()),
+            'comment_count' => $this->when($this->countComment() > 0, $this->countComment(), true),
             'activities' => TaskActivityResource::collection($this->taskActivity)
 
         ];

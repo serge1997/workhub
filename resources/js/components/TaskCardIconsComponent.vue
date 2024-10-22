@@ -1,7 +1,7 @@
 <template>
     <div class="w-100 d-flex flex-column">
         <div class="w-100">
-            <Button class="" text>
+            <Button class="p-1" text>
                 <span class="d-flex align-items-center">
                     <i class="pi pi-user icon-list-task"></i>
                 </span>
@@ -10,8 +10,8 @@
                 </small>
             </Button>
         </div>
-        <div class="w-100 d-flex px-2">
-            <Chip class="rounded-0 bg-white w-75">
+        <div class="w-100 d-flex px-1">
+            <Chip class="rounded-0 bg-white w-75 p-0">
                 <div class="d-flex align-items-center">
                     <span class="task-description d-flex align-items-center gap-2">
                         <i :style="{'color': task.execution_status_severity}" class="pi pi-circle-fill icon-list-task"></i>
@@ -26,7 +26,7 @@
             />
         </div>
         <div class="w-100 icons d-flex align-items-center">
-            <Button class="d-flex gap-1 align-items-center" text>
+            <Button class="d-flex gap-1 align-items-center p-1" text>
                 <span>
                     <i class="pi pi-clock icon-list-task"></i>
                 </span>
@@ -36,18 +36,12 @@
                     </small>
                 </span>
             </Button>
-            <Button @click="startTiming" class="p-0 task-description d-flex gap-1" text>
-                <span>
-                    <i class="pi pi-play-circle"></i>
-                </span>
-                <span class="chrono">{{timing.minutes}}:{{ timing.seconds }}</span>
-            </Button>
         </div>
         <div class="w-100 icons d-flex gap-1 align-items-center">
             <ShowTaskFollower :task="task" />
         </div>
         <div class="w-100 icons d-flex gap-1 align-items-center">
-            <Button class="d-flex gap-1 align-items-center" text>
+            <Button class="d-flex gap-1 align-items-center p-1" text>
                 <span>
                     <i class="pi pi-paperclip icon-list-task"></i>
                 </span>
@@ -58,7 +52,7 @@
                 </span>
             </Button>
         </div>
-        <div class="w-100 icons d-flex gap-1 align-items-center">
+        <div class="w-100 icons d-flex align-items-center">
             <TaskCommentComponent :task="task" />
         </div>
         <div class="w-100 icons d-flex align-items-center">
@@ -74,7 +68,7 @@
             </span>
         </div>
         <div v-if="task.can_delete" class="w-100 icons d-flex gap-1 align-items-center">
-            <Button @click="$emit('confirmDelete', task.id)" class="d-flex gap-1 align-items-center" text>
+            <Button @click="$emit('confirmDelete', task.id)" class="d-flex gap-1 align-items-center p-1" text>
                 <span>
                     <i class="pi pi-trash icon-list-task"></i>
                 </span>

@@ -1,8 +1,8 @@
 <template>
     <div class="w-100">
-        <div v-if="showStatus == 'BKL'" v-for="task in filterBacklog(tasks)" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'BKL'" v-for="task in filterBacklog(tasks)" class="card shadow-sm border-0 mb-1">
             <div class="card-body">
-                <div class="w-100 mb-3">
+                <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
@@ -15,7 +15,7 @@
         </div>
         <div v-if="showStatus == 'WAT'" v-for="task in filterAwait(tasks)" class="card shadow-sm border-0 mb-3">
             <div class="card-body">
-                <div class="w-100 mb-3">
+                <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
@@ -26,9 +26,9 @@
                 />
             </div>
         </div>
-        <div v-if="showStatus == 'PRO'" v-for="task in filterInProgress(tasks)" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'PRO'" v-for="task in filterInProgress(tasks)" class="card shadow-sm border-0 mb-1">
             <div class="card-body">
-                <div class="w-100 mb-3">
+                <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
@@ -41,9 +41,9 @@
                 />
             </div>
         </div>
-        <div v-if="showStatus == 'CDR'" v-for="task in filterCodeReview(tasks)" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'CDR'" v-for="task in filterCodeReview(tasks)" class="card shadow-sm border-0 mb-1">
             <div class="card-body">
-                <div class="w-100 mb-3">
+                <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
@@ -55,9 +55,9 @@
                 />
             </div>
         </div>
-        <div v-if="showStatus == 'TST'" v-for="task in filterTeste(tasks)" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'TST'" v-for="task in filterTeste(tasks)" class="card shadow-sm border-0 mb-1">
             <div class="card-body">
-                <div class="w-100 mb-3">
+                <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
@@ -69,9 +69,9 @@
                 />
             </div>
         </div>
-        <div v-if="showStatus == 'PRQ'" v-for="task in filterPullrequest(tasks)" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'PRQ'" v-for="task in filterPullrequest(tasks)" class="card shadow-sm border-0 mb-1">
             <div class="card-body">
-                <div class="w-100 mb-3">
+                <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent
@@ -83,9 +83,9 @@
                 />
             </div>
         </div>
-        <div v-if="showStatus == 'CON'" v-for="task in filterConcluded(tasks)" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'CON'" v-for="task in filterConcluded(tasks)" class="card shadow-sm border-0 mb-1">
             <div class="card-body">
-                <div class="w-100 mb-3">
+                <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
                 <TaskCardIconsComponent

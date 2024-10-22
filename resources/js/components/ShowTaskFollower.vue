@@ -1,6 +1,6 @@
 <template>
     <div class="w-100">
-        <Button class="d-flex gap-1 align-items-center" @click="listFollowers(task.id)" text>
+        <Button class="d-flex gap-1 align-items-center p-1" @click="listFollowers(task.id)" text>
             <span>
                 <i class="pi pi-users icon-list-task"></i>
             </span>

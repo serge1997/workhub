@@ -1,5 +1,5 @@
 <template>
-    <Button @click="visibleShowTaskModal = !visibleShowTaskModal; $emit('showTask', task_id)" text>
+    <Button class="p-1" @click="visibleShowTaskModal = !visibleShowTaskModal; $emit('showTask', task_id)" text>
         <i :class="`pi ${openModalIcon} icon-list-task`"></i>
     </Button>
     <Dialog v-model:visible="visibleShowTaskModal" modal header="" :style="{ width: '85rem' }">
@@ -20,7 +20,7 @@
                             <Tag class="py-0" :severity="setStatusSeverity(taskFinded.execution_status)" :value="taskFinded.full_task_execution_status" />
                         </span>
                         <span class="d-flex">
-                            <Tag class="py-2 bg-secondary" icon="pi pi-clock" :value="taskFinded.execution_delay" />
+                            <Tag class="py-2 bg-secondary text-white" icon="pi pi-clock" :value="taskFinded.execution_delay" />
                         </span>
                         <span>
                             <AddTaskRoadMapFastlyComponent

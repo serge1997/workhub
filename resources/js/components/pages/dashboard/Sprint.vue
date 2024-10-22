@@ -30,7 +30,7 @@
                         <div style="height: 600px; min-width: 360px; overflow: scroll;">
                             <div class="card w-100">
                                 <div class="card-header border-0 bg-white">
-                                    <Tag class="w-100" :style="{'background-color': executionStatusBg(status.status)}" :value="status.name" />
+                                    <Tag class="w-100 text-white" :style="{'background-color': executionStatusBg(status.status)}" :value="status.name" />
                                 </div>
                                 <div class="card-body mt-4">
                                     <keep-alive>

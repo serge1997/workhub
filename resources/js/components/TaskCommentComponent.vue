@@ -1,12 +1,12 @@
 <template>
-    <div class="w-100 p-1">
-        <Button v-if="task.comment_count" class="d-flex gap-1 px-2" @click="listAllCommentByTask(task.id)" text>
+    <div class="w-100">
+        <Button v-if="task.comment_count" class="d-flex gap-1 px-1 p-1" @click="listAllCommentByTask(task.id)" text>
             <span>
                 <i class="pi pi pi-comment icon-list-task"></i>
             </span>
             <span class="d-flex gap-1 align-items-center">
                 <small class="task-description">
-                    {{task.comment_count}}
+                    {{task.comment_count == true ? 0 : task.comment_count}}
                 </small>
             </span>
         </Button>
