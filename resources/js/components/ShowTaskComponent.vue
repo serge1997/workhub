@@ -87,8 +87,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 task-activities-box rounded-1">
-                <div class="row">
+            <div class="col-md-4 rounded-1 d-flex flex-column justify-content-between">
+                <div class="row task-activities-box mb-3">
                     <div class="col-md-10 p-4">
                         <h6>Atividades no task</h6>
                     </div>
@@ -101,6 +101,18 @@
                                 <small class="task-activity"><b>{{ activity.author }}</b> {{ activity.activity }} {{ activity.created_at }}</small>
                             </span>
                         </span>
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <div class="col-md-10">
+                        <label class="form-label">Adicionar um comentario: </label>
+                        <InputText @input="onInputCommentValidate" v-model="comment.comment" class="w-100 mb-2" placeholder="digite o seu comentarios..."/>
+                        <div class="w-100 d-flex align-items-center mb-3 gap-2 p-1 border shadow-sm rounded-pill">
+                            <Button class="px-0 py-0 task-description" icon="pi pi-file-plus" text/>
+                            <Button class="px-0 py-0 task-description" icon="pi pi-image" text/>
+                            <Button class="px-0 py-0 task-description" icon="pi pi-at" text/>
+                        </div>
+                        <Button id="post-comment-btn" @click="postComment(taskFinded.id)" class="rounded-pill w-50 p-disabled" label="Enviar" />
                     </div>
                 </div>
             </div>
@@ -116,6 +128,7 @@
 import ListCustomColumnsComponents from './ListCustomColumnsComponents.vue';
 import AddTaskRoadMapFastlyComponent from './AddTaskRoadMapFastlyComponent.vue';
 import AddFileFastlyComponent from './AddFileFastlyComponent.vue';
+import { useToast } from 'primevue/usetoast';
 export default {
     name: 'ShowTaskComponent',
 
@@ -141,7 +154,12 @@ export default {
             annex: null,
             reviewersSeleteced: [],
             reviewers: null,
-            hasSearchReviewerSymbol: false
+            hasSearchReviewerSymbol: false,
+            comment: {
+                comment: null,
+                task_id: null
+            },
+            toast: useToast()
         }
     },
     methods:{
@@ -159,7 +177,6 @@ export default {
             this.visibleShowAnnex = true;
             setTimeout(() => {
                 const iframHeader = document.querySelector('.iframe')
-                //iframHeader.classList.add('d-none')
             }, 1000)
         },
         setSeverity(priority){
@@ -182,8 +199,6 @@ export default {
             }
         },
         listReviewers(param){
-
-            //let box = document.querySelector('.search-reviewer-box');
             this.Api.get('user-search', {user_name: param})
             .then(async response => {
                 this.reviewers = await response.data;
@@ -193,9 +208,6 @@ export default {
                 }
                 let ul = document.createElement('ul');
                 ul.classList.add('list-group')
-
-
-
                 for(let user of this.reviewers){
                     let li = document.createElement('li');
                     li.setAttribute('class', 'list_reviewer_item')
@@ -229,6 +241,27 @@ export default {
                     })
                 })
             }, 100)
+        },
+        onInputCommentValidate(){
+            let btn = document.querySelector('#post-comment-btn')
+            console.log(btn)
+            if (this.comment.comment != null){
+                btn.classList.remove('p-disabled')
+            }else{
+                btn.classList.add('p-disabled')
+            }
+        },
+        postComment(taskId){
+            this.comment.task_id = taskId;
+            this.Api.post('comments', this.comment)
+            .then(async response => {
+                this.comment.comment = null;
+                this.onInputCommentValidate()
+                this.toast.add({ severity: 'success', summary: 'commentario', detail: await response.data.message, life: 3000 });
+            })
+            .catch(error => {
+                this.toast().add({ severity: 'error', summary: 'commentario', detail: 'error o addicionar o commentario', life: 3000 });
+            })
         }
     },
     created(){
