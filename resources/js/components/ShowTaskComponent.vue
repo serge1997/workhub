@@ -2,7 +2,7 @@
     <Button class="p-1" @click="visibleShowTaskModal = !visibleShowTaskModal; $emit('showTask', task_id)" text>
         <i :class="`pi ${openModalIcon} icon-list-task`"></i>
     </Button>
-    <Dialog v-model:visible="visibleShowTaskModal" modal header="" :style="{ width: '85rem' }">
+    <Dialog v-model:visible="visibleShowTaskModal" maximizable modal header=" " :style="{ width: '85rem' }">
         <div v-if="taskFinded" class="row">
             <div class="col-md-8">
                 <input type="hidden" id="task-id-show" :value="taskFinded.id">
