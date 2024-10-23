@@ -35,4 +35,16 @@ class TaskActivityController extends Controller
             return response()->json($e->getMessage(), 404);
         }
     }
+
+    public function listByTaskId(int $id)
+    {
+        try{
+            return response()
+                ->json($this->taskActivityRepositoryInterface
+                    ->listByTask($id)
+                );
+        }catch(Exception $e){
+
+        }
+    }
 }

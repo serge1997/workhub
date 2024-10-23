@@ -49,7 +49,7 @@ class TaskResource extends JsonResource
             'full_task_execution_status' => strtolower($this->executionStatus->name),
             'can_delete' => $this->when($this->isAdminAndTaskOwner($request->user()->id), true),
             'comment_count' => $this->when($this->countComment() > 0, $this->countComment(), true),
-            'activities' => TaskActivityResource::collection($this->taskActivity)
+            'activities' => TaskActivityResource::collection($this->taskActivity->take(4))
 
         ];
     }

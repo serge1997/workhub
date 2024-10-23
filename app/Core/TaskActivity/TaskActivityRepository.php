@@ -23,9 +23,11 @@ class TaskActivityRepository implements TaskActivityRepositoryInterface
         return $activity;
     }
 
-    public function listByTask()
+    public function listByTask(int $id)
     {
-
+        return TaskActivityResource::collection(
+            TaskActivity::where('task_id', $id)->get()
+        );
     }
 
     public function notifyByTaskExecutor($request)

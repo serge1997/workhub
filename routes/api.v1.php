@@ -124,9 +124,10 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::controller(TaskActivityController::class)->group(function(){
-        Route::prefix('task-activity')->group(function(){
+        Route::prefix('task-activity')->name('task.activity.')->group(function(){
             Route::get('/by-task-executor', 'onNotifyByTaskExecutor');
             Route::put('/readed', 'onMarkAsReaded');
+            Route::get('/list-by-task/{id}', 'listByTaskId')->name('list.by.task');
         });
     });
 

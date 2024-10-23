@@ -88,11 +88,11 @@
                 </div>
             </div>
             <div class="col-md-4 rounded-1 d-flex flex-column justify-content-between">
-                <div class="row task-activities-box mb-3">
+                <div v-if="taskFinded.activities.length" class="row task-activities-box mb-3 rounded-3">
                     <div class="col-md-10 p-4">
                         <h6>Atividades no task</h6>
                     </div>
-                    <div v-for="activity in taskFinded.activities " class="col-md-12 mb-2">
+                    <div v-for="activity in handleTaskActivitiesData(taskFinded.activities)" class="col-md-12 mb-2">
                         <span class="d-flex align-items-center gap-1">
                             <span class="d-flex align-items-center">
                                 <i style="font-size: 0.3em;" class="pi pi-circle-fill task-description text-success"></i>
@@ -101,6 +101,14 @@
                                 <small class="task-activity"><b>{{ activity.author }}</b> {{ activity.activity }} {{ activity.created_at }}</small>
                             </span>
                         </span>
+                    </div>
+                    <div class="row mt-2 px-2">
+                        <div class="col-md-6">
+                            <Button @click="listAllActivities(taskFinded.id)" class="task-description fw-normal p-0 d-flex gap-1 align-items-center" text>
+                                <span><i style="font-size: 0.8em" :class="`pi ${activitiesBtn.icon}`"></i></span>
+                                <span style="font-size: 0.8em">{{ activitiesBtn.label }}</span>
+                            </Button>
+                        </div>
                     </div>
                 </div>
                 <div class="row p-1">
@@ -159,7 +167,13 @@ export default {
                 comment: null,
                 task_id: null
             },
-            toast: useToast()
+            toast: useToast(),
+            allTaskActivities: null,
+            activitiesBtn:{
+                label: 'Ver mais...',
+                icon: 'pi-chevron-right',
+                actionToggle: false
+            }
         }
     },
     methods:{
@@ -262,13 +276,29 @@ export default {
             .catch(error => {
                 this.toast().add({ severity: 'error', summary: 'commentario', detail: 'error o addicionar o commentario', life: 3000 });
             })
+        },
+        listAllActivities(id){
+            this.Api.get('task-activity/list-by-task/' + id)
+            .then(async response => {
+                this.allTaskActivities = await response.data;
+                this.activitiesBtn.label = 'Ver menos...';
+                this.activitiesBtn.icon = 'pi-chevron-up';
+                if (this.activitiesBtn.actionToggle){
+                    this.activitiesBtn.icon = 'pi-chevron-right';
+                    this.allTaskActivities = this.taskFinded.activities;
+                }
+                this.activitiesBtn.actionToggle = !this.activitiesBtn.actionToggle;
+            })
+        },
+        handleTaskActivitiesData(limitedData){
+            return this.allTaskActivities == null ? limitedData : this.allTaskActivities;
         }
     },
     created(){
 
     },
     mounted(){
-        //this.listReviewers();
+
     }
 }
 </script>
