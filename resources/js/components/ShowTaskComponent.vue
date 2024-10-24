@@ -61,15 +61,54 @@
                     <div class="row border-bottom mb-3">
                         <h4 class="">Annexos</h4>
                     </div>
-                    <div class="row d-flex justify-content-center flex-wrap gap-2">
-                        <Button v-for="annex of taskFinded.annexes" @click="showAnnex(annex.annex)" class="border rounded-2 p-3 d-flex flex-column col-md-2 gap-1" text>
+                    <div class="row d-flex flex-wrap gap-2">
+                        <div v-for="annex of taskFinded.annexes" @click="showAnnex(annex.annex)" class="card border rounded-2 col-md-2 gap-1 p-0 annex-card">
+                            <div v-if="annex.annex_type == 'image'" class="card-body annex-button-image position-relative p-5" :style="`background-image: url('/task-annex/${annex.annex}');background-repeat: no-repeat;background-size: cover;`">
+                            </div>
+                            <div v-else class="card-body p-0">
+                                    <Button
+                                        @click="showAnnex(annex.annex)"
+                                        class="d-flex flex-column w-100 gap-1"
+                                       text>
+                                        <span>
+                                            <i class="pi pi-file-pdf fs-3 task-description"></i>
+                                        </span>
+                                        <span>
+                                            <small class="task-description">{{ annex.annex_type }}</small>
+                                        </span>
+                                </Button>
+                            </div>
+                            <div class="card-footer p-1">
+                                <div class="w-100 d-flex align-items-center mb-1">
+                                    <span class="w-100 d-flex justify-content-between gap-1">
+                                        <span style="font-size: 0.7em;" class="fw-light">{{ annex.annex_type }}</span>
+                                        <span style="font-size: 0.7em;" class="fw-light">{{ annex.created_at }}</span>
+                                    </span>
+                                </div>
+                                <div class="w-100 d-flex align-items-center gap-1">
+                                    <span class="d-flex align-item-center">
+                                        <img class="img-thumbnail rounded-circle" style="width: 30px;" :src="`/img/users_avatars/${taskFinded.user_name.avatar}`" alt="">
+                                    </span>
+                                    <span class="d-flex align-item-center">
+                                        <small style="font-size: 0.8em;">{{ taskFinded.user_name.name }}</small>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <Button v-for="annex of taskFinded.annexes"
+                            @click="showAnnex(annex.annex)"
+                            class="border rounded-2 p-3 d-flex flex-column col-md-2 gap-1 annex-button-image position-relative"
+                            :style="`background-image: url('/task-annex/${annex.annex}');
+                                background-repeat: no-repeat;
+                                background-size: cover;`"
+                        text>
                             <span>
                                 <i class="pi pi-file-pdf fs-3 task-description"></i>
                             </span>
                             <span>
                                 <small class="task-description">{{ annex.annex_type }}</small>
                             </span>
-                        </Button>
+                        </Button> -->
                     </div>
                 </div>
                 <div v-if="taskFinded.customColumnValue" class="row mt-4">
@@ -86,7 +125,6 @@
                                 <InputText @input="seachReviewers(custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input-reviewers custom-column-input" :value="custom.value"/>
                             </div>
                             <div id="reviewers-list-box" style="left: 25%; bottom: 18%; width: 35%; z-index: 10;"class="position-absolute bg-white border shadow-sm p-2 d-none search-reviewer-box rounded-2">
-
                             </div>
                         </div>
                         <div v-else class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
@@ -321,6 +359,21 @@ export default {
     color: #64748b;
 }
 .li-reviewer{
+    cursor: pointer;
+}
+.annex-button-image::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 103%;
+    top: 0%;
+    left: 0;
+    bottom: 0;
+    background-color: #64748b;
+    z-index: 10;
+    opacity: 0.3;
+}
+.annex-card{
     cursor: pointer;
 }
 </style>

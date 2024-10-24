@@ -19,7 +19,7 @@ class AnnexResource extends JsonResource
             'task_id' => $this->task_id,
             'annex' => $this->annex,
             'owner' => $this->when($request->user()->id === $this->task->user_id, true),
-            'created_at' => date('d/m/y', strtotime($this->created_at)),
+            'created_at' => date('d/m/Y H:i', strtotime($this->created_at)),
             'user_name' => $this->task->user->name,
             'annex_type' => $this->annexType()
         ];
@@ -28,8 +28,8 @@ class AnnexResource extends JsonResource
     public function annexType() : string
     {
         if (in_array($this->extention(), ['jpeg', 'jpg', 'png'])){
-            return "Doc image";
+            return "image";
         }
-        return "Doc pdf";
+        return "pdf";
     }
 }
