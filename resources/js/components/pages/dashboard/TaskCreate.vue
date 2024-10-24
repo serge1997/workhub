@@ -190,6 +190,8 @@ export default{
                 let file = this.$refs.inputFiles.files[i];
                 data.append('annex[]', file)
             }
+            this.roadMap.titles =  this.roadMap.titles.map(e  => '+r@ ' + e);
+            this.roadMap.descriptions = this.roadMap.descriptions.map(e => '+r@ ' + e);
             this.task.execution_delay !== null ? data.append('execution_delay', this.task.execution_delay) : null;
             this.task.title !== null ? data.append('title', this.task.title) : null;
             this.task.sprint_id !== null ? data.append('sprint_id', this.task.sprint_id) : null;

@@ -10,8 +10,8 @@ class TaskRoadMapRepository implements TaskRoadMapRepositoryInterface
     public function create($request, ?Task $task = null)
     {
         if ($request->has('road_map_titles') && !is_null($request->road_map_titles)) {
-            $titles = explode(',', $request->road_map_titles);
-            $descriptions = explode(',', $request->road_map_descriptions);
+            $titles = explode('+r@', $request->road_map_titles);
+            $descriptions = explode('+r@', $request->road_map_descriptions);
             if (count($titles) >= count($descriptions)) {
                 foreach($titles as $key => $title) {
                     $roadMap = new TaskRoadMap();

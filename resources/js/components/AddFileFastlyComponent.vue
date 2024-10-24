@@ -55,7 +55,8 @@ export default {
             this.Api.post('annex', this.annex)
             .then(async response => {
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
-                this.openAddFileModal = false
+                this.openAddFileModal = false;
+                this.$emit('updateUi');
             })
             .catch(error => {
                 console.log(error)

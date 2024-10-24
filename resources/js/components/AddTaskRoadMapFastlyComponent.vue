@@ -17,6 +17,7 @@
 </template>
 <script>
 import { useToast } from "primevue/usetoast";
+import { when } from "../core/utilities.mjs";
 export default{
     name: 'AddTaskRoadMapFastlyComponent',
     props: {
@@ -52,10 +53,15 @@ export default{
                 this.roadMap.road_map_descriptions = null;
                 this.roadMap.road_map_titles = null;
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
+                this.$emit('updateUi');
             })
             .catch(error => {
+                console.log(error)
                 this.formError = error.response.data.errors;
                 this.invalid = 'border border-dange'
+                when(error.response.status == 500,
+                    this.toast.add({ severity: 'error', summary: 'Erro', detail: error.response.data, life: 3000 })
+                );
             })
         }
     },

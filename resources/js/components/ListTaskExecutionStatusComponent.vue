@@ -50,7 +50,7 @@ export default{
                 let box = document.getElementById(`task-status-listbox-${this.componentName}-${id}`);
                 box.classList.add('d-none')
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
-                return this.$emit('listAllTask');
+                this.$emit('listAllTask');
             })
             .catch(error => {
                 console.log(error)

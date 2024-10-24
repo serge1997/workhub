@@ -60,6 +60,7 @@
                     :custom-columns="customColumns"
                     @create-custom-value="createCustomValue"
                     :task-status="taskStatus"
+                    @update-show-modal-ui="showTask(task.id)"
                 />
             </span>
         </div>
@@ -114,7 +115,7 @@ export default{
     },
     methods: {
         showTask(id){
-            this.task_finded = null;
+            //this.task_finded = null;
             this.Api.get('task', {task_id: id})
             .then(async response => {
                 this.task_finded = await response.data;

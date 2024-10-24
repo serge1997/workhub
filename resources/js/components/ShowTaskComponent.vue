@@ -21,11 +21,13 @@
                         <span>
                             <AddTaskRoadMapFastlyComponent
                                 :task="taskFinded"
+                                @update-ui="$emit('updateShowModalUi')"
                             />
                         </span>
                         <span>
                             <AddFileFastlyComponent
                                 :task="taskFinded"
+                                @update-ui="$emit('updateShowModalUi')"
                             />
                         </span>
                         <span class="d-flex align-items-center">
@@ -38,6 +40,7 @@
                                     :btn-label="taskFinded.full_task_execution_status"
                                     :tag-severity="taskSeverity(taskFinded.execution_status)"
                                     :tag-value="taskFinded.full_task_execution_status"
+                                    @list-all-task="$emit('updateShowModalUi')"
                                 />
                            </div>
                         </span>
