@@ -11,11 +11,11 @@
                             </span>
                             <span class="d-flex">
                                 <span><Chip class="rounded-0" label="prioridade"/></span>
-                                <Tag :severity="setSeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
+                                <Tag :severity="taskPrioritySeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
                             </span>
                             <span class="d-flex">
                                 <span><Chip class="rounded-0" label="status"/></span>
-                                <Tag class="py-0" :severity="setStatusSeverity(taskFinded.execution_status)" :value="taskFinded.full_task_execution_status" />
+                                <Tag class="py-0" :severity="taskSeverity(taskFinded.execution_status)" :value="taskFinded.full_task_execution_status" />
                             </span>
                             <span class="d-flex">
                                 <Tag class="py-2 bg-secondary" icon="pi pi-clock" :value="taskFinded.execution_delay" />
@@ -144,6 +144,7 @@ import CommentEditionComponent from './../../CommentEditionComponent.vue';
 import TaskCommentComponent from './../../TaskCommentComponent.vue';
 import { useToast } from 'primevue/usetoast';
 export default{
+    inject: ['taskSeverity', 'taskPrioritySeverity'],
     name: 'TaskShow',
 
     components:{
@@ -197,16 +198,6 @@ export default{
             setTimeout(() => {
                 const iframHeader = document.querySelector('.iframe')
             }, 1000)
-        },
-        setSeverity(priority){
-            if(priority === "ALT")  return "danger";
-            if (priority === "MED") return "warning";
-            return "success";
-        },
-        setStatusSeverity(status){
-            if(status === "WAT")  return "warning";
-            if (status === "PRO") return "primary";
-            return "success";
         },
         findComment(comment){
             this.Api.get('comment', {comment_id: comment})

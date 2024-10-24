@@ -16,7 +16,7 @@
                 @list-all-task="$emit('listAllTask')"
                 :task-status="taskStatus"
                 component-name="sprint"
-                :tag-severity="setStatusSeverity(task.execution_status)"
+                :tag-severity="taskSeverity(task.execution_status)"
                 :tag-value="task.full_task_execution_status"
             />
         </div>
@@ -82,7 +82,7 @@ import { DateTime } from './../core/DateTime.js';
 import { useToast } from 'primevue/usetoast';
 export default{
     name: 'TaskCardIconsComponent',
-    inject: ['task_exec_status'],
+    inject: ['task_exec_status', 'taskSeverity'],
     props: {
         task: Object,
         taskStatus: Object
@@ -139,11 +139,6 @@ export default{
                 this.timing.seconds = `${this.timing.seconds}`.padStart(2, '0');
                 DOMElement.innerHTML = `${this.timing.minutes}:${this.timing.seconds}`
             }, 1000);
-        },
-        setSeverity(priority){
-            if(priority === "WAT")  return "text-danger";
-            if (priority === "PRO") return "text-warning";
-            return "text-success";
         },
         getAllCustomColumns(){
             this.Api.get('custom-column-value', {task_id: this.task.id})
@@ -218,11 +213,6 @@ export default{
                 }
             });
             return Toast
-        },
-        setStatusSeverity(status){
-            if(status === "WAT")  return "warning";
-            if (status === "PRO") return "primary";
-            return "success";
         },
     },
     created(){

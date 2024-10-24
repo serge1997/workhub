@@ -13,7 +13,7 @@
                         </span>
                         <span class="d-flex">
                             <span><Chip class="rounded-0" label="prioridade"/></span>
-                            <Tag :severity="setSeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
+                            <Tag :severity="taskPrioritySeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
                         </span>
                         <span class="d-flex">
                             <Tag class="py-2 bg-secondary text-white" icon="pi pi-clock" :value="taskFinded.execution_delay" />
@@ -36,7 +36,7 @@
                                     :task-status="taskStatus"
                                     component-name="show"
                                     :btn-label="taskFinded.full_task_execution_status"
-                                    :tag-severity="setStatusSeverity(taskFinded.execution_status)"
+                                    :tag-severity="taskSeverity(taskFinded.execution_status)"
                                     :tag-value="taskFinded.full_task_execution_status"
                                 />
                            </div>
@@ -148,6 +148,7 @@ import AddFileFastlyComponent from './AddFileFastlyComponent.vue';
 import ListTaskExecutionStatusComponent from './ListTaskExecutionStatusComponent.vue';
 import { useToast } from 'primevue/usetoast';
 export default {
+    inject: ['taskSeverity', 'taskPrioritySeverity'],
     name: 'ShowTaskComponent',
 
     props: ['openModalIcon', 'task_id', 'taskFinded', 'customColumns', 'taskStatus'],
@@ -204,16 +205,6 @@ export default {
                 const iframHeader = document.querySelector('.iframe')
             }, 1000)
         },
-        setSeverity(priority){
-            if(priority === "ALT")  return "danger";
-            if (priority === "MED") return "warning";
-            return "success";
-        },
-        setStatusSeverity(status){
-            if(status === "WAT")  return "warning";
-            if (status === "PRO") return "primary";
-            return "success";
-        },
         seachReviewers(id){
             let input = document.getElementById(`custom-value-${id}`);
             input.style.color = "#1275d8";
@@ -268,8 +259,7 @@ export default {
             }, 100)
         },
         onInputCommentValidate(){
-            let btn = document.querySelector('#post-comment-btn')
-            console.log(btn)
+            let btn = document.querySelector('#post-comment-btn');
             if (this.comment.comment != null){
                 btn.classList.remove('p-disabled')
             }else{

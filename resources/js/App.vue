@@ -5,6 +5,8 @@
     </div>
 </template>
 <script>
+import { prioritySeverity, taskStatusSeverity } from './core/utilities.mjs';
+
 export default {
     data(){
         return {
@@ -13,7 +15,8 @@ export default {
     },
     provide(){
         return{
-            messagep: "from provide"
+            taskSeverity: taskStatusSeverity,
+            taskPrioritySeverity: prioritySeverity
         }
     },
     mounted(){

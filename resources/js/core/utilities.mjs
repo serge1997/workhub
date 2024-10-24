@@ -15,6 +15,11 @@ function taskStatusSeverity(status){
     if (status === "PRO") return "primary";
     return "success";
 }
+function prioritySeverity(priority){
+    if(priority === "ALT")  return "danger";
+    if (priority === "MED") return "warning";
+    return "success";
+}
 const isNull = (arg) => arg == null;
 const isNullOrWhiteSpace = (arg) => arg == null || arg == "";
 const is = (arg, value) => arg == value;
@@ -23,6 +28,7 @@ export {
     isNull,
     isNullOrWhiteSpace,
     taskStatusSeverity,
+    prioritySeverity,
     when,
     is
 }
