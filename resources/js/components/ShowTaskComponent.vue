@@ -129,7 +129,7 @@
                         </div>
                         <div v-else class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
                             <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
-                            <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value.length)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                            <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value !== null ? custom.value.length : 0)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
                         </div>
                     </div>
                 </div>
