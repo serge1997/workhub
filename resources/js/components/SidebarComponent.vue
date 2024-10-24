@@ -44,7 +44,13 @@
                                     <Menu v-if="menuCreateToggle" :model="menu" class="p-2 rounded-0 border-0">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
-                                                <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
+                                                <router-link @click="generateSprint" v-if="item.action == 'generateSprint'" class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
+                                                    <span class="sub-menu-item" style="color: #475569;">
+                                                        <i :class="item.icon" class="mb-3 px-1"></i>
+                                                        {{ item.label }}
+                                                    </span>
+                                                </router-link>
+                                                <router-link v-else class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
                                                     <span class="sub-menu-item" style="color: #475569;">
                                                         <i :class="item.icon" class="mb-3 px-1"></i>
                                                         {{ item.label }}
@@ -102,9 +108,9 @@ export default {
     data(){
         return {
             menu: [
-                {label: 'Task', route: '/task-create', icon: 'pi pi-book'},
-                {label: 'usuario', route: '/register', icon:'pi pi-users'},
-                {label: 'Gerar novo sprint', route: '/generate-task', icon:'pi pi-bolt'}
+                {label: 'Task', route: '/task-create', icon: 'pi pi-book', action: 'page'},
+                {label: 'usuario', route: '/register', icon:'pi pi-users', action: 'page'},
+                {label: 'Gerar novo sprint', route: '#', icon:'pi pi-bolt', action: 'generateSprint'}
             ],
             menuCreateToggle: false,
             sprints: null,
@@ -118,7 +124,7 @@ export default {
         }
     },
     methods: {
-        generateTask(e){
+        generateSprint(e){
             e.preventDefault();
             const actionUrl = new URL(e.target.baseURI)
             const pathName = actionUrl.pathname.replace(/\W/g, '');
