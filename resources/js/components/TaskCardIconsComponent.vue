@@ -11,18 +11,13 @@
             </Button>
         </div>
         <div class="w-100 d-flex px-1">
-            <Chip class="rounded-0 bg-white w-75 p-0">
-                <div class="d-flex align-items-center">
-                    <span class="task-description d-flex align-items-center gap-2">
-                        <i :style="{'color': task.execution_status_severity}" class="pi pi-circle-fill icon-list-task"></i>
-                        {{ task.full_task_execution_status }}
-                    </span>
-                </div>
-            </Chip>
             <ListTaskExecutionStatusComponent
                 :task="task"
                 @list-all-task="$emit('listAllTask')"
                 :task-status="taskStatus"
+                component-name="sprint"
+                :tag-severity="setStatusSeverity(task.execution_status)"
+                :tag-value="task.full_task_execution_status"
             />
         </div>
         <div class="w-100 icons d-flex align-items-center">
@@ -64,6 +59,7 @@
                     :task-finded="task_finded",
                     :custom-columns="customColumns"
                     @create-custom-value="createCustomValue"
+                    :task-status="taskStatus"
                 />
             </span>
         </div>
@@ -223,7 +219,11 @@ export default{
             });
             return Toast
         },
-
+        setStatusSeverity(status){
+            if(status === "WAT")  return "warning";
+            if (status === "PRO") return "primary";
+            return "success";
+        },
     },
     created(){
         this.task_status = this.task_exec_status;

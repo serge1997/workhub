@@ -6,7 +6,7 @@
             </span>
             <span class="d-flex gap-1 align-items-center">
                 <small class="task-description">
-                    {{task.comment_count == true ? 0 : task.comment_count}}
+                    {{task.comment_count === true ? 0 : task.comment_count}}
                 </small>
             </span>
         </Button>
