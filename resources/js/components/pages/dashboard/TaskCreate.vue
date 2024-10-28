@@ -33,7 +33,7 @@
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.execution_delay" v-text="`${formErrorBag.execution_delay}`"></small>
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
-                                <label for="email" class="form-label">Sprint </label>
+                                <label for="sprint_id" class="form-label">Sprint </label>
                                 <Dropdown v-model="task.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Choose a sprint..." />
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
                             </div>

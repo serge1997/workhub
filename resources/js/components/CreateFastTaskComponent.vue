@@ -9,6 +9,10 @@
             <div class="col-md-10 m-auto mb-3">
                 <Textarea v-model="fastTask.description" style="background-color: #f3f4f6;" class="w-100 border-0 p-3" placeholder="Descrição da tarefa" />
             </div>
+            <div class="col-md-10 mb-3 m-auto d-flex flex-column">
+                <Dropdown v-model="fastTask.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um sprint" />
+                <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
+            </div>
             <div class="col-md-10 m-auto d-flex gap-2 fast-task-form-icon-group">
                 <div class="d-flex flex-column gap-2">
                     <Button text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
@@ -101,9 +105,11 @@ export default {
                 user_id: null,
                 execution_delay: null,
                 description: null,
+                sprint_id: null
             },
             users: null,
             disableBtn: 'disabled',
+            sprints: null
         }
     },
 
@@ -163,9 +169,19 @@ export default {
             });
             return Toast
         },
+        getSprints(){
+            this.Api.get('sprint')
+            .then(async response => {
+                this.sprints = await response.data;
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded sprints", life: 3000 });
+            })
+        },
     },
     mounted(){
         this.onListAllUsers();
+        this.getSprints();
     }
 }
 </script>
