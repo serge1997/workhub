@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Home from "../components/pages/Home.vue";
+
 import Login from './../components/pages/auth/Login.vue';
 import Register from './../components/pages/auth/Register.vue';
 import Task from './../components/pages/dashboard/Task.vue';
@@ -10,6 +10,7 @@ import TaskCreate from "../components/pages/dashboard/TaskCreate.vue";
 import Sprint from "../components/pages/dashboard/Sprint.vue";
 import Trash from "../components/pages/dashboard/Trash.vue";
 import TaskShow from "../components/pages/dashboard/TaskShow.vue";
+import Home from "../components/pages/dashboard/Home.vue";
 
 const routes = [
     {
@@ -26,7 +27,7 @@ const routes = [
     },
     {
         path: '/home',
-        name: 'home',
+        name: 'Home',
         component: Home,
         meta: {requiresAuth: true}
     },

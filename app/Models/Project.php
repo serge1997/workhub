@@ -14,7 +14,11 @@ class Project extends Model
     protected $fillable = [
         'id',
         'name',
-        'severity'
+        'descricao',
+        'severity',
+        'start_at',
+        'end_at',
+        'status',
     ];
 
     public function tasks() : HasMany

@@ -12,6 +12,12 @@
                     <div class="sidebar-body">
                         <ul class="list-group text-capitalize">
                             <li class="list-group-item border-0">
+                                <router-link class="text-decoration-none" :to="{name: 'Home'}">
+                                    <i class="pi pi-home"></i>
+                                    Inicio
+                                </router-link>
+                            </li>
+                            <li class="list-group-item border-0">
                                 <router-link class="text-decoration-none" :to="{name: 'TaskReception'}">
                                     <i class="pi pi-inbox"></i>
                                     Caixa de entrada

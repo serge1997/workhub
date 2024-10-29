@@ -11,7 +11,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class ProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id' => ['nullable'],
+            'name' => ['required'],
+            'descricao' => ['nullable'],
+            'severity' => ['nullable'],
+            'start_at' => ['nullable'],
+            'end_at' => ['nullable'],
+            'status' => ['nullable']
         ];
     }
 }

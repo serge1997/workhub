@@ -71,6 +71,11 @@
                 </span>
             </Button>
         </div>
+        <div class="w-100 icons d-flex gap-1 align-items-center">
+            <Button class="d-flex gap-1 align-items-center p-1" text>
+                <Tag icon="pi pi-tag" value="work hub" />
+            </Button>
+        </div>
     </div>
 </template>
 <script>
