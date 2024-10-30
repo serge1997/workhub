@@ -28,7 +28,11 @@
                     <small class="task-description navbar-dialog-btn-desc">Entrada</small>
                 </div>
                 <div class="col-md-6 mb-3 d-flex flex-column justify-content-center align-items-center">
-                    <CreateFastTaskComponent />
+                    <Button @click="visibleFastTaskDialog = true" class="w-50 navbar-dialog-btn rounded-2 fs-4 text-danger" text icon="pi pi pi-book" />
+                    <span><small class="task-description navbar-dialog-btn-desc">Tarefa</small></span>
+                    <Dialog v-model:visible="visibleFastTaskDialog" header="Criar tarefa rapido" :style="{ width: '65rem' }" position="topcenter" :modal="true" :draggable="false">
+                        <CreateFastTaskComponent />
+                    </Dialog>
                 </div>
                 <div class="col-md-6 mb-3 d-flex flex-column justify-content-center align-items-center">
                     <CreateSprintModalComponent />
@@ -67,7 +71,8 @@ export default {
                 contents: null
             },
             notificationSelected: null,
-            showNotifyBox: false
+            showNotifyBox: false,
+            visibleFastTaskDialog: false
         }
     },
 

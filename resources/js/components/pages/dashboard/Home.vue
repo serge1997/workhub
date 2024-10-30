@@ -28,14 +28,15 @@
                     <div class="row">
                         <div class="card w-100 border-0">
                             <div class="card-header bg-transparent">
-                                <Button class="task-description" label="Projeto" text>
-                                    <span class="small-fw">Projeto</span>
-                                </Button>
-                                <Button class="task-description" label="Projeto" text>
+                                <Button @click="componentIs='CreateFastTaskComponent'" class="task-description" label="Projeto" text>
                                     <span class="small-fw">Tarefa</span>
+                                </Button>
+                                <Button @click="componentIs='CreateProjectComponent'" class="task-description" label="Projeto" text>
+                                    <span class="small-fw">Projeto</span>
                                 </Button>
                             </div>
                             <div class="card-body">
+                                <component :is="componentIs"></component>
                             </div>
                         </div>
                     </div>
@@ -46,16 +47,19 @@
 </template>
 <script>
 import CreateFastTaskComponent from '../../CreateFastTaskComponent.vue';
+import CreateProjectComponent from '../../CreateProjectComponent.vue';
 export default {
     name: 'Home',
 
     components: {
-        CreateFastTaskComponent
+        CreateFastTaskComponent,
+        CreateProjectComponent
     },
     data() {
         return {
             authName: this.Auth.user().name,
-            visibleNewsMoal: false
+            visibleNewsMoal: false,
+            componentIs: 'CreateFastTaskComponent'
         }
     }
 }

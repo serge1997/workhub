@@ -1,82 +1,78 @@
 <template>
-    <Button @click="visibleFastTaskDialog = true" class="w-50 navbar-dialog-btn rounded-2 fs-4 text-danger" text icon="pi pi pi-book" />
-    <small class="task-description navbar-dialog-btn-desc">Task rapido</small>
-    <Dialog v-model:visible="visibleFastTaskDialog" header="Criar tarefa rapido" :style="{ width: '65rem' }" position="topcenter" :modal="true" :draggable="false">
-        <div class="row mt-3">
-            <div class="col-md-10 m-auto mb-3">
-                <InputText v-model="fastTask.title" style="background-color: #f3f4f6;" class="w-100 border-0 p-3" placeholder="Titulo da tarefa" />
+    <div class="row mt-3">
+        <div class="col-md-10 m-auto mb-3">
+            <InputText v-model="fastTask.title" style="background-color: #f3f4f6;" class="w-100 border-0 p-3" placeholder="Titulo da tarefa" />
+        </div>
+        <div class="col-md-10 m-auto mb-3">
+            <Textarea v-model="fastTask.description" style="background-color: #f3f4f6;" class="w-100 border-0 p-3" placeholder="Descrição da tarefa" />
+        </div>
+        <div class="col-md-10 mb-3 m-auto d-flex flex-column">
+            <Dropdown v-model="fastTask.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um sprint" />
+            <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
+        </div>
+        <div class="col-md-10 m-auto d-flex justify-content-between fast-task-form-icon-group">
+            <div class="d-flex flex-column gap-2 position-relative">
+                <Button @click="toggleUserListBox = !toggleUserListBox" text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
+                    <span v-if="!fastTask.user_id" class="d-flex align-items-center">
+                        <i class="pi pi-user fast-task-form-icon"></i>
+                    </span>
+                    <span v-else class="d-flex align-items-center">
+                        <img :alt="fastTask.user_id.name" :src="`/img/users_avatars/${fastTask.user_id.avatar}`" style="width: 18px" />
+                        <i class="fast-task-form-icon"></i>
+                    </span>
+                    <span class="d-flex align-items-center">
+                        <small class="task-description">{{ fastTask.user_id === null ? 'usuario responsavel' : fastTask.user_id.name }}</small>
+                    </span>
+                </Button>
+                <Listbox v-if="toggleUserListBox" v-model="fastTask.user_id" :options="users" optionLabel="name" filter style="width: 240px; z-index: 10; top: 140%;" class="position-absolute shadow">
+                    <template #option="slotProps">
+                        <div class="d-flex gap-2">
+                            <img :alt="slotProps.option.name" :src="`/img/users_avatars/${slotProps.option.avatar}`" style="width: 22px" />
+                            <div class="small-fw">{{ slotProps.option.name }}</div>
+                        </div>
+                    </template>
+                </Listbox>
             </div>
-            <div class="col-md-10 m-auto mb-3">
-                <Textarea v-model="fastTask.description" style="background-color: #f3f4f6;" class="w-100 border-0 p-3" placeholder="Descrição da tarefa" />
+            <div class="d-flex flex-column gap-2">
+                <Button @click="visibleTaskTimeInputDialog = true" text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
+                    <span class="d-flex align-items-center">
+                        <i class="pi pi-clock fast-task-form-icon"></i>
+                    </span>
+                    <span class="d-flex align-items-center">
+                        <small class="task-description">Tempo execução</small>
+                    </span>
+                </Button>
+                <Dialog v-model:visible="visibleTaskTimeInputDialog" :style="{ width: '25rem' }" position="topcenter" :modal="true" :draggable="false">
+                    <Calendar v-model="fastTask.execution_delay" id="execution-time" class="w-100"  placeholder="execution time..." timeOnly />
+                </Dialog>
             </div>
-            <div class="col-md-10 mb-3 m-auto d-flex flex-column">
-                <Dropdown v-model="fastTask.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um sprint" />
-                <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
-            </div>
-            <div class="col-md-10 m-auto d-flex gap-2 fast-task-form-icon-group">
-                <div class="d-flex flex-column gap-2">
-                    <Button text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
-                        <span v-if="!fastTask.user_id" class="d-flex align-items-center">
-                            <i class="pi pi-user fast-task-form-icon"></i>
-                        </span>
-                        <span v-else class="d-flex align-items-center">
-                            <img :alt="fastTask.user_id.name" :src="`/img/users_avatars/${fastTask.user_id.avatar}`" style="width: 18px" />
-                            <i class="fast-task-form-icon"></i>
-                        </span>
-                        <span class="d-flex align-items-center">
-                            <small class="task-description">{{ fastTask.user_id === null ? 'usuario responsavel' : fastTask.user_id.name }}</small>
-                        </span>
-                    </Button>
-                    <Listbox v-model="fastTask.user_id" :options="users" optionLabel="name" filter class="w-full md:w-56">
-                        <template #option="slotProps">
-                            <div class="d-flex gap-2">
-                                <img :alt="slotProps.option.name" :src="`/img/users_avatars/${slotProps.option.avatar}`" style="width: 28px" />
-                                <div>{{ slotProps.option.name }}</div>
-                            </div>
-                        </template>
-                    </Listbox>
-                </div>
-                <div class="d-flex flex-column gap-2">
-                    <Button @click="visibleTaskTimeInputDialog = true" text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
-                        <span class="d-flex align-items-center">
-                            <i class="pi pi-clock fast-task-form-icon"></i>
-                        </span>
-                        <span class="d-flex align-items-center">
-                            <small class="task-description">Tempo execução</small>
-                        </span>
-                    </Button>
-                    <Dialog v-model:visible="visibleTaskTimeInputDialog" :style="{ width: '25rem' }" position="topcenter" :modal="true" :draggable="false">
-                        <Calendar v-model="fastTask.execution_delay" id="execution-time" class="w-100"  placeholder="execution time..." timeOnly />
-                    </Dialog>
-                </div>
-                <div class="d-flex flex-column gap-2">
-                    <Button text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
-                        <span class="d-flex align-items-center">
-                            <i class="pi pi-circle-fill" :class="fastTask.priority !== null ? 'text-'+fastTask.priority.severity : 'fast-task-form-icon'"></i>
-                        </span>
-                        <span v-if="fastTask.priority !== null" class="d-flex align-items-center">
-                            <small class="task-description">Prioridade {{ fastTask.priority.label }}</small>
-                        </span>
-                        <span v-else class="d-flex align-items-center">
-                            <small class="task-description">Prioridade</small>
-                        </span>
-                    </Button>
-                    <Listbox v-model="fastTask.priority" :options="priorities" filter optionLabel="label" class="w-full md:w-56">
-                        <template #option="slotProps">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="pi pi-circle-fill" :class="`text-${slotProps.option.severity}`"></i>
-                                <div>{{ slotProps.option.label }}</div>
-                            </div>
-                        </template>
-                    </Listbox>
-                </div>
-            </div>
-            <div class="col-md-10 m-auto mt-4">
-                <Button v-if="disbaleBtnCreate()" @click="createFastTask" disabled class="btn-block w-100" id="btn-create-fast" label="Salvar" />
-                <Button v-else @click="createFastTask" class="btn-block w-100" id="btn-create-fast" label="Salvar" />
+            <div class="d-flex flex-column gap-2">
+                <Button @click="togglePriorityListBox = !togglePriorityListBox" text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
+                    <span class="d-flex align-items-center">
+                        <i class="pi pi-circle-fill" :class="fastTask.priority !== null ? 'text-'+fastTask.priority.severity : 'fast-task-form-icon'"></i>
+                    </span>
+                    <span v-if="fastTask.priority !== null" class="d-flex align-items-center">
+                        <small class="task-description">Prioridade {{ fastTask.priority.label }}</small>
+                    </span>
+                    <span v-else class="d-flex align-items-center">
+                        <small class="task-description">Prioridade</small>
+                    </span>
+                </Button>
+                <Listbox v-if="togglePriorityListBox" v-model="fastTask.priority" :options="priorities" filter optionLabel="label" style="width: 240px; z-index: 1; bottom: -28%;" class="position-absolute shadow">
+                    <template #option="slotProps">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="pi pi-circle-fill" :class="`text-${slotProps.option.severity}`"></i>
+                            <div>{{ slotProps.option.label }}</div>
+                        </div>
+                    </template>
+                </Listbox>
             </div>
         </div>
-    </Dialog>
+        <div class="col-md-10 m-auto mt-4">
+            <Button v-if="disbaleBtnCreate()" @click="createFastTask" disabled class="btn-block w-100 rounded-pill" id="btn-create-fast" label="Salvar" />
+            <Button v-else @click="createFastTask" class="btn-block w-100 rounded-pill" id="btn-create-fast" label="Salvar" />
+        </div>
+    </div>
 </template>
 <script>
 import { DateTime } from '../core/DateTime';
@@ -109,7 +105,9 @@ export default {
             },
             users: null,
             disableBtn: 'disabled',
-            sprints: null
+            sprints: null,
+            toggleUserListBox: false,
+            togglePriorityListBox: false
         }
     },
 
@@ -187,11 +185,11 @@ export default {
 </script>
 
 <style scoped>
-::placeholder{
+/*::placeholder{
     font-weight: 500;
     font-size: 1.1rem;
     color:#1f2937
-}
+}*/
 .fast-task-form-icon{
     color: #64748b;
     font-size: 0.8em;
