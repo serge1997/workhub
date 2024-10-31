@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Core\Project\ProjectRepositoryInterface;
 use App\Http\Requests\ProjectRequest;
 use App\Traits\HttpResponse;
+use Exception;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -15,6 +16,18 @@ class ProjectController extends Controller
         private ProjectRepositoryInterface $projectRepository
     )
     {}
+
+    public function index()
+    {
+        try{
+            $response = $this->projectRepository->findAll();
+            return response()
+                ->json($this->successResponse('lista de todos os projetos', $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
+        }
+    }
 
     public function store(ProjectRequest $request)
     {

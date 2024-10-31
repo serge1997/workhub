@@ -17,8 +17,7 @@ class Project extends Model
         'descricao',
         'severity',
         'start_at',
-        'end_at',
-        'status',
+        'end_at'
     ];
 
     public function tasks() : HasMany

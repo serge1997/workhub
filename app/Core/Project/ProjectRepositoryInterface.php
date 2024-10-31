@@ -8,6 +8,6 @@ use Illuminate\Foundation\Http\FormRequest;
 interface ProjectRepositoryInterface
 {
     public function create($request) : Project;
-    public function findAll() : Collection;
+    public function findAll() ;
     public function findByName(string $name) : ?Project;
 }

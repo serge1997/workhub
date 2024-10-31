@@ -12,15 +12,21 @@
             <div class="row mb-4">
                 <div class="col-md-6 d-flex flex-column">
                     <label for="project-name">Data inicio </label>
-                    <Calendar v-model="project.start_at"/>
+                    <Calendar dateFormat="dd/mm/yy" v-model="project.start_at"/>
                 </div>
                 <div class="col-md-6 d-flex flex-column">
                     <label for="project-name">Data de termino </label>
-                    <Calendar v-model="project.end_at"/>
+                    <Calendar dateFormat="dd/mm/yy" v-model="project.end_at"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-8 d-flex gap-3">
+                    <label for="project-name" class="fw-bold" :style="`color: #${project.severity};`">Cor do representação</label>
+                    <ColorPicker v-model="project.severity" />
                 </div>
             </div>
             <div class="row">
-                <Button class="rounded-pill" label="criar projeto" />
+                <Button @click="createProject" class="rounded-pill" label="criar projeto" />
             </div>
         </div>
     </div>
@@ -35,8 +41,15 @@ export default {
                 name: null,
                 descricao: null,
                 start_at: null,
-                end_at: null
+                end_at: null,
+                severity: null
             }
+        }
+    },
+    methods: {
+        createProject(){
+            this.project.start_at =
+            console.log(this.project.start_at.toLocaleDateString('en-us'))
         }
     }
 }

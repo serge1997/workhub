@@ -26,9 +26,17 @@ class ProjectRequest extends FormRequest
             'name' => ['required'],
             'descricao' => ['nullable'],
             'severity' => ['nullable'],
-            'start_at' => ['nullable'],
-            'end_at' => ['nullable'],
-            'status' => ['nullable']
+            'start_at' => ['nullable', 'date'],
+            'end_at' => ['nullable', 'date']
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'nome do projeto é obrigatorio',
+            'start_at.date' => 'formato da data invalida',
+            'end_at.date' => 'formato da data invalida'
         ];
     }
 }

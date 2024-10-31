@@ -36,7 +36,9 @@
                                 </Button>
                             </div>
                             <div class="card-body">
-                                <component :is="componentIs"></component>
+                               <KeepAlive>
+                                    <component :is="componentIs"></component>
+                               </KeepAlive>
                             </div>
                         </div>
                     </div>

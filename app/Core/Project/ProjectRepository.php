@@ -2,6 +2,7 @@
 namespace App\Core\Project;
 
 use App\Core\Project\Exception\ProjectException;
+use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
@@ -16,9 +17,11 @@ class ProjectRepository implements ProjectRepositoryInterface
         return Project::create($request->all());
     }
 
-    public function findAll() : Collection
+    public function findAll()
     {
-        return Project::all();
+        return ProjectResource::collection(
+            Project::all()
+        );
     }
     public function findByName(string $name) : ?Project
     {

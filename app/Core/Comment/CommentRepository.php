@@ -35,15 +35,13 @@ class CommentRepository implements CommentRepositoryInterface
 
     public function update($request)
     {
-        (new UpdateCommentContentAction(FindCommentAction::run($request), $request))
-            ->run();
+        (new UpdateCommentContentAction(FindCommentAction::run($request), $request))->run();
     }
     public function softDelete($request)
     {
         $comment = FindCommentAction::run($request);
         Gate::authorize("delete", $comment);
-        (new DeleteCommentAction($comment))
-            ->soft();
+        (new DeleteCommentAction($comment))->soft();
     }
 
     public function delete($request)

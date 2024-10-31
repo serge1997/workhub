@@ -9,6 +9,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SprintController;
 use App\Http\Controllers\TaskActivityController;
 use App\Http\Controllers\TaskController;
@@ -38,6 +39,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function() {
 
+    Route::controller(ProjectController::class)->group(function() {
+        Route::prefix('project')->name('project.')->group(function(){
+            Route::post('/', 'store')->name('store');
+            Route::get('/', 'index')->name('index');
+        });
+    });
     Route::controller(UserController::class)->group(function() {
         Route::post('user', 'OnCreate');
         Route::get('users', 'OnListAll');
