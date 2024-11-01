@@ -15,7 +15,7 @@
                 <div class="col-md-6 p-2">
                     <div class="card w-100 shadow-sm border">
                         <div class="card-header border bg-transparent">
-                            <h4 class="task-description">Recentes</h4>
+                            <h5 class="task-description">Recentes</h5>
                         </div>
                         <div class="card-body">
                             list of recents things
@@ -27,10 +27,10 @@
                 <div class="col-md-6 p-2">
                     <div class="card w-100 shadow-sm">
                         <div class="card-header border bg-transparent">
-                            <h4 class="task-description">Seus projetos</h4>
+                            <h5 class="task-description">Seus projetos</h5>
                         </div>
                         <div class="card-body">
-                            list of recents things
+                            <ProjectHomeListComponent />
                         </div>
                     </div>
                 </div>
@@ -62,12 +62,14 @@
 <script>
 import CreateFastTaskComponent from '../../CreateFastTaskComponent.vue';
 import CreateProjectComponent from '../../CreateProjectComponent.vue';
+import ProjectHomeListComponent from '../../project/ProjectHomeListComponent.vue';
 export default {
     name: 'Home',
 
     components: {
         CreateFastTaskComponent,
-        CreateProjectComponent
+        CreateProjectComponent,
+        ProjectHomeListComponent
     },
     data() {
         return {
