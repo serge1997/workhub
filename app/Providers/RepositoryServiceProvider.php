@@ -18,6 +18,8 @@ use App\Core\Follower\FollowerRepository;
 use App\Core\Follower\FollowerRepositoryInterface;
 use App\Core\Position\PositionRepository;
 use App\Core\Position\PositionRepositoryInterface;
+use App\Core\Project\ProjectRepository;
+use App\Core\Project\ProjectRepositoryInterface;
 use App\Core\Sprint\SprintRepository;
 use App\Core\Sprint\SprintRepositoryInterface;
 use App\Core\Task\TaskRepository;
@@ -53,6 +55,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TaskActivityRepositoryInterface::class, TaskActivityRepository::class);
         $this->app->bind(TaskExecutionStatusRepositoryInterface::class, TaskExecutionStatusRepository::class);
         $this->app->bind(SprintRepositoryInterface::class, SprintRepository::class);
+        $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
     }
 
     /**

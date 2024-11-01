@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('severity')->default('#0ea5e9');
+            $table->string('severity')->nullable()->default('#0ea5e9');
             $table->datetime('start_at')->nullable();
             $table->datetime('end_at')->nullable();
             $table->timestamps();

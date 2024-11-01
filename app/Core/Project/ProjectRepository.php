@@ -11,7 +11,7 @@ class ProjectRepository implements ProjectRepositoryInterface
 {
     public function create($request) : Project
     {
-        if ($this->findByName($request->name())) {
+        if ($this->findByName($request->name)) {
             throw new ProjectException("projeto já existe");
         }
         return Project::create($request->all());

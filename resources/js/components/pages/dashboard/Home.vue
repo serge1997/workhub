@@ -11,11 +11,23 @@
                     <h3 class="fw-bold">Olá, {{authName}}</h3>
                 </div>
             </div>
+            <div class="row mb-4">
+                <div class="col-md-6 p-2">
+                    <div class="card w-100 shadow-sm border">
+                        <div class="card-header border bg-transparent">
+                            <h4 class="task-description">Recentes</h4>
+                        </div>
+                        <div class="card-body">
+                            list of recents things
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-6 p-2">
                     <div class="card w-100 shadow-sm">
                         <div class="card-header border bg-transparent">
-                            <h4 class="task-description">Recentes</h4>
+                            <h4 class="task-description">Seus projetos</h4>
                         </div>
                         <div class="card-body">
                             list of recents things
@@ -28,10 +40,10 @@
                     <div class="row">
                         <div class="card w-100 border-0">
                             <div class="card-header bg-transparent">
-                                <Button @click="componentIs='CreateFastTaskComponent'" class="task-description" label="Projeto" text>
+                                <Button @click="componentIs='CreateFastTaskComponent'" :class="toggleActiveClass('CreateFastTaskComponent')" class="task-description" label="Projeto" text>
                                     <span class="small-fw">Tarefa</span>
                                 </Button>
-                                <Button @click="componentIs='CreateProjectComponent'" class="task-description" label="Projeto" text>
+                                <Button @click="componentIs='CreateProjectComponent'" :class="toggleActiveClass('CreateProjectComponent')" class="task-description" label="Projeto" text>
                                     <span class="small-fw">Projeto</span>
                                 </Button>
                             </div>
@@ -61,8 +73,20 @@ export default {
         return {
             authName: this.Auth.user().name,
             visibleNewsMoal: false,
-            componentIs: 'CreateFastTaskComponent'
+            componentIs: 'CreateFastTaskComponent',
+            activeClass: null
+        }
+    },
+    methods: {
+        toggleActiveClass(component){
+            return this.componentIs == component ? 'active_component' : null;
         }
     }
+
 }
 </script>
+<style>
+.active_component{
+    border-bottom: 2px solid #333;
+}
+</style>

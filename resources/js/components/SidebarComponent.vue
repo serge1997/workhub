@@ -43,7 +43,7 @@
                             </li>
                             <li class="list-group-item border-0">
                                 <span @click="menuCreateToggle = !menuCreateToggle">
-                                    <i class="pi pi-bars"></i>
+                                    <i class="pi pi-pen-to-square"></i>
                                     create
                                 </span>
                                 <ul class="list-group border-0 p-0">
