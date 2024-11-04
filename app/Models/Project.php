@@ -24,4 +24,20 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function tasks_in_progress()
+    {
+        return $this->tasks()->where('execution_status_id', 3);
+    }
+    public function tasks_concluded()
+    {
+        return $this->tasks()->where('execution_status_id', 8);
+    }
+
+    public function members_count()
+    {
+        return $this->tasks()
+            ->selectRaw('COUNT(DISTINCT(user_id)) as user_id');
+
+    }
 }

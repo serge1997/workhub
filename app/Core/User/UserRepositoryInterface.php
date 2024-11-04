@@ -10,4 +10,5 @@ interface UserRepositoryInterface
     public function listAll();
     public function createAvatar($request);
     public function search($request);
+    public function listByProject(int $project_id);
 }

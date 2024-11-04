@@ -6,10 +6,13 @@ use App\Core\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
+use App\Traits\HttpResponse;
 use Exception;
 
 class UserController extends Controller
 {
+    use HttpResponse;
+
     public function __construct(
         private UserRepositoryInterface $userRepositoryInterface
     )
@@ -64,6 +67,19 @@ class UserController extends Controller
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 500);
+        }
+    }
+
+    public function getByProject(int $project_id)
+    {
+        try{
+            $message = "lista dos membros do projeto";
+            $response = $this->userRepositoryInterface->listByProject($project_id);
+            return response()
+                ->json($this->successResponse($message, $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
         }
     }
 

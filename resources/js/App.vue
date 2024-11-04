@@ -45,4 +45,7 @@ body {
 .small-fw{
     font-size: 0.9em;
 }
+.cursor-p {
+    cursor: pointer;
+}
 </style>

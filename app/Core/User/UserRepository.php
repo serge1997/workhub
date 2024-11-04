@@ -41,4 +41,15 @@ class UserRepository implements UserRepositoryInterface
         return User::whereRaw("name LIKE '%{$param}%'")
             ->get();
     }
+
+    public function listByProject(int $project_id)
+    {
+        return UserResource::collection(
+            User::whereIn('id', function($query) use($project_id){
+                $query->select('user_id')
+                    ->from('tasks')
+                        ->where('project_id', $project_id);
+            })->get()
+        );
+    }
 }

@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('users', 'OnListAll');
         Route::post('user-avatar', 'OnCreateAvatar');
         Route::get('user-search', 'OnSearch')->name('user.search');
+        Route::get('user/list-by-poject/{project_id}', 'getByProject')->name('list.by.project')->whereNumber('project_id');
     });
 
     Route::controller(TaskController::class)->group(function() {
