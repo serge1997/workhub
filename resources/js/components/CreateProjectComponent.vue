@@ -46,7 +46,7 @@ export default {
                 description: null,
                 start_at: null,
                 end_at: null,
-                severity: null
+                severity: '0ea5e9'
             },
             toast: useToast(),
             formError: null

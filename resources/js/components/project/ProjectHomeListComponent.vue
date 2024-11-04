@@ -3,7 +3,10 @@
         <div v-for="project in projects" class="card-body d-flex p-0">
             <router-link class="card-body d-flex align-items-center justify-content-between nav-link text-dark">
                 <div class="icon d-flex gap-1 align-items-center">
-                    <img style="width: 43px;" class="rounded-circle shadow-sm" src="/img/project-image.png" />
+                    <img style="width: 43px;" class="rounded-circle shadow-sm d-none" src="/img/project-image.png" />
+                    <span style="width: 38px; height: 37px" class="rounded-circle border p-2 py-2 d-flex justify-content-center align-items-center">
+                        <i :style="`color: #${project.severity};`" class="pi pi-briefcase task-description"></i>
+                    </span>
                     <h6 class="mt-1">{{ project.name }}</h6>
                 </div>
             </router-link>
