@@ -34,6 +34,9 @@ class TaskResource extends JsonResource
             'manager_id' => $this->manager_id,
             'user_id'    => $this->user_id,
             'manager_name' => $this->manager,
+            'project_id' => $this->project_id,
+            'project_severity' => $this->project->severity,
+            'project_name' => $this->project->name,
             'user_name'    => $this->user,
             'execution_delay' => $this->execution_delay,
             'is_expired' => $this->execution_delay > $this->delay_used,
@@ -49,7 +52,8 @@ class TaskResource extends JsonResource
             'full_task_execution_status' => strtolower($this->executionStatus->name),
             'can_delete' => $this->when($this->isAdminAndTaskOwner($request->user()->id), true),
             'comment_count' => $this->when($this->countComment() > 0, $this->countComment(), true),
-            'activities' => TaskActivityResource::collection($this->taskActivity->take(4))
+            'activities' => TaskActivityResource::collection($this->taskActivity->take(4)),
+            'sprint_name' => $this->sprint->name
 
         ];
     }

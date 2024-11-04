@@ -10,8 +10,8 @@
                     <h6 class="mt-1">{{ project.name }}</h6>
                 </div>
             </router-link>
-            <div class="meta-data d-flex gap-2 align-items-center text-secondary">
-                <Tag :value="`in progress(${project.tasks_count_in_progress})`" icon="pi pi-tag" severity="warning"/>
+            <div class="meta-data d-flex gap-2 align-items-center">
+                <TaskOverlayComponent :project="project" />
                 <UsersOverlayComponent :project="project" />
             </div>
         </div>
@@ -20,11 +20,13 @@
 <script>
 import { useToast } from 'primevue/usetoast';
 import UsersOverlayComponent from '../Overlays/UsersOverlayComponent.vue';
+import TaskOverlayComponent from '../Overlays/TaskOverlayComponent.vue';
 export default {
     name: 'ProjectHomeListComponent',
 
     components: {
-        UsersOverlayComponent
+        UsersOverlayComponent,
+        TaskOverlayComponent
     },
 
     data(){

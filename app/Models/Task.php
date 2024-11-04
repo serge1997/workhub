@@ -104,4 +104,9 @@ class Task extends Model
     {
         return $this->belongsTo(Sprint::class, 'sprint_id');
     }
+
+    public function project() : BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

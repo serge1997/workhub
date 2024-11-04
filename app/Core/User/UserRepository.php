@@ -48,7 +48,7 @@ class UserRepository implements UserRepositoryInterface
             User::whereIn('id', function($query) use($project_id){
                 $query->select('user_id')
                     ->from('tasks')
-                        ->where('project_id', $project_id);
+                        ->where([['project_id', $project_id], ['deleted_at', null]]);
             })->get()
         );
     }

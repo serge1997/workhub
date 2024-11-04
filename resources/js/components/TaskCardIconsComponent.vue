@@ -73,7 +73,7 @@
         </div>
         <div class="w-100 icons d-flex gap-1 align-items-center">
             <Button class="d-flex gap-1 align-items-center p-1" text>
-                <Tag icon="pi pi-tag" value="work hub" />
+                <Tag :style="`background-color: #${task.project_severity};`" icon="pi pi-tag" :value="task.project_name" />
             </Button>
         </div>
     </div>

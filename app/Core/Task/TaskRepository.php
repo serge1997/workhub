@@ -15,6 +15,7 @@ use App\Models\Task;
 use App\Services\Servers\WsServer;
 use App\Core\Task\Actions\CreateTaskAction;
 use App\Core\Task\Actions\ListTaskByFilteredUserAction;
+use App\Core\Task\Actions\TaskListAction;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -87,6 +88,15 @@ class TaskRepository implements TaskRepositoryInterface
         return TaskResource::collection(
             Task::where('sprint_id', $request->sprint_id)
                 ->get()
+        );
+    }
+
+    public function findInProgressByProjectId(int $project_id)
+    {
+        /** @var TaskListAction $action */
+        $action = app(TaskListAction::class);
+        return TaskResource::collection(
+            $action->listByProject($project_id)
         );
     }
 }

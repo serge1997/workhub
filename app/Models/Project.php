@@ -37,7 +37,7 @@ class Project extends Model
     public function members_count()
     {
         return $this->tasks()
-            ->selectRaw('COUNT(DISTINCT(user_id)) as user_id');
+            ->selectRaw('COUNT(DISTINCT user_id) as user_id');
 
     }
 }

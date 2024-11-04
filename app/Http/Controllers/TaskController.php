@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Core\Task\TaskRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTaskRequest;
+use App\Traits\HttpResponse;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use WebSocket\Client;
 class TaskController extends Controller
 {
+    use HttpResponse;
+
     public function __construct(
         private TaskRepositoryInterface $taskRepositoryInterface
     )
@@ -109,6 +112,19 @@ class TaskController extends Controller
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 404);
+        }
+    }
+
+    public function getByProject(int $project_id)
+    {
+        try{
+            $message = 'lista de tarefas por projetos';
+            $response = $this->taskRepositoryInterface->findInProgressByProjectId($project_id);
+            return response()
+                ->json($this->successResponse($message, $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
         }
     }
 }

@@ -13,5 +13,6 @@ interface TaskRepositoryInterface
     public function listByAuthUser($request);
     public function listTaskByFilteredUser($request);
     public function listBySprint($request);
+    public function findInProgressByProjectId(int $project_id);
 
 }
