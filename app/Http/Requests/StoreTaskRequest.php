@@ -23,10 +23,7 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'title' => ['required'],
-            'execution_delay' => ['required'],
-            'priority' => ['required'],
-            'user_id' => ['required'],
-            'sprint_id' => ['required']
+            'project_id' => ['required']
         ];
     }
 
@@ -34,12 +31,7 @@ class StoreTaskRequest extends FormRequest
     {
         return [
             'title.required' => 'titulo é obrigatorio',
-            'execution_delay.required' => 'Tempo de exceução é obrigatorio',
-            'priority.required' => 'prioridade obrigatório',
-            'priority.max' => 'prioridade inavlida',
-            'user_id.required' => 'colaborador é obrigatorio',
-            'sprint_id.required' => 'sprint é obrigatorio'
-
+            'project_id.required' => 'projeto é obrigatorio',
         ];
     }
 }
