@@ -109,4 +109,14 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
+    public function prioriryFullDescription(string $priority) : string
+    {
+        return match($priority)
+        {
+            Task::URG => "Urgente",
+            Task::ALT => "Alta",
+            Task::MED => "Media",
+            Task::LOW => "Baixa"
+        };
+    }
 }

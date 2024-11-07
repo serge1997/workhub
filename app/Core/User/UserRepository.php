@@ -1,6 +1,7 @@
 <?php
 namespace App\Core\User;
 
+use App\Core\User\Actions\UserListAction;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Collection;
@@ -37,9 +38,9 @@ class UserRepository implements UserRepositoryInterface
 
     public function search($request)
     {
-        $param = str_replace('@', '', $request->user_name);
-        return User::whereRaw("name LIKE '%{$param}%'")
-            ->get();
+       /** @var UserListAction $userListAction */
+       $userListAction = app(UserListAction::class);
+       return $userListAction->searchByName($request);
     }
 
     public function listByProject(int $project_id)

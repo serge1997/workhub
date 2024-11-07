@@ -63,6 +63,8 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::get('task-by-filtered-user', 'onListByFilteredUser');
         Route::get('tasks/by-sprint', 'onListBySprint');
         Route::get('tasks/list-by-project/{project_id}', 'getByProject')->name('tasks.list.by.project')->whereNumber('project_id');
+        Route::put('task/priority', 'updatePriority')->name('task.update.priority');
+        Route::put('task/user', 'updateUser')->name('task.update.user');
     });
 
     Route::controller(FollowerController::class)->group(function() {

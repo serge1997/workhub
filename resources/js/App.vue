@@ -26,7 +26,7 @@ export default {
 </script>
 <style>
 body {
-    background-color: #f1f5f9;
+    background-color: #f9fafb;
 }
 .form-btn {
     background-color: #1e293b;

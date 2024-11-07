@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Core\Task\TaskRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Traits\HttpResponse;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -48,8 +49,10 @@ class TaskController extends Controller
     public function onFind(Request $request)
     {
         try{
-            return response()
-                ->json($this->taskRepositoryInterface->find($request));
+            $response = new TaskResource(
+                $this->taskRepositoryInterface->find($request)
+            );
+            return response()->json($response);
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 402);
@@ -100,7 +103,7 @@ class TaskController extends Controller
                 ->json($this->taskRepositoryInterface->listTaskByFilteredUser($request));
         }catch(Exception $e){
             return response()
-                ->json($e->getMessage(), 404);
+                ->json($e->getMessage() . $e->getFile() . $e->getLine(), 404);
         }
     }
 
@@ -122,6 +125,31 @@ class TaskController extends Controller
             $response = $this->taskRepositoryInterface->findInProgressByProjectId($project_id);
             return response()
                 ->json($this->successResponse($message, $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
+        }
+    }
+
+    public function updatePriority(Request $request)
+    {
+        try{
+            $response = $this->taskRepositoryInterface->updatePriority($request);
+            return response()
+                ->json($this->successResponse('prioridade actualizada com sucesso', $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
+        }
+    }
+
+    public function updateUser(Request $request)
+    {
+        try{
+            $action = $this->taskRepositoryInterface->updateUserId($request);
+            $response = new TaskResource($action);
+            return response()
+                ->json($this->successResponse('responsavel atualizado com sucesso', $response));
         }catch(Exception $e){
             return response()
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
