@@ -13,8 +13,8 @@
             </div>
             <div class="row mb-4">
                 <div class="col-md-6 p-2">
-                    <div class="card w-100 shadow-sm border">
-                        <div class="card-header border bg-transparent">
+                    <div class="card w-100 shadow-sm border" style="border-radius: 12px;">
+                        <div class="card-header border-0 bg-transparent">
                             <h5 class="task-description">Recentes</h5>
                         </div>
                         <div class="card-body">
@@ -25,8 +25,8 @@
             </div>
             <div class="row">
                 <div class="col-md-6 p-2">
-                    <div class="card w-100 shadow-sm">
-                        <div class="card-header border bg-transparent">
+                    <div class="card w-100 shadow-sm" style="border-radius: 12px;">
+                        <div class="card-header border-0 bg-transparent">
                             <h5 class="task-description">Seus projetos</h5>
                         </div>
                         <div class="card-body">

@@ -35,6 +35,12 @@
                                     tasks
                                 </router-link>
                             </li>
+                            <li class="list-group-item border-0">
+                                <router-link class="text-decoration-none" :to="{name: 'Project'}">
+                                    <i class="pi pi-briefcase"></i>
+                                    Projetos
+                                </router-link>
+                            </li>
                             <li class="list-group-item border-0 d-none">
                                 <router-link class="text-decoration-none" :to="{name: 'Sprint'}">
                                     <i class="pi pi-bolt"></i>

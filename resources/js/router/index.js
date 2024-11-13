@@ -11,6 +11,7 @@ import Sprint from "../components/pages/dashboard/Sprint.vue";
 import Trash from "../components/pages/dashboard/Trash.vue";
 import TaskShow from "../components/pages/dashboard/TaskShow.vue";
 import Home from "../components/pages/dashboard/Home.vue";
+import Project from "../components/pages/dashboard/Project.vue";
 
 const routes = [
     {
@@ -75,7 +76,13 @@ const routes = [
         name: 'TaskShow',
         component: TaskShow,
         meta: {requiresAuth: true}
-    }
+    },
+    {
+        path: '/projects',
+        name: 'Project',
+        component: Project,
+        meta: {requiresAuth: true}
+    },
 ]
 
 const router = createRouter({
