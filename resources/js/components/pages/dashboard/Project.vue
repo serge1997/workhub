@@ -11,7 +11,7 @@
                                     <i class="pi pi-angle-right"></i>
                                 </span>
                             </Tag>
-                            <Button v-for="project of projects" class="task-description d-flex gap-1" label="Projeto" text>
+                            <Button v-for="project of projects" class="task-description d-flex gap-1" @click="listProjectData(project.id)" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i :style="`color: #${project.severity};`" class="pi pi-circle-fill small-icon"></i>
                                 </span>
@@ -48,7 +48,9 @@
                 </Toolbar>
             </div>
             <div class="row">
-                <SprintListComponent />
+                <SprintListComponent
+                    :sprints="projectSprints"
+                 />
             </div>
         </div>
     </SidebarComponent>
@@ -64,7 +66,8 @@ export default {
 
     data(){
         return {
-            projects: null
+            projects: null,
+            projectSprints: null,
         }
     },
     methods: {
@@ -73,7 +76,19 @@ export default {
             .then(async response => {
                 this.projects = await response.data.data;
             })
-        }
+        },
+        listProjectData(id){
+            this.listSprintByProject(id);
+        },
+        listSprintByProject(id){
+            this.Api.get(`sprint/list-by-project/${id}`)
+            .then(async response => {
+                this.projectSprints = await response.data.data;
+            })
+            .catch(error => {
+
+            })
+        },
     },
     mounted(){
         this.listAllProject()

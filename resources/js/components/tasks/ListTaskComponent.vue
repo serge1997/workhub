@@ -17,14 +17,9 @@
                             @list-all-task="$emit('listAllTask')"
                             :task-status="taskStatus"
                         />
-                        <ShowTaskComponent
-                            @show-task="showTask(task.id)"
-                            open-modal-icon="pi-align-center"
-                            :task-finded="task_finded"
-                            @create-custom-value="createCustomValue"
-                            :task-execution-status="taskExecutionStatus"
-                        />
-
+                        <Button class="p-1" @click="showTask(task.id)" text>
+                            <i class="pi pi-align-center icon-list-task"></i>
+                        </Button>
                     </span>
                 </div>
             </li>
@@ -40,20 +35,15 @@
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
-                    <span class="d-flex">
+                    <span class="d-flex align-items-center">
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
                             :task-status="taskStatus"
                         />
-                        <ShowTaskComponent
-                            @show-task="showTask(task.id)"
-                            open-modal-icon="pi-align-center"
-                            :task-finded="task_finded"
-                            @create-custom-value="createCustomValue"
-                            :task-execution-status="taskExecutionStatus"
-                        />
-
+                        <Button class="p-1" @click="showTask(task.id)" text>
+                            <i class="pi pi-align-center icon-list-task"></i>
+                        </Button>
                     </span>
                 </div>
             </li>
@@ -69,19 +59,15 @@
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
-                    <span class="d-flex">
+                    <span class="d-flex align-items-center">
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
                             :task-status="taskStatus"
                         />
-                        <ShowTaskComponent
-                            @show-task="showTask(task.id)"
-                            open-modal-icon="pi-align-center"
-                            :task-finded="task_finded"
-                            @create-custom-value="createCustomValue"
-                            :task-execution-status="taskExecutionStatus"
-                        />
+                        <Button class="p-1" @click="showTask(task.id)" text>
+                            <i class="pi pi-align-center icon-list-task"></i>
+                        </Button>
                     </span>
                 </div>
             </li>
@@ -97,20 +83,14 @@
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
-                    <span class="d-flex">
+                    <span class="d-flex align-items-center">
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
                         />
-                        <ShowTaskComponent
-                            @show-task="showTask(task.id)"
-                            open-modal-icon="pi-align-center"
-                            :task-finded="task_finded"
-                            @create-custom-value="createCustomValue"
-                            :task-execution-status="taskExecutionStatus"
-                            :task-status="taskStatus"
-                        />
-
+                        <Button class="p-1" @click="showTask(task.id)" text>
+                            <i class="pi pi-align-center icon-list-task"></i>
+                        </Button>
                     </span>
                 </div>
             </li>
@@ -126,19 +106,15 @@
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
-                    <span class="d-flex">
+                    <span class="d-flex align-items-center">
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
                             :task-status="taskStatus"
                         />
-                        <ShowTaskComponent
-                            @show-task="showTask(task.id)"
-                            open-modal-icon="pi-align-center"
-                            :task-finded="task_finded"
-                            @create-custom-value="createCustomValue"
-                            :task-execution-status="taskExecutionStatus"
-                        />
+                        <Button class="p-1" @click="showTask(task.id)" text>
+                            <i class="pi pi-align-center icon-list-task"></i>
+                        </Button>
 
                     </span>
                 </div>
@@ -155,19 +131,15 @@
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
-                    <span class="d-flex">
+                    <span class="d-flex align-items-center">
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
                             :task-status="taskStatus"
                         />
-                        <ShowTaskComponent
-                            @show-task="showTask(task.id)"
-                            open-modal-icon="pi-align-center"
-                            :task-finded="task_finded"
-                            @create-custom-value="createCustomValue"
-                            :task-execution-status="taskExecutionStatus"
-                        />
+                        <Button class="p-1" @click="showTask(task.id)" text>
+                            <i class="pi pi-align-center icon-list-task"></i>
+                        </Button>
 
                     </span>
                 </div>
@@ -184,23 +156,29 @@
                             <small>{{ task.title }}</small>
                         </span>
                     </span>
-                    <span class="d-flex">
+                    <span class="d-flex align-items-center">
                         <ListTaskExecutionStatusComponent
                             :task="task"
                             @list-all-task="$emit('listAllTask')"
                             :task-status="taskStatus"
                         />
-                        <ShowTaskComponent
-                            @show-task="showTask(task.id)"
-                            open-modal-icon="pi-align-center"
-                            :task-finded="task_finded"
-                            @create-custom-value="createCustomValue"
-                            :task-execution-status="taskExecutionStatus"
-                        />
+                        <Button class="p-1" @click="showTask(task.id)" text>
+                            <i class="pi pi-align-center icon-list-task"></i>
+                        </Button>
                     </span>
                 </div>
             </li>
         </ul>
+    </div>
+    <div class="w-100">
+        <Dialog v-model:visible="visibleShowTaskModal" maximizable modal header=" " :style="{ width: '95rem' }">
+            <ShowTaskComponent
+                class="p-0"
+                :task-finded="task_finded",
+                @create-custom-value="createCustomValue"
+                :task-status="taskStatus"
+            />
+        </Dialog>
     </div>
 </template>
 <script>
@@ -225,6 +203,7 @@ export default{
     data(){
         return {
             task_finded: null,
+            visibleShowTaskModal: false
         }
     },
     methods: {
@@ -232,6 +211,7 @@ export default{
             this.task_finded = null;
             this.Api.get('task', {task_id: id})
             .then(async response => {
+                this.visibleShowTaskModal = true;
                 this.task_finded = await response.data;
             })
             .catch(err => console.log(err));

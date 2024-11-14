@@ -17,7 +17,9 @@
                     </Button>
                 </div>
                 <div class="row d-none" :id="`box_list_task_${sprint.id}`">
-                    <TaskListComponent />
+                    <TaskListComponent
+                        :tasks="tasks"
+                    />
                 </div>
             </div>
         </div>
@@ -28,6 +30,10 @@ import TaskListComponent from './TaskListComponent.vue';
 export default {
     name: 'SprintListComponent',
 
+    props: {
+        sprints: Object
+    },
+
     components: {
         TaskListComponent
     },
@@ -35,7 +41,8 @@ export default {
     data() {
         return {
             sprints: null,
-            toggleIcon: 'pi-angle-right'
+            toggleIcon: 'pi-angle-right',
+            tasks: null
         }
     },
 
@@ -43,7 +50,7 @@ export default {
         listSprintByProject(){
             this.Api.get('sprint/list-by-project/1')
             .then(async response => {
-                this.sprints = await response.data.data;
+                //this.sprints = await response.data.data;
             })
             .catch(error => {
 
@@ -52,6 +59,7 @@ export default {
         listTaskBySprint(sprint_id){
             this.Api.get('tasks/by-sprint', {sprint_id: sprint_id})
             .then(async response => {
+                this.tasks = await response.data;
                 this.toggleTaskListBySprint(sprint_id)
             })
         },
