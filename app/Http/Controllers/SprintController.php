@@ -2,14 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Sprint\Actions\SprintListAction;
 use App\Core\Sprint\SprintRepositoryInterface;
 use App\Http\Requests\SprintRequest;
+use App\Traits\HttpResponse;
 use Exception;
 use Illuminate\Http\Request;
+use Psr\Container\ContainerInterface;
 
 class SprintController extends Controller
 {
-    public function __construct(private readonly SprintRepositoryInterface $sprintRepositoryInterface)
+    use HttpResponse;
+
+    public function __construct(
+        private readonly SprintRepositoryInterface $sprintRepositoryInterface,
+        private ContainerInterface $container
+    )
     {}
 
     public function onCreate(SprintRequest $request)
@@ -40,6 +48,21 @@ class SprintController extends Controller
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 500);
+        }
+    }
+
+    public function getAllByProject(int $project_id)
+    {
+        try{
+            /** @var SprintListAction $sprintListAction */
+            $sprintListAction = $this->container->get(SprintListAction::class);
+            $response = $sprintListAction->listBAllBySprint($project_id);
+            return response()
+                ->json($this->successResponse('lista dos sprints por projetos', $response));
+
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
         }
     }
 }

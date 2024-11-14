@@ -122,9 +122,10 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::controller(SprintController::class)->group(function() {
-        Route::prefix('sprint')->group(function() {
-            Route::post('/', 'onCreate');
-            Route::get('/', 'onListAll');
+        Route::prefix('sprint')->name('sprint.')->group(function() {
+            Route::post('/', 'onCreate')->name('store');
+            Route::get('/', 'onListAll')->name('index');
+            Route::get('/list-by-project/{project_id}', 'getAllByProject')->name('list.by.project')->whereNumber('project_id');
         });
     });
 

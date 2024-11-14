@@ -27,4 +27,10 @@ class ProjectRepository implements ProjectRepositoryInterface
     {
         return Project::where("name", $name)->first();
     }
+
+    public function find(int $id) : Project
+    {
+        return Project::find($id);
+    }
+
 }

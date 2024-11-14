@@ -16,10 +16,11 @@ class SprintResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => ucfirst($this->name),
             'start_at' => $this->start_at,
             'close_at' => $this->close_at,
-            'deleted_at' => $this->deleted_at
+            'deleted_at' => $this->deleted_at,
+            'count_tasks' => $this->tasks->count()
         ];
     }
 }

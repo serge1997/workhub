@@ -3,6 +3,7 @@ namespace App\Core\Sprint;
 
 use App\Http\Resources\SprintResource;
 use App\Models\Sprint;
+use App\Models\Project;
 
 class SprintRepository implements SprintRepositoryInterface
 {
@@ -29,5 +30,14 @@ class SprintRepository implements SprintRepositoryInterface
     public function listAll()
     {
         return SprintResource::collection(Sprint::all());
+    }
+
+    public function findAllByProject(Project $project)
+    {
+        return Sprint::whereIn('id', function($query) use($project) {
+            $query->select('sprint_id')
+                ->from('tasks')
+                    ->where('project_id', $project->id);
+        })->get();
     }
 }
