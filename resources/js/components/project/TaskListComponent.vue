@@ -37,6 +37,8 @@
                 class="p-0"
                 :task-finded="task_finded",
                 :task-status="taskStatus"
+                @create-custom-value="createCustomValue"
+                @update-show-modal-ui="showTask(task_selected_id)"
             />
         </Dialog>
     </div>
@@ -44,6 +46,7 @@
 <script>
 import ListTaskExecutionStatusComponent from '../ListTaskExecutionStatusComponent.vue';
 import ShowTaskComponent from '../ShowTaskComponent.vue';
+import { useToast } from "primevue/usetoast";
 export default {
     name: 'TaskListComponent',
     props: {
@@ -58,6 +61,8 @@ export default {
             task_finded: null,
             visibleShowTaskModal: false,
             taskStatus: null,
+            toast: useToast(),
+            task_selected_id: null
         }
     },
     methods: {
@@ -66,6 +71,7 @@ export default {
             .then(async response => {
                 this.task_finded = await response.data;
                 this.visibleShowTaskModal = true;
+                this.task_selected_id = id;
             })
             .catch(err => console.log(err));
         },
@@ -77,6 +83,23 @@ export default {
             .catch(err => {
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded task status data", life: 3000 });
             })
+        },
+        createCustomValue(column_id, length){
+            const value = document.getElementById(`custom-value-${column_id}`).value;
+            const data = {
+                value: value,
+                custom_column_id: column_id,
+                task_id: this.task_finded.id
+            };
+            if (value !== null && value !== undefined && value.length > length || value.length < length){
+                this.Api.put('custom-column-value', null, data)
+                .then(async response => {
+                    this.toast.add({ severity: 'success', summary: 'successo', detail: await response.data.message, life: 3000 });
+                })
+                .catch(error => {
+                    this.toast.add({ severity: 'error', summary: 'error', detail: error.response.data.message, life: 3000 });
+                })
+            }
         },
     },
     mounted(){
