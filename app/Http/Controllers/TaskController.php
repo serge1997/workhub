@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Task\Actions\TaskListAction;
 use App\Core\Task\TaskRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTaskRequest;
@@ -9,13 +10,15 @@ use App\Http\Resources\TaskResource;
 use App\Traits\HttpResponse;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Psr\Container\ContainerInterface;
 use WebSocket\Client;
 class TaskController extends Controller
 {
     use HttpResponse;
 
     public function __construct(
-        private TaskRepositoryInterface $taskRepositoryInterface
+        private TaskRepositoryInterface $taskRepositoryInterface,
+        private ContainerInterface $container
     )
     {}
 
@@ -150,6 +153,19 @@ class TaskController extends Controller
             $response = new TaskResource($action);
             return response()
                 ->json($this->successResponse('responsavel atualizado com sucesso', $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
+        }
+    }
+    public function getAllBySprintAndProject(int $sprint_id, int $project_id)
+    {
+        try{
+            /** @var TaskListAction $taskListAction */
+            $taskListAction = $this->container->get(TaskListAction::class);
+            $response = $taskListAction->listAllBySprintAndProject($sprint_id, $project_id);
+            return response()
+                ->json($this->successResponse("lista das tarefas pro sprint e projeto", $response));
         }catch(Exception $e){
             return response()
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);

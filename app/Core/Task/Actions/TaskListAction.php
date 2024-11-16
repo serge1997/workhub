@@ -25,4 +25,10 @@ final class TaskListAction
             $this->taskRepository->find($request)
         );
     }
+    public function listAllBySprintAndProject(int $sprint_id, int $project_id)
+    {
+        return TaskResource::collection(
+            $this->taskRepository->findAllBySprintAndProject($sprint_id, $project_id)
+        );
+    }
 }

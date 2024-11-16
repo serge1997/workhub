@@ -3,18 +3,24 @@
         <ul class="list-group">
             <li class="list-group-item border-0 border-bottom" v-for="task in tasks">
                 <div class="w-100 d-flex justify-content-between">
-                    <span class="d-flex gap-2 p-1">
+                    <span class="d-flex gap-3 p-1">
                         <span>
                             <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
                         <span class="task-description">
                             <small>{{ task.title }}</small>
                         </span>
+                        <span class="d-flex align-items-center">
+                            <Tag class="p-1 v-small-fs" :style="`background-color: ${task.execution_status_severity}`" :value="task.full_task_execution_status" />
+                        </span>
+                        <span class="d-flex align-items-center p-0">
+
+                        </span>
                     </span>
                     <span class="d-flex align-items-center">
                         <ListTaskExecutionStatusComponent
                             :task="task"
-                            @list-all-task="$emit('listAllTask')"
+                            @list-all-task="$emit('updateUi')"
                             :task-status="taskStatus"
                         />
                         <Button class="p-1" @click="showTask(task.id)" text>

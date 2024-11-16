@@ -115,4 +115,9 @@ class TaskRepository implements TaskRepositoryInterface
         $data = $taskUpdate->updateUserId($this->find($request), $request);
         return $data;
     }
+    public function findAllBySprintAndProject(int $sprint_id, int $project_id)
+    {
+        return Task::where([['sprint_id', $sprint_id], ['project_id', $project_id]])
+            ->get();
+    }
 }

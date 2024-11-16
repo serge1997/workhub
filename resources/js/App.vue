@@ -48,6 +48,9 @@ body {
 .small-icon{
     font-size: 0.7em;
 }
+.v-small-fs {
+    font-size: .5em;
+}
 .cursor-p {
     cursor: pointer;
 }

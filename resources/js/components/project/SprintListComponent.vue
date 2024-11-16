@@ -1,16 +1,16 @@
 <template>
     <div class="row">
         <div class="col-md-6 d-flex flex-column gap-3">
-            <div v-for="sprint of sprints" class="w-100 d-flex flex-column gap-2">
+            <div v-for="(sprint, index) of sprints" class="w-100 d-flex flex-column gap-2">
                 <div class="w-100 d-flex gap-3">
-                    <Button text class="p-1 task-description" @click="listTaskBySprint(sprint.id)">
+                    <Button text class="p-1 task-description" @click="listTaskBySprint(sprint.id, index, true)">
                         <span><i :class="`pi ${toggleIcon}`" :id="`icon_toggle_${sprint.id}`"></i></span>
                     </Button>
                     <Tag class="p-2 w-25 sprint-list-tag text-white">
                         <span>{{ sprint.name }}</span>
                     </Tag>
                     <span style="width: 15px;" class="d-flex align-items-center">
-                        <small class="task-description">{{ sprint.count_tasks }}</small>
+                        <small class="task-description d-none">{{ sprint.count_tasks }}</small>
                     </span>
                     <Button text class="p-1 task-description">
                         <span><i class="pi pi-ellipsis-h"></i></span>
@@ -18,7 +18,8 @@
                 </div>
                 <div class="row d-none" :id="`box_list_task_${sprint.id}`">
                     <TaskListComponent
-                        :tasks="tasks"
+                        :tasks="tasks[index]"
+                        @update-ui="listTaskBySprint(sprint.id, index, false)"
                     />
                 </div>
             </div>
@@ -31,7 +32,8 @@ export default {
     name: 'SprintListComponent',
 
     props: {
-        sprints: Object
+        sprints: Object,
+        projectId: Number
     },
 
     components: {
@@ -40,27 +42,19 @@ export default {
 
     data() {
         return {
-            sprints: null,
             toggleIcon: 'pi-angle-right',
-            tasks: null
+            tasks: []
         }
     },
 
     methods: {
-        listSprintByProject(){
-            this.Api.get('sprint/list-by-project/1')
+        listTaskBySprint(sprint_id, index, hidden_box){
+            this.Api.get(`tasks/sprint/${sprint_id}/project/${this.projectId}`)
             .then(async response => {
-                //this.sprints = await response.data.data;
-            })
-            .catch(error => {
-
-            })
-        },
-        listTaskBySprint(sprint_id){
-            this.Api.get('tasks/by-sprint', {sprint_id: sprint_id})
-            .then(async response => {
-                this.tasks = await response.data;
-                this.toggleTaskListBySprint(sprint_id)
+                this.tasks[index] = await response.data.data;
+                if(hidden_box){
+                    this.toggleTaskListBySprint(sprint_id)
+                }
             })
         },
         toggleTaskListBySprint(box_id){
@@ -78,7 +72,6 @@ export default {
         }
     },
     mounted(){
-        this.listSprintByProject();
     }
 }
 </script>

@@ -11,7 +11,7 @@
                                     <i class="pi pi-angle-right"></i>
                                 </span>
                             </Tag>
-                            <Button v-for="project of projects" class="task-description d-flex gap-1" @click="listProjectData(project.id)" label="Projeto" text>
+                            <Button v-for="project of projects" class="task-description rounded-pill d-flex gap-1 project_btn_toolbar" @click="listProjectData(project.id)" :id="`project_btn_toolbar_${project.id}`" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i :style="`color: #${project.severity};`" class="pi pi-circle-fill small-icon"></i>
                                 </span>
@@ -50,6 +50,7 @@
             <div class="row">
                 <SprintListComponent
                     :sprints="projectSprints"
+                    :project-id="selected_project"
                  />
             </div>
         </div>
@@ -68,6 +69,7 @@ export default {
         return {
             projects: null,
             projectSprints: null,
+            selected_project: null
         }
     },
     methods: {
@@ -79,6 +81,13 @@ export default {
         },
         listProjectData(id){
             this.listSprintByProject(id);
+            this.selected_project = id;
+            document.getElementById(`project_btn_toolbar_${id}`).classList.toggle('active-project-toolbar-btn')
+            document.querySelectorAll('.project_btn_toolbar').forEach(btn => {
+                if (btn.getAttribute('id') !== `project_btn_toolbar_${id}`){
+                    btn.classList.remove('active-project-toolbar-btn')
+                }
+            })
         },
         listSprintByProject(id){
             this.Api.get(`sprint/list-by-project/${id}`)
@@ -95,3 +104,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+.active-project-toolbar-btn{
+    background-color: #e5e7eb;
+    transition: ease-in .3s;
+}
+</style>
