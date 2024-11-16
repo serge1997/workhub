@@ -10,7 +10,7 @@
                         <span>{{ sprint.name }}</span>
                     </Tag>
                     <span style="width: 15px;" class="d-flex align-items-center">
-                        <small class="task-description d-none">{{ sprint.count_tasks }}</small>
+                        <small class="task-description">{{ sprint.count_tasks }}</small>
                     </span>
                     <Button text class="p-1 task-description">
                         <span><i class="pi pi-ellipsis-h"></i></span>
@@ -19,7 +19,8 @@
                 <div class="row d-none" :id="`box_list_task_${sprint.id}`">
                     <TaskListComponent
                         :tasks="tasks[index]"
-                        @update-ui="listTaskBySprint(sprint.id, index, false)"
+                        @update-ui="listTaskBySprint(sprint.id, index, false)",
+                        :task-status="taskStatus"
                     />
                 </div>
             </div>
@@ -43,7 +44,8 @@ export default {
     data() {
         return {
             toggleIcon: 'pi-angle-right',
-            tasks: []
+            tasks: [],
+            taskStatus: null,
         }
     },
 
@@ -69,9 +71,19 @@ export default {
                 i.classList.add('pi-angle-right')
             }
 
-        }
+        },
+        onListAllTaskExecutionStatus(){
+            this.Api.get('task-execution-status')
+            .then(async response => {
+                this.taskStatus = await response.data;
+            })
+            .catch(err => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded task status data", life: 3000 });
+            })
+        },
     },
     mounted(){
+        this.onListAllTaskExecutionStatus();
     }
 }
 </script>

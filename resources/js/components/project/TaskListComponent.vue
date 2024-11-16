@@ -1,9 +1,16 @@
 <template>
     <div class="row" v-if="tasks">
         <ul class="list-group">
-            <li class="list-group-item border-0 border-bottom" v-for="task in tasks">
+            <li v-for="task in tasks" class="list-group-item border-0 border-bottom d-flex gap-2" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)">
+                <div class="d-flex align-items-center select_btn_div_box">
+                    <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
+                       <Button @click="onSelectedTask(task.id)" class="p-0" text>
+                            <i :id="`selected_task_icon_${task.id}`" :class="`pi pi-circle task-description`"></i>
+                       </Button>
+                    </span>
+                </div>
                 <div class="w-100 d-flex justify-content-between">
-                    <span class="d-flex gap-3 p-1">
+                    <span class="d-flex justify-content-start gap-3 p-1">
                         <span>
                             <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
                         </span>
@@ -51,6 +58,7 @@ export default {
     name: 'TaskListComponent',
     props: {
         tasks: Object,
+        taskStatus: Object
     },
     components: {
         ListTaskExecutionStatusComponent,
@@ -60,9 +68,9 @@ export default {
         return {
             task_finded: null,
             visibleShowTaskModal: false,
-            taskStatus: null,
             toast: useToast(),
-            task_selected_id: null
+            task_selected_id: null,
+            task_selected_action_icon: 'pi-circle'
         }
     },
     methods: {
@@ -74,15 +82,6 @@ export default {
                 this.task_selected_id = id;
             })
             .catch(err => console.log(err));
-        },
-        onListAllTaskExecutionStatus(){
-            this.Api.get('task-execution-status')
-            .then(async response => {
-                this.taskStatus = await response.data;
-            })
-            .catch(err => {
-                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded task status data", life: 3000 });
-            })
         },
         createCustomValue(column_id, length){
             const value = document.getElementById(`custom-value-${column_id}`).value;
@@ -101,9 +100,36 @@ export default {
                 })
             }
         },
+        showSelectedButton(id){
+            let box = document.getElementById(`selected_btn_box_${id}`);
+            box.classList.remove('d-none');
+        },
+        hiddeSelectedButton(id){
+            let box = document.getElementById(`selected_btn_box_${id}`);
+            let iconCheck = document.getElementById(`selected_task_icon_${id}`);
+            //iconCheck.classList.contains
+            if (iconCheck.classList.contains('pi-circle')){
+                box.classList.add('d-none');
+            }
+        },
+        onSelectedTask(id){
+            const iconTag = document.getElementById(`selected_task_icon_${id}`);
+            iconTag.classList.toggle('pi-circle');
+            iconTag.classList.toggle('pi-circle-fill');
+            iconTag.classList.toggle('selected_icon_color')
+        }
     },
     mounted(){
-        this.onListAllTaskExecutionStatus();
+
     }
 }
 </script>
+<style>
+.select_btn_div_box{
+    transition: ease-in .3s;
+    width: 30px;
+}
+.selected_icon_color{
+    color: #f0abfc;
+}
+</style>

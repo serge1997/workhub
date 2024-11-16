@@ -15,8 +15,7 @@ final class SprintListAction
     public function listBAllBySprint(int $project_id)
     {
         $project = $this->projectRepository->find($project_id);
-        return SprintResource::collection(
-            $this->sprintRepository->findAllByProject($project)
-        );
+        return $this->sprintRepository->findAllByProject($project);
+
     }
 }

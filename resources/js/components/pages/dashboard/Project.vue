@@ -43,6 +43,12 @@
                                 </span>
                                 <span class="small-fw"><small>Insights</small></span>
                             </Button>
+                            <Button class="task-description d-flex gap-1" label="Projeto" text>
+                                <span class="d-flex align-items-center">
+                                    <i class="pi pi-hammer small-icon"></i>
+                                </span>
+                                <span class="small-fw"><small>Backlog</small></span>
+                            </Button>
                         </div>
                     </template>
                 </Toolbar>

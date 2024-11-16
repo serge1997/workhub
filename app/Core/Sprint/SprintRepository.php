@@ -4,6 +4,7 @@ namespace App\Core\Sprint;
 use App\Http\Resources\SprintResource;
 use App\Models\Sprint;
 use App\Models\Project;
+use Illuminate\Support\Facades\DB;
 
 class SprintRepository implements SprintRepositoryInterface
 {
@@ -34,10 +35,24 @@ class SprintRepository implements SprintRepositoryInterface
 
     public function findAllByProject(Project $project)
     {
-        return Sprint::whereIn('id', function($query) use($project) {
-            $query->select('sprint_id')
-                ->from('tasks')
-                    ->where('project_id', $project->id);
-        })->get();
+        $query = Sprint::select(
+            'sprints.id',
+            'sprints.name',
+            'sprints.start_at',
+            'sprints.close_at',
+            'sprints.deleted_at',
+            DB::raw('COUNT(tasks.id) as count_tasks')
+        )
+        ->join('tasks', 'sprints.id', '=', 'tasks.sprint_id')
+            ->where([['tasks.project_id', $project->id], ['tasks.deleted_at', null]])
+                ->groupby(
+                    'sprints.id',
+                    'sprints.name',
+                    'sprints.start_at',
+                    'sprints.close_at',
+                    'sprints.deleted_at'
+                )
+                    ->get();
+        return $query;
     }
 }
