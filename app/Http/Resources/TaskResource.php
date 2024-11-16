@@ -44,43 +44,17 @@ class TaskResource extends JsonResource
             'execution_status' => $this->executionStatus->status,
             'execution_status_severity' => $this->executionStatus->executionStatusSeveriry(),
             'followers' => FollowerResource::collection($this->followers),
-            'followers_count' => $this->countFollowers(),
-            'annex_count' => $this->countAnnex(),
+            'followers_count' => $this->followers->count(),
+            'annex_count' => $this->annexes->count(),
             'annexes' => AnnexResource::collection($this->annexes),
             'task_owner' => $this->when($request->user()->id == $this->user_id, true),
             'customColumnValue' => CustomsColumnsValueResource::collection($this->customColumnValue),
             'full_task_execution_status' => strtolower($this->executionStatus->name),
             'can_delete' => $this->when($this->isAdminAndTaskOwner($request->user()->id), true),
-            'comment_count' => $this->when($this->countComment() > 0, $this->countComment(), true),
+            'comment_count' => $this->when($this->comment->count() > 0, $this->comment->count(), true),
             'activities' => TaskActivityResource::collection($this->taskActivity->take(4)),
-            'sprint_name' => $this->sprint->name
+            'sprint_name' => $this->sprint ? $this->sprint->name : 'Nenhum sprint'
 
         ];
-    }
-
-    public function countFollowers()
-    {
-        return Follower::where('task_id', $this->id)->count() ?? "-";
-    }
-
-    public function countAnnex()
-    {
-        return Annex::where('task_id', $this->id)->count() ?? "-";
-    }
-
-    public function prioriryFullDescription(string $priority) : string
-    {
-        return match($priority)
-        {
-            Task::URG => "Urgente",
-            Task::ALT => "Alta",
-            Task::MED => "Media",
-            Task::LOW => "Baixa"
-        };
-    }
-
-    public function countComment() : int
-    {
-        return Comment::where('task_id', $this->id)->count() ?? 0;
     }
 }

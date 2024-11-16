@@ -16,6 +16,7 @@ use App\Services\Servers\WsServer;
 use App\Core\Task\Actions\CreateTaskAction;
 use App\Core\Task\Actions\ListTaskByFilteredUserAction;
 use App\Core\Task\Actions\TaskListAction;
+use App\Core\Task\Actions\TaskUpdateAction;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -45,7 +46,7 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function find($request)
     {
-        return new TaskResource(FindTaskAction::run($request));
+        return Task::find($request->task_id);
     }
 
     public function handleExecutionStatus($request)
@@ -98,5 +99,25 @@ class TaskRepository implements TaskRepositoryInterface
         return TaskResource::collection(
             $action->listByProject($project_id)
         );
+    }
+    public function updatePriority($request)
+    {
+        /** @var TaskUpdateAction $taskUpdate */
+        $taskUpdate = app(TaskUpdateAction::class);
+        $data = $taskUpdate->priority($this->find($request), $request);
+        return $data;
+    }
+
+    public function updateUserId($request)
+    {
+        /** @var TaskUpdateAction $taskUpdate */
+        $taskUpdate = app(TaskUpdateAction::class);
+        $data = $taskUpdate->updateUserId($this->find($request), $request);
+        return $data;
+    }
+    public function findAllBySprintAndProject(int $sprint_id, int $project_id)
+    {
+        return Task::where([['sprint_id', $sprint_id], ['project_id', $project_id]])
+            ->get();
     }
 }

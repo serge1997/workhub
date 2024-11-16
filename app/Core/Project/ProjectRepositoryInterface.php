@@ -10,4 +10,5 @@ interface ProjectRepositoryInterface
     public function create($request) : Project;
     public function findAll() ;
     public function findByName(string $name) : ?Project;
+    public function find(int $id) : Project;
 }

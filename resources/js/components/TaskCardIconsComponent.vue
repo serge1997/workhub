@@ -51,18 +51,9 @@
             <TaskCommentComponent :task="task" />
         </div>
         <div class="w-100 icons d-flex align-items-center">
-            <span class="d-flex align-items-center">
-                <ShowTaskComponent
-                    class="p-0"
-                    @show-task="showTask(task.id)"
-                    open-modal-icon="pi-align-center"
-                    :task-finded="task_finded",
-                    :custom-columns="customColumns"
-                    @create-custom-value="createCustomValue"
-                    :task-status="taskStatus"
-                    @update-show-modal-ui="showTask(task.id)"
-                />
-            </span>
+            <Button class="p-1" @click="showTask(task.id)" text>
+                <i class="pi pi-align-center icon-list-task"></i>
+            </Button>
         </div>
         <div v-if="task.can_delete" class="w-100 icons d-flex gap-1 align-items-center">
             <Button @click="$emit('confirmDelete', task.id)" class="d-flex gap-1 align-items-center p-1" text>
@@ -75,6 +66,19 @@
             <Button class="d-flex gap-1 align-items-center p-1" text>
                 <Tag :style="`background-color: #${task.project_severity};`" icon="pi pi-tag" :value="task.project_name" />
             </Button>
+        </div>
+        <div class="row">
+            <Dialog v-model:visible="visibleShowTaskModal" maximizable modal header=" " :style="{ width: '95rem' }">
+                <ShowTaskComponent
+                    class="p-0"
+                    open-modal-icon="pi-align-center"
+                    :task-finded="task_finded",
+                    :custom-columns="customColumns"
+                    @create-custom-value="createCustomValue"
+                    :task-status="taskStatus"
+                    @update-show-modal-ui="showTask(task.id)"
+                />
+            </Dialog>
         </div>
     </div>
 </template>
@@ -116,6 +120,7 @@ export default{
             selectedStatus: null,
             task_status: null,
             toast: useToast(),
+            visibleShowTaskModal: false
         }
     },
     methods: {
@@ -125,6 +130,7 @@ export default{
             .then(async response => {
                 this.task_finded = await response.data;
                 this.getAllCustomColumns()
+                this.visibleShowTaskModal = true;
             })
             .catch(err => console.log(err));
         },

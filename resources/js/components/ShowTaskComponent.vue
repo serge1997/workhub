@@ -1,143 +1,138 @@
 <template>
-    <Button class="p-1" @click="visibleShowTaskModal = !visibleShowTaskModal; $emit('showTask', task_id)" text>
-        <i :class="`pi ${openModalIcon} icon-list-task`"></i>
-    </Button>
-    <Dialog v-model:visible="visibleShowTaskModal" maximizable modal header=" " :style="{ width: '95rem' }">
-        <div v-if="taskFinded" class="row">
-            <div class="col-md-9">
-                <input type="hidden" id="task-id-show" :value="taskFinded.id">
-                <div class="row">
-                    <div v-if="taskFinded.user_name" class="col-md-12 mb-3 d-flex align-items-center gap-2 border-bottom p-2" id="task-header">
-                        <span>
-                            <Chip :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
-                        </span>
-                        <span class="d-flex">
-                            <span><Chip class="rounded-0" label="prioridade"/></span>
-                            <Tag :severity="taskPrioritySeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
-                        </span>
-                        <span class="d-flex">
-                            <Tag class="py-2 bg-secondary text-white" icon="pi pi-clock" :value="taskFinded.execution_delay" />
-                        </span>
-                        <span>
-                            <AddTaskRoadMapFastlyComponent
+    <div v-if="taskFinded" class="row">
+        <div class="col-md-9">
+            <input type="hidden" id="task-id-show" :value="taskFinded.id">
+            <div class="row">
+                <div class="col-md-12 mb-3 d-flex align-items-center gap-2 border-bottom p-2" id="task-header">
+                    <span>
+                        <UsersOverlayComponent
+                           :is-show-component="true"
+                           :user="taskFinded.user_name"
+                           @update-task-user="updateTaskUser"
+                        />
+                        <Chip class="d-none" :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
+                    </span>
+                    <span class="d-flex">
+                        <PriorityOverlayComponent
+                            :severity="taskPrioritySeverity(taskFinded.priority)"
+                            :entity-priority="taskFinded.priority_fullDescription"
+                            :entity-priority-value="taskFinded.priority"
+                            :task="taskFinded"
+                            @update-ui="$emit('updateShowModalUi')"
+                        />
+                        <span><Chip class="rounded-0 d-none" label="prioridade"/></span>
+                        <Tag class="rounded-0 d-none" :severity="taskPrioritySeverity(taskFinded.priority)" :value="taskFinded.priority_fullDescription" />
+                    </span>
+                    <span class="d-flex">
+                        <Tag icon="pi pi-clock" :value="taskFinded.execution_delay" />
+                    </span>
+                    <span>
+                        <AddTaskRoadMapFastlyComponent
+                            :task="taskFinded"
+                            @update-ui="$emit('updateShowModalUi')"
+                        />
+                    </span>
+                    <span>
+                        <AddFileFastlyComponent
+                            :task="taskFinded"
+                            @update-ui="$emit('updateShowModalUi')"
+                        />
+                    </span>
+                    <span class="d-flex align-items-center">
+                        <span><Chip class="rounded-3 border" label="status"/></span>
+                        <div class="position-relative m-auto" style="width: 270px;">
+                            <ListTaskExecutionStatusComponent
                                 :task="taskFinded"
-                                @update-ui="$emit('updateShowModalUi')"
+                                :task-status="taskStatus"
+                                component-name="show"
+                                :btn-label="taskFinded.full_task_execution_status"
+                                :tag-severity="taskSeverity(taskFinded.execution_status)"
+                                :tag-value="taskFinded.full_task_execution_status"
+                                @list-all-task="$emit('updateShowModalUi')"
                             />
-                        </span>
-                        <span>
-                            <AddFileFastlyComponent
-                                :task="taskFinded"
-                                @update-ui="$emit('updateShowModalUi')"
-                            />
-                        </span>
-                        <span class="d-flex align-items-center">
-                            <span><Chip class="rounded-3 border" label="status"/></span>
-                            <div class="position-relative m-auto" style="width: 270px;">
-                                <ListTaskExecutionStatusComponent
-                                    :task="taskFinded"
-                                    :task-status="taskStatus"
-                                    component-name="show"
-                                    :btn-label="taskFinded.full_task_execution_status"
-                                    :tag-severity="taskSeverity(taskFinded.execution_status)"
-                                    :tag-value="taskFinded.full_task_execution_status"
-                                    @list-all-task="$emit('updateShowModalUi')"
-                                />
-                           </div>
-                        </span>
-                    </div>
-                    <div class="col-md-12 mb-1">
-                        <h2 class="task-title text-capitalize">{{ taskFinded.title }}</h2>
-                    </div>
-                    <div class="col-md-12 p-2">
-                        <p>{{ taskFinded.description }}</p>
+                       </div>
+                    </span>
+                </div>
+                <div class="col-md-12 mb-1">
+                    <h2 class="task-title text-capitalize">{{ taskFinded.title }}</h2>
+                </div>
+                <div class="col-md-12 p-2">
+                    <p>{{ taskFinded.description }}</p>
+                </div>
+            </div>
+            <div v-if="taskFinded.roads_map" class="row" id="road-map">
+                <div v-for="road of taskFinded.roads_map" class="col-md-12">
+                    <h6 class="fw-bolder">{{ road.title }}</h6>
+                    <div class="w-75">
+                        <p>{{ road.description }}</p>
                     </div>
                 </div>
-                <div v-if="taskFinded.roads_map" class="row" id="road-map">
-                    <div v-for="road of taskFinded.roads_map" class="col-md-12">
-                        <h6 class="fw-bolder">{{ road.title }}</h6>
-                        <div class="w-75">
-                            <p>{{ road.description }}</p>
-                        </div>
-                    </div>
+            </div>
+            <div v-if="taskFinded.annexes" class="row d-flex justify-content-center flex-wrap mt-3" id="task-annexes">
+                <div class="row border-bottom mb-3">
+                    <h4 class="">Annexos</h4>
                 </div>
-                <div v-if="taskFinded.annexes" class="row d-flex justify-content-center flex-wrap mt-3" id="task-annexes">
-                    <div class="row border-bottom mb-3">
-                        <h4 class="">Annexos</h4>
-                    </div>
-                    <div class="row d-flex flex-wrap gap-2">
-                        <div v-for="annex of taskFinded.annexes" @click="showAnnex(annex.annex)" class="card border rounded-2 col-md-2 gap-1 p-0 annex-card">
-                            <div v-if="annex.annex_type == 'image'" class="card-body annex-button-image position-relative p-5" :style="`background-image: url('/task-annex/${annex.annex}');background-repeat: no-repeat;background-size: cover;`">
-                            </div>
-                            <div v-else class="card-body p-0">
-                                    <Button
-                                        @click="showAnnex(annex.annex)"
-                                        class="d-flex flex-column w-100 gap-1"
-                                       text>
-                                        <span>
-                                            <i class="pi pi-file-pdf fs-3 task-description"></i>
-                                        </span>
-                                        <span>
-                                            <small class="task-description">{{ annex.annex_type }}</small>
-                                        </span>
-                                </Button>
-                            </div>
-                            <div class="card-footer p-1">
-                                <div class="w-100 d-flex align-items-center mb-1">
-                                    <span class="w-100 d-flex justify-content-between gap-1">
-                                        <span style="font-size: 0.7em;" class="fw-light">{{ annex.annex_type }}</span>
-                                        <span style="font-size: 0.7em;" class="fw-light">{{ annex.created_at }}</span>
-                                    </span>
-                                </div>
-                                <div class="w-100 d-flex align-items-center gap-1">
-                                    <span class="d-flex align-item-center">
-                                        <img class="img-thumbnail rounded-circle" style="width: 30px;" :src="`/img/users_avatars/${taskFinded.user_name.avatar}`" alt="">
-                                    </span>
-                                    <span class="d-flex align-item-center">
-                                        <small style="font-size: 0.8em;">{{ taskFinded.user_name.name }}</small>
-                                    </span>
-                                </div>
-                            </div>
+                <div class="row d-flex flex-wrap gap-2">
+                    <div v-for="annex of taskFinded.annexes" @click="showAnnex(annex.annex)" class="card border rounded-2 col-md-2 gap-1 p-0 annex-card">
+                        <div v-if="annex.annex_type == 'image'" class="card-body annex-button-image position-relative p-5" :style="`background-image: url('/task-annex/${annex.annex}');background-repeat: no-repeat;background-size: cover;`">
                         </div>
-                        <!-- <Button v-for="annex of taskFinded.annexes"
-                            @click="showAnnex(annex.annex)"
-                            class="border rounded-2 p-3 d-flex flex-column col-md-2 gap-1 annex-button-image position-relative"
-                            :style="`background-image: url('/task-annex/${annex.annex}');
-                                background-repeat: no-repeat;
-                                background-size: cover;`"
-                        text>
-                            <span>
-                                <i class="pi pi-file-pdf fs-3 task-description"></i>
-                            </span>
-                            <span>
-                                <small class="task-description">{{ annex.annex_type }}</small>
-                            </span>
-                        </Button> -->
-                    </div>
-                </div>
-                <div v-if="taskFinded.customColumnValue" class="row mt-4">
-                    <div class="com-md-12 mb-3 border-0 border-bottom">
-                        <div class="d-flex align-items-center gap-3">
-                            <h4 class="">Colunas personalizadas</h4>
-                            <ListCustomColumnsComponents :task_id="taskFinded.id"/>
+                        <div v-else class="card-body p-0">
+                            <Button
+                                @click="showAnnex(annex.annex)"
+                                class="d-flex flex-column w-100 gap-1"
+                                text>
+                                <span>
+                                    <i class="pi pi-file-pdf fs-3 task-description"></i>
+                                </span>
+                                <span>
+                                    <small class="task-description">{{ annex.annex_type }}</small>
+                                </span>
+                            </Button>
                         </div>
-                    </div>
-                    <div v-for="custom in taskFinded.customColumnValue" class="col-md-10">
-                        <div v-if="custom.label.includes('review')" class="w-100">
-                            <div class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
-                                <label class="text-capitalize custom-column-label" :for="`custom-value-${custom.custom_column_id}`">{{ custom.label}}</label>
-                                <InputText @input="seachReviewers(custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input-reviewers custom-column-input" :value="custom.value"/>
+                        <div class="card-footer p-1">
+                            <div class="w-100 d-flex align-items-center mb-1">
+                                <span class="w-100 d-flex justify-content-between gap-1">
+                                    <span style="font-size: 0.7em;" class="fw-light">{{ annex.annex_type }}</span>
+                                    <span style="font-size: 0.7em;" class="fw-light">{{ annex.created_at }}</span>
+                                </span>
                             </div>
-                            <div id="reviewers-list-box" style="left: 25%; bottom: 18%; width: 35%; z-index: 10;"class="position-absolute bg-white border shadow-sm p-2 d-none search-reviewer-box rounded-2">
+                            <div class="w-100 d-flex align-items-center gap-1">
+                                <span class="d-flex align-item-center">
+                                    <img class="img-thumbnail rounded-circle" style="width: 30px;" :src="`/img/users_avatars/${taskFinded.user_name.avatar}`" alt="">
+                                </span>
+                                <span class="d-flex align-item-center">
+                                    <small style="font-size: 0.8em;">{{ taskFinded.user_name.name }}</small>
+                                </span>
                             </div>
-                        </div>
-                        <div v-else class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
-                            <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
-                            <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value !== null ? custom.value.length : 0)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 rounded-1 d-flex flex-column justify-content-between">
+            <div v-if="taskFinded.customColumnValue" class="row mt-4">
+                <div class="com-md-12 mb-3 border-0 border-bottom">
+                    <div class="d-flex align-items-center gap-3">
+                        <h4 class="">Colunas personalizadas</h4>
+                        <ListCustomColumnsComponents :task_id="taskFinded.id"/>
+                    </div>
+                </div>
+                <div v-for="custom in taskFinded.customColumnValue" class="col-md-10">
+                    <div v-if="custom.label.includes('review')" class="w-100">
+                        <div class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
+                            <label class="text-capitalize custom-column-label" :for="`custom-value-${custom.custom_column_id}`">{{ custom.label}}</label>
+                            <InputText @input="seachReviewers(custom.custom_column_id)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input-reviewers custom-column-input" :value="custom.value"/>
+                        </div>
+                        <div id="reviewers-list-box" style="left: 25%; bottom: 18%; width: 35%; z-index: 10;"class="position-absolute bg-white border shadow-sm p-2 d-none search-reviewer-box rounded-2">
+                        </div>
+                    </div>
+                    <div v-else class="w-100 d-flex justify-content-between align-items-center gap-2 mb-4">
+                        <label class="text-capitalize custom-column-label" for="">{{ custom.label}}</label>
+                        <InputText @blur="$emit('createCustomValue', custom.custom_column_id, custom.value !== null ? custom.value.length : 0)" :id.trim="`custom-value-${custom.custom_column_id}`" class="w-75 border-0 border-bottom rounded-0 custom-column-input" :value="custom.value"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 rounded-1 d-flex flex-column justify-content-between">
+            <div style="height: 480px;" class="w-100 overflow-scroll container">
                 <div v-if="taskFinded.activities.length" class="row task-activities-box mb-3 rounded-3">
                     <div class="col-md-10 p-4">
                         <h6>Atividades no task</h6>
@@ -161,25 +156,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="row p-1">
-                    <div class="col-md-10">
-                        <label class="form-label">Adicionar um comentario: </label>
-                        <InputText @input="onInputCommentValidate" v-model="comment.comment" class="w-100 mb-2" placeholder="digite o seu comentarios..."/>
-                        <div class="w-100 d-flex align-items-center mb-3 gap-2 p-1 border shadow-sm rounded-pill">
-                            <Button class="px-0 py-0 task-description" icon="pi pi-file-plus" text/>
-                            <Button class="px-0 py-0 task-description" icon="pi pi-image" text/>
+            </div>
+            <div class="row p-1">
+                <div class="col-md-10">
+                    <label class="form-label">Adicionar um comentario: </label>
+                    <InputText @input="onInputCommentValidate" v-model="comment.comment" class="w-100 mb-2" placeholder="digite o seu comentarios..."/>
+                    <div class="w-100 d-flex align-items-center mb-3 gap-2 p-1 border shadow-sm rounded-pill">
+                        <Button class="px-0 py-0 task-description" icon="pi pi-file-plus" text/>
+                        <Button class="px-0 py-0 task-description" icon="pi pi-image" text/>
                             <Button class="px-0 py-0 task-description" icon="pi pi-at" text/>
-                        </div>
-                        <Button id="post-comment-btn" @click="postComment(taskFinded.id)" class="rounded-pill w-50 p-disabled" label="Enviar" />
                     </div>
+                    <Button id="post-comment-btn" @click="postComment(taskFinded.id)" class="rounded-pill w-50 p-disabled" label="Enviar" />
                 </div>
             </div>
         </div>
-        <Button text icon="pi pi-map" />
-        <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100" maximizable modal header="" :style="{ width: '100%' }">
-            <iframe class="iframe min-vh-100" :src="`/task-annex/${annex}`" width="100%" height="100%" frameborder="0"></iframe>
-        </Dialog>
-
+    </div>
+    <Button text icon="pi pi-map" />
+    <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100" maximizable modal header="" :style="{ width: '100%' }">
+        <iframe class="iframe min-vh-100" :src="`/task-annex/${annex}`" width="100%" height="100%" frameborder="0"></iframe>
     </Dialog>
 </template>
 <script>
@@ -187,6 +181,8 @@ import ListCustomColumnsComponents from './ListCustomColumnsComponents.vue';
 import AddTaskRoadMapFastlyComponent from './AddTaskRoadMapFastlyComponent.vue';
 import AddFileFastlyComponent from './AddFileFastlyComponent.vue';
 import ListTaskExecutionStatusComponent from './ListTaskExecutionStatusComponent.vue';
+import PriorityOverlayComponent from './Overlays/PriorityOverlayComponent.vue';
+import UsersOverlayComponent from './Overlays/UsersOverlayComponent.vue'
 import { useToast } from 'primevue/usetoast';
 export default {
     inject: ['taskSeverity', 'taskPrioritySeverity'],
@@ -197,7 +193,9 @@ export default {
         ListCustomColumnsComponents,
         AddTaskRoadMapFastlyComponent,
         AddFileFastlyComponent,
-        ListTaskExecutionStatusComponent
+        ListTaskExecutionStatusComponent,
+        PriorityOverlayComponent,
+        UsersOverlayComponent
     },
 
     data(){
@@ -230,6 +228,17 @@ export default {
         }
     },
     methods:{
+        updateTaskUser(user_id){
+            this.Api.put('task/user', {user_id: user_id, task_id: this.taskFinded.id})
+            .then(async response => {
+                this.toast.add({ severity: 'success', summary: 'Task', detail: response.data.message , life: 3000 });
+                this.$emit('updateShowModalUi');
+                this.listAllActivities(this.taskFinded.id);
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'Task', detail: error.response.data.message, life: 3000 });
+            })
+        },
         executionStatus(status){
             switch(status) {
                 case this.task.waiting :
@@ -327,6 +336,7 @@ export default {
                 this.activitiesBtn.icon = 'pi-chevron-up';
                 if (this.activitiesBtn.actionToggle){
                     this.activitiesBtn.icon = 'pi-chevron-right';
+                    this.activitiesBtn.label = 'Ver mais...';
                     this.allTaskActivities = this.taskFinded.activities;
                 }
                 this.activitiesBtn.actionToggle = !this.activitiesBtn.actionToggle;

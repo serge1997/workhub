@@ -26,7 +26,7 @@ export default {
 </script>
 <style>
 body {
-    background-color: #f1f5f9;
+    background-color: #f8fafc;
 }
 .form-btn {
     background-color: #1e293b;
@@ -47,6 +47,9 @@ body {
 }
 .small-icon{
     font-size: 0.7em;
+}
+.v-small-fs {
+    font-size: .5em;
 }
 .cursor-p {
     cursor: pointer;

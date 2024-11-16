@@ -26,8 +26,9 @@ final class CreateTaskAction
         $ws = new WsServer("ws://localhost:8155/teste");
         $task = new Task($values);
         $task->manager_id = $request->user()->id;
+        $task->execution_status_id =  $request->execution_status_id ?? 1;
         $task->save();
-
+        $notification_body = $request->user_id ? "Criou uma tarefa para " . $task->user->name : "Criou uma tarefa";
         $this->customColumnsValueRepository->create($task, $request);
         $this->annexRepository->create($request, $task);
         $this->followerRepository->create($request, $task);
@@ -35,7 +36,7 @@ final class CreateTaskAction
         $notification = $this->taskActivityRepository->create(
             $request->user()->id,
             $task->id,
-            "Criou uma tarefa para " . $task->user->name,
+            $notification_body,
             "Task",
             $task->id
        );

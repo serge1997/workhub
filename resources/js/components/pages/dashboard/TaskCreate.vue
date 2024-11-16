@@ -43,6 +43,11 @@
                                 <label for="email" class="form-label">Task status</label>
                                 <Dropdown v-model="task.execution_status_id" :options="task_status" optionLabel="name" optionValue="id" class="w-100" placeholder="Choose task status" />
                             </div>
+                            <div class="col-md-6 d-flex flex-column mb-3">
+                                <label for="email" class="form-label">Projeto</label>
+                                <Dropdown v-model="task.project_id" :options="projects" optionLabel="name" optionValue="id" class="w-100" placeholder="Choose a project..." />
+                                <small class="text-danger" v-if="formErrorBag && formErrorBag.project_id" v-text="`${formErrorBag.project_id}`"></small>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3 d-flex flex-column">
@@ -135,7 +140,8 @@ export default{
                 annex: [],
                 time_delay: null,
                 execution_status_id: null,
-                sprint_id: null
+                sprint_id: null,
+                project_id: null
             },
             visibleCreateRoadMap: false,
             roadMap: {
@@ -149,7 +155,8 @@ export default{
             selectedAnnexName: [],
             toast: useToast(),
             task_status: null,
-            sprints: null
+            sprints: null,
+            projects: null
         }
     },
     methods: {
@@ -198,10 +205,11 @@ export default{
             this.task.time_delay !== null ? data.append('time_delay', this.task.time_delay) : null;
             this.task.description !== null ? data.append('description', this.task.description) : null;
             this.task.priority !== null ? data.append('priority', this.task.priority) : null;
-            this.task.user_id !== null ? data.append('user_id', this.task.user_id) : null;
+            data.append('user_id', this.task.user_id ?? '');
+            this.task.project_id !== null ? data.append('project_id', this.task.project_id) : null;
             this.task.followers !== null ? data.append('followers', this.task.followers) : null;
             this.roadMap.titles.length > 0 ? data.append('road_map_titles',this.roadMap.titles) : null;
-            data.append('execution_status_id', this.task.execution_status_id);
+            data.append('execution_status_id', this.task.execution_status_id ?? '');
             this.roadMap.descriptions.length > 0 ? data.append('road_map_descriptions', this.roadMap.descriptions) : null
             return data;
           }catch(err) {
@@ -275,6 +283,15 @@ export default{
                     this.wssocket(url);
                 }, 20000)
             }
+        },
+        listAllProject(){
+            this.Api.get('project')
+            .then(async response => {
+                this.projects = await response.data.data;
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded sprints", life: 3000 });
+            })
         }
     },
     mounted(){
@@ -284,6 +301,7 @@ export default{
         input.focus()
         this.onListAllTaskExecutionStatus();
         this.getSprints();
+        this.listAllProject()
     },
 }
 </script>

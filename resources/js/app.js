@@ -86,7 +86,8 @@ app.component('Badge', Badge)
 app.component('AutoComplete', AutoComplete);
 app.component('ColorPicker', ColorPicker);
 app.component('OverlayPanel', OverlayPanel);
-
+app.component('IconField', IconField);
+app.component('InputIcon', InputIcon);
 
 
 
