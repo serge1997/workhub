@@ -20,8 +20,13 @@
                         <span class="d-flex align-items-center">
                             <Tag class="p-1 v-small-fs" :style="`background-color: ${task.execution_status_severity}`" :value="task.full_task_execution_status" />
                         </span>
-                        <span class="d-flex align-items-center p-0">
-
+                        <span class="d-flex align-items-center p-0" title="Prioridade da tarefa">
+                            <Tag severity="warning">
+                                <small class="v-small-fs">{{ task.priority_fullDescription }}</small>
+                            </Tag>
+                        </span>
+                        <span class="task-description" title="Sprint da tarefa">
+                            <small class="v-small-fs">{{ task.sprint_name }}</small>
                         </span>
                     </span>
                     <span class="d-flex align-items-center">

@@ -52,7 +52,8 @@ class SprintRepository implements SprintRepositoryInterface
                     'sprints.close_at',
                     'sprints.deleted_at'
                 )
-                    ->get();
+                    ->orderBy('sprints.id', 'desc')
+                        ->get();
         return $query;
     }
 }

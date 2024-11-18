@@ -49,7 +49,7 @@ body {
     font-size: 0.7em;
 }
 .v-small-fs {
-    font-size: .5em;
+    font-size: .6em;
 }
 .cursor-p {
     cursor: pointer;

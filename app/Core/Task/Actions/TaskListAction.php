@@ -31,4 +31,11 @@ final class TaskListAction
             $this->taskRepository->findAllBySprintAndProject($sprint_id, $project_id)
         );
     }
+
+    public function listAllBacklogTaskByProject(int $project_id)
+    {
+        return TaskResource::collection(
+            $this->taskRepository->findAllBacklogTaskByProject($project_id)
+        );
+    }
 }

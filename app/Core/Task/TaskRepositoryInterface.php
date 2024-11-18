@@ -17,4 +17,5 @@ interface TaskRepositoryInterface
     public function findInProgressByProjectId(int $project_id);
     public function updatePriority($request);
     public function updateUserId($request);
+    public function findAllBacklogTaskByProject(int $project_id);
 }

@@ -53,7 +53,7 @@ class TaskResource extends JsonResource
             'can_delete' => $this->when($this->isAdminAndTaskOwner($request->user()->id), true),
             'comment_count' => $this->when($this->comment->count() > 0, $this->comment->count(), true),
             'activities' => TaskActivityResource::collection($this->taskActivity->take(4)),
-            'sprint_name' => $this->sprint ? $this->sprint->name : 'Nenhum sprint'
+            'sprint_name' => $this->sprint ? ucfirst($this->sprint->name) : 'Nenhum sprint'
 
         ];
     }

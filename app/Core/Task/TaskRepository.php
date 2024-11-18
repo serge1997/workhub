@@ -17,6 +17,7 @@ use App\Core\Task\Actions\CreateTaskAction;
 use App\Core\Task\Actions\ListTaskByFilteredUserAction;
 use App\Core\Task\Actions\TaskListAction;
 use App\Core\Task\Actions\TaskUpdateAction;
+use App\Models\TaskExecutionStatus;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -118,6 +119,11 @@ class TaskRepository implements TaskRepositoryInterface
     public function findAllBySprintAndProject(int $sprint_id, int $project_id)
     {
         return Task::where([['sprint_id', $sprint_id], ['project_id', $project_id]])
+            ->get();
+    }
+    public function findAllBacklogTaskByProject(int $project_id)
+    {
+        return Task::where([['project_id', $project_id], ['execution_status_id', TaskExecutionStatus::BACKLOG]])
             ->get();
     }
 }

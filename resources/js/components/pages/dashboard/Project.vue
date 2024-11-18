@@ -11,7 +11,7 @@
                                     <i class="pi pi-angle-right"></i>
                                 </span>
                             </Tag>
-                            <Button v-for="project of projects" class="task-description rounded-pill d-flex gap-1 project_btn_toolbar" @click="listProjectData(project.id)" :id="`project_btn_toolbar_${project.id}`" label="Projeto" text>
+                            <Button v-for="project of projects" class="task-description rounded-pill d-flex gap-1 project_btn_toolbar" @click="listProjectData(project)" :id="`project_btn_toolbar_${project.id}`" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i :style="`color: #${project.severity};`" class="pi pi-circle-fill small-icon"></i>
                                 </span>
@@ -25,7 +25,7 @@
                 <Toolbar class="p-0 border-0 bg-transparent border-bottom">
                     <template #start>
                         <div class="d-flex gap-2 w-100">
-                            <Button class="task-description d-flex gap-1" label="Projeto" text>
+                            <Button @click="toggleComponent = 'SprintListComponent'" class="task-description d-flex gap-1" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-bolt small-icon"></i>
                                 </span>
@@ -43,7 +43,7 @@
                                 </span>
                                 <span class="small-fw"><small>Insights</small></span>
                             </Button>
-                            <Button class="task-description d-flex gap-1" label="Projeto" text>
+                            <Button @click="listAllprojectTaskBacklog" class="task-description d-flex gap-1" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-hammer small-icon"></i>
                                 </span>
@@ -54,28 +54,40 @@
                 </Toolbar>
             </div>
             <div class="row">
-                <SprintListComponent
+                <component
+                    :is="toggleComponent"
                     :sprints="projectSprints"
                     :project-id="selected_project"
-                 />
+                    :tasks="backlog_tasks"
+                    :project-name="current_project_name"
+                    :task-status="taskStatus"
+                    @update-backlog-ui="listAllprojectTaskBacklog"
+                >
+                </component>
             </div>
         </div>
     </SidebarComponent>
 </template>
 <script>
 import SprintListComponent from '../../project/SprintListComponent.vue';
+import BacklogTaskComponent from '../../project/BacklogTaskComponent.vue';
 export default {
     name: 'Project',
 
     components: {
-        SprintListComponent
+        SprintListComponent,
+        BacklogTaskComponent
     },
 
     data(){
         return {
             projects: null,
             projectSprints: null,
-            selected_project: null
+            selected_project: null,
+            toggleComponent: 'SprintListComponent',
+            backlog_tasks : null,
+            current_project_name: null,
+            taskStatus: null
         }
     },
     methods: {
@@ -83,14 +95,20 @@ export default {
             this.Api.get('project')
             .then(async response => {
                 this.projects = await response.data.data;
+                //trigger click on first project btn
+                setTimeout(() => {
+                    document.querySelector('.project_btn_toolbar').click()
+                }, 1000)
             })
         },
-        listProjectData(id){
-            this.listSprintByProject(id);
-            this.selected_project = id;
-            document.getElementById(`project_btn_toolbar_${id}`).classList.toggle('active-project-toolbar-btn')
+        listProjectData(project){
+            this.selected_project = project.id;
+            this.listSprintByProject(project.id);
+            this.listAllprojectTaskBacklog();
+            this.current_project_name = project.name;
+            document.getElementById(`project_btn_toolbar_${project.id}`).classList.toggle('active-project-toolbar-btn')
             document.querySelectorAll('.project_btn_toolbar').forEach(btn => {
-                if (btn.getAttribute('id') !== `project_btn_toolbar_${id}`){
+                if (btn.getAttribute('id') !== `project_btn_toolbar_${project.id}`){
                     btn.classList.remove('active-project-toolbar-btn')
                 }
             })
@@ -104,9 +122,29 @@ export default {
 
             })
         },
+        listAllprojectTaskBacklog(){
+            this.toggleComponent = 'BacklogTaskComponent'
+            this.Api.get(`tasks/list-backlogs-by-project/${this.selected_project}`)
+            .then(async response => {
+                this.backlog_tasks = await response.data.data;
+            })
+            .catch(error => {
+
+            })
+        },
+        onListAllTaskExecutionStatus(){
+            this.Api.get('task-execution-status')
+            .then(async response => {
+                this.taskStatus = await response.data;
+            })
+            .catch(err => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded task status data", life: 3000 });
+            })
+        },
     },
     mounted(){
-        this.listAllProject()
+        this.listAllProject();
+        this.onListAllTaskExecutionStatus();
     }
 }
 </script>

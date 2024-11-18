@@ -54,18 +54,21 @@ Route::middleware('auth:sanctum')->group(function() {
     });
 
     Route::controller(TaskController::class)->group(function() {
-        Route::post('task', 'onCreate');
-        Route::get('tasks', 'onListAll');
-        Route::get('task', 'onFind');
-        Route::put('task/execution-status', 'onHandleExecutionStatus');
-        Route::delete('task', 'onSoftDelete')->name('task.delete');
-        Route::get('task-by-user', 'onListByAuthUser');
-        Route::get('task-by-filtered-user', 'onListByFilteredUser');
-        Route::get('tasks/by-sprint', 'onListBySprint');
-        Route::get('tasks/list-by-project/{project_id}', 'getByProject')->name('tasks.list.by.project')->whereNumber('project_id');
-        Route::put('task/priority', 'updatePriority')->name('task.update.priority');
-        Route::put('task/user', 'updateUser')->name('task.update.user');
-        Route::get('tasks/sprint/{sprint_id}/project/{project_id}', 'getAllBySprintAndProject')->name('list.by.sprint.project');
+        Route::name('task.')->group(function(){
+            Route::post('task', 'onCreate');
+            Route::get('tasks', 'onListAll');
+            Route::get('task', 'onFind');
+            Route::put('task/execution-status', 'onHandleExecutionStatus');
+            Route::delete('task', 'onSoftDelete')->name('task.delete');
+            Route::get('task-by-user', 'onListByAuthUser');
+            Route::get('task-by-filtered-user', 'onListByFilteredUser');
+            Route::get('tasks/by-sprint', 'onListBySprint');
+            Route::get('tasks/list-by-project/{project_id}', 'getByProject')->name('tasks.list.by.project')->whereNumber('project_id');
+            Route::put('task/priority', 'updatePriority')->name('task.update.priority');
+            Route::put('task/user', 'updateUser')->name('task.update.user');
+            Route::get('tasks/sprint/{sprint_id}/project/{project_id}', 'getAllBySprintAndProject')->name('list.by.sprint.project');
+            Route::get('tasks/list-backlogs-by-project/{project_id}', 'getAllBacklogsByProject')->name('list.backlogs.by.project')->whereNumber('project_id');
+        });
     });
 
     Route::controller(FollowerController::class)->group(function() {

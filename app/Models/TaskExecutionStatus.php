@@ -12,6 +12,14 @@ class TaskExecutionStatus extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const BACKLOG      = 1;
+    const WAITING      = 2;
+    const IN_PROGRESS  = 3;
+    const COD_REVIEW   = 4;
+    const TESTE        = 6;
+    const PULL_REQUEST = 7;
+    const CONCLUDED    = 8;
+
     protected $table = 'task_execution_status';
 
     protected $fillable = [

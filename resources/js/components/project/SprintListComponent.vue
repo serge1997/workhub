@@ -1,6 +1,12 @@
 <template>
     <div class="row">
-        <div class="col-md-6 d-flex flex-column gap-3">
+        <div class="col-md-12 mb-">
+            <h6 class="d-flex align-items-center gap-1">
+                <Tag :value="projectName" icon="pi pi-briefcase" severity="secondary" />
+                <span>Sprint</span>
+            </h6>
+        </div>
+        <div class="col-md-8 d-flex flex-column gap-3">
             <div v-for="(sprint, index) of sprints" class="w-100 d-flex flex-column gap-2">
                 <div class="w-100 d-flex gap-3">
                     <Button text class="p-1 task-description" @click="listTaskBySprint(sprint.id, index, true)">
@@ -19,7 +25,7 @@
                 <div class="row d-none" :id="`box_list_task_${sprint.id}`">
                     <TaskListComponent
                         :tasks="tasks[index]"
-                        @update-ui="listTaskBySprint(sprint.id, index, false)",
+                        @update-ui="listTaskBySprint(sprint.id, index, false)"
                         :task-status="taskStatus"
                     />
                 </div>
@@ -34,7 +40,9 @@ export default {
 
     props: {
         sprints: Object,
-        projectId: Number
+        projectId: Number,
+        projectName: String,
+        taskStatus: Object
     },
 
     components: {
@@ -44,8 +52,7 @@ export default {
     data() {
         return {
             toggleIcon: 'pi-angle-right',
-            tasks: [],
-            taskStatus: null,
+            tasks: []
         }
     },
 
@@ -72,18 +79,8 @@ export default {
             }
 
         },
-        onListAllTaskExecutionStatus(){
-            this.Api.get('task-execution-status')
-            .then(async response => {
-                this.taskStatus = await response.data;
-            })
-            .catch(err => {
-                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded task status data", life: 3000 });
-            })
-        },
     },
     mounted(){
-        this.onListAllTaskExecutionStatus();
     }
 }
 </script>
