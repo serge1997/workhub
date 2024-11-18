@@ -27,7 +27,7 @@
                 </div>
                 <div class="w-100 d-flex gap-4" style="overflow-x: scroll;">
                     <div v-for="status in task_status" class="w-100 mt-3">
-                        <div style="height: 600px; min-width: 360px; overflow: scroll;">
+                        <div v-if="status.status != 'BKL'" style="height: 600px; min-width: 360px; overflow: scroll;">
                             <div class="card w-100">
                                 <div class="card-header border-0 bg-white">
                                     <Tag class="w-100 text-white" :style="{'background-color': executionStatusBg(status.status)}" :value="status.name" />

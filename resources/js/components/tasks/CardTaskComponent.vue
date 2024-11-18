@@ -1,18 +1,5 @@
 <template>
     <div class="w-100">
-        <div v-if="showStatus == 'BKL'" v-for="task in filterBacklog(tasks)" class="card shadow-sm border-0 mb-1">
-            <div class="card-body">
-                <div class="w-100 mb-1">
-                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
-                </div>
-                <TaskCardIconsComponent
-                    :task="task"
-                    @confirm-delete = "$emit('confirmDelete', task.id)"
-                    @list-all-task="$emit('listAllTask')"
-                    :task-status="taskStatus"
-                />
-            </div>
-        </div>
         <div v-if="showStatus == 'WAT'" v-for="task in filterAwait(tasks)" class="card shadow-sm border-0 mb-3">
             <div class="card-body">
                 <div class="w-100 mb-1">

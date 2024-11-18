@@ -1,7 +1,7 @@
 <template>
     <div class="row" v-if="tasks">
         <ul class="list-group">
-            <li v-for="task in tasks" class="list-group-item border-0 border-bottom d-flex gap-2" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)">
+            <li v-for="task in tasks" class="list-group-item border-0 border-bottom d-flex gap-2" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)" :id="`task_list_li_${task.id}`">
                 <div class="d-flex align-items-center select_btn_div_box">
                     <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
                        <Button @click="onSelectedTask(task.id)" class="p-0" text>
@@ -119,9 +119,11 @@ export default {
         },
         onSelectedTask(id){
             const iconTag = document.getElementById(`selected_task_icon_${id}`);
+            const li = document.getElementById(`task_list_li_${id}`);
             iconTag.classList.toggle('pi-circle');
             iconTag.classList.toggle('pi-circle-fill');
             iconTag.classList.toggle('selected_icon_color')
+            li.classList.toggle('selected_task_li')
         }
     },
     mounted(){
@@ -135,6 +137,9 @@ export default {
     width: 30px;
 }
 .selected_icon_color{
-    color: #f0abfc;
+    color: #9ca3af;
+}
+.selected_task_li {
+    background-color: #f0f9ff;
 }
 </style>

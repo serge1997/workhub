@@ -88,7 +88,7 @@ class TaskRepository implements TaskRepositoryInterface
     public function listBySprint($request)
     {
         return TaskResource::collection(
-            Task::where('sprint_id', $request->sprint_id)
+            Task::where([['sprint_id', $request->sprint_id], ['execution_status_id','<>', TaskExecutionStatus::BACKLOG]])
                 ->get()
         );
     }
