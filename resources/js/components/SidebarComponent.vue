@@ -36,23 +36,24 @@
                                 </router-link>
                             </li>
                             <li class="list-group-item border-0">
-                                <span @click="menuSprintsToggle = !menuSprintsToggle">
+                                <span @click="menuTeamSpaceToggle = !menuTeamSpaceToggle">
                                     <i class="pi pi-box"></i>
                                     Team space
                                 </span>
                                 <ul class="list-group border-0 p-0">
-                                    <Menu v-if="menuSprintsToggle" @click="$emit('reloadSprintTaks')" :model="sprints" class="p-2 rounded-0 border-0">
+                                    <Menu v-if="menuTeamSpaceToggle && teams_space" @click="$emit('reloadSprintTaks')" :model="teams_space" class="p-2 rounded-0 border-0">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
                                                 <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
                                                     <span class="sub-menu-item" style="color: #475569;">
-                                                        <i class="pi pi-list-check mb-3 px-1"></i>
+                                                        <i class="pi pi-box mb-3 px-1"></i>
                                                         {{ item.name }}
                                                     </span>
                                                 </router-link>
                                            </li>
                                         </template>
                                     </Menu>
+                                    <p v-if="menuTeamSpaceToggle && !teams_space" class="p-2 border rounded-pill mt-2 text-lowercase text-center fw-medium">Nenhum team encontrado</p>
                                 </ul>
                             </li>
                             <li class="list-group-item border-0">
@@ -148,6 +149,8 @@ export default {
             sprints: null,
             menuSprintsToggle: false,
             toast: useToast(),
+            menuTeamSpaceToggle: false,
+            teams_space: null
         }
     },
     provide() {
@@ -190,11 +193,18 @@ export default {
                 return path.replaceAll(regex, "");
             }
             return path.replace(" ", "/");
+        },
+        listAllTeam(){
+            this.Api.get('team-space')
+            .then(async response => {
+                this.teams_space = await response.data.data;
+            })
         }
     },
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-        this.getSprints()
+        this.getSprints();
+        this.listAllTeam();
     }
 }
 </script>

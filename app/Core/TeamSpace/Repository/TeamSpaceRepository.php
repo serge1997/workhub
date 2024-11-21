@@ -7,7 +7,11 @@ class TeamSpaceRepository implements TeamSpaceRepositoryInterface
 {
     public function create($request)
     {
-        return TeamSpace::create($request->validated());
+        return TeamSpace::create([
+            'name' => $request->name(),
+            'description' => $request->description(),
+            'created_by' => $request->author()
+        ]);
     }
 
     public function find(int $id)

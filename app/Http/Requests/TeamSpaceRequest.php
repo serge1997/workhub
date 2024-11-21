@@ -23,7 +23,8 @@ class TeamSpaceRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:50'],
-            'description' => ['nullable']
+            'description' => ['nullable'],
+            'created_by' => ['nullable']
         ];
     }
 
@@ -41,5 +42,14 @@ class TeamSpaceRequest extends FormRequest
     public function description() : ?string
     {
         return $this->description;
+    }
+    public function setCreatedBy($created_by): void
+    {
+        $this->created_by = $created_by;
+    }
+
+    public function author() : int
+    {
+        return $this->created_by;
     }
 }

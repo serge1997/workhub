@@ -17,7 +17,7 @@
     </div>
 </template>
 <script>
-import { DateTime } from '../core/DateTime';
+import { DateTime } from '../../core/DateTime';
 import { useToast } from 'primevue/usetoast';
 
 export default {

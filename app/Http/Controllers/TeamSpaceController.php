@@ -25,6 +25,9 @@ class TeamSpaceController extends Controller
         try{
             /** @var TeamSpaceListAction $teamSpaceListAction */
             $teamSpaceListAction = $this->container->get(TeamSpaceListAction::class);
+            $teams_spaces = $teamSpaceListAction->listAll();
+            return response()
+                ->json($this->successResponse('lista dos teams', $teams_spaces));
         }catch(Exception $e){
             return response()
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
@@ -35,7 +38,11 @@ class TeamSpaceController extends Controller
     {
         try{
             /** @var TeamSpaceCreateAction $teamCreateAction */
+            $request->setCreatedBy($request->user()->id);
             $teamCreateAction = $this->container->get(TeamSpaceCreateAction::class);
+            $response = $teamCreateAction->run($request);
+            return response()
+                ->json($this->successResponse("Team criado com successo", $response));
         }catch(Exception $e){
             return response()
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
@@ -46,6 +53,9 @@ class TeamSpaceController extends Controller
         try{
             /** @var TeamSpaceListAction $teamSpaceListAction */
             $teamSpaceListAction = $this->container->get(TeamSpaceListAction::class);
+            $response = $teamSpaceListAction->listById($id);
+            return response()
+                ->json($this->successResponse("listando o team id: {$id}", $response));
         }catch(Exception $e){
             return response()
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 404);

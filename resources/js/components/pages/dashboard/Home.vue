@@ -27,10 +27,20 @@
                 <div class="col-md-6 p-2">
                     <div class="card w-100 shadow-sm" style="border-radius: 12px;">
                         <div class="card-header border-0 bg-transparent">
-                            <h5 class="task-description">Seus projetos</h5>
+                            <h5 class="task-description">Projetos</h5>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body overflow-scroll home_card_data_body">
                             <ProjectHomeListComponent />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 p-2">
+                    <div class="card w-100 shadow-sm" style="border-radius: 12px;">
+                        <div class="card-header border-0 bg-transparent">
+                            <h5 class="task-description">Teams</h5>
+                        </div>
+                        <div class="card-body home_card_data_body overflow-scroll">
+                            <TeamSpaceHomeListComponent />
                         </div>
                     </div>
                 </div>
@@ -75,7 +85,8 @@
 import CreateFastTaskComponent from '../../CreateFastTaskComponent.vue';
 import CreateProjectComponent from '../../CreateProjectComponent.vue';
 import ProjectHomeListComponent from '../../project/ProjectHomeListComponent.vue';
-import CreateTeamSpaceComponent from '../../CreateTeamSpaceComponent.vue';
+import CreateTeamSpaceComponent from '../../TeamSpace/CreateTeamSpaceComponent.vue';
+import TeamSpaceHomeListComponent from '../../TeamSpace/TeamSpaceHomeListComponent.vue';
 export default {
     name: 'Home',
 
@@ -83,7 +94,8 @@ export default {
         CreateFastTaskComponent,
         CreateProjectComponent,
         ProjectHomeListComponent,
-        CreateTeamSpaceComponent
+        CreateTeamSpaceComponent,
+        TeamSpaceHomeListComponent
     },
     data() {
         return {
@@ -101,8 +113,9 @@ export default {
 
 }
 </script>
-<style>
+<style scoped>
 .active_component{
     border-bottom: 2px solid #333;
 }
+
 </style>
