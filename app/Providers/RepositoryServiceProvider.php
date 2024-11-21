@@ -30,6 +30,8 @@ use App\Core\TaskExecutionStatus\TaskExecutionStatusRepositoryInterface;
 use App\Core\TaskExecutionStatus\TaskExecutionStatusRepository;
 use App\Core\TaskRoadMap\TaskRoadMapRepository;
 use App\Core\TaskRoadMap\TaskRoadMapRepositoryInterface;
+use App\Core\TeamSpace\Repository\TeamSpaceRepository;
+use App\Core\TeamSpace\Repository\TeamSpaceRepositoryInterface;
 use App\Core\User\UserRepository;
 use App\Core\User\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -56,6 +58,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TaskExecutionStatusRepositoryInterface::class, TaskExecutionStatusRepository::class);
         $this->app->bind(SprintRepositoryInterface::class, SprintRepository::class);
         $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
+        $this->app->bind(TeamSpaceRepositoryInterface::class, TeamSpaceRepository::class);
     }
 
     /**

@@ -151,6 +151,6 @@ export default {
 <style scoped>
 .active-project-toolbar-btn{
     background-color: #e5e7eb;
-    transition: ease-in .3s;
+    transition: ease-in .5s;
 }
 </style>

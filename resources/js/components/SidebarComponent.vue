@@ -36,8 +36,28 @@
                                 </router-link>
                             </li>
                             <li class="list-group-item border-0">
+                                <span @click="menuSprintsToggle = !menuSprintsToggle">
+                                    <i class="pi pi-box"></i>
+                                    Team space
+                                </span>
+                                <ul class="list-group border-0 p-0">
+                                    <Menu v-if="menuSprintsToggle" @click="$emit('reloadSprintTaks')" :model="sprints" class="p-2 rounded-0 border-0">
+                                        <template #item="{ item, props }">
+                                           <li class="list-group-item border-0 p-0">
+                                                <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
+                                                    <span class="sub-menu-item" style="color: #475569;">
+                                                        <i class="pi pi-list-check mb-3 px-1"></i>
+                                                        {{ item.name }}
+                                                    </span>
+                                                </router-link>
+                                           </li>
+                                        </template>
+                                    </Menu>
+                                </ul>
+                            </li>
+                            <li class="list-group-item border-0">
                                 <router-link class="text-decoration-none" :to="{name: 'Project'}">
-                                    <i class="pi pi-briefcase"></i>
+                                    <i class="pi pi-slack"></i>
                                     Projetos
                                 </router-link>
                             </li>

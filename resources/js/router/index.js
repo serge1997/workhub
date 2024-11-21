@@ -1,65 +1,53 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 
-import Login from './../components/pages/auth/Login.vue';
-import Register from './../components/pages/auth/Register.vue';
-import Task from './../components/pages/dashboard/Task.vue';
-import TaskReception from "../components/pages/dashboard/TaskReception.vue";
-import Profil from "../components/pages/dashboard/Profil.vue";
-import TaskCreate from "../components/pages/dashboard/TaskCreate.vue";
-import Sprint from "../components/pages/dashboard/Sprint.vue";
-import Trash from "../components/pages/dashboard/Trash.vue";
-import TaskShow from "../components/pages/dashboard/TaskShow.vue";
-import Home from "../components/pages/dashboard/Home.vue";
-import Project from "../components/pages/dashboard/Project.vue";
-
 const routes = [
     {
         path: '/',
         name: 'Login',
-        component: Login,
+        component: () => import('./../components/pages/auth/Login.vue'),
         meta: {guest: true}
     },
     {
         path: '/register',
         name: 'Register',
-        component: Register,
+        component: () => import('./../components/pages/auth/Register.vue'),
         meta: {requiresAuth: true}
     },
     {
         path: '/home',
         name: 'Home',
-        component: Home,
+        component: () => import("../components/pages/dashboard/Home.vue"),
         meta: {requiresAuth: true}
     },
     {
         path: '/tasks',
         name: 'Task',
-        component: Task,
+        component: () => import('./../components/pages/dashboard/Task.vue'),
         meta: {requiresAuth: true}
     },
     {
         path: '/task-inbox',
         name: 'TaskReception',
-        component: TaskReception,
+        component: () => import("../components/pages/dashboard/TaskReception.vue"),
         meta: {requiresAuth: true}
     },
     {
         path: '/profil',
         name: 'Profil',
-        component: Profil,
+        component: () => import("../components/pages/dashboard/Profil.vue"),
         meta: {requiresAuth: true}
     },
     {
         path: '/task-create',
         name: 'TaskCreate',
-        component: TaskCreate,
+        component: () => import("../components/pages/dashboard/TaskCreate.vue"),
         meta: {requiresAuth: true}
     },
     {
         path: '/sprint/:id?',
         name: 'Sprint',
-        component: Sprint,
+        component: () => import("../components/pages/dashboard/Sprint.vue"),
         meta: {
             reload: true,
             requiresAuth: true
@@ -68,19 +56,19 @@ const routes = [
     {
         path: '/trash',
         name: 'Trash',
-        component: Trash,
+        component: () => import("../components/pages/dashboard/Trash.vue"),
         meta: {requiresAuth: true}
     },
     {
         path: '/task-show/:origin_id/:type/:task_id',
         name: 'TaskShow',
-        component: TaskShow,
+        component: () => import("../components/pages/dashboard/TaskShow.vue"),
         meta: {requiresAuth: true}
     },
     {
         path: '/projects',
         name: 'Project',
-        component: Project,
+        component: () => import("../components/pages/dashboard/Project.vue"),
         meta: {requiresAuth: true}
     },
 ]

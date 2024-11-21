@@ -15,6 +15,7 @@ use App\Http\Controllers\TaskActivityController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskExecutionStatusController;
 use App\Http\Controllers\TaskRoadMapController;
+use App\Http\Controllers\TeamSpaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -38,6 +39,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function() {
+
+    Route::controller(TeamSpaceController::class)->group(function(){
+        Route::prefix('team-space')->name('team-space.')->group(function(){
+            Route::post('/', 'store')->name('store');
+            Route::get('/', 'index')->name('index');
+            Route::get('/{id}', 'show')->name('show')->whereNumber('id');
+            Route::put('/', 'update')->name('update');
+            Route::delete('/{id}', 'delete')->name('delete')->whereNumber('id');
+        });
+    });
 
     Route::controller(ProjectController::class)->group(function() {
         Route::prefix('project')->name('project.')->group(function(){

@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row position-relative">
                 <div class="col-md-6 p-2">
                     <div class="card w-100 shadow-sm" style="border-radius: 12px;">
                         <div class="card-header border-0 bg-transparent">
@@ -36,21 +36,33 @@
                 </div>
             </div>
             <div class="row">
-                <Dialog v-model:visible="visibleNewsMoal" header="  " :style="{ width: '85em' }" maximizable>
+                <Dialog class="overflow-scroll" v-model:visible="visibleNewsMoal" header="  " :style="{ width: '85em', height: '55rem' }" maximizable>
                     <div class="row">
                         <div class="card w-100 border-0">
                             <div class="card-header bg-transparent">
                                 <Button @click="componentIs='CreateFastTaskComponent'" :class="toggleActiveClass('CreateFastTaskComponent')" class="task-description" label="Projeto" text>
-                                    <span class="small-fw">Tarefa</span>
+                                    <span class="d-flex gap-1">
+                                        <span><i class="pi pi-book"></i></span>
+                                        <span class="small-fw">Tarefa</span>
+                                    </span>
                                 </Button>
                                 <Button @click="componentIs='CreateProjectComponent'" :class="toggleActiveClass('CreateProjectComponent')" class="task-description" label="Projeto" text>
-                                    <span class="small-fw">Projeto</span>
+                                    <span class="d-flex gap-1">
+                                        <span><i class="pi pi-slack"></i></span>
+                                        <span class="small-fw">Projeto</span>
+                                    </span>
+                                </Button>
+                                <Button @click="componentIs='CreateTeamSpaceComponent'" :class="toggleActiveClass('CreateTeamSpaceComponent')" class="task-description" label="Projeto" text>
+                                    <span class="d-flex gap-1">
+                                        <span><i class="pi pi-box"></i></span>
+                                        <span class="small-fw">Team space</span>
+                                    </span>
                                 </Button>
                             </div>
-                            <div class="card-body">
-                               <KeepAlive>
+                            <div class="card-body p-0 mt-4">
+                                <KeepAlive>
                                     <component :is="componentIs"></component>
-                               </KeepAlive>
+                                </KeepAlive>
                             </div>
                         </div>
                     </div>
@@ -63,13 +75,15 @@
 import CreateFastTaskComponent from '../../CreateFastTaskComponent.vue';
 import CreateProjectComponent from '../../CreateProjectComponent.vue';
 import ProjectHomeListComponent from '../../project/ProjectHomeListComponent.vue';
+import CreateTeamSpaceComponent from '../../CreateTeamSpaceComponent.vue';
 export default {
     name: 'Home',
 
     components: {
         CreateFastTaskComponent,
         CreateProjectComponent,
-        ProjectHomeListComponent
+        ProjectHomeListComponent,
+        CreateTeamSpaceComponent
     },
     data() {
         return {

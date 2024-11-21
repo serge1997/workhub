@@ -54,4 +54,18 @@ body {
 .cursor-p {
     cursor: pointer;
 }
+.slide-fade-enter-active,
+.slide-fade-leave-active{
+    transition: all 0.5s ease-out;
+    transform: translateY(10%);
+}
+.slide-fade-enter-to{
+    margin-top: 30%;
+    opacity: 0;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    opacity: 0;
+    transform: translateY(30%);
+}
 </style>

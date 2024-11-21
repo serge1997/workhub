@@ -56,8 +56,8 @@
     </div>
 </template>
 <script>
+import { defineAsyncComponent } from 'vue';
 import ListTaskExecutionStatusComponent from '../ListTaskExecutionStatusComponent.vue';
-import ShowTaskComponent from '../ShowTaskComponent.vue';
 import { useToast } from "primevue/usetoast";
 export default {
     name: 'TaskListComponent',
@@ -67,7 +67,9 @@ export default {
     },
     components: {
         ListTaskExecutionStatusComponent,
-        ShowTaskComponent
+        ShowTaskComponent: defineAsyncComponent({
+            loader: () => import('../ShowTaskComponent.vue')
+        })
     },
     data(){
         return {
