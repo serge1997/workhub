@@ -16,7 +16,7 @@ class SprintRepository implements SprintRepositoryInterface
         }
         if ($request->generate() === true){
             return Sprint::create([
-                'name' => $this->findLatest() ? 'Sprint '. $this->findLatest()->id + 1 : null
+                'name' => $this->findLatest() ? 'Sprint '. $this->findLatest()->id + 1 : "Sprint 1"
             ]);
         }
 
