@@ -16,14 +16,14 @@ class SprintRepository implements SprintRepositoryInterface
         }
         if ($request->generate() === true){
             return Sprint::create([
-                'name' => 'Sprint '. $this->findLatest()->id+1
+                'name' => $this->findLatest() ? 'Sprint '. $this->findLatest()->id + 1 : null
             ]);
         }
 
 
     }
 
-    public function findLatest() : Sprint
+    public function findLatest() : ?Sprint
     {
         return Sprint::latest()->first();
     }

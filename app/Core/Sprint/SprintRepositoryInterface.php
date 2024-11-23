@@ -8,6 +8,6 @@ interface SprintRepositoryInterface
 {
     public function create($request);
     public function listAll();
-    public function findLatest() : Sprint;
+    public function findLatest() : ?Sprint;
     public function findAllByProject(Project $project);
 }
