@@ -21,7 +21,6 @@ class UserResource extends JsonResource
             'avatar' => $this->avatar,
             'banned_at' => $this->banned_at,
             'banned_reason' => $this->banned_reason,
-            'department_name' => $this->department->name,
             'user_type' => $this->user_type,
             'latestTask' => $this->latestTasks()
         ];
