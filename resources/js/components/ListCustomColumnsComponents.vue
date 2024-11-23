@@ -10,6 +10,7 @@
     </Dialog>
 </template>
 <script>
+import { useToast } from 'primevue/usetoast';
 export default {
     name: 'ListCustomColumnsComponents',
 
@@ -23,7 +24,8 @@ export default {
             visibleAddTaskCustomColumn: false,
             taskCustomColumns: {
                 columns: [],
-            }
+            },
+            toast: useToast()
         }
     },
     methods:{
@@ -41,27 +43,12 @@ export default {
             this.Api.post('custom-column-value/task', this.taskCustomColumns)
             .then(async response => {
                 this.visibleAddTaskCustomColumn = false;
-                this.toaster(response.data).fire();
+                this.toast.add({ severity: 'success', summary: 'Task', detail: response.data , life: 3000 });
+                this.$emit('updateUi');
             })
             .catch(error => {
                 console.log(error)
             })
-        },
-        toaster(response){
-            const Toast = this.$swal.mixin({
-                text: response,
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                icon: "success",
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            return Toast
         },
     },
     mounted(){

@@ -112,7 +112,10 @@
                 <div class="com-md-12 mb-3 border-0 border-bottom">
                     <div class="d-flex align-items-center gap-3">
                         <h4 class="">Colunas personalizadas</h4>
-                        <ListCustomColumnsComponents :task_id="taskFinded.id"/>
+                        <ListCustomColumnsComponents
+                            :task_id="taskFinded.id"
+                            @update-ui="$emit('updateShowModalUi')"
+                        />
                     </div>
                 </div>
                 <div v-for="custom in taskFinded.customColumnValue" class="col-md-10">
