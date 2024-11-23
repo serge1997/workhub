@@ -103,8 +103,8 @@
                                     <Menu v-if="menuSprintsToggle" @click="$emit('reloadSprintTaks')" :model="sprints" class="p-2 rounded-0 border-0">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
-                                                <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
-                                                    <span class="sub-menu-item" style="color: #475569;">
+                                                <router-link class="text-decoration-none text-lowercase" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
+                                                    <span class="sub-menu-item text-capitalize" style="color: #475569;">
                                                         <i class="pi pi-list-check mb-3 px-1"></i>
                                                         {{ item.name }}
                                                     </span>

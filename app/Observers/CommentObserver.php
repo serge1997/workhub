@@ -20,7 +20,7 @@ class CommentObserver
      */
     public function created(Comment $comment): void
     {
-       $ws = new WsServer("ws://localhost:8155/teste");
+       //$ws = new WsServer("ws://localhost:8155/teste");
        $activity = $this->taskActivityRepositoryInterface->create(
             description: 'comment',
             author_id: $comment->user_id,
@@ -28,7 +28,7 @@ class CommentObserver
             content: "adicionou um commentario",
             origin_id: $comment->id
         );
-        $ws->notify(new TaskActivityResource($activity));
+        //$ws->notify(new TaskActivityResource($activity));
     }
 
     /**

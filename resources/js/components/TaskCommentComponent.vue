@@ -91,6 +91,7 @@
 <script>
 import CommentEditionComponent from './CommentEditionComponent.vue'
 import CommentResponseEditionComponent from './CommentResponseEditionComponent.vue';
+import { useToast } from 'primevue/usetoast';
 export default {
     name: 'TaskCommentComponent',
     props: ['task', 'icon'],
@@ -112,7 +113,8 @@ export default {
             commentResponse:{
                 response: null,
                 comment_id: null,
-            }
+            },
+            toast: useToast()
         }
     },
     methods: {
@@ -121,10 +123,12 @@ export default {
             this.Api.post("comments", this.commentData)
             .then(async response =>{
                 this.commentData.comment = null;
-                this.toaster(await response.data.message).fire();
+                this.toast.add({ severity: 'info', summary: 'Task', detail: await response.data.message , life: 3000 });
                 this.taskComments = await response.data.data
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                this.toast.add({ severity: 'error', summary: 'Task', detail: err.response.data.message , life: 3000 });
+            })
         },
         showResponseInput(id){
             const inputResponse = document.getElementById(`input-response-box-${id}`);
@@ -141,11 +145,13 @@ export default {
             this.Api.post("comment-response", this.commentResponse)
             .then(async response => {
                 this.showResponseInput(id);
-                this.toaster(response.data.message).fire()
+                this.toast.add({ severity: 'info', summary: 'Task', detail: await response.data.message , life: 3000 });
                 this.taskComments = await response.data.data
                 this.commentResponse.response = []
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                this.toast.add({ severity: 'error', summary: 'Task', detail: err.response.data.message , life: 3000 });
+            })
         },
 
         listAllCommentByTask(id){
@@ -154,7 +160,9 @@ export default {
                 this.taskComments = await response.data;
                 this.visibleShowTaskCommentModal = true;
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                this.toast.add({ severity: 'error', summary: 'Task', detail: err.response.data.message , life: 3000 });
+            })
         },
 
         SoftDeleteComment(id){
@@ -162,7 +170,7 @@ export default {
             this.Api.put('comment', {comment_id: id, task_id: task})
             .then(async response => {
                 this.taskComments = await response.data.data;
-                this.toaster(response.data.message).fire()
+                this.toast.add({ severity: 'info', summary: 'Comment', detail: await response.data.message , life: 3000 });
             })
             .catch(error => {
                 error.response.status === 403 ? this.toaster(error.response.data, "error").fire() : null
@@ -185,11 +193,11 @@ export default {
             this.Api.put('comment-content', null, data)
             .then(async response => {
                 this.hideCurrentCommentEditBox(id);
-                this.toaster(response.data.message).fire();
+                this.toast.add({ severity: 'info', summary: 'Comment', detail: await response.data.message , life: 3000 });
                 this.taskComments = await response.data.data
             })
-            .catch(error => {
-                console.log(error)
+            .catch(err => {
+                this.toast.add({ severity: 'error', summary: 'Comment', detail: err.response.data.message , life: 3000 });
             })
         },
         updateCommentResponse(id){
@@ -203,10 +211,10 @@ export default {
             .then(async response => {
                 this.hideCurrentCommentResponseEditBox(id);
                 this.taskComments = await response.data.data
-                this.toaster(response.data.message).fire();
+                this.toast.add({ severity: 'info', summary: 'Comment', detail: await response.data.message , life: 3000 });
             })
             .catch(error => {
-                console.log(error)
+                this.toast.add({ severity: 'error', summary: 'Comment', detail: error.response.data.message , life: 3000 });
             })
         },
         showCommentActionButton(id){

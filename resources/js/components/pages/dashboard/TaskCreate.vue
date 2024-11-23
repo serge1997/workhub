@@ -177,6 +177,7 @@ export default{
             .then(async response => {
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
                 this.formErrorBag = null;
+                this.clearForm();
             })
             .catch(async err => {
                 if (err.response.status === 422) {
@@ -292,6 +293,18 @@ export default{
             .catch(error => {
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded sprints", life: 3000 });
             })
+        },
+        clearForm(){
+            this.task.annex = null;
+            this.task.description = null;
+            this.task.execution_delay = null;
+            this.task.execution_status_id = null;
+            this.task.sprint_id = null;
+            this.task.project_id = null;
+            this.task.followers = null;
+            this.task.user_id = null;
+            this.task.priority = null;
+            this.task.title = null;
         }
     },
     mounted(){

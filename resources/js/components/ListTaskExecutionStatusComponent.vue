@@ -51,6 +51,7 @@ export default{
                 box.classList.add('d-none')
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
                 this.$emit('listAllTask');
+                this.selectedStatus = null;
             })
             .catch(error => {
                 console.log(error)
