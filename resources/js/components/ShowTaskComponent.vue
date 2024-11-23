@@ -10,7 +10,7 @@
                            :user="taskFinded.user_name"
                            @update-task-user="updateTaskUser"
                         />
-                        <Chip class="d-none" :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
+                        <Chip v-if="taskFinded.user_name" class="d-none" :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
                     </span>
                     <span class="d-flex">
                         <PriorityOverlayComponent
