@@ -1,7 +1,7 @@
 <template>
     <div v-if="teams_space" class="card border-0">
         <div v-for="team in teams_space" class="card-body d-flex p-0">
-            <router-link class="card-body d-flex align-items-center justify-content-between nav-link text-dark">
+            <router-link to="#" class="card-body d-flex align-items-center justify-content-between nav-link text-dark">
                 <div class="icon d-flex gap-1 align-items-center">
                     <img style="width: 43px;" class="rounded-circle shadow-sm d-none" src="/img/project-image.png" />
                     <span style="width: 38px; height: 37px" class="rounded-circle border p-2 py-2 d-flex justify-content-center align-items-center">
