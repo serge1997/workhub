@@ -120,8 +120,6 @@
                                     Lixeira
                                 </router-link>
                             </li>
-                            <li class="list-group-item border-0">A fourth item</li>
-                            <li class="list-group-item border-0">And a fifth one</li>
                         </ul>
                     </div>
                 </div>

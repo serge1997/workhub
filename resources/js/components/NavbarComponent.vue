@@ -143,7 +143,7 @@ export default {
         this.auth = this.Auth.user();
     },
     mounted(){
-        this.wssocket("ws://localhost:8155/teste");
+        //this.wssocket("ws://localhost:8155/teste");
         this.listNotificationByTaskExecutor();
     }
 }
