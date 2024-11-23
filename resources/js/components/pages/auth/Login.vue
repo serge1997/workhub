@@ -3,7 +3,7 @@
         <div class="row justify-content-center align-items-center min-vh-100">
             <div class="col-lg-5 col-md-10">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header border-0">
+                    <div class="card-header border-0 bg-transparent">
                         LOGO
                     </div>
                     <div class="card-body">
@@ -17,8 +17,8 @@
                             <input type="password" v-model="auth.password" class="form-control" id="password" placeholder="password">
                         </div>
                     </div>
-                    <div class="card-footer border-0">
-                        <Button @click="login" class="form-btn" text label="Sign-in" />
+                    <div class="card-footer border-0 bg-transparent p-3">
+                        <Button @click="login" class="rounded-pill w-100" label="Sign-in" />
                     </div>
                 </div>
             </div>

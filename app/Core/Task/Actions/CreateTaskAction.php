@@ -23,7 +23,7 @@ final class CreateTaskAction
     public function run($request)
     {
         $values = $request->all();
-        $ws = new WsServer("ws://localhost:8155/teste");
+        //$ws = new WsServer("ws://localhost:8155/teste");
         $task = new Task($values);
         $task->manager_id = $request->user()->id;
         $task->execution_status_id =  $request->execution_status_id ?? 1;
@@ -33,15 +33,16 @@ final class CreateTaskAction
         $this->annexRepository->create($request, $task);
         $this->followerRepository->create($request, $task);
         $this->taskRoadMapRepository->create($request, $task);
-        $notification = $this->taskActivityRepository->create(
+        $this->taskActivityRepository->create(
             $request->user()->id,
             $task->id,
             $notification_body,
             "Task",
             $task->id
        );
-        $notification->activity = "{$notification->user->name} {$notification->activity}";
-        $ws->notify(new TaskActivityResource($notification));
+       //websocket called is below
+        //$notification->activity = "{$notification->user->name} {$notification->activity}";
+        //$ws->notify(new TaskActivityResource($notification));
 
     }
 }
