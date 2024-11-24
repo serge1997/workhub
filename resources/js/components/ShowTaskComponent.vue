@@ -3,12 +3,13 @@
         <div class="col-md-9">
             <input type="hidden" id="task-id-show" :value="taskFinded.id">
             <div class="row">
-                <div class="col-md-12 mb-3 d-flex align-items-center gap-2 border-bottom p-2" id="task-header">
+                <div class="col-md-12 mb-3 d-flex align-items-center gap-1 border-bottom p-1" id="task-header">
                     <span>
                         <UsersOverlayComponent
                            :is-show-component="true"
                            :user="taskFinded.user_name"
                            @update-task-user="updateTaskUser"
+                           :is-for-add-user="true"
                         />
                         <Chip v-if="taskFinded.user_name" class="d-none" :image="`/img/users_avatars/${taskFinded.user_name.avatar}`" :label="taskFinded.user_name.name" />
                     </span>
@@ -39,7 +40,6 @@
                         />
                     </span>
                     <span class="d-flex align-items-center">
-                        <span><Chip class="rounded-3 border" label="status"/></span>
                         <div class="position-relative m-auto" style="width: 270px;">
                             <ListTaskExecutionStatusComponent
                                 :task="taskFinded"

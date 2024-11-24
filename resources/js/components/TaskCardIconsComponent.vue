@@ -1,7 +1,7 @@
 <template>
     <div class="w-100 d-flex flex-column">
         <div class="w-100">
-            <Button class="p-1" text>
+            <Button v-if="task.user_name" class="p-1" text>
                 <span class="d-flex align-items-center">
                     <i class="pi pi-user icon-list-task"></i>
                 </span>
@@ -9,6 +9,14 @@
                     <img class="img-thumbnail w-50 rounded-circle" :src="`/img/users_avatars/${task.user_name.avatar}`" alt="user avatar">
                 </small>
             </Button>
+            <div v-else class="mb-2">
+                <UsersOverlayComponent
+                    :is-for-add-user="true"
+                    :is-show-component="true"
+                    :user="task.user_name"
+                    @update-task-user="updateTaskUser"
+                />
+            </div>
         </div>
         <div class="w-100 d-flex px-1">
             <ListTaskExecutionStatusComponent
@@ -88,6 +96,7 @@ import ShowTaskFollower from './ShowTaskFollower.vue';
 import TaskCommentComponent from './TaskCommentComponent.vue';
 import ShowTaskAnnexComponent from './ShowTaskAnnexComponent.vue';
 import ListTaskExecutionStatusComponent from './ListTaskExecutionStatusComponent.vue';
+import UsersOverlayComponent from './Overlays/UsersOverlayComponent.vue';
 import { DateTime } from './../core/DateTime.js';
 import { useToast } from 'primevue/usetoast';
 export default{
@@ -103,7 +112,8 @@ export default{
         ShowTaskFollower,
         TaskCommentComponent,
         ShowTaskAnnexComponent,
-        ListTaskExecutionStatusComponent
+        ListTaskExecutionStatusComponent,
+        UsersOverlayComponent
     },
 
     props: ['task', 'taskStatus'],
@@ -124,6 +134,16 @@ export default{
         }
     },
     methods: {
+        updateTaskUser(user_id){
+            this.Api.put('task/user', {user_id: user_id, task_id: this.task.id})
+            .then(async response => {
+                this.toast.add({ severity: 'success', summary: 'Task', detail: response.data.message , life: 3000 });
+                this.$emit('listAllTask');
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'Task', detail: error.response.data.message, life: 3000 });
+            })
+        },
         showTask(id){
             //this.task_finded = null;
             this.Api.get('task', {task_id: id})

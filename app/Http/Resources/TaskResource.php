@@ -50,7 +50,7 @@ class TaskResource extends JsonResource
             'task_owner' => $this->when($request->user()->id == $this->user_id, true),
             'customColumnValue' => CustomsColumnsValueResource::collection($this->customColumnValue),
             'full_task_execution_status' => strtolower($this->executionStatus->name),
-            'can_delete' => $this->when($this->isAdminAndTaskOwner($request->user()->id), true),
+            'can_delete' => $this->when($request->user()->id == $this->user_id, true),
             'comment_count' => $this->when($this->comment->count() > 0, $this->comment->count(), true),
             'activities' => TaskActivityResource::collection($this->taskActivity->take(4)),
             'sprint_name' => $this->sprint ? ucfirst($this->sprint->name) : 'Nenhum sprint'

@@ -1,12 +1,14 @@
 <template>
-    <Tag v-if="!isShowComponent" @click="toggleUserOverlayPanel" class="cursor-p" :value="tagLabel()" icon="pi pi-users" />
+    <Tag v-if="!isShowComponent && project" @click="toggleUserOverlayPanel" class="cursor-p" :value="tagLabel()" icon="pi pi-users" />
     <Tag v-if="isShowComponent && user" @click="toggleUserOverlayPanel" class="cursor-p">
         <img class="img-thumbnail rounded-circle" style="width: 28px;" :src="`/img/users_avatars/${user.avatar}`" alt="">
         {{ user.name }}
     </Tag>
-    <Tag v-if="!user && isShowComponent" @click="toggleUserOverlayPanel" class="cursor-p">
-        <i class="pi pi-user-plus"></i>
-    </Tag>
+    <div v-if="!user && isForAddUser" class="d-flex align-items-center">
+        <Tag @click="toggleUserOverlayPanel" class="cursor-p task-description bg-transparent">
+            <i class="pi pi-user-plus"></i>
+        </Tag>
+    </div>
     <OverlayPanel ref="visibleOverlayPanel" style="width: 310px;">
         <div class="w-100 p-2 d-flex">
             <IconField iconPosition="left">
@@ -32,7 +34,8 @@ export default {
     props: {
         project: Object,
         user: String,
-        isShowComponent: Boolean
+        isShowComponent: Boolean,
+        isForAddUser: Boolean
     },
     watch: {
 

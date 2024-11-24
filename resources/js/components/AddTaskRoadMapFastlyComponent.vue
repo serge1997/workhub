@@ -1,6 +1,6 @@
 <template>
-    <Button @click="openAddRoadMapModal" class="task-description btn-icon-show-task" icon="pi pi-plus-circle" text/>
-    <Dialog v-model:visible="visibleAddTaskRoadMap" maximizable modal header="" :style="{ width: '25em' }">
+    <Button @click="openAddRoadMapModal" title="nova guia" class="task-description btn-icon-show-task border-0" icon="pi pi-plus-circle" text/>
+    <Dialog v-model:visible="visibleAddTaskRoadMap" maximizable modal header="Nova guia" :style="{ width: '25em' }">
         <div class="col-md-12 mt-3">
             <div class="w-100 mb-3 d-flex flex-column gap-1">
                 <InputText v-model="roadMap.road_map_titles" class="w-100 border-0 border-bottom rounded-0" :class="invalid" id="add-roadmap-input" placeholder="titulo"/>

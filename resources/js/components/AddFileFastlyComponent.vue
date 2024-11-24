@@ -1,6 +1,6 @@
 <template>
-    <Button @click="openAddFileModal = true" class="task-description btn-icon-show-task" icon="pi pi-paperclip" text/>
-    <Dialog v-model:visible="openAddFileModal" maximizable modal header="" :style="{ width: '25em' }">
+    <Button @click="openAddFileModal = true" title="adicionar um annex na tarefa" class="task-description btn-icon-show-task border-0" icon="pi pi-paperclip" text/>
+    <Dialog v-model:visible="openAddFileModal" maximizable modal header="Novo annexo" :style="{ width: '25em' }">
         <div class="col-md-12 mt-3">
             <div class="col-md-10 d-flex flex-column">
                 <label for="task-annex" class="form-label mb-3">Adicionar anexes da tarefa</label>
