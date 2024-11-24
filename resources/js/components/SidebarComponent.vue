@@ -43,11 +43,11 @@
                                 <ul class="list-group border-0 p-0">
                                     <Menu v-if="menuTeamSpaceToggle && teams_space" @click="$emit('reloadSprintTaks')" :model="teams_space" class="p-2 rounded-0 border-0">
                                         <template #item="{ item, props }">
-                                           <li class="list-group-item border-0 p-0">
+                                           <li class="list-group-item border-0 p-0 mb-2">
                                                 <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
-                                                    <span class="sub-menu-item" style="color: #475569;">
-                                                        <i class="pi pi-box mb-3 px-1"></i>
-                                                        {{ item.name }}
+                                                    <span class="sub-menu-item d-flex align-items-center gap-2" style="color: #475569;">
+                                                        <Tag class="px-2" :value="item.first_letter"/>
+                                                        <span>{{ item.name }}</span>
                                                     </span>
                                                 </router-link>
                                            </li>

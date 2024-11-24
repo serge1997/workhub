@@ -14,6 +14,12 @@ class TeamSpaceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'first_letter' => ucfirst($this->name[0]),
+            'name' => $this->name,
+            'description' => $this->description,
+            'created_at' => date('d/m/y H:i:s', strtotime($this->created_at))
+        ];
     }
 }

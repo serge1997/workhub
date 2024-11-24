@@ -13,12 +13,12 @@ function when(condition, trueValue, defaultValue =  null){
 function taskStatusSeverity(status){
     if(status === "WAT")  return "warning";
     if (status === "PRO") return "primary";
-    return "success";
+    return "secondary";
 }
 function prioritySeverity(priority){
     if(priority === "ALT")  return "danger";
     if (priority === "MED") return "warning";
-    return "success";
+    return "secondary";
 }
 const isNull = (arg) => arg == null;
 const isNullOrWhiteSpace = (arg) => arg == null || arg == "";
