@@ -4,8 +4,9 @@ namespace App\Core\CustomColumnsValue\Actions;
 use App\Core\CustomColumn\CustomColumnRepositoryInterface;
 use App\Models\CustomColumnsValue;
 use App\Models\Task;
+use App\Services\Base\BaseAction;
 
-final class CreateCustomsColumnsValueAction
+final class CreateCustomsColumnsValueAction extends BaseAction
 {
     public function __construct(
         private Task $task,
@@ -35,7 +36,6 @@ final class CreateCustomsColumnsValueAction
                 }
             }
         }
-
     }
 
     private function hasTask() : bool

@@ -45,6 +45,8 @@ export default {
                 this.visibleAddTaskCustomColumn = false;
                 this.toast.add({ severity: 'success', summary: 'Task', detail: response.data , life: 3000 });
                 this.$emit('updateUi');
+                this.taskCustomColumns.columns = [];
+                this.getAllCustomColumns();
             })
             .catch(error => {
                 console.log(error)

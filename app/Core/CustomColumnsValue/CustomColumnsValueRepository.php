@@ -70,6 +70,6 @@ class CustomColumnsValueRepository implements CustomColumnsValueRepositoryInterf
 
     public function createByTask($request)
     {
-        CreateCustomColumnValueByTask::run($request);
+        app(CreateCustomColumnValueByTask::class)->run($request);
     }
 }
