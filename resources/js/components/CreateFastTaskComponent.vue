@@ -7,8 +7,16 @@
             <Textarea v-model="fastTask.description" style="background-color: #f3f4f6;" class="w-100 border-0 p-3" placeholder="Descrição da tarefa" />
         </div>
         <div class="col-md-10 mb-3 m-auto d-flex flex-column">
-            <Dropdown v-model="fastTask.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um sprint" />
-            <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
+            <div class="row">
+                <div class="col-md-6">
+                    <Dropdown v-model="fastTask.project_id" :options="projects" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um projeto" />
+                    <small class="text-danger" v-if="formErrorBag && formErrorBag.project_id" v-text="`${formErrorBag.project_id}`"></small>
+                </div>
+                <div class="col-md-6">
+                    <Dropdown v-model="fastTask.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um sprint" />
+                    <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
+                </div>
+            </div>
         </div>
         <div class="col-md-10 m-auto d-flex justify-content-between fast-task-form-icon-group">
             <div class="d-flex flex-column gap-2 position-relative">
@@ -101,13 +109,15 @@ export default {
                 user_id: null,
                 execution_delay: null,
                 description: null,
-                sprint_id: null
+                sprint_id: null,
+                project_id: null
             },
             users: null,
             disableBtn: 'disabled',
             sprints: null,
             toggleUserListBox: false,
-            togglePriorityListBox: false
+            togglePriorityListBox: false,
+            projects: []
         }
     },
 
@@ -126,7 +136,9 @@ export default {
                 priority: this.fastTask.priority.value,
                 user_id: this.fastTask.user_id.id,
                 execution_delay: DateTime.time(enFormat),
-                description: this.fastTask.description
+                description: this.fastTask.description,
+                project_id: this.fastTask.project_id,
+                sprint_id: this.fastTask.sprint_id
             }
             this.Api.post('task', data)
             .then(async response => {
@@ -144,11 +156,8 @@ export default {
         },
         disbaleBtnCreate(){
             return this.fastTask.title === null
-                || this.fastTask.execution_delay === null
-                || this.fastTask.priority === null
-                || this.fastTask.user_id === null
                 || this.fastTask.title == ""
-                || this.fastTask.execution_delay == ""
+                || this.fastTask.project_id == null
                 ? true : false;
         },
         toaster(response){
@@ -176,10 +185,17 @@ export default {
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded sprints", life: 3000 });
             })
         },
+        listAllProject(){
+            this.Api.get('project')
+            .then(async response => {
+                this.projects = await response.data.data;
+            })
+        }
     },
     mounted(){
         this.onListAllUsers();
         this.getSprints();
+        this.listAllProject();
     }
 }
 </script>
