@@ -69,7 +69,7 @@
                                     </span>
                                 </Button>
                             </div>
-                            <div class="card-body p-0 mt-4">
+                            <div class="card-body p-0 mt-4 vh-100" style="z-index: 1;">
                                 <KeepAlive>
                                     <component :is="componentIs"></component>
                                 </KeepAlive>

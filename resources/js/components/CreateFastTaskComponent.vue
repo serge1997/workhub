@@ -9,11 +9,53 @@
         <div class="col-md-10 mb-3 m-auto d-flex flex-column">
             <div class="row">
                 <div class="col-md-6">
-                    <Dropdown v-model="fastTask.project_id" :options="projects" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um projeto" />
+                    <Dropdown v-model="fastTask.project_id" :options="projects" optionLabel="name" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um projeto">
+                        <template #value="slotProps">
+                            <div v-if="slotProps.value">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="task-description"><i class="pi pi-tag"></i></span>
+                                    <Tag severity="secondary" :value="slotProps.value.name"/>
+                                </div>
+                            </div>
+                            <span v-else>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="task-description"><i class="pi pi-tag"></i></span>
+                                    <span>{{ slotProps.placeholder }}</span>
+                                </div>
+                            </span>
+                        </template>
+                        <template #option="slotProps">
+                            <div class="d-flex gap-2">
+                                <span class="task-description"><i class="pi pi-tag"></i></span>
+                                <span>{{ slotProps.option.name }}</span>
+                            </div>
+                        </template>
+                    </Dropdown>
                     <small class="text-danger" v-if="formErrorBag && formErrorBag.project_id" v-text="`${formErrorBag.project_id}`"></small>
                 </div>
                 <div class="col-md-6">
-                    <Dropdown v-model="fastTask.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um sprint" />
+                    <Dropdown v-model="fastTask.sprint_id" :options="sprints" optionLabel="name" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Selectione um sprint">
+                        <template #value="slotProps">
+                            <div v-if="slotProps.value">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="task-description"><i class="pi pi-list"></i></span>
+                                    <Tag severity="warning" :value="slotProps.value.name"/>
+                                </div>
+                            </div>
+                            <span v-else>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="task-description"><i class="pi pi-list"></i></span>
+                                    <span>{{ slotProps.placeholder }}</span>
+                                </div>
+                            </span>
+                        </template>
+                        <template #option="slotProps">
+                            <div class="d-flex gap-2">
+                                <span class="task-description"><i class="pi pi-tag"></i></span>
+                                <span>{{ slotProps.option.name }}</span>
+                            </div>
+                        </template>
+                    </Dropdown>
                     <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
                 </div>
             </div>
@@ -32,7 +74,7 @@
                         <small class="task-description">{{ fastTask.user_id === null ? 'usuario responsavel' : fastTask.user_id.name }}</small>
                     </span>
                 </Button>
-                <Listbox v-if="toggleUserListBox" v-model="fastTask.user_id" :options="users" optionLabel="name" filter style="width: 240px; z-index: 10; top: 140%;" class="position-absolute shadow">
+                <Listbox v-if="toggleUserListBox" @change="handleToggleUserList" v-model="fastTask.user_id" :options="users" optionLabel="name" filter style="width: 240px; z-index: 10; top: 140%;" class="position-absolute shadow">
                     <template #option="slotProps">
                         <div class="d-flex gap-2">
                             <img :alt="slotProps.option.name" :src="`/img/users_avatars/${slotProps.option.avatar}`" style="width: 22px" />
@@ -41,7 +83,7 @@
                     </template>
                 </Listbox>
             </div>
-            <div class="d-flex flex-column gap-2">
+            <div class="d-flex flex-column gap-2 position-relative">
                 <Button @click="visibleTaskTimeInputDialog = true" text class="border rounded-pill fast-task-form-btn px-3 py-0 d-flex gap-1 align-items-center justify-content-center">
                     <span class="d-flex align-items-center">
                         <i class="pi pi-clock fast-task-form-icon"></i>
@@ -66,7 +108,7 @@
                         <small class="task-description">Prioridade</small>
                     </span>
                 </Button>
-                <Listbox v-if="togglePriorityListBox" v-model="fastTask.priority" :options="priorities" filter optionLabel="label" style="width: 240px; z-index: 1; bottom: -28%;" class="position-absolute shadow">
+                <Listbox v-if="togglePriorityListBox" @change="handleTogglePriorityList" v-model="fastTask.priority" :options="priorities" filter optionLabel="label" style="width: 240px; z-index: 1; bottom: 30%;" class="position-absolute shadow">
                     <template #option="slotProps">
                         <div class="d-flex align-items-center gap-2">
                             <i class="pi pi-circle-fill" :class="`text-${slotProps.option.severity}`"></i>
@@ -83,6 +125,7 @@
     </div>
 </template>
 <script>
+import { useToast } from 'primevue/usetoast';
 import { DateTime } from '../core/DateTime';
 export default {
     name: 'CreateFastTaskComponent',
@@ -117,11 +160,18 @@ export default {
             sprints: null,
             toggleUserListBox: false,
             togglePriorityListBox: false,
-            projects: []
+            projects: [],
+            toast: useToast()
         }
     },
 
     methods:{
+        handleToggleUserList(){
+            this.toggleUserListBox = false;
+        },
+        handleTogglePriorityList(){
+            this.togglePriorityListBox = false;
+        },
         onListAllUsers(){
             this.Api.get('users')
             .then(async (response) => {
@@ -133,21 +183,23 @@ export default {
             const enFormat = DateTime.enFormat(this.fastTask.execution_delay);
             const data = {
                 title: this.fastTask.title,
-                priority: this.fastTask.priority.value,
-                user_id: this.fastTask.user_id.id,
+                priority: this.fastTask.priority ? this.fastTask.priority.value : null,
+                user_id: this.fastTask.user_id ? this.fastTask.user_id.id : null,
                 execution_delay: DateTime.time(enFormat),
                 description: this.fastTask.description,
-                project_id: this.fastTask.project_id,
-                sprint_id: this.fastTask.sprint_id
+                project_id: this.fastTask.project_id.id,
+                sprint_id: this.fastTask.sprint_id.id
             }
             this.Api.post('task', data)
             .then(async response => {
-                this.toaster(response.data).fire();
+                this.toast.add({severity: 'success', summary: 'Success', detail: await response.data, life: 3000});
                 this.fastTask.title = null;
                 this.fastTask.priority = null;
                 this.fastTask.user_id = null;
                 this.fastTask.execution_delay = null;
                 this.fastTask.description =  null;
+                this.fastTask.sprint_id = null;
+                this.fastTask.project_id = null;
                 data = null;
             })
             .catch(error => {
