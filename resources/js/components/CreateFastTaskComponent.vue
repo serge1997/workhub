@@ -74,7 +74,7 @@
                         <small class="task-description">{{ fastTask.user_id === null ? 'usuario responsavel' : fastTask.user_id.name }}</small>
                     </span>
                 </Button>
-                <Listbox v-if="toggleUserListBox" @change="handleToggleUserList" v-model="fastTask.user_id" :options="users" optionLabel="name" filter style="width: 240px; z-index: 10; top: 140%;" class="position-absolute shadow">
+                <Listbox v-if="toggleUserListBox" @change="handleToggleUserList" v-model="fastTask.user_id" :options="users" optionLabel="name" filter style="width: 240px; z-index: 10; bottom: 148%;" class="position-absolute shadow">
                     <template #option="slotProps">
                         <div class="d-flex gap-2">
                             <img :alt="slotProps.option.name" :src="`/img/users_avatars/${slotProps.option.avatar}`" style="width: 22px" />
