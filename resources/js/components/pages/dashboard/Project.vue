@@ -49,6 +49,12 @@
                                 </span>
                                 <span class="small-fw"><small>Backlog</small></span>
                             </Button>
+                            <Button @click="visibleFastTaskDialog = true" class="task-description d-flex gap-1" label="Projeto" text>
+                                <span class="d-flex align-items-center">
+                                    <i class="pi pi-plus-circle small-icon"></i>
+                                </span>
+                                <span class="small-fw"><small>Adicionar uma nova tarefa</small></span>
+                            </Button>
                         </div>
                     </template>
                 </Toolbar>
@@ -65,18 +71,29 @@
                 >
                 </component>
             </div>
+            <div class="row">
+                <Dialog v-model:visible="visibleFastTaskDialog" header="Criar tarefa rapido" :style="{ width: '65rem' }" position="topcenter" :modal="true" :draggable="false">
+                    <CreateFastTaskComponent
+                        :project="project"
+                    />
+                </Dialog>
+            </div>
         </div>
     </SidebarComponent>
 </template>
 <script>
 import SprintListComponent from '../../project/SprintListComponent.vue';
 import BacklogTaskComponent from '../../project/BacklogTaskComponent.vue';
+import { defineAsyncComponent } from 'vue';
 export default {
     name: 'Project',
 
     components: {
         SprintListComponent,
-        BacklogTaskComponent
+        BacklogTaskComponent,
+        CreateFastTaskComponent: defineAsyncComponent(() =>
+            import('./../../CreateFastTaskComponent.vue')
+        )
     },
 
     data(){
@@ -87,7 +104,9 @@ export default {
             toggleComponent: 'SprintListComponent',
             backlog_tasks : null,
             current_project_name: null,
-            taskStatus: null
+            taskStatus: null,
+            visibleFastTaskDialog: false,
+            project: null
         }
     },
     methods: {
@@ -97,8 +116,10 @@ export default {
                 this.projects = await response.data.data;
                 //trigger click on first project btn
                 setTimeout(() => {
-                    document.querySelector('.project_btn_toolbar').click()
-                }, 1000)
+                    document.querySelector('.project_btn_toolbar').click();
+                    this.selected_project = this.projects[0].id;
+                    this.project = this.projects[0];
+                }, 500)
             })
         },
         listProjectData(project){

@@ -130,6 +130,10 @@ import { DateTime } from '../core/DateTime';
 export default {
     name: 'CreateFastTaskComponent',
 
+    props: {
+        project: Object
+    },
+
     watch: {
         'fastTask.title': {
             handler: function(newval, old){
@@ -188,7 +192,7 @@ export default {
                 execution_delay: DateTime.time(enFormat),
                 description: this.fastTask.description,
                 project_id: this.fastTask.project_id.id,
-                sprint_id: this.fastTask.sprint_id.id
+                sprint_id: this.fastTask.sprint_id ? this.fastTask.sprint_id.id : null
             }
             this.Api.post('task', data)
             .then(async response => {
@@ -241,13 +245,16 @@ export default {
             this.Api.get('project')
             .then(async response => {
                 this.projects = await response.data.data;
+                if (this.project){
+                    this.fastTask.project_id = this.project;
+                }
             })
         }
     },
     mounted(){
+        this.listAllProject();
         this.onListAllUsers();
         this.getSprints();
-        this.listAllProject();
     }
 }
 </script>
