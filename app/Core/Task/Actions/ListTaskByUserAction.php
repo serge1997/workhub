@@ -11,7 +11,7 @@ final class ListTaskByUserAction
         return Task::query()
             ->where('user_id', $request->user()->id)
                 ->limit(10)
-                    ->orderBy('created_at')
+                    ->orderBy('created_at', 'desc')
                         ->get();
     }
 }

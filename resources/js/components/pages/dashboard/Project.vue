@@ -126,6 +126,7 @@ export default {
             this.selected_project = project.id;
             this.listSprintByProject(project.id);
             this.listAllprojectTaskBacklog();
+            this.project = project;
             this.current_project_name = project.name;
             document.getElementById(`project_btn_toolbar_${project.id}`).classList.toggle('active-project-toolbar-btn')
             document.querySelectorAll('.project_btn_toolbar').forEach(btn => {

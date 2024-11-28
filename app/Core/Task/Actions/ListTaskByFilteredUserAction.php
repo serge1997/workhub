@@ -9,6 +9,7 @@ final class ListTaskByFilteredUserAction
     public static function list($request)
     {
         return Task::where('user_id', $request->user_id)
-            ->get();
+            ->orderBy('created_at', 'desc')
+                ->get();
     }
 }

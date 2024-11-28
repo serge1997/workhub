@@ -89,7 +89,8 @@ class TaskRepository implements TaskRepositoryInterface
     {
         return TaskResource::collection(
             Task::where([['sprint_id', $request->sprint_id], ['execution_status_id','<>', TaskExecutionStatus::BACKLOG]])
-                ->get()
+                ->orderBy('created_at', 'desc')
+                    ->get()
         );
     }
 
@@ -119,11 +120,13 @@ class TaskRepository implements TaskRepositoryInterface
     public function findAllBySprintAndProject(int $sprint_id, int $project_id)
     {
         return Task::where([['sprint_id', $sprint_id], ['project_id', $project_id]])
-            ->get();
+            ->orderBy('created_at', 'desc')
+                ->get();
     }
     public function findAllBacklogTaskByProject(int $project_id)
     {
         return Task::where([['project_id', $project_id], ['execution_status_id', TaskExecutionStatus::BACKLOG]])
-            ->get();
+            ->orderBy('created_at', 'desc')
+                ->get();
     }
 }

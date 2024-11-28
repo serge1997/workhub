@@ -16,7 +16,9 @@ final class TaskListAction
 
     public function listByProject(int $project_id)
     {
-        return Task::where([['project_id', $project_id], ['execution_status_id', 3]])->get();
+        return Task::where([['project_id', $project_id], ['execution_status_id', 3]])
+            ->orderBy('created_at', 'desc')
+                ->get();
     }
 
     public function listById($request)
