@@ -2,12 +2,14 @@
     <div class="container-fluid m-auto p-0">
         <NavbarComponent
             @watch-route-params="$emit('watchRouteParams')"
+            @show-sidebar="showSidebar"
         />
-        <div class="row m-auto">
-            <div class="col-md-2 d-flex">
-                <div style="top: 0; left: 0; z-index: 10;height: 690px; overflow-y: scroll;" class="col-md-2 position-fixed bg-white z-3 min-vh-100">
-                    <div class="sidebar-header p-3">
+        <div class="m-auto">
+            <div class="d-flex" id="side_bar">
+                <div style="top: 0; left: 0; z-index: 10;height: 690px; overflow-y: scroll; width: 220px;" class="position-fixed bg-white z-3 vh-100">
+                    <div class="sidebar-header p-3 d-flex justify-content-between align-items-center">
                         <h6>Logo</h6>
+                        <Button @click="hiddenSidebar" icon="pi pi-arrow-left" class="task-description" text/>
                     </div>
                     <div class="sidebar-body">
                         <ul class="list-group text-capitalize">
@@ -197,6 +199,12 @@ export default {
             .then(async response => {
                 this.teams_space = await response.data.data;
             })
+        },
+        hiddenSidebar(){
+            document.getElementById('side_bar').classList.add('d-none')
+        },
+        showSidebar(){
+            document.getElementById('side_bar').classList.remove('d-none')
         }
     },
     mounted(){

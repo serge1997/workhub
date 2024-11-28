@@ -38,6 +38,7 @@ import Badge from 'primevue/badge';
 import AutoComplete from 'primevue/autocomplete';
 import ColorPicker from 'primevue/colorpicker';
 import OverlayPanel from 'primevue/overlaypanel';
+import Sidebar from 'primevue/sidebar';
 
 function loggedIn(){
     return localStorage.getItem('token');
@@ -88,6 +89,7 @@ app.component('ColorPicker', ColorPicker);
 app.component('OverlayPanel', OverlayPanel);
 app.component('IconField', IconField);
 app.component('InputIcon', InputIcon);
+app.component('Sidebar', Sidebar);
 
 
 

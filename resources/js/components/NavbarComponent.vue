@@ -1,7 +1,10 @@
 <template>
-    <div style="z-index: 2;" class="row m-auto bg-white d-flex justify-content-end">
-        <div class="icons d-flex justify-content-end col-md-4">
-            <Button @click="showNotifyBox = !showNotifyBox" text class="bg-transparent gap-0 w-25">
+    <div class="m-auto bg-white d-flex justify-content-between align-items-center">
+        <div class="col-md-1 d-flex align-items-center">
+            <Button @click="$emit('showSidebar')" class="task-description" icon="pi pi-th-large" text/>
+        </div>
+        <div class="p-1 d-flex justify-content-end col-md-8 align-items-center">
+            <Button @click="showNotifyBox = !showNotifyBox" text class="bg-transparent gap-0" style="width: 80px;">
                 <span>
                     <i class="pi pi-bell"></i>
                 </span>
