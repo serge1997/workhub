@@ -9,7 +9,7 @@
                        </Button>
                     </span>
                 </div>
-                <div class="w-100 d-flex justify-content-between">
+                <div class="w-100 btn-text-nowrap d-flex justify-content-between">
                     <span class="d-flex justify-content-start gap-3 p-1">
                         <span>
                             <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>

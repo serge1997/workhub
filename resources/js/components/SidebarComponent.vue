@@ -6,7 +6,7 @@
         />
         <div class="m-auto">
             <div class="d-flex" id="side_bar">
-                <div style="top: 0; left: 0; z-index: 10;height: 690px; overflow-y: scroll; width: 220px;" class="position-fixed bg-white z-3 vh-100">
+                <div style="top: 0; left: 0; z-index: 10;height: 690px; overflow-y: scroll; width: 220px;" class="position-fixed side-bar-body shadow-sm z-3 vh-100">
                     <div class="sidebar-header p-3 d-flex justify-content-between align-items-center">
                         <h6>Logo</h6>
                         <Button @click="hiddenSidebar" icon="pi pi-arrow-left" class="task-description" text/>
@@ -14,25 +14,25 @@
                     <div class="sidebar-body">
                         <ul class="list-group text-capitalize">
                             <li class="list-group-item border-0">
-                                <router-link class="text-decoration-none" :to="{name: 'Home'}">
+                                <router-link class="text-decoration-none list-group-item border-0 p-0" :to="{name: 'Home'}">
                                     <i class="pi pi-home"></i>
                                     Inicio
                                 </router-link>
                             </li>
                             <li class="list-group-item border-0">
-                                <router-link class="text-decoration-none" :to="{name: 'TaskReception'}">
+                                <router-link class="text-decoration-none list-group-item border-0 p-0" :to="{name: 'TaskReception'}">
                                     <i class="pi pi-inbox"></i>
                                     Caixa de entrada
                                 </router-link>
                             </li>
                             <li class="list-group-item border-0">
-                                <router-link class="text-decoration-none" :to="{name: 'Profil'}">
+                                <router-link class="text-decoration-none list-group-item border-0 p-0" :to="{name: 'Profil'}">
                                     <i class="pi pi-user"></i>
                                     Profil
                                 </router-link>
                             </li>
                             <li class="list-group-item border-0">
-                                <router-link class="text-decoration-none" :to="{name: 'Task'}">
+                                <router-link class="text-decoration-none list-group-item border-0 p-0" :to="{name: 'Task'}">
                                     <i class="pi pi-book"></i>
                                     tasks
                                 </router-link>
@@ -43,7 +43,7 @@
                                     Team space
                                 </span>
                                 <ul class="list-group border-0 p-0">
-                                    <Menu v-if="menuTeamSpaceToggle && teams_space" @click="$emit('reloadSprintTaks')" :model="teams_space" class="p-2 rounded-0 border-0">
+                                    <Menu v-if="menuTeamSpaceToggle && teams_space" @click="$emit('reloadSprintTaks')" :model="teams_space" class="p-2 rounded-0 border-0" style="background-color: #f3f4f6;">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0 mb-2">
                                                 <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
@@ -59,7 +59,7 @@
                                 </ul>
                             </li>
                             <li class="list-group-item border-0">
-                                <router-link class="text-decoration-none" :to="{name: 'Project'}">
+                                <router-link class="text-decoration-none list-group-item border-0 p-0" :to="{name: 'Project'}">
                                     <i class="pi pi-slack"></i>
                                     Projetos
                                 </router-link>
@@ -76,7 +76,7 @@
                                     create
                                 </span>
                                 <ul class="list-group border-0 p-0">
-                                    <Menu v-if="menuCreateToggle" :model="menu" class="p-2 rounded-0 border-0">
+                                    <Menu v-if="menuCreateToggle" :model="menu" class="p-2 rounded-0 border-0" style="background-color: #f3f4f6;">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
                                                 <router-link @click="generateSprint" v-if="item.action == 'generateSprint'" class="text-decoration-none" v-slot="{ href, navigate }" :to="item.route">
@@ -102,7 +102,7 @@
                                     sprints
                                 </span>
                                 <ul class="list-group border-0 p-0">
-                                    <Menu v-if="menuSprintsToggle" @click="$emit('reloadSprintTaks')" :model="sprints" class="p-2 rounded-0 border-0">
+                                    <Menu v-if="menuSprintsToggle" @click="$emit('reloadSprintTaks')" :model="sprints" class="p-2 rounded-0 border-0" style="background-color: #f3f4f6;">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
                                                 <router-link class="text-decoration-none text-lowercase" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
@@ -117,7 +117,7 @@
                                 </ul>
                             </li>
                             <li class="list-group-item border-0">
-                                <router-link class="text-decoration-none" :to="{name: 'Trash'}">
+                                <router-link class="text-decoration-none list-group-item border-0 p-0" :to="{name: 'Trash'}">
                                     <i class="pi pi-trash"></i>
                                     Lixeira
                                 </router-link>
@@ -218,10 +218,17 @@ export default {
 .col-md-2, .list-group-item{
     color: #475569;
 }
+.side-bar-body, .list-group-item{
+    background-color: #f3f4f6;
+    transition: 0.3s ease-in-out;
+}
 .list-group-item{
     cursor: pointer;
 }
 .sidebar-body, .sub-menu-item{
     font-size: 0.9rem;
+}
+.list-group-item:hover{
+    color: var(--li-item-hover-blue);
 }
 </style>

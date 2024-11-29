@@ -2,16 +2,16 @@
     <SidebarComponent>
         <div class="container-fluid">
             <div class="row">
-                <Toolbar class="w-100 p-0">
+                <Toolbar class="w-100 p-2 border-0 border-bottom mb-2">
                     <template #start>
-                        <div class="d-flex w-100">
+                        <div class="d-flex align-items-center gap-2 w-100">
                             <Tag class="d-flex">
                                 <span><small>Projetos</small></span>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-angle-right"></i>
                                 </span>
                             </Tag>
-                            <Button v-for="project of projects" class="task-description rounded-pill d-flex gap-1 project_btn_toolbar" @click="listProjectData(project)" :id="`project_btn_toolbar_${project.id}`" label="Projeto" text>
+                            <Button v-for="project of projects" class="task-description btn-text-nowrap rounded-pill d-flex gap-1 project_btn_toolbar px-2 py-1" @click="listProjectData(project)" :id="`project_btn_toolbar_${project.id}`" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i :style="`color: #${project.severity};`" class="pi pi-circle-fill small-icon"></i>
                                 </span>
@@ -25,31 +25,31 @@
                 <Toolbar class="p-0 border-0 bg-transparent border-bottom">
                     <template #start>
                         <div class="d-flex gap-2 w-100">
-                            <Button @click="toggleComponent = 'SprintListComponent'" class="task-description d-flex gap-1" label="Projeto" text>
+                            <Button @click="toggleComponent = 'SprintListComponent'" class="task-description btn-text-nowrap  d-flex gap-1" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-bolt small-icon"></i>
                                 </span>
                                 <span class="small-fw"><small>Sprint</small></span>
                             </Button>
-                            <Button class="task-description d-flex gap-1" label="Projeto" text>
+                            <Button class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-align-center small-icon"></i>
                                 </span>
                                 <span class="small-fw"><small>Tarefas</small></span>
                             </Button>
-                            <Button class="task-description d-flex gap-1" label="Projeto" text>
+                            <Button class="task-description d-flex gap-1 btn-text-nowrap " label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-chart-pie small-icon"></i>
                                 </span>
                                 <span class="small-fw"><small>Insights</small></span>
                             </Button>
-                            <Button @click="listAllprojectTaskBacklog" class="task-description d-flex gap-1" label="Projeto" text>
+                            <Button @click="listAllprojectTaskBacklog" class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-hammer small-icon"></i>
                                 </span>
                                 <span class="small-fw"><small>Backlog</small></span>
                             </Button>
-                            <Button @click="visibleFastTaskDialog = true" class="task-description d-flex gap-1" label="Projeto" text>
+                            <Button @click="visibleFastTaskDialog = true" class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-plus-circle small-icon"></i>
                                 </span>

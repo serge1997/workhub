@@ -39,6 +39,7 @@ import AutoComplete from 'primevue/autocomplete';
 import ColorPicker from 'primevue/colorpicker';
 import OverlayPanel from 'primevue/overlaypanel';
 import Sidebar from 'primevue/sidebar';
+import './../../resources/css/app.css';
 
 function loggedIn(){
     return localStorage.getItem('token');

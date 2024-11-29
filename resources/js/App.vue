@@ -68,4 +68,7 @@ body {
     opacity: 0;
     transform: translateY(30%);
 }
+.btn-text-nowrap{
+    white-space: nowrap;
+}
 </style>
