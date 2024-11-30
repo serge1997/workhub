@@ -11,9 +11,20 @@ function when(condition, trueValue, defaultValue =  null){
     }
 }
 function taskStatusSeverity(status){
-    if(status === "WAT")  return "warning";
-    if (status === "PRO") return "primary";
-    return "secondary";
+    let severity = null;
+    switch(status){
+        case "WAT" :
+            severity = "warning";
+            break;
+        case "PRO" :
+            severity = "primary";
+            break;
+        case "CON" :
+            severity = "success";
+            break;
+        default : severity = "secondary";
+    }
+    return severity;
 }
 function prioritySeverity(priority){
     if(priority === "ALT")  return "danger";

@@ -1,9 +1,6 @@
 <template>
     <SidebarComponent>
         <div class="row position-relative">
-            <div class="col-md-10 m-auto">
-                <h3 class="text-center fw-light"></h3>
-            </div>
             <div class="col-md-10">
                 <div class="card w-100 border-0">
                     <form @submit.prevent="createTask" id="task-form">

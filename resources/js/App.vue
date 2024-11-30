@@ -1,6 +1,10 @@
 <template>
     <div>
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+            <Transition name="transition-router">
+                <component :is="Component"></component>
+            </Transition>
+        </router-view>
         <Toast />
     </div>
 </template>
@@ -54,19 +58,13 @@ body {
 .cursor-p {
     cursor: pointer;
 }
-.slide-fade-enter-active,
-.slide-fade-leave-active{
-    transition: all 0.5s ease-out;
-    transform: translateY(10%);
-}
-.slide-fade-enter-to{
-    margin-top: 30%;
+.transition-router-leave-from{
     opacity: 0;
+    transition: opacity 0.5s;
 }
-.slide-fade-enter-from,
-.slide-fade-leave-to {
+.transition-router-leave-to{
     opacity: 0;
-    transform: translateY(30%);
+    transition: opacity 0.5s;
 }
 .btn-text-nowrap{
     white-space: nowrap;

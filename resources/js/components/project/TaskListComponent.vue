@@ -1,7 +1,7 @@
 <template>
     <div class="row" v-if="tasks">
         <ul class="list-group">
-            <li v-for="task in tasks" class="list-group-item border-0 border-bottom d-flex gap-2" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)" :id="`task_list_li_${task.id}`">
+            <li v-for="task in tasks" class="list-group-item task-list-list-items border-0 border-bottom d-flex gap-2" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)" :id="`task_list_li_${task.id}`">
                 <div class="d-flex align-items-center select_btn_div_box">
                     <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
                        <Button @click="onSelectedTask(task.id)" class="p-0" text>
@@ -54,11 +54,17 @@
             />
         </Dialog>
     </div>
+    <div class="w-100">
+        <TaskToolbarComponent
+            :tasks-ids="selected_tasks_ids"
+        />
+    </div>
 </template>
 <script>
 import { defineAsyncComponent } from 'vue';
 import ListTaskExecutionStatusComponent from '../ListTaskExecutionStatusComponent.vue';
 import { useToast } from "primevue/usetoast";
+import { when } from '../../core/utilities.mjs';
 export default {
     name: 'TaskListComponent',
     props: {
@@ -69,7 +75,10 @@ export default {
         ListTaskExecutionStatusComponent,
         ShowTaskComponent: defineAsyncComponent({
             loader: () => import('../ShowTaskComponent.vue')
-        })
+        }),
+        TaskToolbarComponent: defineAsyncComponent(() =>
+            import('../TaskToolbarComponent.vue')
+        )
     },
     data(){
         return {
@@ -77,7 +86,8 @@ export default {
             visibleShowTaskModal: false,
             toast: useToast(),
             task_selected_id: null,
-            task_selected_action_icon: 'pi-circle'
+            task_selected_action_icon: 'pi-circle',
+            selected_tasks_ids: []
         }
     },
     methods: {
@@ -122,10 +132,23 @@ export default {
         onSelectedTask(id){
             const iconTag = document.getElementById(`selected_task_icon_${id}`);
             const li = document.getElementById(`task_list_li_${id}`);
+            const all = document.querySelectorAll('.task-list-list-items');
+            let classes = [];
+            if(!this.selected_tasks_ids.includes(id)) this.selected_tasks_ids.push(id);
             iconTag.classList.toggle('pi-circle');
             iconTag.classList.toggle('pi-circle-fill');
             iconTag.classList.toggle('selected_icon_color')
             li.classList.toggle('selected_task_li')
+            all.forEach(el => {
+                if (el.classList.contains('selected_task_li')){
+                    classes.push('selected_task_li');
+                }
+            })
+            if (classes.includes('selected_task_li')){
+                document.getElementById('task-toolbar').classList.remove('d-none')
+            }else{
+                document.getElementById('task-toolbar').classList.add('d-none')
+            }
         }
     },
     mounted(){
