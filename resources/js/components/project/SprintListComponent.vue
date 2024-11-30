@@ -16,7 +16,7 @@
                         <span>{{ sprint.name }}</span>
                     </Tag>
                     <span style="width: 15px;" class="d-flex align-items-center">
-                        <small class="task-description">{{ sprint.count_tasks }}</small>
+                        <Tag severity="secondary" class="px-2":value="sprint.count_tasks"/>
                     </span>
                     <Button text class="p-1 task-description">
                         <span><i class="pi pi-ellipsis-h"></i></span>

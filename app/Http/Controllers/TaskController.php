@@ -184,4 +184,18 @@ class TaskController extends Controller
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
         }
     }
+
+    public function listAllTaskByProjectAndStatus(int $project_id, int $status_id)
+    {
+        try{
+            /** @var TaskListAction $taskListAction */
+            $taskListAction = $this->container->get(TaskListAction::class);
+            $response = $taskListAction->listAllByProjectAndStatus($project_id, $status_id);
+            return response()
+                ->json($this->successResponse('listando tarefa por projeto e status', $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
+        }
+    }
 }

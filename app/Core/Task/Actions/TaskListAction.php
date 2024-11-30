@@ -40,4 +40,12 @@ final class TaskListAction
             $this->taskRepository->findAllBacklogTaskByProject($project_id)
         );
     }
+
+    public function listAllByProjectAndStatus(int $project_id, int $status_id)
+    {
+        return TaskResource::collection(
+            $this->taskRepository->findAllByProjectAndStatus($project_id, $status_id)
+        );
+    }
+
 }

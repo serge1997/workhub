@@ -31,7 +31,7 @@
                                 </span>
                                 <span class="small-fw"><small>Sprint</small></span>
                             </Button>
-                            <Button class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
+                            <Button @click="toggleComponent = 'TaskListByExecutionStatusComponent'"  class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-align-center small-icon"></i>
                                 </span>
@@ -82,17 +82,22 @@
     </SidebarComponent>
 </template>
 <script>
-import SprintListComponent from '../../project/SprintListComponent.vue';
-import BacklogTaskComponent from '../../project/BacklogTaskComponent.vue';
 import { defineAsyncComponent } from 'vue';
 export default {
     name: 'Project',
 
     components: {
-        SprintListComponent,
-        BacklogTaskComponent,
+        SprintListComponent: defineAsyncComponent(() =>
+            import('../../project/SprintListComponent.vue')
+        ),
+        BacklogTaskComponent: defineAsyncComponent(() =>
+            import('../../project/BacklogTaskComponent.vue')
+        ),
         CreateFastTaskComponent: defineAsyncComponent(() =>
             import('./../../CreateFastTaskComponent.vue')
+        ),
+        TaskListByExecutionStatusComponent: defineAsyncComponent(() =>
+            import('../../project/TaskListByExecutionStatusComponent.vue')
         )
     },
 

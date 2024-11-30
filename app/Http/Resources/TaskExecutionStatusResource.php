@@ -17,10 +17,11 @@ class TaskExecutionStatusResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'name_ucfirst' => ucfirst(strtolower($this->name)),
             'status' => $this->status,
             'description' => $this->description,
             'severity' => $this->executionStatusSeveriry(),
-            'task_count' => $this->count_task()
+            'task_count' => $this->count_task() ?: "-"
         ];
     }
 }
