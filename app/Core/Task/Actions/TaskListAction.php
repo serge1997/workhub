@@ -48,4 +48,11 @@ final class TaskListAction
         );
     }
 
+    public function listAllByIds(array $tasks_ids)
+    {
+        return TaskResource::collection(
+            $this->taskRepository->findAllByIds($tasks_ids)
+        );
+    }
+
 }

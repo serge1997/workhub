@@ -3,6 +3,7 @@ namespace App\Core\Task\Actions;
 
 use App\Core\Task\TaskRepositoryInterface;
 use App\Core\TaskActivity\TaskActivityRepositoryInterface;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Services\Base\BaseAction;
 
@@ -46,5 +47,15 @@ final class TaskUpdateAction extends BaseAction
             );
         }
         return $task;
+    }
+
+    public function transfertTask($request)
+    {
+        if (!$request->status_id && !$request->sprint_id){
+            throw new \Exception("informe o sprint ou a status para continuar");
+        }
+        return TaskResource::collection(
+            $this->taskRepository->transfertTasks($request)
+        );
     }
 }

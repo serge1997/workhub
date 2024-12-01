@@ -80,6 +80,8 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::get('tasks/sprint/{sprint_id}/project/{project_id}', 'getAllBySprintAndProject')->name('list.by.sprint.project');
             Route::get('tasks/list-backlogs-by-project/{project_id}', 'getAllBacklogsByProject')->name('list.backlogs.by.project')->whereNumber('project_id');
             Route::get('task/list-by-project/{project_id}/status/{status_id}', 'listAllTaskByProjectAndStatus')->whereNumber(['project_id', 'status_id']);
+            Route::post('task/list-by-ids', 'listAllByTasksIds')->name('list.by.ids');
+            Route::put('task/transfert', 'transfert')->name('transfert');
         });
     });
 

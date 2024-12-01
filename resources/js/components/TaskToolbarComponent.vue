@@ -25,7 +25,7 @@
     </div>
     <div class="container">
         <div class="row">
-            <Sidebar v-model:visible="visibleTaskTransfertSidebar" header="Sidebar" :style="{width: '35em'}">
+            <Sidebar v-model:visible="visibleTaskTransfertSidebar" header="Transferir tarefas" :style="{width: '35em'}">
                <TransfertTaskComponent
                     :tasks-ids="tasksIds"
                 />

@@ -136,4 +136,35 @@ class TaskRepository implements TaskRepositoryInterface
             ->orderBy('created_at', 'desc')
                 ->get();
     }
+
+    public function findAllByIds(array $tasks_ids)
+    {
+        return Task::whereIn('id', $tasks_ids)
+            ->orderBy('created_at')
+                ->get();
+    }
+
+    public function transfertTasks($request)
+    {
+        $data = [
+            'sprint_id' => $request->sprint_id,
+            'execution_status_id' => $request->status_id
+        ];
+        if (!$data['sprint_id']){
+            array_splice($data, 0, 1);
+        }
+        if(!$data['execution_status_id']){
+            array_splice($data, 1, 1);
+        }
+        foreach ($request->tasks_ids as $id){
+            $req = new \stdClass();
+            $req->task_id = $id;
+            $task = $this->find($req);
+            if ($task){
+                $task->update($data);
+            }
+        }
+
+        return $this->findAllByIds($request->tasks_ids);
+    }
 }

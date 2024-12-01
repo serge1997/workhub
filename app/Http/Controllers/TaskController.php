@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Core\Task\Actions\TaskListAction;
+use App\Core\Task\Actions\TaskUpdateAction;
 use App\Core\Task\TaskRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTaskRequest;
@@ -198,4 +199,33 @@ class TaskController extends Controller
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
         }
     }
+
+    public function listAllByTasksIds(Request $request)
+    {
+        try{
+            /** @var TaskListAction $taskListAction */
+            $taskListAction = $this->container->get(TaskListAction::class);
+            $response = $taskListAction->listAllByIds($request->tasks_ids);
+            return response()
+                ->json($this->successResponse('listando tarefas por ids', $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
+        }
+    }
+
+    public function transfert(Request $request)
+    {
+        try{
+            /** @var TaskUpdateAction $taskUpdateAction */
+            $taskUpdateAction = $this->container->get(TaskUpdateAction::class);
+            $response = $taskUpdateAction->transfertTask($request);
+            return response()
+                ->json($this->successResponse('tarefas transeferidas com sucesso', $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse("{$e->getMessage()}"), 500);
+        }
+    }
+
 }
