@@ -1,6 +1,6 @@
 <template>
-    <Tag @click="toggleTaskOverlayPanel" class="cursor-p" severity="warning" :value="`in progress(${ project.tasks_count_in_progress})`" icon="pi pi-tag" />
-    <OverlayPanel ref="visibleOverlayPanel" style="width: 40%;">
+    <Tag @click="toggleTaskOverlayPanel" class="cursor-p btn-text-nowrap" severity="warning" :value="`in progress(${ project.tasks_count_in_progress})`" icon="pi pi-tag" />
+    <OverlayPanel ref="visibleOverlayPanel" style="width: 380px;">
         <ul class="list-group w-100">
             <li v-for="task in tasks" @click="showTask(task)" class="list-group-item border-0 d-flex flex-column gap-1 cursor-p">
                 <span class="">

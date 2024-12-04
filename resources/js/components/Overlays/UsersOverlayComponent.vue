@@ -1,6 +1,6 @@
 <template>
-    <Tag v-if="!isShowComponent && project" @click="toggleUserOverlayPanel" class="cursor-p" :value="tagLabel()" icon="pi pi-users" />
-    <Tag v-if="isShowComponent && user" @click="toggleUserOverlayPanel" class="cursor-p">
+    <Tag v-if="!isShowComponent && project" @click="toggleUserOverlayPanel" class="cursor-p btn-text-nowrap" :value="tagLabel()" icon="pi pi-users" />
+    <Tag v-if="isShowComponent && user" @click="toggleUserOverlayPanel" class="cursor-p btn-text-nowrap">
         <img class="img-thumbnail rounded-circle" style="width: 28px;" :src="`/img/users_avatars/${user.avatar}`" alt="">
         {{ user.name }}
     </Tag>

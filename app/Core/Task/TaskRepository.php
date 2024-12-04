@@ -132,7 +132,7 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function findAllByProjectAndStatus($project_id, $status)
     {
-        return Task::where([['project_id', $project_id], ['execution_status_id', $status]])
+        return Task::where([['project_id', $project_id], ['execution_status_id', $status], ['deleted_at', null]])
             ->orderBy('created_at', 'desc')
                 ->get();
     }

@@ -1,6 +1,6 @@
 <template>
-    <Tag @click="toggleTasksOverlayPanel" icon="pi pi-eye" :value="tagLabel" :severity="tagSeverity"/>
-    <OverlayPanel ref="visibleTasksOverlayPanel" style="width: 30%;">
+    <Tag @click="toggleTasksOverlayPanel" icon="pi pi-eye btn-text-nowrap" :value="tagLabel" :severity="tagSeverity"/>
+    <OverlayPanel ref="visibleTasksOverlayPanel" style="width: 380px;">
         <ul class="list-group w-100">
             <li v-for="task in tasks" class="list-group-item border-0 d-flex flex-column gap-1 cursor-p">
                 <span class="">

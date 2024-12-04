@@ -34,7 +34,7 @@ class TaskExecutionStatus extends Model
 
     public function count_task() : int
     {
-        return $this->task->count();
+        return $this->task->where('deleted_at', null)->count();
     }
     public function fullStatusName() : TaskExecutionStatusEnum
     {
