@@ -1,9 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-8">
-
-        </div>
-        <div class="col-md-8 d-flex flex-column gap-3">
+        <div class="col-md-12 d-flex flex-column gap-3">
             <div v-for="(status, index) of execution_status" class="w-100 d-flex flex-column gap-2">
                 <div class="w-100 d-flex gap-3">
                     <Button text class="p-1 task-description" @click="listTaskByExecutionStatus(status.id, index, true)">

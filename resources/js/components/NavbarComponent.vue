@@ -1,7 +1,9 @@
 <template>
     <div class="m-auto bg-white d-flex justify-content-between align-items-center">
-        <div class="col-md-1 d-flex align-items-center">
+        <div class="col-md-4 d-flex align-items-center">
             <Button @click="$emit('showSidebar')" class="task-description" icon="pi pi-th-large" text/>
+            <Button label="Equipe" class="task-description" text />
+            <Button label="Sprints" class="task-description" text />
         </div>
         <div class="p-1 d-flex justify-content-end col-md-8 align-items-center">
             <Button @click="showNotifyBox = !showNotifyBox" text class="bg-transparent gap-0" style="width: 80px;">

@@ -1,45 +1,51 @@
 <template>
     <div class="row" v-if="tasks">
-        <ul class="list-group">
-            <li v-for="task in tasks" class="list-group-item task-list-list-items border-0 border-bottom d-flex gap-2" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)" :id="`task_list_li_${task.id}`">
-                <div class="d-flex align-items-center select_btn_div_box">
-                    <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
-                       <Button @click="$emit('onSelectedTask', task.id)" class="p-0" text>
-                            <i :id="`selected_task_icon_${task.id}`" :class="`pi pi-circle task-description`"></i>
-                       </Button>
-                    </span>
-                </div>
-                <div class="w-100 btn-text-nowrap d-flex justify-content-between">
-                    <span class="d-flex justify-content-start gap-3 p-1">
-                        <span>
-                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
-                        </span>
-                        <span class="task-description">
-                            <small>{{ task.title }}</small>
-                        </span>
-                        <span class="d-flex align-items-center">
-                            <Tag class="p-1 v-small-fs" :style="`background-color: ${task.execution_status_severity}`" :value="task.full_task_execution_status" />
-                        </span>
-                        <span class="d-flex align-items-center p-0" title="Prioridade da tarefa">
-                            <Tag severity="warning">
-                                <small class="v-small-fs">{{ task.priority_fullDescription }}</small>
-                            </Tag>
-                        </span>
-                        <span class="task-description" title="Sprint da tarefa">
-                            <small class="v-small-fs">{{ task.sprint_name }}</small>
-                        </span>
-                    </span>
-                    <span class="d-flex align-items-center">
-                        <ListTaskExecutionStatusComponent
-                            :task="task"
-                            @list-all-task="$emit('updateUi')"
-                            :task-status="taskStatus"
-                        />
-                        <Button class="p-1" @click="showTask(task.id)" text>
-                            <i class="pi pi-align-center icon-list-task"></i>
+        <ul class="list-group col-md-12">
+            <li v-for="task in tasks" class="list-group-item w-100 task-list-list-items d-flex flex-column border-0" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)" :id="`task_list_li_${task.id}`">
+                <div class="w-100 border-bottom d-flex gap-2">
+                    <div class="d-flex align-items-center select_btn_div_box">
+                        <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
+                        <Button @click="$emit('onSelectedTask', task.id)" class="p-0" text>
+                                <i :id="`selected_task_icon_${task.id}`" :class="`pi pi-circle task-description`"></i>
                         </Button>
-                    </span>
+                        </span>
+                    </div>
+                    <div class="col-md-12 btn-text-nowrap d-flex justify-content-between">
+                        <span class="d-flex justify-content-start gap-3 p-1">
+                            <span>
+                                <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': task.execution_status_severity}"></i>
+                            </span>
+                            <span class="task-description">
+                                <small>{{ task.title }}</small>
+                            </span>
+                            <span class="d-flex align-items-center">
+                                <Tag class="p-1 v-small-fs" :style="`background-color: ${task.execution_status_severity}`" :value="task.full_task_execution_status" />
+                            </span>
+                            <span class="d-flex align-items-center p-0" title="Prioridade da tarefa">
+                                <Tag severity="warning">
+                                    <small class="v-small-fs">{{ task.priority_fullDescription }}</small>
+                                </Tag>
+                            </span>
+                            <span class="task-description" title="Sprint da tarefa">
+                                <small class="v-small-fs">{{ task.sprint_name }}</small>
+                            </span>
+                        </span>
+                        <span class="d-flex align-items-center gap-2">
+                            <Button class="p-1" @click="showTask(task.id)" severity="secondary" text>
+                                <i class="pi pi-plus icon-list-task"></i>
+                            </Button>
+                            <ListTaskExecutionStatusComponent
+                                :task="task"
+                                @list-all-task="$emit('updateUi')"
+                                :task-status="taskStatus"
+                            />
+                            <Button class="p-1" @click="showTask(task.id)" severity="secondary" text>
+                                <i class="pi pi-align-center icon-list-task"></i>
+                            </Button>
+                        </span>
+                    </div>
                 </div>
+                <CreateSubTaskComponent />
             </li>
         </ul>
     </div>
@@ -59,7 +65,7 @@
 import { defineAsyncComponent } from 'vue';
 import ListTaskExecutionStatusComponent from '../ListTaskExecutionStatusComponent.vue';
 import { useToast } from "primevue/usetoast";
-import { when } from '../../core/utilities.mjs';
+
 export default {
     name: 'TaskListComponent',
     props: {
@@ -73,6 +79,9 @@ export default {
         }),
         TaskToolbarComponent: defineAsyncComponent(() =>
             import('../TaskToolbarComponent.vue')
+        ),
+        CreateSubTaskComponent: defineAsyncComponent(() =>
+            import('./../tasks/CreateSubTaskComponent.vue')
         )
     },
     data(){

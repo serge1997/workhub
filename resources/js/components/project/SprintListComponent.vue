@@ -6,7 +6,7 @@
                 <span>Sprint</span>
             </h6>
         </div>
-        <div class="col-md-8 d-flex flex-column gap-3">
+        <div class="col-md-12 d-flex flex-column gap-3">
             <div v-for="(sprint, index) of sprints" class="w-100 d-flex flex-column gap-2">
                 <div class="w-100 d-flex gap-3">
                     <Button text class="p-1 task-description" @click="listTaskBySprint(sprint.id, index, true)">
@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-100">
+        <div class="col-md-12">
             <TaskToolbarComponent
                 :tasks-ids="selected_tasks_ids"
             />
