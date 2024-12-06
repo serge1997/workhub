@@ -27,14 +27,21 @@
                         :tasks="tasks[index]"
                         @update-ui="listTaskBySprint(sprint.id, index, false)"
                         :task-status="taskStatus"
+                        @on-selected-task="onSelectedTask"
                     />
                 </div>
             </div>
+        </div>
+        <div class="w-100">
+            <TaskToolbarComponent
+                :tasks-ids="selected_tasks_ids"
+            />
         </div>
     </div>
 </template>
 <script>
 import TaskListComponent from './TaskListComponent.vue';
+import { defineAsyncComponent } from 'vue';
 export default {
     name: 'SprintListComponent',
 
@@ -46,17 +53,48 @@ export default {
     },
 
     components: {
-        TaskListComponent
+        TaskListComponent,
+        TaskToolbarComponent: defineAsyncComponent(() =>
+            import('../TaskToolbarComponent.vue')
+        )
     },
 
     data() {
         return {
             toggleIcon: 'pi-angle-right',
-            tasks: []
+            tasks: [],
+            selected_tasks_ids: []
         }
     },
 
     methods: {
+        onSelectedTask(id){
+            const iconTag = document.getElementById(`selected_task_icon_${id}`);
+            const li = document.getElementById(`task_list_li_${id}`);
+            const all = document.querySelectorAll('.task-list-list-items');
+            let classes = [];
+            iconTag.classList.toggle('pi-circle');
+            iconTag.classList.toggle('pi-circle-fill');
+            iconTag.classList.toggle('selected_icon_color')
+            li.classList.toggle('selected_task_li')
+            all.forEach(el => {
+                if (el.classList.contains('selected_task_li')){
+                    classes.push('selected_task_li');
+                }
+            })
+            if (classes.includes('selected_task_li')){
+                document.getElementById('task-toolbar').classList.remove('d-none')
+            }else{
+                document.getElementById('task-toolbar').classList.add('d-none')
+            }
+            if(!this.selected_tasks_ids.includes(id)){
+                this.selected_tasks_ids.push(id);
+            }else{
+                if (!li.classList.contains('selected_task_li')){
+                    this.selected_tasks_ids.splice(this.selected_tasks_ids.indexOf(id), 1);
+                }
+            }
+        },
         listTaskBySprint(sprint_id, index, hidden_box){
             this.Api.get(`tasks/sprint/${sprint_id}/project/${this.projectId}`)
             .then(async response => {
