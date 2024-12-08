@@ -31,7 +31,7 @@
                             </span>
                         </span>
                         <span class="d-flex align-items-center gap-2">
-                            <Button class="p-1" @click="showTask(task.id)" severity="secondary" text>
+                            <Button class="p-1" @click="showSubTaskForm(task.id)" severity="secondary" text>
                                 <i class="pi pi-plus icon-list-task"></i>
                             </Button>
                             <ListTaskExecutionStatusComponent
@@ -45,7 +45,11 @@
                         </span>
                     </div>
                 </div>
-                <CreateSubTaskComponent />
+                <CreateSubTaskComponent
+                    :task-status="taskStatus"
+                    :task-id="task.id"
+                    @hidden-sub-task-form="hiddenSubTaskForm(task.id)"
+                />
             </li>
         </ul>
     </div>
@@ -95,6 +99,12 @@ export default {
         }
     },
     methods: {
+        hiddenSubTaskForm(id){
+            document.getElementById(`subtask-box-${id}`).classList.add('d-none')
+        },
+        showSubTaskForm(id){
+            document.getElementById(`subtask-box-${id}`).classList.remove('d-none')
+        },
         showTask(id){
             this.Api.get('task', {task_id: id})
             .then(async response => {
