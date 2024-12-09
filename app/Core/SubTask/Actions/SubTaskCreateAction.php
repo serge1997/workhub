@@ -13,12 +13,14 @@ class SubTaskCreateAction
         private TaskRepositoryInterface $taskRepository
     ){}
 
-    public function run(FormRequest $request)
+    public function run($request)
     {
         $parentTask = $this->taskRepository->find($request->task_id);
         if (!$parentTask){
             throw new SubTaskException("Tarefa pai não encontrada");
         }
+        $request->sprint_id = $parentTask->sprint_id;
+        $request->project_id = $parentTask->project_id;
         $subTask = $this->taskRepository->create($request);
 
         return new SubTaskResource(
