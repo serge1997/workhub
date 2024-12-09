@@ -29,6 +29,11 @@
                             <span class="task-description" title="Sprint da tarefa">
                                 <small class="v-small-fs">{{ task.sprint_name }}</small>
                             </span>
+                            <span class="task-description" title="Sprint da tarefa">
+                                <Button text  class="p-0 task-description">
+                                    <small><i class="pi pi-share-alt v-small-fs"></i></small>
+                                </Button>
+                            </span>
                         </span>
                         <span class="d-flex align-items-center gap-2">
                             <Button class="p-1" @click="showSubTaskForm(task.id)" severity="secondary" text>

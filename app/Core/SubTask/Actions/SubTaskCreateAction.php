@@ -15,14 +15,14 @@ class SubTaskCreateAction
 
     public function run($request)
     {
-        $parentTask = $this->taskRepository->find($request->task_id);
+        $parentTask = $this->taskRepository->find($request);
         if (!$parentTask){
             throw new SubTaskException("Tarefa pai não encontrada");
         }
         $request->sprint_id = $parentTask->sprint_id;
         $request->project_id = $parentTask->project_id;
+        $request->user_id = $parentTask->user_id;
         $subTask = $this->taskRepository->create($request);
-
         return new SubTaskResource(
             $this->subTaskRepository->create($parentTask, $subTask)
         );

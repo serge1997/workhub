@@ -9,7 +9,7 @@
                 :task-status="taskStatus"
                 :task-id="taskId"
             />
-            <input type="file" @change="handleSubTaskFile" class="d-none" :id="`sub-task-annexes-${taskId}`" />
+            <input type="file" ref="sub_task_annexes" @change="handleSubTaskFile" class="d-none" :id="`sub-task-annexes-${taskId}`" />
             <Button @click="uploadSubTaskAnnex(taskId)" class="p-0" severity="secondary" text title="Annex">
                 <i style="font-size: .8em;" class="pi pi-paperclip icon-list-task"></i>
             </Button>
@@ -35,6 +35,7 @@
 <script>
 import { defineAsyncComponent, ref } from 'vue';
 import TaskExecutionOverlayComponent from '../Overlays/TaskExecutionOverlayComponent.vue';
+import { useToast } from 'primevue/usetoast';
 export default {
     name: 'CreateSubTaskComponent',
 
@@ -57,7 +58,9 @@ export default {
             ],
             selected_priority: null,
             sub_task_title: null,
-            annexes: []
+            annexes: [],
+            toast: useToast(),
+            postData: new FormData
         }
     },
     methods: {
@@ -67,7 +70,10 @@ export default {
         },
         handleSubTaskFile(event){
             this.annexes.push(event.target.files[event.target.files.length - 1]);
-            console.log(this.annexes);
+            const files = this.$refs.sub_task_annexes.files;
+            for(let i = 0; i < files.length; i++){
+                this.postData.append('annex[]', files[i]);
+            }
         },
         updateTaskPriority(value){
             this.selected_priority = value;
@@ -82,13 +88,19 @@ export default {
         },
         createSubTask(id){
             let status = document.getElementById('selected-task-status-'+id).value;
-            const data = new FormData;
-            data.append('execution_status_id', status);
-            data.append('priority', this.selected_priority);
-            data.append('title', this.sub_task_title);
-            data.append('annexes', this.annexes);
-            data.append('sub_task', true);
-           this.Api.post('task', data)
+            this.postData.append('execution_status_id', status);
+            this.postData.append('priority', this.selected_priority);
+            this.postData.append('title', this.sub_task_title);
+            this.postData.append('sub_task', true);
+            this.postData.append('task_id', this.taskId)
+           this.Api.post('sub-task', this.postData)
+           .then(async response => {
+                document.getElementById(`sub_task_title-${this.taskId}`).value = null;
+                this.toast.add({severity: 'success', summary: 'successo', detail: await response.data.message, life: 3000})
+           })
+           .catch(error => {
+            this.toast.add({severity: 'error', summary: 'error', detail: error.response.data.message, life: 3000})
+           })
         },
         togglePriorityOverlayPanel(event){
             this.visiblePriorityOverlay.toggle(event);
