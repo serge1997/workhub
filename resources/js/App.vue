@@ -53,7 +53,7 @@ body {
     font-size: 0.7em;
 }
 .v-small-fs {
-    font-size: .6em;
+    font-size: .7em;
 }
 .cursor-p {
     cursor: pointer;

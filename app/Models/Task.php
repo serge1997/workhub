@@ -121,4 +121,9 @@ class Task extends Model
             default => null
         };
     }
+
+    public function subTasks() : HasMany
+    {
+        return $this->hasMany(SubTask::class, 'task_id');
+    }
 }

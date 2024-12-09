@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-4">
-        <Tag style="cursor: pointer;" @click="toogleStatusListBox(task.id)" icon="pi pi-chevron-down" class="p-2" severity="secondary" :value="tagValue" />
+        <Tag style="cursor: pointer;" @click="toogleStatusListBox(task.id)" icon="pi pi-chevron-down v-small-fs" class="p-2" severity="secondary" :value="tagValue" />
         <Listbox class="border rounded-2 shadow-sm d-none position-absolute" style="z-index: 999;right: 0%; width: 240px;" @change="handleTaskStatus(task.id)" :id="`task-status-listbox-${componentName}-${task.id}`" v-model="selectedStatus" :options="taskStatus" optionLabel="name">
             <template #option="slotProps">
                 <div class="d-flex align-items-center gap-2 border-bottom p-1">

@@ -43,6 +43,6 @@ final class CreateTaskAction
        //websocket called is below
         //$notification->activity = "{$notification->user->name} {$notification->activity}";
         //$ws->notify(new TaskActivityResource($notification));
-
+       return $task;
     }
 }

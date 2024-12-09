@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SprintController;
+use App\Http\Controllers\SubTaskController;
 use App\Http\Controllers\TaskActivityController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskExecutionStatusController;
@@ -39,6 +40,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function() {
+
+    Route::controller(SubTaskController::class)->group(function(){
+        Route::prefix('sub-task')->name('sub_task')->group(function(){
+            Route::post('/', 'store')->name('store');
+        });
+    });
 
     Route::controller(TeamSpaceController::class)->group(function(){
         Route::prefix('team-space')->name('team-space.')->group(function(){

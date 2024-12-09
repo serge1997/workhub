@@ -32,7 +32,7 @@
                         </span>
                         <span class="d-flex align-items-center gap-2">
                             <Button class="p-1" @click="showSubTaskForm(task.id)" severity="secondary" text>
-                                <i class="pi pi-plus icon-list-task"></i>
+                                <i class="pi pi-plus v-small-fs icon-list-task"></i>
                             </Button>
                             <ListTaskExecutionStatusComponent
                                 :task="task"
@@ -40,7 +40,7 @@
                                 :task-status="taskStatus"
                             />
                             <Button class="p-1" @click="showTask(task.id)" severity="secondary" text>
-                                <i class="pi pi-align-center icon-list-task"></i>
+                                <i class="pi pi-align-center v-small-fs icon-list-task"></i>
                             </Button>
                         </span>
                     </div>
@@ -101,6 +101,7 @@ export default {
     methods: {
         hiddenSubTaskForm(id){
             document.getElementById(`subtask-box-${id}`).classList.add('d-none')
+            document.getElementById('sub_task_title-'+id).value = null;
         },
         showSubTaskForm(id){
             document.getElementById(`subtask-box-${id}`).classList.remove('d-none')

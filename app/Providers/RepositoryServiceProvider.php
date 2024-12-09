@@ -22,6 +22,8 @@ use App\Core\Project\ProjectRepository;
 use App\Core\Project\ProjectRepositoryInterface;
 use App\Core\Sprint\SprintRepository;
 use App\Core\Sprint\SprintRepositoryInterface;
+use App\Core\SubTask\Repository\SubTaskRepository;
+use App\Core\SubTask\Repository\SubTaskRepositoryInterface;
 use App\Core\Task\TaskRepository;
 use App\Core\Task\TaskRepositoryInterface;
 use App\Core\TaskActivity\TaskActivityRepository;
@@ -59,6 +61,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(SprintRepositoryInterface::class, SprintRepository::class);
         $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
         $this->app->bind(TeamSpaceRepositoryInterface::class, TeamSpaceRepository::class);
+        $this->app->bind(SubTaskRepositoryInterface::class, SubTaskRepository::class);
     }
 
     /**

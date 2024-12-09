@@ -38,7 +38,7 @@ class TaskRepository implements TaskRepositoryInterface
             $this->customColumnsValueRepositoryInterface,
             $this->taskActivityRepositoryInterface
         );
-        $action->run($request);
+        return $action->run($request);
     }
     public function listAll()
     {
