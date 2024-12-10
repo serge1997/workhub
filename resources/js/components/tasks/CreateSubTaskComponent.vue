@@ -97,6 +97,8 @@ export default {
            .then(async response => {
                 document.getElementById(`sub_task_title-${this.taskId}`).value = null;
                 this.toast.add({severity: 'success', summary: 'successo', detail: await response.data.message, life: 3000})
+                document.getElementById(`subtask-box-${this.taskId}`).classList.add('d-none');
+                this.$emit('updateUi');
            })
            .catch(error => {
             this.toast.add({severity: 'error', summary: 'error', detail: error.response.data.message, life: 3000})

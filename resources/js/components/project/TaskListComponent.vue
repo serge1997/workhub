@@ -1,12 +1,12 @@
 <template>
-    <div class="row" v-if="tasks">
-        <ul class="list-group col-md-12">
-            <li v-for="task in tasks" class="list-group-item w-100 task-list-list-items d-flex flex-column border-0" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)" :id="`task_list_li_${task.id}`">
-                <div class="w-100 border-bottom d-flex gap-2">
+    <div class="col-md-12" v-if="tasks">
+        <ul class="list-group w-100 m-auto">
+            <li v-for="(task, index) in tasks" class="list-group-item p-0 w-100 task-list-list-items d-flex flex-column border-0" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)" :id="`task_list_li_${task.id}`">
+                <div v-if="!task.is_sub_task" class="w-100 border-bottom d-flex gap-2 p-2">
                     <div class="d-flex align-items-center select_btn_div_box">
                         <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
                         <Button @click="$emit('onSelectedTask', task.id)" class="p-0" text>
-                                <i :id="`selected_task_icon_${task.id}`" :class="`pi pi-circle task-description`"></i>
+                            <i :id="`selected_task_icon_${task.id}`" :class="`pi pi-circle task-description`"></i>
                         </Button>
                         </span>
                     </div>
@@ -29,8 +29,8 @@
                             <span class="task-description" title="Sprint da tarefa">
                                 <small class="v-small-fs">{{ task.sprint_name }}</small>
                             </span>
-                            <span class="task-description" title="Sprint da tarefa">
-                                <Button text  class="p-0 task-description">
+                            <span v-if="task.sub_task_count" class="task-description" title="Sprint da tarefa">
+                                <Button @click="listSubTaskByParent(task.id, index)" text  class="p-0 task-description">
                                     <small><i class="pi pi-share-alt v-small-fs"></i></small>
                                 </Button>
                             </span>
@@ -50,14 +50,57 @@
                         </span>
                     </div>
                 </div>
+                <div v-if="sub_tasks[index]" class="w-100">
+                    <ul class="list-group">
+                        <li v-for="sub in sub_tasks[index]" class="list-group-item w-100 task-list-list-items d-flex flex-column border-0 mb-1 p-2 px-4">
+                            <div class="w-100 border-bottom d-flex align-items-center gap-2">
+                                <span class="cursor-p" @click="detachSubTask(sub)" title="Detach sub task"><Tag icon="pi pi-reply" severity="secondary" /></span>
+                                <div class="col-md-12 btn-text-nowrap d-flex justify-content-between">
+                                    <span class="d-flex justify-content-start gap-3 p-1">
+                                        <span>
+                                            <i style="font-size: 0.6em;" class="pi pi-flag-fill" :style="{'color': sub.execution_status_severity}"></i>
+                                        </span>
+                                        <span class="task-description">
+                                            <small>{{ sub.title }}</small>
+                                        </span>
+                                        <span class="d-flex align-items-center">
+                                            <Tag class="p-1 v-small-fs" :style="`background-color: ${sub.execution_status_severity}`" :value="task.full_task_execution_status" />
+                                        </span>
+                                        <span class="d-flex align-items-center p-0" title="Prioridade da tarefa">
+                                            <Tag severity="warning">
+                                                <small class="v-small-fs">{{ sub.priority_fullDescription }}</small>
+                                            </Tag>
+                                        </span>
+                                        <span class="task-description" title="Sprint da tarefa">
+                                            <small class="v-small-fs">{{ sub.sprint_name }}</small>
+                                        </span>
+                                    </span>
+                                    <span class="d-flex align-items-center gap-2">
+                                        <ListTaskExecutionStatusComponent
+                                            :task="sub"
+                                            @list-all-task="$emit('updateUi')"
+                                            :task-status="taskStatus"
+                                        />
+                                        <Button class="p-1" @click="showTask(sub.id)" severity="secondary" text>
+                                            <i class="pi pi-align-center v-small-fs icon-list-task"></i>
+                                        </Button>
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
                 <CreateSubTaskComponent
                     :task-status="taskStatus"
                     :task-id="task.id"
                     @hidden-sub-task-form="hiddenSubTaskForm(task.id)"
+                    @update-ui="$emit('updateUi')"
                 />
             </li>
         </ul>
     </div>
+    <ConfirmDialog />
+    <Toast />
     <div class="w-100">
         <Dialog v-model:visible="visibleShowTaskModal" maximizable modal header=" " :style="{ width: '95rem' }">
             <ShowTaskComponent
@@ -74,6 +117,7 @@
 import { defineAsyncComponent } from 'vue';
 import ListTaskExecutionStatusComponent from '../ListTaskExecutionStatusComponent.vue';
 import { useToast } from "primevue/usetoast";
+import { useConfirm } from 'primevue/useconfirm';
 
 export default {
     name: 'TaskListComponent',
@@ -100,10 +144,43 @@ export default {
             toast: useToast(),
             task_selected_id: null,
             task_selected_action_icon: 'pi-circle',
-            selected_tasks_ids: []
+            selected_tasks_ids: [],
+            sub_tasks: [],
+            confirm: useConfirm()
         }
     },
     methods: {
+        detachSubTask(subTask){
+            this.confirm.require({
+                message: 'Você quer deletar a relação ?',
+                header: 'Atenção !!!',
+                icon: 'pi pi-exclamation-triangle',
+                rejectLabel: 'Caneclar',
+                acceptLabel: 'Confirmar',
+                accept: () => {
+                    this.Api.delete(`sub-task/detach/${subTask.id}`)
+                    .then(async response => {
+                        this.toast.add({ severity: 'success', summary: 'successo', detail: await response.data.message, life: 3000 });
+                    })
+                    .catch(error => {
+                        this.toast.add({ severity: 'error', summary: 'error', detail: error.response.data.message, life: 3000 });
+                    })
+
+                },
+                reject: () => {
+
+                }
+            });
+        },
+        listSubTaskByParent(task_id, index){
+            this.Api.get(`sub-task/list-by-parent?task_id=${task_id}`)
+            .then(async response => {
+                this.sub_tasks[index] = await response.data.data;
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'error', detail: error.response.data.message, life: 3000 });
+            })
+        },
         hiddenSubTaskForm(id){
             document.getElementById(`subtask-box-${id}`).classList.add('d-none')
             document.getElementById('sub_task_title-'+id).value = null;
@@ -131,6 +208,7 @@ export default {
                 this.Api.put('custom-column-value', null, data)
                 .then(async response => {
                     this.toast.add({ severity: 'success', summary: 'successo', detail: await response.data.message, life: 3000 });
+                    this.$emit('updateUi');
                 })
                 .catch(error => {
                     this.toast.add({ severity: 'error', summary: 'error', detail: error.response.data.message, life: 3000 });

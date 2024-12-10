@@ -126,4 +126,9 @@ class Task extends Model
     {
         return $this->hasMany(SubTask::class, 'task_id');
     }
+
+    public function isSubTask() : bool
+    {
+        return SubTask::where('sub_task_id', $this->id)->exists();
+    }
 }

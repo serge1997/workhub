@@ -68,6 +68,7 @@
                     :project-name="current_project_name"
                     :task-status="taskStatus"
                     @update-backlog-ui="listAllprojectTaskBacklog"
+                    @update-ui="listAllprojectTaskBacklog"
                 >
                 </component>
             </div>

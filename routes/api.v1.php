@@ -44,6 +44,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(SubTaskController::class)->group(function(){
         Route::prefix('sub-task')->name('sub_task')->group(function(){
             Route::post('/', 'store')->name('store');
+            Route::get('/list-by-parent', 'listByParent')->name('list.by.parent');
+            Route::delete('/detach/{id}', 'detach')->name('detach')->whereNumber('id');
         });
     });
 

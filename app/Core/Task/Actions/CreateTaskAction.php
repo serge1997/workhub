@@ -27,6 +27,7 @@ final class CreateTaskAction
         $task = new Task($values);
         $task->manager_id = $request->user()->id;
         $task->user_id = $request->user_id;
+        $task->sprint_id = $request->sprint_id;
         $task->execution_status_id =  $request->execution_status_id ?? 1;
         $task->save();
         $notification_body = $task->user_id ? "Criou uma tarefa para " . $task->user->name : "Criou uma tarefa";

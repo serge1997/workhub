@@ -54,7 +54,8 @@ class TaskResource extends JsonResource
             'comment_count' => $this->when($this->comment->count() > 0, $this->comment->count(), true),
             'activities' => TaskActivityResource::collection($this->taskActivity->take(4)),
             'sprint_name' => $this->sprint ? ucfirst($this->sprint->name) : 'Nenhum sprint',
-            'sub_task_count' => $this->subTasks->where('deleted_at', null)->count()
+            'sub_task_count' => $this->subTasks->where('deleted_at', null)->count(),
+            'is_sub_task' => $this->isSubTask()
 
         ];
     }

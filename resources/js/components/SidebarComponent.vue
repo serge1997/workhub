@@ -5,7 +5,7 @@
             @show-sidebar="showSidebar"
         />
         <div class="m-auto">
-            <div class="d-flex" id="side_bar">
+            <div class="d-flex d-none" id="side_bar">
                 <div style="top: 0; left: 0; z-index: 10;height: 690px; overflow-y: scroll; width: 220px;" class="position-fixed side-bar-body shadow-sm z-3 vh-100">
                     <div class="sidebar-header p-3 d-flex justify-content-between align-items-center">
                         <h6>Logo</h6>
@@ -126,7 +126,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-10 m-auto position-realtive">
+            <div class="container-fluid m-auto position-realtive">
                 <slot></slot>
             </div>
         </div>
