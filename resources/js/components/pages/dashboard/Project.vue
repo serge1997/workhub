@@ -2,7 +2,7 @@
     <SidebarComponent>
         <div class="container-fluid">
             <div class="row">
-                <Toolbar class="w-100 p-2 border-0 border-bottom mb-2">
+                <Toolbar class="w-100 p-2 border-0 border-bottom mb-2 mt-2">
                     <template #start>
                         <div class="d-flex align-items-center gap-2 w-100">
                             <Tag class="d-flex">
