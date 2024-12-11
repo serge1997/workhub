@@ -87,18 +87,18 @@ export default {
             this.togglePriorityOverlayPanel(document.getElementById('priority-overlay-panel'))
         },
         createSubTask(id){
-            let status = document.getElementById('selected-task-status-'+id).value;
-            this.postData.append('execution_status_id', status);
-            this.postData.append('priority', this.selected_priority);
-            this.postData.append('title', this.sub_task_title);
-            this.postData.append('sub_task', true);
-            this.postData.append('task_id', this.taskId)
+           let status = document.getElementById('selected-task-status-'+id).value;
+           this.postData.append('execution_status_id', status);
+           this.postData.append('priority', this.selected_priority);
+           this.postData.append('title', this.sub_task_title);
+           this.postData.append('sub_task', true);
+           this.postData.append('task_id', this.taskId)
            this.Api.post('sub-task', this.postData)
            .then(async response => {
                 document.getElementById(`sub_task_title-${this.taskId}`).value = null;
                 this.toast.add({severity: 'success', summary: 'successo', detail: await response.data.message, life: 3000})
                 document.getElementById(`subtask-box-${this.taskId}`).classList.add('d-none');
-                this.$emit('updateUi');
+                this.$emit('updateSubTaskListUi');
            })
            .catch(error => {
             this.toast.add({severity: 'error', summary: 'error', detail: error.response.data.message, life: 3000})

@@ -1,7 +1,18 @@
 <template>
     <div class="col-md-12" v-if="tasks">
         <ul class="list-group w-100 m-auto">
-            <li v-for="(task, index) in tasks" class="list-group-item p-0 w-100 task-list-list-items d-flex flex-column border-0" @mouseover="showSelectedButton(task.id)" @mouseleave="hiddeSelectedButton(task.id)" :id="`task_list_li_${task.id}`">
+            <li v-for="(task, index) in tasks"
+                draggable="true"
+                class="list-group-item p-0 w-100 task-list-list-items d-flex flex-column border-0"
+                @mouseover="showSelectedButton(task.id)"
+                @mouseleave="hiddeSelectedButton(task.id)"
+                :id="`task_list_li_${task.id}`"
+                @dragstart="onDragstart"
+                @dragenter="onDragenter"
+                @dragleave="onDragleave"
+                @dragover="onDragover"
+                @drop="onDrop"
+            >
                 <div v-if="!task.is_sub_task" class="w-100 border-bottom d-flex gap-2 p-2">
                     <div class="d-flex align-items-center select_btn_div_box">
                         <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
@@ -64,7 +75,7 @@
                                             <small>{{ sub.title }}</small>
                                         </span>
                                         <span class="d-flex align-items-center">
-                                            <Tag class="p-1 v-small-fs" :style="`background-color: ${sub.execution_status_severity}`" :value="task.full_task_execution_status" />
+                                            <Tag class="p-1 v-small-fs" :style="`background-color: ${sub.execution_status_severity}`" :value="sub.full_task_execution_status" />
                                         </span>
                                         <span class="d-flex align-items-center p-0" title="Prioridade da tarefa">
                                             <Tag severity="warning">
@@ -94,7 +105,7 @@
                     :task-status="taskStatus"
                     :task-id="task.id"
                     @hidden-sub-task-form="hiddenSubTaskForm(task.id)"
-                    @update-ui="$emit('updateUi')"
+                    @update-sub-task-list-ui="listSubTaskByParent(task.id, index)"
                 />
             </li>
         </ul>
@@ -146,10 +157,43 @@ export default {
             task_selected_action_icon: 'pi-circle',
             selected_tasks_ids: [],
             sub_tasks: [],
-            confirm: useConfirm()
+            confirm: useConfirm(),
+            cloneNode: null
         }
     },
     methods: {
+        onDragstart(event){
+            let target_id = event.target.getAttribute('id');
+            event.dataTransfer.setData('text/plain', target_id);
+            this.cloneNode = event.target.cloneNode(true);
+            document.body.appendChild(this.cloneNode);
+            event.dataTransfer.setDragImage(this.cloneNode, cloneNode.offsetWidth / 2, this.cloneNode.offsetHeight / 2 )
+            setTimeout(() => {
+                event.target.classList.add('d-none')
+            }, 0)
+            console.log("drag start...."+target_id)
+        },
+        onDragenter(event){
+            console.log("drag enter....")
+            event.preventDefault();
+        },
+        onDragover(event){
+            event.preventDefault();
+            event.target.classList.add('alert-secondary')
+        },
+        onDragleave(event){
+            event.target.classList.remove('alert-secondary')
+        },
+        onDrop(event){
+            event.preventDefault();
+            let id = event.dataTransfer.getData('text/plain');
+            const dropable = document.getElementById(id);
+            console.log(event.originalTarget.offsetParent.parentElement)
+            event.originalTarget.offsetParent.parentElement.appendChild(dropable)
+            dropable.classList.remove('d-none')
+            event.target.classList.remove('alert-secondary')
+            this.cloneNode.remove()
+        },
         detachSubTask(subTask){
             this.confirm.require({
                 message: 'Você quer deletar a relação ?',

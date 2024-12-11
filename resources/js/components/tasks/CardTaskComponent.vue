@@ -1,6 +1,16 @@
 <template>
     <div class="w-100">
-        <div v-if="showStatus == 'WAT'" v-for="task in filterAwait(tasks)" class="card shadow-sm border-0 mb-3">
+        <div v-if="showStatus == 'WAT'" v-for="task in filterAwait(tasks)"
+            @dragstart="onDragstart"
+            @dragenter="onDragenter"
+            @dragleave="onDragleave"
+            @dragover="onDragover"
+            @drop="onDrop"
+            :id="`task-card-${task.id}`"
+            draggable="true"
+            class="card shadow-sm border-0 mb-3"
+        >
+            <div class="mb-2 dropable-target"></div>
             <div class="card-body">
                 <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
@@ -13,8 +23,16 @@
                 />
             </div>
         </div>
-        <div v-if="showStatus == 'PRO'" v-for="task in filterInProgress(tasks)" class="card shadow-sm border-0 mb-1">
-            <div class="card-body">
+        <div v-if="showStatus == 'PRO'" draggable="true" v-for="task in filterInProgress(tasks)"
+            @dragstart="onDragstart"
+            @dragenter="onDragenter"
+            @dragleave="onDragleave"
+            @dragover="onDragover"
+            @drop="onDrop"
+            :id="`task-card-${task.id}`"
+            class="card shadow-sm border-0 mb-1">
+            <div class="mb-2 dropable-target"></div>
+            <div class="card-body mb-2">
                 <div class="w-100 mb-1">
                     <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
                 </div>
@@ -123,6 +141,33 @@ export default{
         }
     },
     methods:{
+        onDragstart(event){
+            let target_id = event.target.getAttribute('id');
+            event.dataTransfer.setData('text/plain', target_id);
+            setTimeout(() => {
+                event.target.classList.add('d-none')
+            }, 0)
+            console.log("drag start....")
+        },
+        onDragenter(event){
+            console.log("drag enter....")
+            event.preventDefault();
+        },
+        onDragover(event){
+            event.preventDefault();
+        },
+        onDragleave(event){
+
+        },
+        onDrop(event){
+            event.preventDefault();
+            let id = event.dataTransfer.getData('text/plain');
+            const dropable = document.getElementById(id);
+            console.log(event)
+            //event.target.appendChild(dropable)
+            document.querySelector('.dropable-target').appendChild(dropable)
+            dropable.classList.remove('d-none')
+        },
         showTask(id){
             this.task_finded = null;
             this.Api.get('task', {id: id})
