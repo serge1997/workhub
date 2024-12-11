@@ -8,4 +8,5 @@ interface TaskExecutionStatusRepositoryInterface
     public function find($request);
     public function update($request);
     public function delete($request);
+    public function findAllWithTaskCountByProject(int $project_id);
 }

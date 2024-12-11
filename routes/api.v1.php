@@ -159,6 +159,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(TaskExecutionStatusController::class)->group(function(){
         Route::prefix('task-execution-status')->group(function(){
             Route::get('/', 'onListAll');
+            Route::get('/list-task-by-project/{project_id}', 'listByProjectWithTaskCount')->name('list.by.task.project')->whereNumber('project_id');
         });
     });
 

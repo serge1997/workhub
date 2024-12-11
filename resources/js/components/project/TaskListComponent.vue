@@ -13,7 +13,7 @@
                 @dragover="onDragover"
                 @drop="onDrop"
             >
-                <div v-if="!task.is_sub_task" class="w-100 border-bottom d-flex gap-2 p-2">
+                <div draggable="false" v-if="!task.is_sub_task" class="w-100 border-bottom d-flex gap-2 p-2">
                     <div class="d-flex align-items-center select_btn_div_box">
                         <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
                         <Button @click="$emit('onSelectedTask', task.id)" class="p-0" text>
@@ -179,10 +179,10 @@ export default {
         },
         onDragover(event){
             event.preventDefault();
-            event.target.classList.add('alert-secondary')
+            event.target.classList.add('li-dragover')
         },
         onDragleave(event){
-            event.target.classList.remove('alert-secondary')
+            event.target.classList.remove('li-dragover')
         },
         onDrop(event){
             event.preventDefault();
@@ -191,7 +191,7 @@ export default {
             console.log(event.originalTarget.offsetParent.parentElement)
             event.originalTarget.offsetParent.parentElement.appendChild(dropable)
             dropable.classList.remove('d-none')
-            event.target.classList.remove('alert-secondary')
+            event.target.classList.remove('li-dragover')
             this.cloneNode.remove()
         },
         detachSubTask(subTask){
@@ -287,5 +287,8 @@ export default {
 }
 .selected_task_li {
     background-color: #f0f9ff;
+}
+.li-dragover{
+    border-bottom: #3b82f6 2px solid;
 }
 </style>

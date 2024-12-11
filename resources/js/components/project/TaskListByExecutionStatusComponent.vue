@@ -88,9 +88,9 @@ export default {
             }
         },
         listAllTaskExecution(){
-            this.Api.get('task-execution-status')
+            this.Api.get('task-execution-status/list-task-by-project/' + this.projectId)
             .then(async response => {
-                this.execution_status = await response.data;
+                this.execution_status = await response.data.data;
             })
             .catch(err => {
                 console.log(err);
