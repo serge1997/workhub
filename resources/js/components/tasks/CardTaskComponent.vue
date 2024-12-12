@@ -1,105 +1,166 @@
 <template>
     <div class="w-100">
-        <div v-if="showStatus == 'WAT'" v-for="task in filterAwait(tasks)"
-            @dragstart="onDragstart"
-            @dragenter="onDragenter"
-            @dragleave="onDragleave"
-            @dragover="onDragover"
-            @drop="onDrop"
-            :id="`task-card-${task.id}`"
-            draggable="true"
-            class="card shadow-sm border-0 mb-3"
-        >
-            <div class="mb-2 dropable-target"></div>
-            <div class="card-body">
-                <div class="w-100 mb-1">
-                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+        <div v-if="showStatus == 'WAT'">
+            <div class="mb-2 dropable-target-WAT"></div>
+            <div v-for="task in filterAwait(tasks)"
+                @dragstart="onDragstart"
+                @dragenter="onDragenter"
+                @dragleave="onDragleave"
+                @dragover="onDragover"
+                @drop="onDrop"
+                :id="`task-card-${task.id}`"
+                draggable="true"
+                class="card shadow-sm border-0 mb-3 tttt"
+                :class="`${task.execution_status}-target`"
+            >
+                <div class="card-body" :class="`${task.execution_status}-target`">
+                    <div class="w-100 mb-1" :class="`${task.execution_status}-target`">
+                        <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                    </div>
+                    <TaskCardIconsComponent
+                        :class="`${task.execution_status}-target`"
+                        :task="task"
+                        @confirm-delete = "$emit('confirmDelete', task.id)"
+                        @list-all-task="$emit('listAllTask')"
+                        :task-status="taskStatus"
+                    />
                 </div>
-                <TaskCardIconsComponent
-                    :task="task"
-                    @confirm-delete = "$emit('confirmDelete', task.id)"
-                    @list-all-task="$emit('listAllTask')"
-                    :task-status="taskStatus"
-                />
             </div>
         </div>
-        <div v-if="showStatus == 'PRO'" draggable="true" v-for="task in filterInProgress(tasks)"
-            @dragstart="onDragstart"
-            @dragenter="onDragenter"
-            @dragleave="onDragleave"
-            @dragover="onDragover"
-            @drop="onDrop"
-            :id="`task-card-${task.id}`"
-            class="card shadow-sm border-0 mb-1">
-            <div class="mb-2 dropable-target"></div>
-            <div class="card-body mb-2">
-                <div class="w-100 mb-1">
-                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
-                </div>
-                <TaskCardIconsComponent
-                    :task="task"
-                    @confirm-delete = "$emit('confirmDelete', task.id)"
-                    @handle-task-status="$emit('handleTaskStatus')"
-                    @list-all-task="$emit('listAllTask')"
-                    :task-status="taskStatus"
+        <div v-if="showStatus == 'PRO'">
+            <div class="mb-2 dropable-target-PRO"></div>
+            <div draggable="true" v-for="task in filterInProgress(tasks)"
+                @dragstart="onDragstart"
+                @dragenter="onDragenter"
+                @dragleave="onDragleave"
+                @dragover="onDragover"
+                @drop="onDrop"
+                :id="`task-card-${task.id}`"
+                :class="`${task.execution_status}-target`"
+                class="card shadow-sm border-0 mb-1">
+                <div class="mb-2 dropable-target"></div>
+                <div class="card-body mb-2" :class="`${task.execution_status}-target`">
+                    <div class="w-100 mb-1" :class="`${task.execution_status}-target`">
+                        <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                    </div>
+                    <TaskCardIconsComponent
+                        :class="`${task.execution_status}-target`"
+                        :task="task"
+                        @confirm-delete = "$emit('confirmDelete', task.id)"
+                        @handle-task-status="$emit('handleTaskStatus')"
+                        @list-all-task="$emit('listAllTask')"
+                        :task-status="taskStatus"
 
-                />
+                    />
+                </div>
             </div>
         </div>
-        <div v-if="showStatus == 'CDR'" v-for="task in filterCodeReview(tasks)" class="card shadow-sm border-0 mb-1">
-            <div class="card-body">
-                <div class="w-100 mb-1">
-                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+        <div v-if="showStatus == 'CDR'">
+            <div class="mb-2 dropable-target-CDR"></div>
+            <div draggable="true" v-for="task in filterCodeReview(tasks)"
+                @dragstart="onDragstart"
+                @dragenter="onDragenter"
+                @dragleave="onDragleave"
+                @dragover="onDragover"
+                @drop="onDrop"
+                :id="`task-card-${task.id}`"
+                class="card shadow-sm border-0 mb-1"
+                :class="`${task.execution_status}-target`"
+            >
+                <div class="card-body" :class="`${task.execution_status}-target`">
+                    <div class="w-100 mb-1" :class="`${task.execution_status}-target`">
+                        <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                    </div>
+                    <TaskCardIconsComponent
+                        :class="`${task.execution_status}-target`"
+                        :task="task"
+                        @confirm-delete = "$emit('confirmDelete', task.id)"
+                        @handle-task-status="$emit('handleTaskStatus')"
+                        @list-all-task="$emit('listAllTask')"
+                        :task-status="taskStatus"
+                    />
                 </div>
-                <TaskCardIconsComponent
-                    :task="task"
-                    @confirm-delete = "$emit('confirmDelete', task.id)"
-                    @handle-task-status="$emit('handleTaskStatus')"
-                    @list-all-task="$emit('listAllTask')"
-                    :task-status="taskStatus"
-                />
             </div>
         </div>
-        <div v-if="showStatus == 'TST'" v-for="task in filterTeste(tasks)" class="card shadow-sm border-0 mb-1">
-            <div class="card-body">
-                <div class="w-100 mb-1">
-                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+        <div v-if="showStatus == 'TST'">
+            <div class="mb-2 dropable-target-TST"></div>
+            <div draggable="true" v-for="task in filterTeste(tasks)"
+                @dragstart="onDragstart"
+                @dragenter="onDragenter"
+                @dragleave="onDragleave"
+                @dragover="onDragover"
+                @drop="onDrop"
+                :id="`task-card-${task.id}`"
+                class="card shadow-sm border-0 mb-1"
+                :class="`${task.execution_status}-target`"
+            >
+                <div class="card-body"  :class="`${task.execution_status}-target`">
+                    <div class="w-100 mb-1" :class="`${task.execution_status}-target`">
+                        <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                    </div>
+                    <TaskCardIconsComponent
+                        :class="`${task.execution_status}-target`"
+                        :task="task"
+                        @confirm-delete = "$emit('confirmDelete', task.id)"
+                        @handle-task-status="$emit('handleTaskStatus')"
+                        @list-all-task="$emit('listAllTask')"
+                        :task-status="taskStatus"
+                    />
                 </div>
-                <TaskCardIconsComponent
-                    :task="task"
-                    @confirm-delete = "$emit('confirmDelete', task.id)"
-                    @handle-task-status="$emit('handleTaskStatus')"
-                    @list-all-task="$emit('listAllTask')"
-                    :task-status="taskStatus"
-                />
             </div>
         </div>
-        <div v-if="showStatus == 'PRQ'" v-for="task in filterPullrequest(tasks)" class="card shadow-sm border-0 mb-1">
-            <div class="card-body">
-                <div class="w-100 mb-1">
-                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+        <div v-if="showStatus == 'PRQ'">
+            <div class="mb-2 dropable-target-PRQ"></div>
+            <div draggable="true"v-for="task in filterPullrequest(tasks)"
+                @dragstart="onDragstart"
+                @dragenter="onDragenter"
+                @dragleave="onDragleave"
+                @dragover="onDragover"
+                @drop="onDrop"
+                :id="`task-card-${task.id}`"
+                class="card shadow-sm border-0 mb-1"
+                :class="`${task.execution_status}-target`"
+            >
+                <div class="card-body" :class="`${task.execution_status}-target`">
+                    <div class="w-100 mb-1" :class="`${task.execution_status}-target`">
+                        <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                    </div>
+                    <TaskCardIconsComponent
+                        :class="`${task.execution_status}-target`"
+                        :task="task"
+                        @confirm-delete = "$emit('confirmDelete', task.id)"
+                        @handle-task-status="$emit('handleTaskStatus')"
+                        @list-all-task="$emit('listAllTask')"
+                        :task-status="taskStatus"
+                    />
                 </div>
-                <TaskCardIconsComponent
-                    :task="task"
-                    @confirm-delete = "$emit('confirmDelete', task.id)"
-                    @handle-task-status="$emit('handleTaskStatus')"
-                    @list-all-task="$emit('listAllTask')"
-                    :task-status="taskStatus"
-                />
             </div>
         </div>
-        <div v-if="showStatus == 'CON'" v-for="task in filterConcluded(tasks)" class="card shadow-sm border-0 mb-1">
-            <div class="card-body">
-                <div class="w-100 mb-1">
-                    <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+        <div v-if="showStatus == 'CON'">
+            <div class="mb-2 dropable-target-CON"></div>
+            <div draggable="true" v-for="task in filterConcluded(tasks)"
+                @dragstart="onDragstart"
+                @dragenter="onDragenter"
+                @dragleave="onDragleave"
+                @dragover="onDragover"
+                @drop="onDrop"
+                :id="`task-card-${task.id}`"
+                class="card shadow-sm border-0 mb-1"
+                :class="`${task.execution_status}-target`"
+            >
+                <div class="card-body" :class="`${task.execution_status}-target`">
+                    <div class="w-100 mb-1" :class="`${task.execution_status}-target`">
+                        <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                    </div>
+                    <TaskCardIconsComponent
+                        :class="`${task.execution_status}-target`"
+                        :task="task"
+                        @confirm-delete = "$emit('confirmDelete', task.id)"
+                        @handle-task-status="$emit('handleTaskStatus')"
+                        @list-all-task="$emit('listAllTask')"
+                        :task-status="taskStatus"
+                    />
                 </div>
-                <TaskCardIconsComponent
-                    :task="task"
-                    @confirm-delete = "$emit('confirmDelete', task.id)"
-                    @handle-task-status="$emit('handleTaskStatus')"
-                    @list-all-task="$emit('listAllTask')"
-                    :task-status="taskStatus"
-                />
             </div>
         </div>
     </div>
@@ -157,15 +218,21 @@ export default{
             event.preventDefault();
         },
         onDragleave(event){
+            let id = event.dataTransfer.getData('text/plain');
 
         },
         onDrop(event){
             event.preventDefault();
             let id = event.dataTransfer.getData('text/plain');
             const dropable = document.getElementById(id);
-            console.log(event)
+            //dropable.classList.toString();
+            let targetClass = event.target.parentElement;
+            let classe = targetClass.classList.toString().split(' ').pop();
+            let classIdentification = classe.split('-').shift();
+            console.log(classIdentification)
+            //event.target.insertAdjacentElement('afterend', dropable)
             //event.target.appendChild(dropable)
-            document.querySelector('.dropable-target').appendChild(dropable)
+            document.querySelector(`.dropable-target-${classIdentification}`).appendChild(dropable)
             dropable.classList.remove('d-none')
         },
         showTask(id){

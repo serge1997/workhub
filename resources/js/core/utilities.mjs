@@ -31,6 +31,36 @@ function prioritySeverity(priority){
     if (priority === "MED") return "warning";
     return "secondary";
 }
+function statusColor(desc){
+    let color = "";
+    switch(desc){
+        case "WAT" :
+            color = "#7c3aed";
+            break;
+        case "PRO" :
+            color = "#0ea5e9";
+            break;
+       case "CDR" :
+            color = "#9333ea";
+            break;
+        case "CON" :
+            color = "#10b981";
+            break;
+        case "TST" :
+            color = "#f59e0b";
+            break;
+        case "BKL" :
+            color = "#94a3b8";
+            break;
+        case "PRQ" :
+            color = "#e11d48";
+            break;
+        default :
+            color = "#7c3aed";
+            break;
+    }
+    return color;
+}
 const isNull = (arg) => arg == null;
 const isNullOrWhiteSpace = (arg) => arg == null || arg == "";
 const is = (arg, value) => arg == value;
@@ -40,6 +70,7 @@ export {
     isNullOrWhiteSpace,
     taskStatusSeverity,
     prioritySeverity,
+    statusColor,
     when,
     is
 }

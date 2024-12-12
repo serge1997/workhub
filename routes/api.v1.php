@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\CommentResponse;
+use App\Http\Controllers\BiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:sanctum')->group(function() {
+
+    Route::controller(BiController::class)->group(function(){
+        Route::prefix('bi')->name('bi.')->group(function(){
+            //Route::get();
+        });
+    });
 
     Route::controller(SubTaskController::class)->group(function(){
         Route::prefix('sub-task')->name('sub_task')->group(function(){

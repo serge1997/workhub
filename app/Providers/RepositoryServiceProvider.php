@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Core\Annex\AnnexRepository;
 use App\core\Annex\AnnexRepositoryInterface;
+use App\Core\Bi\Repository\BiRepository;
+use App\Core\Bi\Repository\BiRepositoryInterface;
 use App\Core\Comment\CommentRepository;
 use App\Core\Comment\CommentRepositoryInterface;
 use App\Core\CommentResponse\CommentResponseRepository;
@@ -62,6 +64,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProjectRepositoryInterface::class, ProjectRepository::class);
         $this->app->bind(TeamSpaceRepositoryInterface::class, TeamSpaceRepository::class);
         $this->app->bind(SubTaskRepositoryInterface::class, SubTaskRepository::class);
+        $this->app->bind(BiRepositoryInterface::class, BiRepository::class);
     }
 
     /**

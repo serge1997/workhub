@@ -1,7 +1,7 @@
 <template>
-    <div class="w-100 d-flex flex-column">
-        <div class="w-100">
-            <Button v-if="task.user_name" class="p-1" text>
+    <div class="w-100 d-flex flex-column" :class="`${task.execution_status}-target`">
+        <div class="w-100" :class="`${task.execution_status}-target`">
+            <Button v-if="task.user_name" class="p-1" :class="`${task.execution_status}-target`" text>
                 <span class="d-flex align-items-center">
                     <i class="pi pi-user icon-list-task"></i>
                 </span>
@@ -9,7 +9,7 @@
                     <img class="img-thumbnail w-50 rounded-circle" :src="`/img/users_avatars/${task.user_name.avatar}`" alt="user avatar">
                 </small>
             </Button>
-            <div v-else class="mb-2">
+            <div v-else class="mb-2" :class="`${task.execution_status}-target`">
                 <UsersOverlayComponent
                     :is-for-add-user="true"
                     :is-show-component="true"
@@ -18,8 +18,9 @@
                 />
             </div>
         </div>
-        <div class="w-100 d-flex px-1">
+        <div class="w-100 d-flex px-1" :class="`${task.execution_status}-target`">
             <ListTaskExecutionStatusComponent
+                :class="`${task.execution_status}-target`"
                 :task="task"
                 @list-all-task="$emit('listAllTask')"
                 :task-status="taskStatus"
@@ -28,8 +29,8 @@
                 :tag-value="task.full_task_execution_status"
             />
         </div>
-        <div class="w-100 icons d-flex align-items-center">
-            <Button class="d-flex gap-1 align-items-center p-1" text>
+        <div class="w-100 icons d-flex align-items-center" :class="`${task.execution_status}-target`">
+            <Button class="d-flex gap-1 align-items-center p-1" :class="`${task.execution_status}-target`" text>
                 <span>
                     <i class="pi pi-clock icon-list-task"></i>
                 </span>
@@ -40,11 +41,11 @@
                 </span>
             </Button>
         </div>
-        <div class="w-100 icons d-flex gap-1 align-items-center">
+        <div class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
             <ShowTaskFollower :task="task" />
         </div>
-        <div class="w-100 icons d-flex gap-1 align-items-center">
-            <Button class="d-flex gap-1 align-items-center p-1" text>
+        <div class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
+            <Button class="d-flex gap-1 align-items-center p-1" text :class="`${task.execution_status}-target`">
                 <span>
                     <i class="pi pi-paperclip icon-list-task"></i>
                 </span>
@@ -55,24 +56,24 @@
                 </span>
             </Button>
         </div>
-        <div class="w-100 icons d-flex align-items-center">
+        <div class="w-100 icons d-flex align-items-center" :class="`${task.execution_status}-target`">
             <TaskCommentComponent :task="task" />
         </div>
-        <div class="w-100 icons d-flex align-items-center">
+        <div class="w-100 icons d-flex align-items-center" :class="`${task.execution_status}-target`">
             <Button class="p-1" @click="showTask(task.id)" text>
                 <i class="pi pi-align-center icon-list-task"></i>
             </Button>
         </div>
-        <div v-if="task.can_delete" class="w-100 icons d-flex gap-1 align-items-center">
-            <Button @click="$emit('confirmDelete', task.id)" class="d-flex gap-1 align-items-center p-1" text>
+        <div v-if="task.can_delete" class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
+            <Button @click="$emit('confirmDelete', task.id)" class="d-flex gap-1 align-items-center p-1" :class="`${task.execution_status}-target`" text>
                 <span>
                     <i class="pi pi-trash icon-list-task"></i>
                 </span>
             </Button>
         </div>
-        <div class="w-100 icons d-flex gap-1 align-items-center">
+        <div class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
             <Button class="d-flex gap-1 align-items-center p-1" text>
-                <Tag :style="`background-color: #${task.project_severity};`" icon="pi pi-tag" :value="task.project_name" />
+                <Tag :style="`background-color: #${task.project_severity};`" icon="pi pi-tag" :value="task.project_name" :class="`${task.execution_status}-target`"/>
             </Button>
         </div>
         <div class="row">

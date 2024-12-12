@@ -6,7 +6,7 @@
                     <Button text class="p-1 task-description" @click="listTaskByExecutionStatus(status.id, index, true)">
                         <span><i :class="`pi ${toggleIcon}`" :id="`icon_toggle_${status.id}`"></i></span>
                     </Button>
-                    <Tag style="width: 100px;" class="p-2 sprint-list-tag text-white btn-text-nowrap" :style="{'background-color': status.severity}">
+                    <Tag style="width: 100px;" class="p-2 sprint-list-tag text-white btn-text-nowrap" :style="{'background-color': setStatusColor(status.status)}">
                         <span>{{ status.name_ucfirst }}</span>
                     </Tag>
                     <span style="width: 15px;" class="d-flex align-items-center">
@@ -36,6 +36,7 @@
 <script>
 import { useToast } from 'primevue/usetoast';
 import { defineAsyncComponent } from 'vue';
+import { statusColor } from '../../core/utilities.mjs';
 export default {
     name: 'TaskListByExecutionStatusComponent',
 
@@ -56,7 +57,8 @@ export default {
             toast: useToast(),
             tasks: [],
             toggleIcon: 'pi-angle-right',
-            selected_tasks_ids: []
+            selected_tasks_ids: [],
+            setStatusColor: statusColor
         }
     },
     methods: {
@@ -102,6 +104,7 @@ export default {
             this.Api.get(`task/list-by-project/${this.projectId}/status/${status}`)
             .then(async response => {
                 this.tasks[index] = await response.data.data;
+                console.log(this.tasks[index])
                 document.getElementById(`box_list_task_${status}`).classList.toggle('d-none')
                 if (spanIcon.classList.contains('pi-angle-right')){
                     spanIcon.classList.remove('pi-angle-right')

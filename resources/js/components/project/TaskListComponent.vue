@@ -165,9 +165,9 @@ export default {
         onDragstart(event){
             let target_id = event.target.getAttribute('id');
             event.dataTransfer.setData('text/plain', target_id);
-            this.cloneNode = event.target.cloneNode(true);
-            document.body.appendChild(this.cloneNode);
-            event.dataTransfer.setDragImage(this.cloneNode, cloneNode.offsetWidth / 2, this.cloneNode.offsetHeight / 2 )
+            //this.cloneNode = event.target.cloneNode(true);
+            //document.body.appendChild(this.cloneNode);
+            //event.dataTransfer.setDragImage(this.cloneNode, cloneNode.offsetWidth / 2, this.cloneNode.offsetHeight / 2 )
             setTimeout(() => {
                 event.target.classList.add('d-none')
             }, 0)
@@ -188,11 +188,12 @@ export default {
             event.preventDefault();
             let id = event.dataTransfer.getData('text/plain');
             const dropable = document.getElementById(id);
-            console.log(event.originalTarget.offsetParent.parentElement)
-            event.originalTarget.offsetParent.parentElement.appendChild(dropable)
             dropable.classList.remove('d-none')
+            event.target.insertAdjacentElement('afterend', dropable)
             event.target.classList.remove('li-dragover')
-            this.cloneNode.remove()
+            dropable.classList.remove('d-none')
+            dropable.classList.remove('li-dragover')
+            //this.cloneNode.remove()
         },
         detachSubTask(subTask){
             this.confirm.require({

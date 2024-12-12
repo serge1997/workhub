@@ -40,11 +40,12 @@ import ColorPicker from 'primevue/colorpicker';
 import OverlayPanel from 'primevue/overlaypanel';
 import Sidebar from 'primevue/sidebar';
 import './../../resources/css/app.css';
+import Knob from 'primevue/knob';
 
 function loggedIn(){
     return localStorage.getItem('token');
 }
-console.log(loggedIn())
+
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)){
         if (!loggedIn()){
@@ -55,7 +56,17 @@ router.beforeEach((to, from, next) => {
         }else{
             next()
         }
-    }else{
+    }else if(to.matched.some(record => record.meta.guest)){
+        if (loggedIn()){
+            next({
+                path: '/home',
+                query: {redirect: to.fullPath}
+            })
+        }else{
+            next()
+        }
+    }
+    else{
         next()
     }
 })
@@ -91,6 +102,7 @@ app.component('OverlayPanel', OverlayPanel);
 app.component('IconField', IconField);
 app.component('InputIcon', InputIcon);
 app.component('Sidebar', Sidebar);
+app.component('Knob', Knob);
 
 
 

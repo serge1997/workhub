@@ -34,17 +34,17 @@ class TaskExecutionStatusRepository implements TaskExecutionStatusRepositoryInte
     public function findAllWithTaskCountByProject(int $project_id)
     {
         return TaskExecutionStatus::select(
-            DB::raw("COUNT(DISTINCT tasks.id) as task_count"),
+            DB::raw("IF(COUNT(DISTINCT tasks.id) = 0, '-', COUNT(DISTINCT tasks.id)) as task_count"),
             'task_execution_status.id as id',
             'task_execution_status.name as name_ucfirst',
-            'task_execution_status.status as severity'
+            'task_execution_status.status'
 
         )
-            ->join('tasks', 'tasks.execution_status_id', '=','task_execution_status.id')
-                ->where([
-                    ['tasks.deleted_at', null],
-                    ['tasks.project_id', $project_id]
-                ])
+            ->leftJoin('tasks', function($join) use($project_id) {
+                    $join->on('tasks.execution_status_id', '=','task_execution_status.id');
+                    $join->on('tasks.project_id', '=', DB::raw("{$project_id}"));
+                 })
+                ->where('tasks.deleted_at', null)
                     ->groupBy('task_execution_status.id', 'task_execution_status.name', 'task_execution_status.status')
                         ->get();
     }
