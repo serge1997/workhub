@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::controller(BiController::class)->group(function(){
         Route::prefix('bi')->name('bi.')->group(function(){
-            //Route::get();
+            Route::get('/count-task-by-sprints/project/{project_id}', 'listCountTaskbySprintsProject')->whereNumber('project_id');
         });
     });
 
