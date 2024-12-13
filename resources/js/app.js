@@ -104,7 +104,7 @@ app.component('IconField', IconField);
 app.component('InputIcon', InputIcon);
 app.component('Sidebar', Sidebar);
 app.component('Knob', Knob);
-app.component(Chart, 'Chart');
+app.component('Chart', Chart);
 
 
 
