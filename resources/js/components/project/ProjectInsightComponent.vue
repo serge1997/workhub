@@ -72,7 +72,7 @@ export default {
                             color: "#333"
                         },
                         grid: {
-                            color: "#cbd5e1"
+                            color: "#f3f4f6"
                         }
                     },
                     y: {
@@ -81,7 +81,7 @@ export default {
                             color: "#333"
                         },
                         grid: {
-                            color: "#cbd5e1"
+                            color: "#f3f4f6"
                         }
                     }
                 }
