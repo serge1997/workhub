@@ -48,4 +48,21 @@ class TaskExecutionStatusRepository implements TaskExecutionStatusRepositoryInte
                     ->groupBy('task_execution_status.id', 'task_execution_status.name', 'task_execution_status.status')
                         ->get();
     }
+
+    public function findAllCountBySprint(int $sprint_id)
+    {
+        return TaskExecutionStatus::select(
+            'task_execution_status.name as name_ucfirst',
+            'task_execution_status.status',
+            DB::raw("IF(COUNT(DISTINCT tasks.id) = 0, '-', COUNT(DISTINCT tasks.id)) as task_count")
+        )
+            ->leftJoin('tasks', function($join) use($sprint_id){
+                $join->on('tasks.execution_status_id', '=', 'task_execution_status.id');
+                $join->on('tasks.sprint_id', '=', DB::raw("{$sprint_id}"));
+            })
+                ->withoutGlobalScopes()
+                    ->groupBy('task_execution_status.name', 'task_execution_status.status')
+                        ->orderBy('task_execution_status.id')
+                            ->get();
+    }
 }

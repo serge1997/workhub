@@ -41,7 +41,7 @@
                 </span>
             </Button>
         </div>
-        <div class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
+        <div class="w-100 icons d-flex d-none gap-1 align-items-center" :class="`${task.execution_status}-target`">
             <ShowTaskFollower :task="task" />
         </div>
         <div class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">

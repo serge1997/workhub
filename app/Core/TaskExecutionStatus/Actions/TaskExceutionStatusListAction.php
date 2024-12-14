@@ -13,4 +13,9 @@ class TaskExceutionStatusListAction
     {
         return $this->taskExecutionStatusRepository->findAllWithTaskCountByProject($project_id);
     }
+
+    public function listAllCountBySprint(int $sprint_id)
+    {
+        return $this->taskExecutionStatusRepository->findAllCountBySprint($sprint_id);
+    }
 }

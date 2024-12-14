@@ -26,11 +26,16 @@
                     </Toolbar>
                 </div>
                 <div class="w-100 d-flex gap-4" style="overflow-x: scroll;">
-                    <div v-for="status in task_status" class="w-100 mt-3">
+                    <div v-for="status in task_status_by_sprint" class="w-100 mt-3">
                         <div v-if="status.status != 'BKL'" style="height: 600px; min-width: 360px; overflow: scroll;">
                             <div class="card w-100">
                                 <div class="card-header border-0 bg-white">
-                                    <Tag class="w-100 text-white" :style="{'background-color': executionStatusBg(status.status)}" :value="status.name" />
+                                    <Tag class="w-100 d-flex gap-2 bg-transparent shadow-sm rounded-2" :style="`border-top: 3px solid ${ executionStatusBg(status.status)}; color: #374151;`">
+                                        <span>{{ status.name_ucfirst }}</span>
+                                        <span>
+                                            <Badge severity="secondary" :value="status.task_count"/>
+                                        </span>
+                                    </Tag>
                                 </div>
                                 <div class="card-body mt-4">
                                     <keep-alive>
@@ -67,6 +72,11 @@ export default{
         ListTaskComponent,
         CardTaskComponent
     },
+    watch: {
+        '$route.params.id'(n, old){
+            this.listTaskExecutionStatusBySprint();
+        }
+    },
     data(){
         return{
             task: {
@@ -86,9 +96,20 @@ export default{
             users_filter: null,
             user_filtered: null,
             currentSprintName: null,
+            task_status_by_sprint: null,
+            router_id: this.$route.params
         }
     },
     methods: {
+        listTaskExecutionStatusBySprint(){
+            this.Api.get(`task-execution-status/list-task-quantity-by-sprint/${this.$route.params.id}`)
+            .then(async response => {
+                this.task_status_by_sprint = await response.data.data;
+            })
+            .catch(error => {
+
+            })
+        },
         onListAllTask(){
             let pathname = location.pathname;
             this.currentSprintName = pathname.replaceAll(/\W/g, ' ');
@@ -185,7 +206,8 @@ export default{
     mounted(){
         window.axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
         this.onListAllTask();
-        this.onListAllTaskExecutionStatus()
+        this.onListAllTaskExecutionStatus();
+        this.listTaskExecutionStatusBySprint();
 
     }
 }

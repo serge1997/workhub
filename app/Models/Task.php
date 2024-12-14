@@ -131,4 +131,14 @@ class Task extends Model
     {
         return SubTask::where('sub_task_id', $this->id)->exists();
     }
+
+   public function isConcluded()
+   {
+        return $this->execution_status_id === TaskExecutionStatus::CONCLUDED;
+   }
+
+   public function isNotConcluded()
+   {
+        return $this->execution_status_id !== TaskExecutionStatus::CONCLUDED;
+   }
 }

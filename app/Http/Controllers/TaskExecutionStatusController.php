@@ -42,4 +42,18 @@ class TaskExecutionStatusController extends Controller
                 ->json($this->errorResponse($e->getMessage(), 404));
         }
     }
+
+    public function listCountBySprint(int $sprint_id)
+    {
+        try{
+            /** @var TaskExceutionStatusListAction $taskExecutionListAction */
+            $taskExecutionListAction = $this->container->get(TaskExceutionStatusListAction::class);
+            $response = $taskExecutionListAction->listAllCountBySprint($sprint_id);
+            return response()
+                ->json($this->successResponse("lista de status e quatidade de tarefas", $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse($e->getMessage(), 404));
+        }
+    }
 }

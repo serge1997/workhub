@@ -16,7 +16,9 @@
                             <Tag class="fw-normal bg-transparent task-description" value="sprint 1" />
                         </div>
                         <div class="card-body py-1">
-                            <Knob v-model="value" readonly valueTemplate="20/30" valueColor="#34d399" :strokeWidth="5"/>
+                            <Knob v-model="value" readonly valueColor="#34d399" :strokeWidth="5">
+                                <small>20/30</small>
+                            </Knob>
                         </div>
                         <div class="card-footer d-flex flex-column align-items-start bg-transparent border-0 px-2 py-0 mb-1">
                             <span class="d-flex gap-2">

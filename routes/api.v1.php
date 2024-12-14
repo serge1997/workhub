@@ -23,6 +23,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\CommentResponse;
 use App\Http\Controllers\BiController;
+use Illuminate\Database\Query\Builder;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         ->json(new UserResource($request->user()));
 });
 
+Route::get('/test', function() {
+
+    // $results = $tasks->groupBy(function(\App\Models\Task $task) {
+    //     if ($task->isConcluded()){
+    //         return "Concluded";
+    //     }
+    //     if ($task->isNotConcluded()){
+    //         return "Not concluded";
+    //     }
+    // });
+});
 Route::middleware('auth:sanctum')->group(function() {
 
     Route::controller(BiController::class)->group(function(){
@@ -167,6 +179,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::prefix('task-execution-status')->group(function(){
             Route::get('/', 'onListAll');
             Route::get('/list-task-by-project/{project_id}', 'listByProjectWithTaskCount')->name('list.by.task.project')->whereNumber('project_id');
+            Route::get('/list-task-quantity-by-sprint/{sprint_id}', 'listCountBySprint')->whereNumber('sprint_id');
         });
     });
 
