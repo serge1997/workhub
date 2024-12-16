@@ -3,6 +3,7 @@ namespace App\Core\Bi\Repository;
 
 use App\Models\Scopes\NotDeletScope;
 use App\Models\Task;
+use App\Models\TaskExecutionStatus;
 use Illuminate\Support\Facades\DB;
 
 class BiRepository implements BiRepositoryInterface
@@ -38,14 +39,14 @@ class BiRepository implements BiRepositoryInterface
                                     ['tasks.sprint_id', 't2.sprint_id'],
                                 ])
                                     ->where([
-                                        ['t2.execution_status_id', 8],
+                                        ['t2.execution_status_id', TaskExecutionStatus::CONCLUDED],
                                         ['t2.deleted_at', null]
                                     ])
                                         ->groupBy('t2.sprint_id')
                         ])
                         ->join('sprints as sp', 'sp.id', '=', 'tasks.sprint_id')
                             ->where([
-                                ['tasks.project_id', 1],
+                                ['tasks.project_id', $project_id],
                                 ['tasks.deleted_at', null]
                             ])
                                 ->groupBy('sp.id', 'sp.name', 'tasks.project_id', 'tasks.sprint_id')
