@@ -9,8 +9,9 @@
             <div class="col-md-6 p-3">
                 <Chart type="bar" :data="task_count_spints" :options="task_count_spints_bar_options" />
             </div>
-            <div class="col-md-6 d-flex gap-2 justify-content-start flex-wrap p-5">
-                <div>
+            <div class="col-md-6 p-3">
+                <Chart class="w-75 h-100" type="bar" :data="task_count_sprint_by_status" :options="task_count_sprint_by_status_options" />
+                <div class="d-none">
                     <div class="card border-0 shadow-sm rounded-4">
                         <div class="card-header bg-transparent border-0 p-0">
                             <Tag class="fw-normal bg-transparent task-description" value="sprint 1" />
@@ -50,7 +51,7 @@ export default {
                 labels: [],
                 datasets:[
                     {
-                        label: 'Task',
+                        label: '',
                         data: [],
                         backgroundColor: ['#64748b', '#0ea5e9', '#4f46e5', '#db2777', '#10b981'],
                         borderColor: ['#64748b', '#0ea5e9', '#4f46e5', '#db2777'],
@@ -87,6 +88,62 @@ export default {
                         }
                     }
                 }
+            },
+            task_count_sprint_by_status_options: {
+                indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    aspectRatio: 0.8,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: "#333"
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "#333",
+                                font: {
+                                    weight: 500
+                                }
+                            },
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: "#333"
+                            },
+                            grid: {
+                                color: "#f3f4f6",
+                                drawBorder: false
+                            }
+                        }
+                    }
+            },
+            task_count_sprint_by_status: {
+                labels: [],
+                datasets:[
+                    {
+                        label: 'Tarefas concluidas',
+                        data: null,
+                        backgroundColor: ['#10b981'],
+                        borderWidth: 0,
+                        borderRadius: 8,
+                        barPercentage: 1
+                    },
+                    {
+                        label: 'Total tarefas',
+                        data: null,
+                        backgroundColor: ['#64748b'],
+                        borderWidth: 0,
+                        borderRadius: 8,
+                        barPercentage: 1
+                    }
+                ]
             }
         }
 
@@ -106,10 +163,38 @@ export default {
                 this.task_count_spints.labels = labelX;
                 this.task_count_spints.datasets[0].data = labelY;
             })
+        },
+        listSprintCountTaskByStatus(){
+            this.Api.get(`bi/list-sprint-status-count/by-project/${this.projectId}`)
+            .then(async response => {
+                let results = await response.data.data;
+                let conclude = [];
+                let totalTask = [];
+                for (let data of results){
+                    this.task_count_sprint_by_status.labels.push(data.name);
+                    if(!data.concluded){
+                        conclude.push(0);
+                    }else{
+                        conclude.push(data.concluded)
+                    }
+                    if (!data.total_tasks){
+                        totalTask.push(0)
+                    }else{
+                        totalTask.push(data.total_tasks)
+                    }
+
+
+                }
+                this.task_count_sprint_by_status.datasets[0].data = conclude;
+                this.task_count_sprint_by_status.datasets[1].data = totalTask;
+                console.log(this.task_count_sprint_by_status.datasets)
+
+            })
         }
     },
     mounted(){
-        this.listCountTaskBySprintsProject()
+        this.listCountTaskBySprintsProject();
+        this.listSprintCountTaskByStatus();
     }
 }
 </script>

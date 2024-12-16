@@ -24,6 +24,8 @@ use App\Http\Resources\UserResource;
 use App\Models\CommentResponse;
 use App\Http\Controllers\BiController;
 use Illuminate\Database\Query\Builder;
+use App\Models\Task;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +44,31 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', function() {
+    $results = Task::select('sp.id', 'sp.name', DB::raw('IF(COUNT(tasks.id) > 1,COUNT(tasks.id) ,0) as total_tasks'))
+        ->withoutGlobalScopes()
+            ->from('tasks as tasks')
+                ->addSelect(['concluded' => Task::selectRaw('IF(COUNT(t2.id),COUNT(t2.id) , 0)')
+                    ->from('tasks as t2')
+                        ->whereColumn([
+                            ['tasks.project_id', 't2.project_id'],
+                            ['tasks.sprint_id', 't2.sprint_id'],
+                        ])
+                            ->where([
+                                ['t2.execution_status_id', 8],
+                                ['t2.deleted_at', null]
+                            ])
+                                ->groupBy('t2.sprint_id')
+                ])
+                ->join('sprints as sp', 'sp.id', '=', 'tasks.sprint_id')
+                    ->where([
+                        ['tasks.project_id', 1],
+                        ['tasks.deleted_at', null]
+                    ])
+                        ->groupBy('sp.id', 'sp.name', 'tasks.project_id', 'tasks.sprint_id')
+                            ->orderBy('tasks.sprint_id', 'DESC')
+                                ->get();
 
+    dd($results);
     // $results = $tasks->groupBy(function(\App\Models\Task $task) {
     //     if ($task->isConcluded()){
     //         return "Concluded";
@@ -57,6 +83,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(BiController::class)->group(function(){
         Route::prefix('bi')->name('bi.')->group(function(){
             Route::get('/count-task-by-sprints/project/{project_id}', 'listCountTaskbySprintsProject')->whereNumber('project_id');
+            Route::get('/list-sprint-status-count/by-project/{project_id}', 'listTaskExcutionStatusByProjectSprint')->whereNumber('project_id');
         });
     });
 

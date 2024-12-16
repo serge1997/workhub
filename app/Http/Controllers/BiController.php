@@ -25,7 +25,20 @@ class BiController extends Controller
                 );
         }catch(Exception $e){
             return response()
-                ->json($this->successResponse($e->getMessage()));
+                ->json($this->errorResponse($e->getMessage()));
+        }
+    }
+
+    public function listTaskExcutionStatusByProjectSprint($project_id)
+    {
+        try{
+            return response()
+                ->json($this->successResponse(
+                    "relatorio tarefa concluidas S/N por projeto e sprint", $this->biRepository->listTaskCompletedAndNotByProject($project_id)
+                ));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse($e->getMessage()));
         }
     }
 }

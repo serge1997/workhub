@@ -1,9 +1,9 @@
 <template>
     <div class="m-auto bg-white d-flex justify-content-between align-items-center">
-        <div class="col-md-4 d-flex align-items-center">
+        <div class="col-md-4 d-flex align-items-center gap-2">
             <Button @click="$emit('showSidebar')" class="task-description" icon="pi pi-th-large" text/>
-            <Button label="Equipe" class="task-description" text />
-            <Button label="Sprints" class="task-description" text />
+            <router-link :to="{name: 'TeamInsight'}" class="task-description nav-link p-0">Team</router-link>
+            <router-link class="task-description nav-link p-0">Sprint</router-link>
         </div>
         <div class="p-1 d-flex justify-content-end col-md-8 align-items-center">
             <Button @click="showNotifyBox = !showNotifyBox" text class="bg-transparent gap-0" style="width: 80px;">

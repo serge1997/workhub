@@ -71,6 +71,12 @@ const routes = [
         component: () => import("../components/pages/dashboard/Project.vue"),
         meta: {requiresAuth: true}
     },
+    {
+        path: '/dashboard/team-insight',
+        name: 'TeamInsight',
+        component: () => import("../components/pages/dashboard/TeamInsight.view.vue"),
+        meta: {requiresAuth: true}
+    }
 ]
 
 const router = createRouter({
