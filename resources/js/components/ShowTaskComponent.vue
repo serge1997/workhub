@@ -134,8 +134,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 rounded-1 d-flex flex-column justify-content-between">
-            <div style="height: 480px;" class="w-100 overflow-scroll container">
+        <div class="col-md-3 rounded-1 d-flex flex-column justify-content-evently">
+            <div style="height: 380px;" class="w-100 mb-3 overflow-scroll container">
                 <div v-if="taskFinded.activities.length" class="row task-activities-box mb-3 rounded-3">
                     <div class="col-md-10 p-4">
                         <h6>Atividades no task</h6>
@@ -159,6 +159,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-11">
+                <CommentCardComponent
+                    :comments="taskComments"
+                />
+              </div>
             </div>
             <div class="row p-1">
                 <div class="col-md-10">
@@ -186,6 +193,7 @@ import AddFileFastlyComponent from './AddFileFastlyComponent.vue';
 import ListTaskExecutionStatusComponent from './ListTaskExecutionStatusComponent.vue';
 import PriorityOverlayComponent from './Overlays/PriorityOverlayComponent.vue';
 import UsersOverlayComponent from './Overlays/UsersOverlayComponent.vue'
+import CommentCardComponent from './CommentCardComponent.vue';
 import { useToast } from 'primevue/usetoast';
 export default {
     inject: ['taskSeverity', 'taskPrioritySeverity'],
@@ -198,7 +206,8 @@ export default {
         AddFileFastlyComponent,
         ListTaskExecutionStatusComponent,
         PriorityOverlayComponent,
-        UsersOverlayComponent
+        UsersOverlayComponent,
+        CommentCardComponent
     },
 
     data(){
@@ -228,9 +237,19 @@ export default {
                 icon: 'pi-chevron-right',
                 actionToggle: false
             },
+            taskComments: null
         }
     },
     methods:{
+        listAllCommentByTask(){
+            this.Api.get('comments', {task_id: this.taskFinded.id})
+            .then(async response => {
+                this.taskComments = await response.data;
+            })
+            .catch(err => {
+                this.toast.add({ severity: 'error', summary: 'Task', detail: err.response.data.message , life: 3000 });
+            })
+        },
         updateTaskUser(user_id){
             this.Api.put('task/user', {user_id: user_id, task_id: this.taskFinded.id})
             .then(async response => {
@@ -353,6 +372,7 @@ export default {
 
     },
     mounted(){
+        this.listAllCommentByTask()
     }
 }
 </script>
