@@ -3,6 +3,7 @@
         <ShowTaskComponent
             :task-finded="taskFinded"
             :task-status="taskStatus"
+            :task_id="paramId"
             @update-show-modal-ui="getTask"
         />
     </SidebarComponent>

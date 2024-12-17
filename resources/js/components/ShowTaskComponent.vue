@@ -170,8 +170,8 @@
             <div class="row p-1">
                 <div class="col-md-10">
                     <label class="form-label">Adicionar um comentario: </label>
-                    <InputText @input="onInputCommentValidate" v-model="comment.comment" class="w-100 mb-2" placeholder="digite o seu comentarios..."/>
-                    <div class="w-100 d-flex align-items-center mb-3 gap-2 p-1 border shadow-sm rounded-pill">
+                    <Textarea @input="onInputCommentValidate" v-model="comment.comment" class="w-100 mb-2 border-0" placeholder="digite o seu comentarios..."/>
+                    <div class="w-100 d-flex align-items-center mb-3 gap-2 p-1 border shadow-sm rounded-pill d-none">
                         <Button class="px-0 py-0 task-description" icon="pi pi-file-plus" text/>
                         <Button class="px-0 py-0 task-description" icon="pi pi-image" text/>
                             <Button class="px-0 py-0 task-description" icon="pi pi-at" text/>
@@ -237,12 +237,13 @@ export default {
                 icon: 'pi-chevron-right',
                 actionToggle: false
             },
-            taskComments: null
+            taskComments: null,
         }
     },
     methods:{
         listAllCommentByTask(){
-            this.Api.get('comments', {task_id: this.taskFinded.id})
+            let paramId = this.taskFinded ? this.taskFinded.id : this.task_id;
+            this.Api.get('comments', {task_id: paramId})
             .then(async response => {
                 this.taskComments = await response.data;
             })
@@ -345,6 +346,7 @@ export default {
                 this.comment.comment = null;
                 this.onInputCommentValidate()
                 this.toast.add({ severity: 'success', summary: 'commentario', detail: await response.data.message, life: 3000 });
+                this.listAllCommentByTask();
             })
             .catch(error => {
                 this.toast().add({ severity: 'error', summary: 'commentario', detail: 'error o addicionar o commentario', life: 3000 });
