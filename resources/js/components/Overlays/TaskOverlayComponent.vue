@@ -7,7 +7,7 @@
                     <i class="small-icon task-description pi pi-align-center"></i>
                     {{ task.title }}
                 </span>
-                <span v-if="task.user_name.name" class="small-fw task-description d-flex gap-3">
+                <span v-if="task.user_name?.name" class="small-fw task-description d-flex gap-3">
                     <small>Responsavel: {{ task.user_name.name }}</small>
                     <small>
                         <i class="small-icon task-description pi pi-align-center"></i>

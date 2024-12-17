@@ -1,6 +1,6 @@
 <template>
-    <div class="container m-auto position-fixed d-none shadow-lg rounded-pill" id="task-toolbar">
-        <div class="row">
+    <div class="container d-flex justify-content-center position-fixed d-none shadow-lg rounded-pill" id="task-toolbar">
+        <div class="w-75 m-auto">
             <div class="col-md-10 d-flex gap-1 align-items-center">
                 <Button @click="visibleTaskTransfertSidebar = true" class="task-description btn-text-nowrap  d-flex align-items-center gap-1" label="Projeto" text>
                     <span class="d-flex align-items-center">
@@ -56,6 +56,8 @@ export default {
 <style scoped>
 #task-toolbar{
     bottom: 5%;
+    right: 0;
+    left: 0;
     background-color: #09090b;
     z-index: 1;
 }

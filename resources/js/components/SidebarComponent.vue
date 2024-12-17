@@ -105,12 +105,12 @@
                                     <Menu v-if="menuSprintsToggle" @click="$emit('reloadSprintTaks')" :model="sprints" class="p-2 rounded-0 border-0" style="background-color: #f3f4f6;">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0">
-                                                <router-link class="text-decoration-none text-lowercase" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
+                                                <a class="text-decoration-none text-lowercase" @click="cleanSprintPathUrl(item.path)">
                                                     <span class="sub-menu-item text-capitalize" style="color: #475569;">
                                                         <i class="pi pi-list-check mb-3 px-1"></i>
                                                         {{ item.name }}
                                                     </span>
-                                                </router-link>
+                                                </a>
                                            </li>
                                         </template>
                                     </Menu>
@@ -188,11 +188,7 @@ export default {
             })
         },
         cleanSprintPathUrl(path){
-            if (location.pathname.includes("sprint")){
-                let regex = /[sprint, \s]/g;
-                return path.replaceAll(regex, "");
-            }
-            return path.replace(" ", "/");
+           this.$router.push("/"+path);
         },
         listAllTeam(){
             this.Api.get('team-space')

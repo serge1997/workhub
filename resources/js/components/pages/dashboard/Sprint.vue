@@ -12,7 +12,7 @@
                             </div>
                         </template>
                         <template #center>
-                            <div class="w-100 d-flex">
+                            <div class="w-100 d-flex d-none d-sm-inline">
                                 <AutoComplete @change="getUserTask" v-model="user_filtered" optionLabel="name" placeholder="select a user..." dropdown :suggestions="users_filter" @complete="onListAllUsers">
                                     <template #option="slotProps">
                                         <div class="d-flex gap-1 w-50">
@@ -25,9 +25,9 @@
                         </template>
                     </Toolbar>
                 </div>
-                <div class="w-100 d-flex gap-4" style="overflow-x: scroll;">
-                    <div v-for="status in task_status_by_sprint" class="w-100 mt-3">
-                        <div v-if="status.status != 'BKL'" style="height: 600px; min-width: 360px; overflow: scroll;">
+                <div class="w-100 d-flex gap-4 vh-100" style="overflow: scroll;">
+                    <div v-for="status in task_status_by_sprint" class="w-100 mt-3 vh-100">
+                        <div v-if="status.status != 'BKL'" style="min-width: 360px; overflow: scroll;">
                             <div class="card w-100">
                                 <div class="card-header border-0 bg-white">
                                     <Tag class="w-100 d-flex gap-2 bg-transparent shadow-sm rounded-2" :style="`border-top: 3px solid ${ executionStatusBg(status.status)}; color: #374151;`">

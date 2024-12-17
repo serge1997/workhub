@@ -20,7 +20,8 @@ class SprintResource extends JsonResource
             'start_at' => $this->start_at,
             'close_at' => $this->close_at,
             'deleted_at' => $this->deleted_at,
-            'count_tasks' => $this->tasks->count()
+            'count_tasks' => $this->tasks->count(),
+            'path' => str_replace(" ", "/", $this->name)
         ];
     }
 }
