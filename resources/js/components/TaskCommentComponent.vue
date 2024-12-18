@@ -24,10 +24,13 @@
                      </div>
                      <div class="card-body p-0 px-2">
                         <div class="comment d-flex flex-column gap-0">
-                             <span>
-                                 <p style="font-size: 0.9rem;" class="" id="comment-content" @mouseover="showCommentActionButton(comment.id)" @mouseleave="hideCommentActionButton(comment.id)">
+                            <span>
+                                <p style="font-size: 0.9rem;" class="" id="comment-content" @mouseover="showCommentActionButton(comment.id)" @mouseleave="hideCommentActionButton(comment.id)">
                                     {{ comment.comment }}
                                     <br>
+                                    <span class="w-100 d-flex justify-content-start">
+                                        <small class="task-description v-small-fs">{{ comment.since }}</small>
+                                    </span>
                                     <div :id="`action-box-${comment.id}`" class="w-100 d-none">
                                         <CommentEditionComponent
                                         :comment="comment"
@@ -40,7 +43,7 @@
                                     </div>
                                     <br>
                                     <Button @click="showResponseInput(comment.id)" style="font-size: 0.8rem;" class="p-0" text label="Responder..." />
-                                 </p>
+                                </p>
                                  <span class="d-flex mb-1 d-none" :id="`input-response-box-${comment.id}`">
                                      <input style="font-size: 0.8rem;" v-model="commentResponse.response" class="form-control p-1 text-secondary" type="text" placeholder="your response....">
                                      <Button @click="createResponse(comment.id)" class="p-0" text icon="pi pi-send" />
@@ -58,6 +61,9 @@
                                                 <p @mouseover="showCommentResponseActionButton(response.id)" @mouseleave="hideCommentResponseActionButton(response.id)">
                                                     {{ response.response }}
                                                     <br>
+                                                    <span class="w-100 d-flex justify-content-start">
+                                                        <small class="task-description v-small-fs">{{ response.since }}</small>
+                                                    </span>
                                                     <div :id="`action-box-response-${response.id}`" class="w-100 p-0 d-none">
                                                         <CommentResponseEditionComponent
                                                             :response="response"

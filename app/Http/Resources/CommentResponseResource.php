@@ -21,7 +21,8 @@ class CommentResponseResource extends JsonResource
             "avatar" => $this->user->avatar,
             "user_id" => $this->user_id,
             "comment_id" => $this->comment_id,
-            "owner" => $this->when($request->user()->id === $this->user_id, true)
+            "owner" => $this->when($request->user()->id === $this->user_id, true),
+            "since" => $this->since()
 
         ];
     }

@@ -9,6 +9,9 @@
         <div class="card-body p-1">
             {{comment.comment}}
         </div>
+        <div class="card-footer border-0 bg-transparent d-flex justify-content-end p-0 px-1">
+            <small class="task-description v-small-fs">{{ comment.since }}</small>
+        </div>
     </div>
 </template>
 <script>

@@ -23,6 +23,8 @@ class CommentResource extends JsonResource
             "user_id"   => $this->user_id,
             "owner"     => $this->when($request->user()->id == $this->user_id, true),
             "deleted_at" => $this->deleted_at,
+            "created_at" => date('d/m/y H:i:s', strtotime($this->created_at)),
+            "since" => $this->since(),
             "response"  => $this->when($this->has_response,
                 CommentResponseResource::collection(
                     CommentResponse::where('comment_id', $this->id)
