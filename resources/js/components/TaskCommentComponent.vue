@@ -28,8 +28,15 @@
                                 <p style="font-size: 0.9rem;" class="" id="comment-content" @mouseover="showCommentActionButton(comment.id)" @mouseleave="hideCommentActionButton(comment.id)">
                                     {{ comment.comment }}
                                     <br>
-                                    <span class="w-100 d-flex justify-content-start">
-                                        <small class="task-description v-small-fs">{{ comment.since }}</small>
+                                    <span class="w-100 d-flex gap-2">
+                                        <span class="d-flex align-items-center">
+                                            <Button text class="d-flex align-items-center p-0 task-description">
+                                                <span><i style="font-size: .9em;" class="pi pi-thumbs-up"></i></span>
+                                            </Button>
+                                        </span>
+                                        <span class="d-flex align-items-center">
+                                            <small class="task-description v-small-fs">{{ comment.since }}</small>
+                                        </span>
                                     </span>
                                     <div :id="`action-box-${comment.id}`" class="w-100 d-none">
                                         <CommentEditionComponent

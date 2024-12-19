@@ -1,7 +1,7 @@
 <template>
     <SidebarComponent>
         <div class="row m-auto min-vh-100 position-relative">
-            <div class="col-md-8 border m-auto">
+            <div class="col-md-10 m-auto">
                 <h3 class="text-center fw-light">Register user</h3>
                 <div class="card p-3">
                     <div class="row">
@@ -29,7 +29,32 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-12 d-flex flex-column">
+                        <div class="col-md-6 d-flex flex-column">
+                            <label for="email" class="form-label">Team</label>
+                            <Dropdown :options="teams" v-model="user.team_id" optionLabel="name" placeholder="select a team...">
+                                <template #value="slotProps">
+                                    <div v-if="slotProps.value">
+                                        <span class="sub-menu-item d-flex align-items-center gap-2" style="color: #475569;">
+                                            <Tag class="px-2" :value="slotProps.value.first_letter"/>
+                                            <span>{{ slotProps.value.name }}</span>
+                                        </span>
+                                    </div>
+                                    <div v-else class="d-flex align-items-center gap-2">
+                                        <span class="task-description"><i class="pi pi-users"></i></span>
+                                        <span>{{ slotProps.placeholder }}</span>
+                                    </div>
+                                </template>
+                                <template #option="slotProps">
+                                    <div class="d-flex gap-2">
+                                        <span class="sub-menu-item d-flex align-items-center gap-2" style="color: #475569;">
+                                            <Tag class="px-2" :value="slotProps.option.first_letter"/>
+                                            <span>{{ slotProps.option.name }}</span>
+                                        </span>
+                                    </div>
+                                </template>
+                            </Dropdown>
+                        </div>
+                        <div class="col-md-6 d-flex flex-column">
                             <label for="email" class="form-label">Departamento</label>
                             <Dropdown :options="departments" v-model="user.department_id" optionValue="id" optionLabel="name" placeholder="select a position"/>
                         </div>
@@ -52,15 +77,10 @@
                         <Dropdown :options="managers" v-model="user.manager_id" optionValue="id" optionLabel="name" placeholder="select a manager"/>
                     </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 p-3 d-flex justify-content-end">
-                            <Button @click="onCreate" class="form-btn" text label="Salvar" />
-                        </div>
+                    <div class="row p-3">
+                        <Button @click="onCreate" class="rounded-pill" label="Salvar" />
                     </div>
                 </div>
-            </div>
-            <div class="col-md-2">
-                <h6>right sidebar</h6>
             </div>
         </div>
  </SidebarComponent>
@@ -70,6 +90,10 @@ import SidebarComponent from './../../SidebarComponent.vue';
 import { User } from '../../../main/user.js';
 export default {
     name: 'Register',
+
+    components: {
+
+    },
     data(){
         return {
             positions: [
@@ -88,8 +112,10 @@ export default {
                 position_id: null,
                 department_id: null,
                 manager_id: null,
-                user_type: null
+                user_type: null,
+                team_id: null
             },
+            teams: [],
             formErrorBag: null,
             invalidInpuClass: null,
             departments: null,
@@ -102,6 +128,7 @@ export default {
         onCreate(e){
            try {
             e.preventDefault();
+            this.user.team_id = this.user.team_id?.id;
             this.Api.post('user', this.user)
                 .then(response => {
                     console.log(response)
@@ -153,7 +180,13 @@ export default {
                     this.managers = await response.data.filter(manager => manager.user_type == "ADM");
                     console.log(this.managers)
                 })
-        }
+        },
+        listAllTeam(){
+            this.Api.get('team-space')
+            .then(async response => {
+                this.teams = await response.data.data;
+            })
+        },
     },
 
     mounted(){
@@ -161,6 +194,7 @@ export default {
         this.onListAllPositions();
         this.onListAllDepartments()
         this.onListManagers();
+        this.listAllTeam();
     }
 }
 </script>

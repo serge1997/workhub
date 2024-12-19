@@ -3,17 +3,21 @@
         <div class="row">
             <div class="col-md-10 mt-3 m-auto p-0">
                 <div class="row w-100 p-0 m-auto">
-                    <Toolbar class="p-1">
+                    <Toolbar class="p-1 bg-transparent rounded-0 border-0 border-bottom">
                         <template #start>
                             <div class="w-100 d-flex align-items-center">
-                                <Button @click="componentIs = 'CardTaskComponent'" icon="pi pi-th-large" text/>
-                                <Button @click="componentIs = 'ListTaskComponent'" icon="pi pi-list" text />
-                                <Button :label="currentSprintName" class="task-description text-capitalize" text />
+                                <Button @click="componentIs = 'CardTaskComponent'" text>
+                                    <i class="pi pi-th-large task-description small-fw"></i>
+                                </Button>
+                                <Button @click="componentIs = 'ListTaskComponent'" icon="pi pi-list" text>
+                                    <i class="pi pi-list task-description small-fw"></i>
+                                </Button>
+                                <Button :label="currentSprintName" class="task-description text-capitalize small-fw" text />
                             </div>
                         </template>
                         <template #center>
                             <div class="w-100 d-flex d-none d-sm-inline">
-                                <AutoComplete @change="getUserTask" v-model="user_filtered" optionLabel="name" placeholder="select a user..." dropdown :suggestions="users_filter" @complete="onListAllUsers">
+                                <AutoComplete @change="getUserTask" v-model="user_filtered" optionLabel="name" placeholder="digit a user name..." :suggestions="users_filter" @complete="onListAllUsers">
                                     <template #option="slotProps">
                                         <div class="d-flex gap-1 w-50">
                                             <img style="width: 28px;" :alt="slotProps.option.name" :src="`/img/users_avatars/${slotProps.option.avatar}`" />
@@ -112,7 +116,7 @@ export default{
         },
         onListAllTask(){
             let pathname = location.pathname;
-            this.currentSprintName = pathname.replaceAll(/\W/g, ' ');
+            this.currentSprintName = pathname.replaceAll(/\W|dashboard/g, ' ');
             this.Api.get('tasks/by-sprint', {sprint_id: this.$route.params.id})
             .then(async response => {
                 this.tasks = await response.data;

@@ -45,15 +45,6 @@ const routes = [
         meta: {requiresAuth: true}
     },
     {
-        path: '/sprint/:id?',
-        name: 'Sprint',
-        component: () => import("../components/pages/dashboard/Sprint.vue"),
-        meta: {
-            reload: true,
-            requiresAuth: true
-        }
-    },
-    {
         path: '/trash',
         name: 'Trash',
         component: () => import("../components/pages/dashboard/Trash.vue"),
@@ -66,16 +57,31 @@ const routes = [
         meta: {requiresAuth: true}
     },
     {
-        path: '/projects',
-        name: 'Project',
-        component: () => import("../components/pages/dashboard/Project.vue"),
-        meta: {requiresAuth: true}
-    },
-    {
         path: '/dashboard/team-insight',
         name: 'TeamInsight',
         component: () => import("../components/pages/dashboard/TeamInsight.view.vue"),
         meta: {requiresAuth: true}
+    },
+    {
+        path: "/dashboard",
+        meta: {requiresAuth: true},
+        children: [
+            {
+                path: 'sprint/:id?',
+                name: 'Sprint',
+                component: () => import("../components/pages/dashboard/Sprint.vue"),
+            },
+            {
+                path: 'projects',
+                name: 'Project',
+                component: () => import("../components/pages/dashboard/Project.vue"),
+            },
+            {
+                path: "team-space/:name",
+                component: () => import("../components/pages/dashboard/TeamSpace.view.vue"),
+                name: 'TeamSpace'
+            }
+        ]
     }
 ]
 

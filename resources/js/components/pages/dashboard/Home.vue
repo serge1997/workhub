@@ -82,19 +82,23 @@
     </SidebarComponent>
 </template>
 <script>
-import CreateFastTaskComponent from '../../CreateFastTaskComponent.vue';
-import CreateProjectComponent from '../../CreateProjectComponent.vue';
+import { defineAsyncComponent } from 'vue';
 import ProjectHomeListComponent from '../../project/ProjectHomeListComponent.vue';
-import CreateTeamSpaceComponent from '../../TeamSpace/CreateTeamSpaceComponent.vue';
 import TeamSpaceHomeListComponent from '../../TeamSpace/TeamSpaceHomeListComponent.vue';
 export default {
     name: 'Home',
 
     components: {
-        CreateFastTaskComponent,
-        CreateProjectComponent,
+        CreateFastTaskComponent: defineAsyncComponent(() =>
+            import('../../CreateFastTaskComponent.vue')
+        ),
+        CreateProjectComponent: defineAsyncComponent(() =>
+            import('../../CreateProjectComponent.vue')
+        ),
+        CreateTeamSpaceComponent: defineAsyncComponent(() =>
+            import('../../TeamSpace/CreateTeamSpaceComponent.vue')
+        ),
         ProjectHomeListComponent,
-        CreateTeamSpaceComponent,
         TeamSpaceHomeListComponent
     },
     data() {

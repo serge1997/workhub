@@ -182,8 +182,8 @@
     </div>
 </template>
 <script>
-import ShowTaskComponent from '../ShowTaskComponent.vue';
 import ListTaskExecutionStatusComponent from '../ListTaskExecutionStatusComponent.vue';
+import { defineAsyncComponent } from 'vue';
 export default{
     name: 'ListTaskComponent',
     props: {
@@ -197,7 +197,9 @@ export default{
     },
 
     components: {
-        ShowTaskComponent,
+        ShowTaskComponent: defineAsyncComponent(() =>
+            import('../ShowTaskComponent.vue')
+        ),
         ListTaskExecutionStatusComponent
     },
     data(){

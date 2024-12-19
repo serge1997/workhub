@@ -166,9 +166,9 @@
     </div>
 </template>
 <script>
-import ShowTaskComponent from '../ShowTaskComponent.vue';
 import TaskCardIconsComponent from '../TaskCardIconsComponent.vue';
 import ShowTaskAnnexComponent from '../ShowTaskAnnexComponent.vue';
+import { defineAsyncComponent } from 'vue';
 export default{
     name: 'CardTaskComponent',
     props: {
@@ -181,7 +181,9 @@ export default{
         taskStatus: Object
     },
     components: {
-        ShowTaskComponent,
+        ShowTaskComponent: defineAsyncComponent(() =>
+            import('../ShowTaskComponent.vue')
+        ),
         TaskCardIconsComponent,
         ShowTaskAnnexComponent
     },

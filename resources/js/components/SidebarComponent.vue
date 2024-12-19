@@ -4,6 +4,7 @@
             @watch-route-params="$emit('watchRouteParams')"
             @show-sidebar="showSidebar"
         />
+        <SubNavbarComponent />
         <div class="m-auto">
             <div class="d-flex d-none" id="side_bar">
                 <div style="top: 0; left: 0; z-index: 10;height: 690px; overflow-y: scroll; width: 220px;" class="position-fixed side-bar-body shadow-sm z-3 vh-100">
@@ -43,15 +44,15 @@
                                     Team space
                                 </span>
                                 <ul class="list-group border-0 p-0">
-                                    <Menu v-if="menuTeamSpaceToggle && teams_space" @click="$emit('reloadSprintTaks')" :model="teams_space" class="p-2 rounded-0 border-0" style="background-color: #f3f4f6;">
+                                    <Menu v-if="menuTeamSpaceToggle && teams_space" :model="teams_space" class="p-2 rounded-0 border-0" style="background-color: #f3f4f6;">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0 mb-2">
-                                                <router-link class="text-decoration-none" v-slot="{ href, navigate }" :to="cleanSprintPathUrl(item.name)">
+                                                <a class="text-decoration-none" @click="$router.push(`/dashboard/team-space/${item.slug}`)">
                                                     <span class="sub-menu-item d-flex align-items-center gap-2" style="color: #475569;">
                                                         <Tag class="px-2" :value="item.first_letter"/>
                                                         <span>{{ item.name }}</span>
                                                     </span>
-                                                </router-link>
+                                                </a>
                                            </li>
                                         </template>
                                     </Menu>
@@ -135,8 +136,13 @@
 <script>
 import { useToast } from 'primevue/usetoast';
 import { provide } from 'vue';
+import SubNavbarComponent from './SubNavbarComponent.vue';
 export default {
     name: 'SidebarComponent',
+
+    components: {
+        SubNavbarComponent
+    },
 
     data(){
         return {
@@ -188,7 +194,7 @@ export default {
             })
         },
         cleanSprintPathUrl(path){
-           this.$router.push("/"+path);
+           this.$router.push("/dashboard/"+path);
         },
         listAllTeam(){
             this.Api.get('team-space')

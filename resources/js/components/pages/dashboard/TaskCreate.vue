@@ -1,7 +1,7 @@
 <template>
     <SidebarComponent>
         <div class="row position-relative">
-            <div class="col-md-10">
+            <div class="col-md-10 m-auto">
                 <div class="card w-100 border-0">
                     <form @submit.prevent="createTask" id="task-form">
                     <div class="card-body">
@@ -13,7 +13,28 @@
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="email" class="form-label">Prioridade</label>
-                                <Dropdown :options="priorities" v-model="task.priority" :class="formErrorBag && formErrorBag.priority ? invalidInpuClass : ''" optionLabel="label" optionValue="value" class="w-100" id="prioritie" placeholder="Choose priority" />
+                                <Dropdown :options="priorities" v-model="task.priority" :class="formErrorBag && formErrorBag.priority ? invalidInpuClass : ''" optionLabel="label" class="w-100" id="prioritie" placeholder="Choose priority">
+                                    <template #value="slotProps">
+                                        <div v-if="slotProps.value">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-flag-fill" :class="slotProps.value.severity"></i></span>
+                                                <Tag severity="secondary" :value="slotProps.value.label"/>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <span class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-flag"></i></span>
+                                                <span>{{ slotProps.placeholder }}</span>
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <template #option="slotProps">
+                                        <div class="d-flex gap-2">
+                                            <span class="task-description"><i class="pi pi-flag-fill" :class="slotProps.option.severity"></i></span>
+                                            <span>{{ slotProps.option.label }}</span>
+                                        </div>
+                                    </template>
+                                </Dropdown>
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.priority" v-text="`${formErrorBag.priority}`"></small>
                             </div>
                         </div>
@@ -31,25 +52,113 @@
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="sprint_id" class="form-label">Sprint </label>
-                                <Dropdown v-model="task.sprint_id" :options="sprints" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Choose a sprint..." />
+                                <Dropdown v-model="task.sprint_id" :options="sprints" optionLabel="name" :class="formErrorBag && formErrorBag.sprint_id ? invalidInpuClass : ''" class="w-100" id="sprint" placeholder="Choose a sprint...">
+                                    <template #value="slotProps">
+                                        <div v-if="slotProps.value">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-list"></i></span>
+                                                <Tag severity="warning" :value="slotProps.value.name"/>
+                                            </div>
+                                        </div>
+                                        <span v-else>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-list"></i></span>
+                                                <span>{{ slotProps.placeholder }}</span>
+                                            </div>
+                                        </span>
+                                    </template>
+                                    <template #option="slotProps">
+                                        <div class="d-flex gap-2">
+                                            <span class="task-description"><i class="pi pi-tag"></i></span>
+                                            <span>{{ slotProps.option.name }}</span>
+                                        </div>
+                                    </template>
+                                </Dropdown>
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.sprint_id" v-text="`${formErrorBag.sprint_id}`"></small>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 d-flex flex-column mb-3">
                                 <label for="email" class="form-label">Task status</label>
-                                <Dropdown v-model="task.execution_status_id" :options="task_status" optionLabel="name" optionValue="id" class="w-100" placeholder="Choose task status" />
+                                <Dropdown v-model="task.execution_status_id" :options="task_status" optionLabel="name" class="w-100" placeholder="Choose task status">
+                                    <template #value="slotProps">
+                                        <div v-if="slotProps.value">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-circle-fill" :style="`color: ${slotProps.value.severity};`"></i></span>
+                                                <Tag severity="secondary" :value="slotProps.value.name"/>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <span class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-circle-fill"></i></span>
+                                                <span>{{ slotProps.placeholder }}</span>
+                                            </span>
+                                        </div>
+                                    </template>
+                                    <template #option="slotProps">
+                                        <div class="d-flex gap-2">
+                                            <span class="task-description"><i class="pi pi-circle-fill" :style="`color: ${slotProps.option.severity};`"></i></span>
+                                            <span>{{ slotProps.option.name }}</span>
+                                        </div>
+                                    </template>
+                                </Dropdown>
                             </div>
                             <div class="col-md-6 d-flex flex-column mb-3">
                                 <label for="email" class="form-label">Projeto</label>
-                                <Dropdown v-model="task.project_id" :options="projects" optionLabel="name" optionValue="id" class="w-100" placeholder="Choose a project..." />
+                                <Dropdown v-model="task.project_id" :options="projects" optionLabel="name" class="w-100" placeholder="Choose a project...">
+                                    <template #value="slotProps">
+                                        <div v-if="slotProps.value">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-tag"></i></span>
+                                                <Tag severity="secondary" :value="slotProps.value.name"/>
+                                            </div>
+                                        </div>
+                                        <span v-else>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-tag"></i></span>
+                                                <span>{{ slotProps.placeholder }}</span>
+                                            </div>
+                                        </span>
+                                    </template>
+                                    <template #option="slotProps">
+                                        <div class="d-flex gap-2">
+                                            <span class="task-description"><i class="pi pi-tag"></i></span>
+                                            <span>{{ slotProps.option.name }}</span>
+                                        </div>
+                                    </template>
+                                </Dropdown>
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.project_id" v-text="`${formErrorBag.project_id}`"></small>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3 d-flex flex-column">
                                 <label for="email" class="form-label">Colaborador</label>
-                                <Dropdown v-model="task.user_id" :options="users" optionLabel="name" optionValue="id" :class="formErrorBag && formErrorBag.user_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Choose prioritie" />
+                                <Dropdown v-model="task.user_id" :options="users" optionLabel="name" :class="formErrorBag && formErrorBag.user_id ? invalidInpuClass : ''" class="w-100" id="prioritie" placeholder="Escolhe o responsavel...">
+                                    <template #value="slotProps">
+                                        <div v-if="slotProps.value">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="task-description">
+                                                    <img style="width: 18px" :src="`/img/users_avatars/${slotProps.value.avatar}`" alt="">
+                                                </span>
+                                                <Tag severity="secondary" :value="slotProps.value.name"/>
+                                            </div>
+                                        </div>
+                                        <span v-else>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <span class="task-description"><i class="pi pi-user"></i></span>
+                                                <span>{{ slotProps.placeholder }}</span>
+                                            </div>
+                                        </span>
+                                    </template>
+                                    <template #option="slotProps">
+                                        <div class="d-flex gap-2">
+                                            <span>
+                                                <img style="width: 18px" :src="`/img/users_avatars/${slotProps.option.avatar}`" alt="">
+                                            </span>
+                                            <span>{{ slotProps.option.name }}</span>
+                                        </div>
+                                    </template>
+                                </Dropdown>
                                 <small class="text-danger" v-if="formErrorBag && formErrorBag.user_id" v-text="`${formErrorBag.user_id}`"></small>
                             </div>
                             <div class="col-md-6 mb-3 d-flex flex-column">
@@ -119,9 +228,9 @@ export default{
     data(){
         return {
             priorities: [
-                {value: "ALT", label: "Alta"},
-                {value: "MED", label: "Media"},
-                {value: "BAX", label: "Baixa"}
+                {value: "ALT", label: "Alta", severity: "text-danger"},
+                {value: "MED", label: "Media", severity: "text-warning"},
+                {value: "BAX", label: "Baixa", severity: "text-success"}
             ],
             users: null,
             followers: null,
@@ -199,15 +308,15 @@ export default{
             this.roadMap.descriptions = this.roadMap.descriptions.map(e => '+r@ ' + e);
             this.task.execution_delay !== null ? data.append('execution_delay', this.task.execution_delay) : null;
             this.task.title !== null ? data.append('title', this.task.title) : null;
-            this.task.sprint_id !== null ? data.append('sprint_id', this.task.sprint_id) : null;
+            this.task.sprint_id !== null ? data.append('sprint_id', this.task.sprint_id?.id) : null;
             this.task.time_delay !== null ? data.append('time_delay', this.task.time_delay) : null;
             this.task.description !== null ? data.append('description', this.task.description) : null;
-            this.task.priority !== null ? data.append('priority', this.task.priority) : null;
-            data.append('user_id', this.task.user_id ?? '');
-            this.task.project_id !== null ? data.append('project_id', this.task.project_id) : null;
+            this.task.priority !== null ? data.append('priority', this.task.priority?.value) : null;
+            data.append('user_id', this.task.user_id?.id ?? '');
+            this.task.project_id !== null ? data.append('project_id', this.task.project_id?.id) : null;
             this.task.followers !== null ? data.append('followers', this.task.followers) : null;
             this.roadMap.titles.length > 0 ? data.append('road_map_titles',this.roadMap.titles) : null;
-            data.append('execution_status_id', this.task.execution_status_id ?? '');
+            data.append('execution_status_id', this.task.execution_status_id?.id ?? '');
             this.roadMap.descriptions.length > 0 ? data.append('road_map_descriptions', this.roadMap.descriptions) : null
             return data;
           }catch(err) {

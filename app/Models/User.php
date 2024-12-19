@@ -31,7 +31,8 @@ class User extends Authenticatable
         'department_id',
         'manager_id',
         'avatar',
-        'user_type'
+        'user_type',
+        'team_id'
     ];
 
     public function isBanned(): bool
@@ -92,5 +93,10 @@ class User extends Authenticatable
     public function roadmap() : HasMany
     {
         return $this->hasMany(TaskRoadMap::class, 'user_id');
+    }
+
+    public function team() : BelongsTo
+    {
+        return $this->belongsTo(TeamSpace::class, 'team_id');
     }
 }
