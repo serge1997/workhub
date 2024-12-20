@@ -17,6 +17,7 @@ use App\Core\Task\Actions\CreateTaskAction;
 use App\Core\Task\Actions\ListTaskByFilteredUserAction;
 use App\Core\Task\Actions\TaskListAction;
 use App\Core\Task\Actions\TaskUpdateAction;
+use App\Core\User\UserRepositoryInterface;
 use App\Models\TaskExecutionStatus;
 
 class TaskRepository implements TaskRepositoryInterface
@@ -26,7 +27,8 @@ class TaskRepository implements TaskRepositoryInterface
         protected FollowerRepositoryInterface $followerRepositoryInterface,
         protected TaskRoadMapRepositoryInterface $taskRoadMapRepositoryInterface,
         protected CustomColumnsValueRepositoryInterface $customColumnsValueRepositoryInterface,
-        protected TaskActivityRepositoryInterface $taskActivityRepositoryInterface
+        protected TaskActivityRepositoryInterface $taskActivityRepositoryInterface,
+        protected UserRepositoryInterface $userRepository
     ){}
 
     public function create($request)
@@ -36,7 +38,8 @@ class TaskRepository implements TaskRepositoryInterface
             $this->followerRepositoryInterface,
             $this->taskRoadMapRepositoryInterface,
             $this->customColumnsValueRepositoryInterface,
-            $this->taskActivityRepositoryInterface
+            $this->taskActivityRepositoryInterface,
+            $this->userRepository
         );
         return $action->run($request);
     }

@@ -109,6 +109,10 @@ export default {
                 setTimeout(() => {
                     if (data.sprint_id){
                         this.$router.push(`/sprint/${data.sprint_id}`)
+                    }else{
+                        this.transfertData.status = null;
+                        this.transfertData.sprint = null;
+                        this.transfertData.team = null;
                     }
                 }, 300)
             })
