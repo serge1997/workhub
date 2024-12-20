@@ -22,8 +22,8 @@
             </div>
         </div>
         <div class="col-md-10">
-            <Button @click="toggleAllComments" text class="p-0 task-description">
-                <small>{{btn_toggle_label}}</small>
+            <Button @click="$emit('toggleAllComments')" text class="p-0 task-description">
+                <small>{{ btn_toggle_label }}</small>
             </Button>
         </div>
     </div>
@@ -33,34 +33,18 @@ export default {
     name: 'CommentCardComponent',
 
     props: {
-        comments: Object
+        comments: Object,
+        splited_comments: Object,
+        btn_toggle_label: String
     },
     data(){
         return {
-            splited_comments: null,
-            btn_toggle_label: "Todos comentarios..."
         }
     },
     methods: {
-        toggleAllComments(){
-            console.log(this.splited_comments.length);
-            console.log(this.comments.length)
-            if (this.splited_comments.length === this.comments.length){
-                this.btn_toggle_label = "Todos comentarios..."
-                return this.splited_comments = this.comments.slice(0, 2);
-            }
-            this.splited_comments = this.comments;
-            this.btn_toggle_label = "ver menos comentarios..."
-        }
     },
     mounted(){
-        const intervalComment = setInterval(() => {
-            if (this.comments){
-                this.splited_comments = this.comments.slice(0, 2);
-                console.log(this.splited_comments)
-                clearInterval(intervalComment)
-            }
-        }, 300)
+        
 
     }
 }

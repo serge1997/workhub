@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class ProjectResource extends JsonResource
 {
@@ -23,7 +24,9 @@ class ProjectResource extends JsonResource
             'tasks_count_in_progress' => $this->tasks_in_progress->count(),
             'task_count_concluded' => $this->tasks_concluded->count(),
             'members_count' => $this->members_count[0]['user_id'],
-            'severity' => $this->severity
+            'severity' => $this->severity,
+            'slug' =>  Str::slug($this->name, '-'),
+            'rand_uuid' => Str::uuid()
         ];
     }
 }

@@ -11,7 +11,7 @@
                                     <i class="pi pi-angle-right"></i>
                                 </span>
                             </Tag>
-                            <Button v-for="project of projects" class="task-description btn-text-nowrap rounded-pill d-flex gap-1 project_btn_toolbar px-2 py-1" @click="listProjectData(project)" :id="`project_btn_toolbar_${project.id}`" label="Projeto" text>
+                            <Button v-for="project of projects" class="task-description btn-text-nowrap rounded-pill d-flex gap-1 project_btn_toolbar px-2 py-1" @click="listProjectData(project)" :id="`project_btn_toolbar_${project.id}`" text>
                                 <span class="d-flex align-items-center">
                                     <i :style="`color: #${project.severity};`" class="pi pi-circle-fill small-icon"></i>
                                 </span>
@@ -104,7 +104,11 @@ export default {
             import('../../project/ProjectInsightComponent.vue')
         )
     },
-
+    watch: {
+        '$route.params.id'(n, old) {
+            this.listAllProject();
+        }
+    },
     data(){
         return {
             projects: null,
@@ -123,12 +127,23 @@ export default {
             this.Api.get('project')
             .then(async response => {
                 this.projects = await response.data.data;
-                //trigger click on first project btn
-                setTimeout(() => {
-                    document.querySelector('.project_btn_toolbar').click();
-                    this.selected_project = this.projects[0].id;
-                    this.project = this.projects[0];
-                }, 500)
+                if (this.$route.params?.id){
+                    this.project = this.projects.find(project => project.id == this.$route.params.id)
+                    const triggerProjectClick = setInterval(() => {
+                        let finded_project_btn = document.getElementById(`project_btn_toolbar_${this.$route.params.id}`);
+                        if (finded_project_btn){
+                            finded_project_btn.click();
+                            clearInterval(triggerProjectClick);
+                        }
+                    }, 300)
+                }else{
+                     //trigger click on first project btn
+                    setTimeout(() => {
+                        document.querySelector('.project_btn_toolbar').click();
+                        this.selected_project = this.projects[0].id;
+                        this.project = this.projects[0];
+                    }, 1000)
+                }
             })
         },
         listProjectData(project){

@@ -2,6 +2,9 @@
     <div class="m-auto bg-white d-flex justify-content-between align-items-center">
         <div class="col-md-4 d-flex align-items-center gap-2">
             <Button @click="$emit('showSidebar')" class="task-description" icon="pi pi-th-large" text/>
+            <router-link :to="{name: 'Home'}" class="task-description nav-link p-0">
+                <i class="pi pi-home small-fw"></i>
+            </router-link>
             <router-link :to="{name: 'TeamInsight'}" class="task-description nav-link p-0">Team</router-link>
             <router-link :to="{name: 'TeamInsight'}" class="task-description nav-link p-0">Sprint</router-link>
         </div>

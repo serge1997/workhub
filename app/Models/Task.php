@@ -37,7 +37,8 @@ class Task extends Model
         'execution_status',
         'execution_status_id',
         'sprint_id',
-        'project_id'
+        'project_id',
+        'team_id'
     ];
 
     public function user() : BelongsTo

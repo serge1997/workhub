@@ -164,6 +164,9 @@
               <div class="col-md-11">
                 <CommentCardComponent
                     :comments="taskComments"
+                    :splited_comments="task_splited_comment"
+                    :btn_toggle_label="btn_list_comment_toggle_label"
+                    @toggle-all-comments="toggleAllComments"
                 />
               </div>
             </div>
@@ -182,8 +185,10 @@
         </div>
     </div>
     <Button text icon="pi pi-map" />
-    <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100" maximizable modal header="" :style="{ width: '100%' }">
-        <iframe class="iframe min-vh-100" :src="`/task-annex/${annex}`" width="100%" height="100%" frameborder="0"></iframe>
+    <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100 vw-100" maximizable modal header=" " :style="{ width: '100%' }">
+        <div class="w-100 vh-100 m-auto d-flex justify-content-center align-items-center">
+            <iframe class="iframe border z-4" :src="`/task-annex/${annex}`" width="80%" height="70%" frameborder="0"></iframe>
+        </div>
     </Dialog>
 </template>
 <script>
@@ -238,14 +243,25 @@ export default {
                 actionToggle: false
             },
             taskComments: null,
+            task_splited_comment: null,
+            btn_list_comment_toggle_label: "todos comentarios..."
         }
     },
     methods:{
+        toggleAllComments(){
+            if (this.task_splited_comment.length === this.taskComments.length){
+                this.btn_list_comment_toggle_label = "Todos comentarios..."
+                return this.task_splited_comment = this.taskComments.slice(0, 2);
+            }
+            this.task_splited_comment = this.taskComments;
+            this.btn_list_comment_toggle_label = "ver menos comentarios..."
+        },
         listAllCommentByTask(){
             let paramId = this.taskFinded ? this.taskFinded.id : this.task_id;
             this.Api.get('comments', {task_id: paramId})
             .then(async response => {
                 this.taskComments = await response.data;
+                this.task_splited_comment = this.taskComments.slice(0, 2);
             })
             .catch(err => {
                 this.toast.add({ severity: 'error', summary: 'Task', detail: err.response.data.message , life: 3000 });
@@ -346,7 +362,9 @@ export default {
                 this.comment.comment = null;
                 this.onInputCommentValidate()
                 this.toast.add({ severity: 'success', summary: 'commentario', detail: await response.data.message, life: 3000 });
-                this.listAllCommentByTask();
+                this.taskComments = await response.data.data;
+                this.task_splited_comment = this.taskComments.slice(0, 2);
+
             })
             .catch(error => {
                 this.toast().add({ severity: 'error', summary: 'commentario', detail: 'error o addicionar o commentario', life: 3000 });

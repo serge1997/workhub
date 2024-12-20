@@ -44,6 +44,23 @@
                     </template>
                 </Dropdown>
             </div>
+            <div class="form-group d-flex flex-column mb-4">
+                <Dropdown v-model="transfertData.team" :options="teams" option-label="name">
+                    <template #value="slotProps">
+                        <div v-if="slotProps.value" class="d-flex gap-2">
+                            <Tag icon="pi pi-users" :value="slotProps.value.name" severity="secondary" />
+                        </div>
+                        <div v-else class="d-flex gap-2">
+                            <Tag icon="pi pi-users" value="Equipe de destino de destino" severity="secondary" />
+                        </div>
+                    </template>
+                    <template #option="slotProps">
+                        <div class="d-flex gap-2">
+                            <Tag icon="pi pi-users" :value="slotProps.option.name" severity="secondary" />
+                        </div>
+                    </template>
+                </Dropdown>
+            </div>
             <div class="form-group d-flex flex-column">
                <Button @click="transfertTasks" label="transferir" class="rounded-pill" />
             </div>
@@ -68,10 +85,12 @@ export default {
         return {
             tasks: [],
             sprints: [],
+            teams: [],
             toast: useToast(),
             transfertData: {
                 sprint: null,
-                status: null
+                status: null,
+                team: null
             },
             execution_status: []
         }
@@ -79,15 +98,18 @@ export default {
     methods: {
         transfertTasks(){
             const data = {
-                status_id: this.transfertData.status ? this.transfertData.status.id : null,
-                sprint_id: this.transfertData.sprint ? this.transfertData.sprint.id : null,
+                status_id: this.transfertData.status?.id,
+                sprint_id: this.transfertData.sprint?.id,
+                team_id: this.transfertData.team?.id,
                 tasks_ids: this.tasksIds
             }
             this.Api.put('task/transfert', null, data)
             .then(async response => {
                 this.toast.add({ severity: 'success', summary: 'successo', detail: await response.data.message, life: 3000 });
                 setTimeout(() => {
-                    this.$router.push(`/sprint/${data.sprint_id}`)
+                    if (data.sprint_id){
+                        this.$router.push(`/sprint/${data.sprint_id}`)
+                    }
                 }, 300)
             })
             .catch(error => {
@@ -121,11 +143,18 @@ export default {
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded execution status", life: 3000 });
             })
         },
+        listAllTeam(){
+            this.Api.get('team-space')
+            .then(async response => {
+                this.teams = await response.data.data;
+            })
+        },
     },
     mounted(){
         this.listAllTasks();
         this.getSprints();
         this.getTaskExecutionStatus();
+        this.listAllTeam();
     }
 }
 </script>

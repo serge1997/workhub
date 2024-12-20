@@ -148,13 +148,23 @@ class TaskRepository implements TaskRepositoryInterface
     {
         $data = [
             'sprint_id' => $request->sprint_id,
-            'execution_status_id' => $request->status_id
+            'execution_status_id' => $request->status_id,
+            'team_id' => $request->team_id
         ];
         if (!$data['sprint_id']){
             array_splice($data, 0, 1);
         }
         if(!$data['execution_status_id']){
-            array_splice($data, 1, 1);
+            $offset = count($data) == 3 ? 1 : 0;
+            array_splice($data, $offset, 1);
+        }
+        if (!$data['team_id']){
+            $offset = match(count($data)){
+                3 => 2,
+                2 => 1,
+                1 => 0
+            };
+            array_splice($data, $offset, 1);
         }
         foreach ($request->tasks_ids as $id){
             $req = new \stdClass();

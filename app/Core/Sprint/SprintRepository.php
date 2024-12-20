@@ -30,7 +30,7 @@ class SprintRepository implements SprintRepositoryInterface
 
     public function listAll()
     {
-        return SprintResource::collection(Sprint::all());
+        return SprintResource::collection(Sprint::orderBy('id', 'desc')->get());
     }
 
     public function findAllByProject(Project $project)

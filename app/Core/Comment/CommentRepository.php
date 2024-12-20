@@ -23,7 +23,7 @@ class CommentRepository implements CommentRepositoryInterface
         return CommentResource::collection(
             Comment::query()
                 ->where([['task_id', $request->task_id], ['deleted_at', null]])
-                    ->orderBy('created_at', 'asc')
+                    ->orderBy('id', 'desc')
                         ->get()
         );
     }

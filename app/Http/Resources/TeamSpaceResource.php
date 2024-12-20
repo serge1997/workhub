@@ -21,7 +21,8 @@ class TeamSpaceResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'created_at' => date('d/m/y H:i:s', strtotime($this->created_at)),
-            'slug' => Str::slug($this->name, '-')
+            'slug' => Str::slug($this->name, '-'),
+            'path' => "dashboard/team-space/". Str::slug($this->name, '-')
         ];
     }
 }
