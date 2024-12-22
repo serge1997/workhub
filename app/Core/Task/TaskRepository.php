@@ -175,6 +175,15 @@ class TaskRepository implements TaskRepositoryInterface
             $task = $this->find($req);
             if ($task){
                 $task->update($data);
+                if ($task->hasSubTask()){
+                    //update sub task with the same data
+                    foreach($task->subTasks as $sub){
+                        $req = new \stdClass();
+                        $req->task_id = $sub->sub_task_id;
+                        $subtask = $this->find($req);
+                        $subtask->update($data);
+                    }
+                }
             }
         }
 

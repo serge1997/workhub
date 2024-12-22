@@ -30,9 +30,9 @@ export default{
 
     },
     watch:{
-        paramId(before, now){
-            this.paramId = now;
-            console.log(now)
+        '$route.params.task_id'(n, old){
+            this.taskFinded = null;
+            this.getTask();
         }
     },
 
@@ -62,7 +62,6 @@ export default{
                 this.taskStatus = await response.data;
             })
             .catch(err => {
-                console.log(err);
                 this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded task status data", life: 3000 });
             })
         },
@@ -70,11 +69,10 @@ export default{
            setTimeout(() => {
             this.Api.get('task', {task_id: this.$route.params.task_id})
             .then(async response => {
+                this.taskFinded = await response.data.data;
                 this.task.id = this.$route.params.task_id;
                 this.getNotificationContent(this.$route.params.type, this.$route.params.origin_id);
-                this.taskFinded = await response.data;
             })
-            .catch(err => console.log(err));
            }, 500)
         },
         showAnnex(annex){
@@ -89,7 +87,6 @@ export default{
             .then(async response => {
                 this.comment = await response.data;
                 this.visibleNofidedCommentModal = true;
-                console.log(await response.data)
             })
             .catch(error => {
                 console.log(error)
@@ -124,9 +121,6 @@ export default{
                 this.hideCurrentCommentEditBox(id);
                 return this.findComment(id);
             })
-            .catch(error => {
-                console.log(error)
-            })
         },
         hideCurrentCommentEditBox(id){
             let editBox = document.getElementById('edit-comment-box-'+id);
@@ -151,12 +145,10 @@ export default{
                 this.showResponseInput(id);
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data.message, life: 3000 });
             })
-            .catch(err => console.log(err))
         },
     },
     created(){
         this.paramId = this.$route.params.task_id;
-        console.log(this.paramId);
     },
     mounted(){
         this.getTask()

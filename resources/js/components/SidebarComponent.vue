@@ -47,7 +47,7 @@
                                     <Menu v-if="menuTeamSpaceToggle && teams_space" :model="teams_space" class="p-2 rounded-0 border-0" style="background-color: #f3f4f6;">
                                         <template #item="{ item, props }">
                                            <li class="list-group-item border-0 p-0 mb-2">
-                                                <a class="text-decoration-none" @click="$router.push(`/dashboard/team-space/${item.slug}`)">
+                                                <a class="text-decoration-none" @click="$router.push(`/dashboard/team-space/${item.id}/${item.slug}`)">
                                                     <span class="sub-menu-item d-flex align-items-center gap-2" style="color: #475569;">
                                                         <Tag class="px-2" :value="item.first_letter"/>
                                                         <span>{{ item.name }}</span>

@@ -210,10 +210,8 @@ export default{
             setTimeout(() => {
                 event.target.classList.add('d-none')
             }, 0)
-            console.log("drag start....")
         },
         onDragenter(event){
-            console.log("drag enter....")
             event.preventDefault();
         },
         onDragover(event){
@@ -242,9 +240,7 @@ export default{
             this.Api.get('task', {id: id})
             .then(async response => {
                 this.task_finded = await response.data;
-                console.log(this.task_finded)
             })
-            .catch(err => console.log(err));
         },
         filterAwait(tasks){
            if (tasks != null){

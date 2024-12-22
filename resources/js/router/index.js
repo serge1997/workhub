@@ -77,7 +77,7 @@ const routes = [
                 component: () => import("../components/pages/dashboard/Project.vue"),
             },
             {
-                path: "team-space/:name",
+                path: "team-space/:id/:name",
                 component: () => import("../components/pages/dashboard/TeamSpace.view.vue"),
                 name: 'TeamSpace'
             }

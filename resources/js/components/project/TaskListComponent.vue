@@ -236,7 +236,7 @@ export default {
         showTask(id){
             this.Api.get('task', {task_id: id})
             .then(async response => {
-                this.task_finded = await response.data;
+                this.task_finded = await response.data.data;
                 this.visibleShowTaskModal = true;
                 this.task_selected_id = id;
             })

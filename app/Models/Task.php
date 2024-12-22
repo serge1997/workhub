@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Enums\UserTypeEnum;
 use App\Models\Scopes\NotDeletScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[ScopedBy(NotDeletScope::class)]
 class Task extends Model
@@ -133,6 +134,10 @@ class Task extends Model
         return SubTask::where('sub_task_id', $this->id)->exists();
     }
 
+    public function hasSubTask() : bool
+    {
+        return SubTask::where('task_id', $this->id)->exists();
+    }
    public function isConcluded()
    {
         return $this->execution_status_id === TaskExecutionStatus::CONCLUDED;
@@ -141,5 +146,10 @@ class Task extends Model
    public function isNotConcluded()
    {
         return $this->execution_status_id !== TaskExecutionStatus::CONCLUDED;
+   }
+
+   public function parent(): HasOne
+   {
+        return $this->hasOne(SubTask::class, 'sub_task_id', 'id');
    }
 }

@@ -45,6 +45,25 @@ final class TaskUpdateAction extends BaseAction
                 'mudou o responsavel para ' . $task->user->name,
                 'update'
             );
+
+            if ($task->hasSubTask()){
+                //update sub task with the same data
+                foreach($task->subTasks as $sub){
+                    $req = new \stdClass();
+                    $req->task_id = $sub->sub_task_id;
+                    $subtask = $this->taskRepository->find($req);
+                    $subtask->update([
+                        'user_id' => $request->user_id
+                    ]);
+                    $this->logActivity(
+                        $request->user()->id,
+                        $sub->sub_task_id,
+                        'mudou o responsavel para ' . $task->user->name,
+                        'update'
+                    );
+                }
+            }
+
         }
         return $task;
     }

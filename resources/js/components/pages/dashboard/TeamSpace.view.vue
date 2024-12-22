@@ -5,7 +5,7 @@
                 <Toolbar class="p-0 border-0 bg-transparent border-bottom">
                     <template #start>
                         <div class="d-flex gap-2 w-100">
-                            <Tag class="text-capitalize" severity="secondary" :value="`/ ${$route.params.name}`"/>
+                            <Tag class="text-capitalize btn-text-nowrap" severity="secondary" :value="`/ ${$route.params.name}`"/>
                             <Button class="task-description btn-text-nowrap  d-flex gap-1" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-bolt small-icon"></i>
@@ -43,6 +43,11 @@ export default {
     components: {
         ProjectListComponent
     },
+    watch: {
+        '$route.params.id'(n, old){
+            this.listAllProjectsByTeam()
+        }
+    },
     data(){
         return {
             name: this.$route.params.name,
@@ -50,12 +55,11 @@ export default {
         }
     },
     mounted(){
-        this.listAllProjects();
-        this.Api.get('project/list-by-team-space/1')
+        this.listAllProjectsByTeam();
     },
     methods:{
-        listAllProjects(){
-            this.Api.get('project')
+        listAllProjectsByTeam(){
+            this.Api.get(`project/list-by-team-space/${this.$route.params.id}`)
             .then(async response => {
                 this.projects = response.data.data;
             })

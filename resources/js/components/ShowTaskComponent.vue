@@ -59,6 +59,24 @@
                 <div class="col-md-12 p-2">
                     <p>{{ taskFinded.description }}</p>
                 </div>
+                <div v-if="!taskFinded.is_sub_task && taskFinded.sub_task_count" class="col-md-12">
+                    <GlobalTasksOverlayComponent
+                        :tasks="sub_tasks"
+                        icon="pi pi-share-alt"
+                        tag-severity="secondary"
+                        :tag-label="`Sub tarefas  (${taskFinded.sub_task_count})`"
+                    />
+                    <Tag @click="listSubTaskByParent(taskFinded.id)" severity="secondary" class="cursor-p d-none" icon="pi pi-share-alt" :value="`Sub tarefas  (${taskFinded.sub_task_count})`" />
+                </div>
+                <div v-if="taskFinded.is_sub_task" class="col-md-12">
+                    <GlobalTasksOverlayComponent
+                        :tasks="sub_tasks"
+                        icon="pi pi-share-alt"
+                        tag-severity="secondary"
+                        tag-label="Relacionamento (tarefa pai)"
+                    />
+                    <Tag severity="secondary" class="cursor-p d-none" icon="pi pi-share-alt" :value="`Relacionamento  (tarefa pai)`" />
+                </div>
             </div>
             <div v-if="taskFinded.roads_map" class="row" id="road-map">
                 <div v-for="road of taskFinded.roads_map" class="col-md-12">
@@ -136,7 +154,7 @@
         </div>
         <div class="col-md-3 rounded-1 d-flex flex-column justify-content-evently">
             <div style="height: 380px;" class="w-100 mb-3 overflow-scroll container">
-                <div v-if="taskFinded.activities.length" class="row task-activities-box mb-3 rounded-3">
+                <div v-if="taskFinded?.activities" class="row task-activities-box mb-3 rounded-3">
                     <div class="col-md-10 p-4">
                         <h6>Atividades no task</h6>
                     </div>
@@ -199,6 +217,7 @@ import ListTaskExecutionStatusComponent from './ListTaskExecutionStatusComponent
 import PriorityOverlayComponent from './Overlays/PriorityOverlayComponent.vue';
 import UsersOverlayComponent from './Overlays/UsersOverlayComponent.vue'
 import CommentCardComponent from './CommentCardComponent.vue';
+import GlobalTasksOverlayComponent from './Overlays/GlobalTasksOverlayComponent.vue';
 import { useToast } from 'primevue/usetoast';
 export default {
     inject: ['taskSeverity', 'taskPrioritySeverity'],
@@ -212,7 +231,13 @@ export default {
         ListTaskExecutionStatusComponent,
         PriorityOverlayComponent,
         UsersOverlayComponent,
-        CommentCardComponent
+        CommentCardComponent,
+        GlobalTasksOverlayComponent
+    },
+    watch:{
+        '$route.params.task_id'(n, old){
+            this.listSubTaskByParent();
+        }
     },
 
     data(){
@@ -244,10 +269,33 @@ export default {
             },
             taskComments: null,
             task_splited_comment: null,
-            btn_list_comment_toggle_label: "todos comentarios..."
+            btn_list_comment_toggle_label: "todos comentarios...",
+            sub_tasks: []
         }
     },
     methods:{
+        listSubTaskByParent(){
+            const taskFindedInterval = setInterval(() => {
+                if (this.taskFinded){
+                    const paramId = this.taskFinded ? this.taskFinded.id : this.task_id;
+                    const url = this.taskFinded?.is_sub_task ? `task?task_id=${this.taskFinded?.parent_id}` : `sub-task/list-by-parent?task_id=${paramId}`;
+                    this.Api.get(url)
+                    .then(async response => {
+                        const result = await response.data.data;
+                        if (result?.id){
+                            this.sub_tasks = [];
+                            return this.sub_tasks.push(result);
+                        }
+                        this.sub_tasks = result;
+                    })
+                    .catch(error => {
+                        this.toast.add({ severity: 'error', summary: 'error', detail: error.response.data.message, life: 3000 });
+                    })
+                    clearInterval(taskFindedInterval);
+                }
+            }, 300);
+
+        },
         toggleAllComments(){
             if (this.task_splited_comment.length === this.taskComments.length){
                 this.btn_list_comment_toggle_label = "Todos comentarios..."
@@ -392,7 +440,8 @@ export default {
 
     },
     mounted(){
-        this.listAllCommentByTask()
+        this.listAllCommentByTask();
+        this.listSubTaskByParent();
     }
 }
 </script>

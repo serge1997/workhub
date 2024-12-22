@@ -56,7 +56,9 @@ class TaskController extends Controller
             $response = new TaskResource(
                 $this->taskRepositoryInterface->find($request)
             );
-            return response()->json($response);
+            return response()->json(
+                $this->successResponse("show task", $response)
+            );
         }catch(Exception $e){
             return response()
                 ->json($e->getMessage(), 402);

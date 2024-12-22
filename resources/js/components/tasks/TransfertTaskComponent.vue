@@ -4,10 +4,11 @@
             <img class="w-75 m-auto" src="/img/human-board.png" alt="" srcset="">
        </div>
        <div class="card-body">
-            <div class="w-auto btn-text-nowrap mb-3 cursor-p">
+            <div class="w-auto btn-text-nowrap mb-3">
                 <GlobalTasksOverlayComponent
                     :tasks="tasks"
                     :tag-label="`${tasksIds.length} tarefas selecionadas`"
+                    icon="pi pi-eye"
                  />
             </div>
             <div class="form-group d-flex flex-column mb-3">
@@ -108,7 +109,7 @@ export default {
                 this.toast.add({ severity: 'success', summary: 'successo', detail: await response.data.message, life: 3000 });
                 setTimeout(() => {
                     if (data.sprint_id){
-                        this.$router.push(`/sprint/${data.sprint_id}`)
+                        this.$router.push(`/dashboard/sprint/${data.sprint_id}`)
                     }else{
                         this.transfertData.status = null;
                         this.transfertData.sprint = null;
