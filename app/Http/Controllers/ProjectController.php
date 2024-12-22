@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Project\Actions\ProjectListAction;
 use App\Core\Project\ProjectRepositoryInterface;
 use App\Http\Requests\ProjectRequest;
 use App\Traits\HttpResponse;
 use Exception;
 use Illuminate\Http\Request;
+use Psr\Container\ContainerInterface;
 
 class ProjectController extends Controller
 {
     use HttpResponse;
 
     public function __construct(
-        private ProjectRepositoryInterface $projectRepository
+        private ProjectRepositoryInterface $projectRepository,
+        private ContainerInterface $container
     )
     {}
 
@@ -38,6 +41,20 @@ class ProjectController extends Controller
             return response()
                 ->json($this->successResponse($message, $project));
         }catch(\Exception $e){
+            return response()
+                ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
+        }
+    }
+
+    public function listByTeamSpace(int $team_id)
+    {
+        try{
+            /** @var ProjectListAction $projectListAction */
+            $projectListAction = $this->container->get(ProjectListAction::class);
+            $response = $projectListAction->listAllByTeamSpace($team_id);
+            return response()
+                ->json($this->successResponse("lisa dos projetos por team", $response));
+        }catch(Exception $e){
             return response()
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
         }

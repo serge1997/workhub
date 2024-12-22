@@ -11,4 +11,5 @@ interface ProjectRepositoryInterface
     public function findAll() ;
     public function findByName(string $name) : ?Project;
     public function find(int $id) : Project;
+    public function findAllByTeamSpace(int $team_space_id);
 }

@@ -9,4 +9,9 @@ class ProjectListAction
         private ProjectRepositoryInterface $projectRepository
     )
     {}
+
+    public function listAllByTeamSpace(int $team_space_id)
+    {
+        return $this->projectRepository->findAllByTeamSpace($team_space_id);
+    }
 }

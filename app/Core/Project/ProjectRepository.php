@@ -6,6 +6,7 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class ProjectRepository implements ProjectRepositoryInterface
 {
@@ -31,6 +32,20 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function find(int $id) : Project
     {
         return Project::find($id);
+    }
+
+    public function findAllByTeamSpace(int $team_space_id)
+    {
+        return Project::select(
+            DB::raw("DISTINCT projects.id"),
+            'projects.name',
+            'projects.severity',
+            DB::raw("COUNT(tasks.id) tasks_count")
+        )
+            ->join('tasks', 'tasks.project_id', '=', 'projects.id')
+                ->where('tasks.team_id', $team_space_id)
+                    ->groupBy('projects.id', 'projects.name', 'projects.severity')
+                        ->get();
     }
 
 }

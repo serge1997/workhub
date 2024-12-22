@@ -109,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::prefix('project')->name('project.')->group(function(){
             Route::post('/', 'store')->name('store');
             Route::get('/', 'index')->name('index');
+            Route::get('/list-by-team-space/{team_id}', 'listByTeamSpace')->name('list.by.teamspace');
         });
     });
     Route::controller(UserController::class)->group(function() {

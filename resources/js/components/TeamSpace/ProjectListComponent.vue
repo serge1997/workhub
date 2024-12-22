@@ -1,11 +1,11 @@
 <template>
     <div class="container-fluid">
         <div class="row">
-            <div v-for="project in projects" class="col-md-12 border-bottom p-1">
+            <div v-for="project in projects" class="col-md-12 p-1">
                 <div class="col-md-10 d-flex align-items-center gap-2">
                     <Button text class="task-description" icon="pi pi-play" />
-                    <Tag severity="primary" :value="project.name" />
-                    <Badge severity="secondary" value="3"/>
+                    <Tag :style="`background-color: #${project?.severity};`" :value="project.name" />
+                    <Badge severity="secondary" :value="project.tasks_count"/>
                 </div>
             </div>
         </div>

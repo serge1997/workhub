@@ -51,6 +51,7 @@ export default {
     },
     mounted(){
         this.listAllProjects();
+        this.Api.get('project/list-by-team-space/1')
     },
     methods:{
         listAllProjects(){
