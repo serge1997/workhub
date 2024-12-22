@@ -83,7 +83,7 @@
                                             </Tag>
                                         </span>
                                         <span class="task-description" title="Sprint da tarefa">
-                                            <small class="v-small-fs">{{ sub.sprint_name }}</small>
+                                            <small class="v-small-fs fw-bold">{{ sub.sprint_name }}</small>
                                         </span>
                                     </span>
                                     <span class="d-flex align-items-center gap-2">

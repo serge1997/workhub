@@ -12,7 +12,7 @@
                 </span>
                 <span class="small-fw task-description d-flex gap-3">
                     <small v-if="task.user_name">Responsavel: {{ task.user_name.name }}</small>
-                    <small>
+                    <small class="fw-bold">
                         <i class="small-icon task-description pi pi-align-center"></i>
                         {{ task.sprint_name }}
                     </small>
