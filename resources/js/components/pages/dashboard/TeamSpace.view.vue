@@ -28,15 +28,36 @@
                     </template>
                 </Toolbar>
             </div>
+            <div class="row">
+                <ProjectListComponent
+                    :projects="projects"
+                />
+            </div>
         </div>
    </SidebarComponent>
 </template>
 <script>
+import ProjectListComponent from './../../TeamSpace/ProjectListComponent.vue';
 export default {
 
+    components: {
+        ProjectListComponent
+    },
     data(){
         return {
-            name: this.$route.params.name
+            name: this.$route.params.name,
+            projects: []
+        }
+    },
+    mounted(){
+        this.listAllProjects();
+    },
+    methods:{
+        listAllProjects(){
+            this.Api.get('project')
+            .then(async response => {
+                this.projects = response.data.data;
+            })
         }
     }
 }

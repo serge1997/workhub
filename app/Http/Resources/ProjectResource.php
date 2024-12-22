@@ -26,7 +26,8 @@ class ProjectResource extends JsonResource
             'members_count' => $this->members_count[0]['user_id'],
             'severity' => $this->severity,
             'slug' =>  Str::slug($this->name, '-'),
-            'rand_uuid' => Str::uuid()
+            'rand_uuid' => Str::uuid(),
+            'tasks_count' => $this->tasks->count()
         ];
     }
 }
