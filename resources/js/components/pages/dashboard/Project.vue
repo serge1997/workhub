@@ -25,25 +25,25 @@
                 <Toolbar class="p-0 border-0 bg-transparent border-bottom">
                     <template #start>
                         <div class="d-flex gap-2 w-100">
-                            <Button @click="toggleComponent = 'SprintListComponent'" class="task-description btn-text-nowrap  d-flex gap-1" label="Projeto" text>
+                            <Button @click="toggleComponent = 'SprintListComponent'" :class="handleActiveClass('SprintListComponent')" class="task-description btn-text-nowrap  d-flex gap-1" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-bolt small-icon"></i>
                                 </span>
                                 <span class="small-fw"><small>Sprint</small></span>
                             </Button>
-                            <Button @click="toggleComponent = 'TaskListByExecutionStatusComponent'"  class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
+                            <Button @click="toggleComponent = 'TaskListByExecutionStatusComponent'" :class="handleActiveClass('TaskListByExecutionStatusComponent')"  class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-align-center small-icon"></i>
                                 </span>
                                 <span class="small-fw"><small>Tarefas</small></span>
                             </Button>
-                            <Button @click="toggleComponent = 'ProjectInsightComponent'" class="task-description d-flex gap-1 btn-text-nowrap " label="Projeto" text>
+                            <Button @click="toggleComponent = 'ProjectInsightComponent'" :class="handleActiveClass('ProjectInsightComponent')" class="task-description d-flex gap-1 btn-text-nowrap " label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-chart-pie small-icon"></i>
                                 </span>
                                 <span class="small-fw"><small>Insights</small></span>
                             </Button>
-                            <Button @click="listAllprojectTaskBacklog" class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
+                            <Button @click="listAllprojectTaskBacklog(prevent = true)" :class="handleActiveClass('BacklogTaskComponent')" class="task-description d-flex gap-1 btn-text-nowrap" label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-hammer small-icon"></i>
                                 </span>
@@ -67,6 +67,9 @@
                     :tasks="backlog_tasks"
                     :project-name="current_project_name"
                     :task-status="taskStatus"
+                    :status-api-url="`task-execution-status/list-task-by-project/`"
+                    :task-Api-url="`task/list-by-project/${selected_project}/status/`"
+                    :by-id="selected_project"
                     @update-backlog-ui="listAllprojectTaskBacklog"
                     @update-ui="listAllprojectTaskBacklog"
                 >
@@ -123,6 +126,9 @@ export default {
         }
     },
     methods: {
+        handleActiveClass(component){
+            return this.toggleComponent == component ? "toolbar-nav-active" : null;
+        },
         listAllProject(){
             this.Api.get('project')
             .then(async response => {
@@ -149,7 +155,7 @@ export default {
         listProjectData(project){
             this.selected_project = project.id;
             this.listSprintByProject(project.id);
-            this.listAllprojectTaskBacklog();
+            this.listAllprojectTaskBacklog(false);
             this.project = project;
             this.current_project_name = project.name;
             document.getElementById(`project_btn_toolbar_${project.id}`).classList.toggle('active-project-toolbar-btn')
@@ -168,14 +174,13 @@ export default {
 
             })
         },
-        listAllprojectTaskBacklog(){
-            this.toggleComponent = 'BacklogTaskComponent'
+        listAllprojectTaskBacklog(prevent){
+            if(prevent){
+                this.toggleComponent = 'BacklogTaskComponent'
+            }
             this.Api.get(`tasks/list-backlogs-by-project/${this.selected_project}`)
             .then(async response => {
                 this.backlog_tasks = await response.data.data;
-            })
-            .catch(error => {
-
             })
         },
         onListAllTaskExecutionStatus(){

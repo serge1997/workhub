@@ -55,4 +55,18 @@ final class TaskListAction
         );
     }
 
+    public function listAllByProjectAndTeam(int $project_id, $team_id)
+    {
+        return TaskResource::collection(
+            $this->taskRepository->findAllByProjectAndTeam($project_id, $team_id)
+        );
+    }
+
+    public function listAllByTeamAndStatus($team_id, $status)
+    {
+        return TaskResource::collection(
+            $this->taskRepository->findAllByTeamAndStatus($team_id, $status)
+        );
+    }
+
 }

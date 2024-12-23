@@ -50,7 +50,21 @@ class TaskExecutionStatusController extends Controller
             $taskExecutionListAction = $this->container->get(TaskExceutionStatusListAction::class);
             $response = $taskExecutionListAction->listAllCountBySprint($sprint_id);
             return response()
-                ->json($this->successResponse("lista de status e quatidade de tarefas", $response));
+                ->json($this->successResponse("lista de status e quatidade de tarefas por sprint", $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse($e->getMessage(), 404));
+        }
+    }
+
+    public function listWithCountTaskByTeam(int $team_id)
+    {
+        try{
+            /** @var TaskExceutionStatusListAction $taskExecutionListAction */
+            $taskExecutionListAction = $this->container->get(TaskExceutionStatusListAction::class);
+            $response = $taskExecutionListAction->listAllWithTaskCountByTeam($team_id);
+            return response()
+            ->json($this->successResponse("lista de status e quatidade de tarefas por team", $response));
         }catch(Exception $e){
             return response()
                 ->json($this->errorResponse($e->getMessage(), 404));

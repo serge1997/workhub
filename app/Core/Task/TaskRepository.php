@@ -201,4 +201,20 @@ class TaskRepository implements TaskRepositoryInterface
 
         return $this->findAllByIds($request->tasks_ids);
     }
+
+    public function findAllByProjectAndTeam(int $project_id, int $team_id)
+    {
+        return Task::where([
+            ['project_id', $project_id],
+            ['team_id', $team_id]
+        ])->get();
+    }
+
+    public function findAllByTeamAndStatus(int $team_id, $status)
+    {
+        return Task::where([
+            ['team_id', $team_id],
+            ['execution_status_id', $status]
+        ])->get();
+    }
 }

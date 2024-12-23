@@ -18,4 +18,9 @@ class TaskExceutionStatusListAction
     {
         return $this->taskExecutionStatusRepository->findAllCountBySprint($sprint_id);
     }
+
+    public function listAllWithTaskCountByTeam(int $team_id)
+    {
+        return $this->taskExecutionStatusRepository->findAllWithTaskCountByTeam($team_id);
+    }
 }

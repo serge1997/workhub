@@ -10,4 +10,5 @@ interface TaskExecutionStatusRepositoryInterface
     public function delete($request);
     public function findAllWithTaskCountByProject(int $project_id);
     public function findAllCountBySprint(int $sprint_id);
+    public function findAllWithTaskCountByTeam(int $team_id);
 }

@@ -230,4 +230,34 @@ class TaskController extends Controller
         }
     }
 
+    public function listByProjectTeam(int $project_id, int $team_id)
+    {
+        try{
+            /** @var TaskListAction $taskListAction */
+            $taskListAction = $this->container->get(TaskListAction::class);
+            $response = $taskListAction->listAllByProjectAndTeam($project_id, $team_id);
+            return response()
+                ->json($this->successResponse("list of tasks by project and team", $response));
+        }catch(Exception $e)
+        {
+            return response()
+                ->json($this->errorResponse("{$e->getMessage()}"), 500);
+        }
+    }
+
+    public function listByTeamAndStatus($team_id, $status)
+    {
+        try{
+            /** @var TaskListAction $taskListAction */
+            $taskListAction = $this->container->get(TaskListAction::class);
+            $response = $taskListAction->listAllByTeamAndStatus($team_id, $status);
+            return response()
+                ->json($this->successResponse("list of tasks by team and status", $response));
+        }catch(Exception $e)
+        {
+            return response()
+                ->json($this->errorResponse("{$e->getMessage()}"), 500);
+        }
+    }
+
 }

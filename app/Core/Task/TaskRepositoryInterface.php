@@ -21,4 +21,6 @@ interface TaskRepositoryInterface
     public function findAllByProjectAndStatus($project_id, $status);
     public function findAllByIds(array $tasks_ids);
     public function transfertTasks($request);
+    public function findAllByProjectAndTeam(int $project_id, int $team_id);
+    public function findAllByTeamAndStatus(int $team_id, $status);
 }

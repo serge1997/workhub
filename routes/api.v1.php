@@ -139,6 +139,8 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::get('task/list-by-project/{project_id}/status/{status_id}', 'listAllTaskByProjectAndStatus')->whereNumber(['project_id', 'status_id']);
             Route::post('task/list-by-ids', 'listAllByTasksIds')->name('list.by.ids');
             Route::put('task/transfert', 'transfert')->name('transfert');
+            Route::get('task/list-by-project/{project_id}/team/{team_id}', 'listByProjectTeam')->whereNumber('project_id, team_id');
+            Route::get('task/list-by-team/{team_id}/status/{status}', 'listByTeamAndStatus')->whereNumber('team_id, status');
         });
     });
 
@@ -209,6 +211,7 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::get('/', 'onListAll');
             Route::get('/list-task-by-project/{project_id}', 'listByProjectWithTaskCount')->name('list.by.task.project')->whereNumber('project_id');
             Route::get('/list-task-quantity-by-sprint/{sprint_id}', 'listCountBySprint')->whereNumber('sprint_id');
+            Route::get('list-with-task-count/by-team/{team_id}', 'listWithCountTaskByTeam')->whereNumber('team_id');
         });
     });
 

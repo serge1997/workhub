@@ -65,4 +65,26 @@ class TaskExecutionStatusRepository implements TaskExecutionStatusRepositoryInte
                         ->orderBy('task_execution_status.id')
                             ->get();
     }
+
+    public function findAllWithTaskCountByTeam(int $team_id)
+    {
+        return TaskExecutionStatus::selectRaw(
+            "
+                    IF(COUNT(DISTINCT t.id) = 0, '-', COUNT(DISTINCT t.id)) as task_count,
+                    task_execution_status.name as name_ucfirst,
+                    task_execution_status.status,
+                    task_execution_status.id
+                "
+        )
+            ->leftJoin('tasks as t', function($join) use($team_id) {
+                $join->on('task_execution_status.id', '=', 't.execution_status_id');
+                $join->on('t.team_id', '=', DB::raw("{$team_id}"));
+            })
+                ->withoutGlobalScopes()
+                    ->where([
+                        ['t.deleted_at', null]
+                    ])
+                        ->groupBy('task_execution_status.name', 'task_execution_status.status', 'task_execution_status.id')
+                            ->get();
+    }
 }
