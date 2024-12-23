@@ -89,7 +89,6 @@ export default{
     watch: {
         '$route.params.id'(n, old){
             this.listTaskExecutionStatusBySprint();
-            //this.listSprintConcludedNotMeter();
             this.onListAllTask();
         }
     },
@@ -234,9 +233,6 @@ export default{
         this.onListAllTask();
         this.onListAllTaskExecutionStatus();
         this.listTaskExecutionStatusBySprint();
-        //this.listSprintConcludedNotMeter();
-        //this.Api.get("bi/list-concluded-not/by-sprint/"+ this.$route.params.id)
-
     }
 }
 
