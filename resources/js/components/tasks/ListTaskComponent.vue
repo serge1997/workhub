@@ -214,7 +214,7 @@ export default{
             this.Api.get('task', {task_id: id})
             .then(async response => {
                 this.visibleShowTaskModal = true;
-                this.task_finded = await response.data;
+                this.task_finded = await response.data.data;
             })
             .catch(err => console.log(err));
         },

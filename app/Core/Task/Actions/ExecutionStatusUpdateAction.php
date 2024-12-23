@@ -3,6 +3,7 @@ namespace App\Core\Task\Actions;
 
 use App\Core\TaskActivity\TaskActivityRepositoryInterface;
 use App\Models\Task;
+use App\Models\TaskExecutionStatus;
 
 final class ExecutionStatusUpdateAction
 {
@@ -17,6 +18,9 @@ final class ExecutionStatusUpdateAction
 
     public function handle()
     {
+       if($this->task->hasSubTaskNotConcluded() && $this->request->execution_status_id == TaskExecutionStatus::CONCLUDED){
+            throw new \Exception("Essa tarefa tem sub tarefa(s) nã conluida(s) Nécessario concluir as sub tarefas antes da tarefa pai");
+       }
        $this->task->update([
         'execution_status_id' => $this->request->execution_status_id,
        ]);

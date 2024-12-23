@@ -152,4 +152,14 @@ class Task extends Model
    {
         return $this->hasOne(SubTask::class, 'sub_task_id', 'id');
    }
+
+   public function hasSubTaskNotConcluded()
+   {
+        return SubTask::whereIn('sub_task_id', function($query){
+            $query->select('id')
+                ->from('tasks')
+                    ->where('execution_status_id','<>',TaskExecutionStatus::CONCLUDED);
+        })->where('task_id', $this->id)
+            ->exists();
+    }
 }

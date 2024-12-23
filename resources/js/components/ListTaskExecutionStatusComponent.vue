@@ -54,7 +54,9 @@ export default{
                 this.selectedStatus = null;
             })
             .catch(error => {
-                console.log(error)
+                this.toast.add({ severity: 'error', summary: 'Error', detail: error.response.data, life: 3000 });
+                this.selectedStatus = null;
+                this.toogleStatusListBox(this.task.id)
             })
         },
     },
