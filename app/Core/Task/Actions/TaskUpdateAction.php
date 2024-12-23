@@ -70,7 +70,7 @@ final class TaskUpdateAction extends BaseAction
 
     public function transfertTask($request)
     {
-        if (!$request->status_id && !$request->sprint_id && !$request->team_id){
+        if (!$request->status_id && !$request->sprint_id && !$request->team_id && !$request->project_id){
             throw new \Exception("informe o sprint e ou o status e ou a equipe para continuar");
         }
         return TaskResource::collection(

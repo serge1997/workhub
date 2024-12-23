@@ -62,6 +62,23 @@
                     </template>
                 </Dropdown>
             </div>
+            <div class="form-group d-flex flex-column mb-4">
+                <Dropdown v-model="transfertData.project" :options="projects" option-label="name">
+                    <template #value="slotProps">
+                        <div v-if="slotProps.value" class="d-flex gap-2">
+                            <Tag icon="pi pi-tags" :value="slotProps.value.name" severity="secondary" />
+                        </div>
+                        <div v-else class="d-flex gap-2">
+                            <Tag icon="pi pi-tags" value="Projeto de destino de destino" severity="secondary" />
+                        </div>
+                    </template>
+                    <template #option="slotProps">
+                        <div class="d-flex gap-2">
+                            <Tag icon="pi pi-tags" :value="slotProps.option.name" severity="secondary" />
+                        </div>
+                    </template>
+                </Dropdown>
+            </div>
             <div class="form-group d-flex flex-column">
                <Button @click="transfertTasks" label="transferir" class="rounded-pill" />
             </div>
@@ -87,21 +104,33 @@ export default {
             tasks: [],
             sprints: [],
             teams: [],
+            projects: [],
             toast: useToast(),
             transfertData: {
                 sprint: null,
                 status: null,
-                team: null
+                team: null,
+                project: null
             },
             execution_status: []
         }
     },
     methods: {
+        listAllProject(){
+            this.Api.get('project')
+            .then(async response => {
+                this.projects = await response.data.data;
+            })
+            .catch(error => {
+                this.toast.add({ severity: 'error', summary: 'Error', detail: "Error when loaded sprints", life: 3000 });
+            })
+        },
         transfertTasks(){
             const data = {
                 status_id: this.transfertData.status?.id,
                 sprint_id: this.transfertData.sprint?.id,
                 team_id: this.transfertData.team?.id,
+                project_id: this.transfertData.project?.id,
                 tasks_ids: this.tasksIds
             }
             this.Api.put('task/transfert', null, data)
@@ -160,6 +189,7 @@ export default {
         this.getSprints();
         this.getTaskExecutionStatus();
         this.listAllTeam();
+        this.listAllProject();
     }
 }
 </script>

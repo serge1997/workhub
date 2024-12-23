@@ -16,6 +16,16 @@
                             </div>
                         </template>
                         <template #center>
+                            <div class="w-100 d-flex gap-2">
+                                <div v-for="meter in sprints_meters" class="card border-0 p-0">
+                                    <div class="card-body-p-0 d-flex align-items-center gap-1">
+                                        <i :style="`color: ${meter.color};`" class="v-small-fs pi pi-circle-fill"></i>
+                                        <small class="v-small-fs task-description">{{ meter.label }} ({{ meter.value }})</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <template #end>
                             <div class="w-100 d-flex d-none d-sm-inline">
                                 <AutoComplete @change="getUserTask" v-model="user_filtered" optionLabel="name" placeholder="digit a user name..." :suggestions="users_filter" @complete="onListAllUsers">
                                     <template #option="slotProps">
@@ -34,7 +44,7 @@
                         <div v-if="status.status != 'BKL'" style="min-width: 360px; overflow: scroll;">
                             <div class="card w-100">
                                 <div class="card-header border-0 bg-white">
-                                    <Tag class="w-100 d-flex gap-2 bg-transparent shadow-sm rounded-2" :style="`border-top: 3px solid ${ executionStatusBg(status.status)}; color: #374151;`">
+                                    <Tag class="w-100 d-flex gap-2 bg-transparent shadow-sm rounded-2" :style="`border-top: 3px solid ${executionStatusBg(status.status)}; color: #374151;`">
                                         <span>{{ status.name_ucfirst }}</span>
                                         <span>
                                             <Badge severity="secondary" :value="status.task_count"/>
@@ -79,6 +89,8 @@ export default{
     watch: {
         '$route.params.id'(n, old){
             this.listTaskExecutionStatusBySprint();
+            //this.listSprintConcludedNotMeter();
+            this.onListAllTask();
         }
     },
     data(){
@@ -101,10 +113,17 @@ export default{
             user_filtered: null,
             currentSprintName: null,
             task_status_by_sprint: null,
-            router_id: this.$route.params
+            router_id: this.$route.params,
+            sprints_meters: []
         }
     },
     methods: {
+        listSprintConcludedNotMeter(){
+            this.Api.get("bi/list-concluded-not/by-sprint/"+ this.$route.params.id)
+            .then(async response => {
+                this.sprints_meters = await response.data.data;
+            })
+        },
         listTaskExecutionStatusBySprint(){
             this.Api.get(`task-execution-status/list-task-quantity-by-sprint/${this.$route.params.id}`)
             .then(async response => {
@@ -120,6 +139,7 @@ export default{
             this.Api.get('tasks/by-sprint', {sprint_id: this.$route.params.id})
             .then(async response => {
                 this.tasks = await response.data;
+                this.listSprintConcludedNotMeter();
             })
             .catch(err => {
                 console.log(err)
@@ -185,7 +205,9 @@ export default{
                     return "#94a3b8"
                 case "PRQ" :
                     return "#e11d48"
-                default : "#333"
+                case "BLOCK":
+                    return "#e11d48";
+                default : return "#333"
             }
         },
         handleTaskStatus(data){
@@ -212,6 +234,8 @@ export default{
         this.onListAllTask();
         this.onListAllTaskExecutionStatus();
         this.listTaskExecutionStatusBySprint();
+        //this.listSprintConcludedNotMeter();
+        //this.Api.get("bi/list-concluded-not/by-sprint/"+ this.$route.params.id)
 
     }
 }

@@ -149,20 +149,32 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function transfertTasks($request)
     {
+
         $data = [
             'sprint_id' => $request->sprint_id,
             'execution_status_id' => $request->status_id,
-            'team_id' => $request->team_id
+            'team_id' => $request->team_id,
+            'project_id' => $request->project_id
         ];
         if (!$data['sprint_id']){
             array_splice($data, 0, 1);
         }
         if(!$data['execution_status_id']){
-            $offset = count($data) == 3 ? 1 : 0;
+            $offset = count($data) == 4 ? 1 : 0;
             array_splice($data, $offset, 1);
         }
         if (!$data['team_id']){
             $offset = match(count($data)){
+                4 => 2,
+                3 => 1,
+                2 => 0
+            };
+            array_splice($data, $offset, 1);
+        }
+
+        if (!$data['project_id']){
+            $offset = match(count($data)){
+                4 => 3,
                 3 => 2,
                 2 => 1,
                 1 => 0

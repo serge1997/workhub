@@ -42,7 +42,7 @@ import Sidebar from 'primevue/sidebar';
 import './../../resources/css/app.css';
 import Knob from 'primevue/knob';
 import Chart from 'primevue/chart';
-
+import MeterGroup from 'primevue/metergroup';
 function loggedIn(){
     return localStorage.getItem('token');
 }
@@ -105,6 +105,7 @@ app.component('InputIcon', InputIcon);
 app.component('Sidebar', Sidebar);
 app.component('Knob', Knob);
 app.component('Chart', Chart);
+app.component('MeterGroup', MeterGroup)
 
 
 

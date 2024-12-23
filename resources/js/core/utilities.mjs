@@ -55,6 +55,9 @@ function statusColor(desc){
         case "PRQ" :
             color = "#e11d48";
             break;
+        case "BLOCK":
+            color = "#e11d48";
+            break;
         default :
             color = "#7c3aed";
             break;

@@ -53,4 +53,27 @@ class BiRepository implements BiRepositoryInterface
                                     ->orderBy('tasks.sprint_id', 'DESC')
                                         ->get();
     }
+    public function concludedAndNotBySprint(int $sprint_id)
+    {
+        $groupBy = "IF(tasks.execution_status_id =". TaskExecutionStatus::CONCLUDED .",'CONCLUDED', 'NOT CONCLUDED')";
+        $collection = Task::selectRaw(
+            "COUNT(tasks.id) as task_count,
+            IF(tasks.execution_status_id = 8, 'Concluded', 'Not concluded') as label",
+        )
+            ->join('task_execution_status as status', 'tasks.execution_status_id', '=', 'status.id')
+                ->where([
+                    ['tasks.sprint_id', $sprint_id],
+                    ['tasks.deleted_at', null],
+                    ['tasks.execution_status_id', '<>', TaskExecutionStatus::BACKLOG]
+                ])
+                    ->withoutGlobalScopes()
+                        ->groupByRaw($groupBy)
+                            ->get();
+        $totalTask = $collection->sum(fn($data) => $data->task_count);
+        $collection->each(function($tModel) use($totalTask) {
+            $tModel->value = number_format($tModel->task_count * 100 / $totalTask, "2") . "%";
+            $tModel->color = $tModel->label == "Concluded" ? "#34d399" : '#f59e0b';
+        });
+        return $collection;
+    }
 }

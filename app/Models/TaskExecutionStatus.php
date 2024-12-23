@@ -46,7 +46,8 @@ class TaskExecutionStatus extends Model
             "PRO" => TaskExecutionStatusEnum::PRO,
             "CDR" => TaskExecutionStatusEnum::CDR,
             "PRQ" => TaskExecutionStatusEnum::PRQ,
-            "TST" => TaskExecutionStatusEnum::TST
+            "TST" => TaskExecutionStatusEnum::TST,
+            "BLOCK" => TaskExecutionStatusEnum::BLOCK
         };
     }
 
@@ -59,7 +60,8 @@ class TaskExecutionStatus extends Model
              "CON" =>  "#10b981",
              "TST" =>  "#f59e0b",
              "BKL" =>  "#94a3b8",
-             "PRQ" =>  "#e11d48"
+             "PRQ" =>  "#e11d48",
+             "BLOCK" => "#fb923c"
         };
     }
 }

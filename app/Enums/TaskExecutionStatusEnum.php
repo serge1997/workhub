@@ -19,6 +19,7 @@ enum TaskExecutionStatusEnum : string
     case BKL = "BKL";
     #[DocAttribute(description: "PULL REQUEST")]
     case PRQ = "PRQ";
+    case BLOCK = "BLOCK";
 
     public function taskActivites()
     {

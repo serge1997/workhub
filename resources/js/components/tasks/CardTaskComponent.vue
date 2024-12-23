@@ -136,6 +136,33 @@
                 </div>
             </div>
         </div>
+        <div v-if="showStatus == 'BLOCK'">
+            <div class="mb-2 dropable-target-CON"></div>
+            <div draggable="true" v-for="task in filterBlocked(tasks)"
+                @dragstart="onDragstart"
+                @dragenter="onDragenter"
+                @dragleave="onDragleave"
+                @dragover="onDragover"
+                @drop="onDrop"
+                :id="`task-card-${task.id}`"
+                class="card shadow-sm border-0 mb-1"
+                :class="`${task.execution_status}-target`"
+            >
+                <div class="card-body" :class="`${task.execution_status}-target`">
+                    <div class="w-100 mb-1" :class="`${task.execution_status}-target`">
+                        <small class="fw-medium task-description">{{ task.title.padEnd(20, '...') }}</small>
+                    </div>
+                    <TaskCardIconsComponent
+                        :class="`${task.execution_status}-target`"
+                        :task="task"
+                        @confirm-delete = "$emit('confirmDelete', task.id)"
+                        @handle-task-status="$emit('handleTaskStatus')"
+                        @list-all-task="$emit('listAllTask')"
+                        :task-status="taskStatus"
+                    />
+                </div>
+            </div>
+        </div>
         <div v-if="showStatus == 'CON'">
             <div class="mb-2 dropable-target-CON"></div>
             <div draggable="true" v-for="task in filterConcluded(tasks)"
@@ -241,6 +268,12 @@ export default{
             .then(async response => {
                 this.task_finded = await response.data;
             })
+        },
+        filterBlocked(tasks){
+            if (tasks != null){
+                const blockeds = tasks.filter(task => task.execution_status == 'BLOCK');
+                return blockeds;
+           }
         },
         filterAwait(tasks){
            if (tasks != null){
