@@ -46,6 +46,12 @@ export default {
         statusApiUrl: String,
         taskApiUrl: String
     },
+    watch:{
+        '$route.params.id'(n, old){
+            this.task_status_by_project = null;
+            this.listAllTaskExecution();
+        }
+    },
     data() {
         return {
             toast: useToast(),
@@ -96,3 +102,5 @@ export default {
     }
 }
 </script>
+<style scoped>
+</style>

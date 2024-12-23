@@ -58,7 +58,8 @@ export default {
     },
     watch: {
         '$route.params.id'(n, old){
-            this.listAllProjectsByTeam()
+            this.listAllProjectsByTeam();
+            this.onListAllTaskExecutionStatus();
         }
     },
     data(){
