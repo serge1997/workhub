@@ -8,7 +8,7 @@
     <Menu ref="visibleProjectsMenu" class="rounded-2" :model="projects" :popup="true">
        <template #item="{item, props}">
             <div class="d-flex gap-2 mt-2">
-                <router-link class="d-flex align-items-center gap-2 py-1 text-decoration-none" :to="`/dashboard/projects/${item.id}/${item.rand_uuid}`">
+                <router-link class="d-flex align-items-center gap-2 py-1 text-decoration-none" :to="`/dashboard/projects/${item.id}/${item.slug}`">
                     <span class="small-fw task-description d-flex align-items-center">
                         <i :style="`color: #${item.severity}`" class="pi pi-tags"></i>
                     </span>

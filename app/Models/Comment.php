@@ -72,17 +72,17 @@ class Comment extends Model
             if ($diff == 0){
                 return "Há ".Carbon::now()->diffInMinutes($date) . " min";
             }else{
-                return "Há {$diff} horas";
+                return "Há +{$diff} horas";
             }
-        }else if($periode < 7 && $periode > 1){
-            return "Há {$periode} dias";
+        }else if($periode < 7 && $periode >= 1){
+            return "Há +{$periode} dias";
        }else if($periode >= 7 && $periode < 31){
-            return "Há ". Carbon::now()->diffInWeeks($date) . " semanas";
+            return "Há +". Carbon::now()->diffInWeeks($date) . " semanas";
        }else if($periode >= 31 && $periode_year == 0){
-            return "Há ". Carbon::now()->diffInMonths($date) . " mês";
+            return "Há +". Carbon::now()->diffInMonths($date) . " mês";
        }else{
             if ($periode_year >= 1){
-                return "Há {$periode_year} ano";
+                return "Há +{$periode_year} ano";
             }
        }
     }

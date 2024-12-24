@@ -11,7 +11,7 @@
                                     <i class="pi pi-angle-right"></i>
                                 </span>
                             </Tag>
-                            <Button v-for="project of projects" class="task-description btn-text-nowrap rounded-pill d-flex gap-1 project_btn_toolbar px-2 py-1" @click="listProjectData(project)" :id="`project_btn_toolbar_${project.id}`" text>
+                            <Button v-for="project of projects" :class="handleActiveProjectClass(project.id)" class="task-description btn-text-nowrap d-flex gap-1 project_btn_toolbar px-2 py-1" @click="listProjectData(project)" :id="`project_btn_toolbar_${project.id}`" text>
                                 <span class="d-flex align-items-center">
                                     <i :style="`color: #${project.severity};`" class="pi pi-circle-fill small-icon"></i>
                                 </span>
@@ -129,6 +129,9 @@ export default {
         handleActiveClass(component){
             return this.toggleComponent == component ? "toolbar-nav-active" : null;
         },
+        handleActiveProjectClass(id = this.selected_project){
+            return this.$route.params.id == id ? "toolbar-nav-active" : null;
+        },
         listAllProject(){
             this.Api.get('project')
             .then(async response => {
@@ -158,12 +161,9 @@ export default {
             this.listAllprojectTaskBacklog(false);
             this.project = project;
             this.current_project_name = project.name;
-            document.getElementById(`project_btn_toolbar_${project.id}`).classList.toggle('active-project-toolbar-btn')
-            document.querySelectorAll('.project_btn_toolbar').forEach(btn => {
-                if (btn.getAttribute('id') !== `project_btn_toolbar_${project.id}`){
-                    btn.classList.remove('active-project-toolbar-btn')
-                }
-            })
+            if (this.$route.params?.id){
+                this.$router.push(`/dashboard/projects/${project.id}/${project.slug}`)
+            }
         },
         listSprintByProject(id){
             this.Api.get(`sprint/list-by-project/${id}`)
@@ -200,8 +200,4 @@ export default {
 }
 </script>
 <style scoped>
-.active-project-toolbar-btn{
-    background-color: #e5e7eb;
-    transition: ease-in .5s;
-}
 </style>

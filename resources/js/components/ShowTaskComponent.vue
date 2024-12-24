@@ -91,14 +91,15 @@
                     <h4 class="">Annexos</h4>
                 </div>
                 <div class="row d-flex flex-wrap gap-2">
-                    <div v-for="annex of taskFinded.annexes" @click="showAnnex(annex.annex)" class="card border rounded-2 col-md-2 gap-1 p-0 annex-card">
+                    <div v-for="annex of taskFinded.annexes" @click="showAnnex(annex.annex, annex.id)" class="card border rounded-2 col-md-2 gap-1 p-0 annex-card">
                         <div v-if="annex.annex_type == 'image'" class="card-body annex-button-image position-relative p-5" :style="`background-image: url('/task-annex/${annex.annex}');background-repeat: no-repeat;background-size: cover;`">
                         </div>
                         <div v-else class="card-body p-0">
                             <Button
                                 @click="showAnnex(annex.annex)"
                                 class="d-flex flex-column w-100 gap-1"
-                                text>
+                                text
+                            >
                                 <span>
                                     <i class="pi pi-file-pdf fs-3 task-description"></i>
                                 </span>
@@ -204,6 +205,10 @@
     </div>
     <Button text icon="pi pi-map" />
     <Dialog v-model:visible="visibleShowAnnex" class="min-vh-100 vw-100" maximizable modal header=" " :style="{ width: '100%' }">
+        <div class="col-md-10">
+            <input type="hidden" v-model="selected_annex_id" />
+            <Button @click="deleteAnnex" class="task-description text-danger" icon="pi pi-trash" label="Remover annex" text />
+        </div>
         <div class="w-100 vh-100 m-auto d-flex justify-content-center align-items-center">
             <iframe class="iframe border z-4" :src="`/task-annex/${annex}`" width="80%" height="70%" frameborder="0"></iframe>
         </div>
@@ -270,10 +275,19 @@ export default {
             taskComments: null,
             task_splited_comment: null,
             btn_list_comment_toggle_label: "todos comentarios...",
-            sub_tasks: []
+            sub_tasks: [],
+            selected_annex_id: null
         }
     },
     methods:{
+        deleteAnnex(){
+            this.Api.delete(`annex/${this.selected_annex_id}`)
+            .then(async response => {
+                this.$emit('updateShowModalUi');
+                this.visibleShowAnnex = false;
+                this.toast.add({ severity: 'success', summary: 'Successo', detail:  await response.data.message, life: 3000 });
+            })
+        },
         listSubTaskByParent(){
             const taskFindedInterval = setInterval(() => {
                 if (this.taskFinded){
@@ -335,8 +349,9 @@ export default {
         handleTaskStatus(){
 
         },
-        showAnnex(annex){
+        showAnnex(annex, id){
             this.annex = annex;
+            this.selected_annex_id = id;
             this.visibleShowAnnex = true;
             setTimeout(() => {
                 const iframHeader = document.querySelector('.iframe')

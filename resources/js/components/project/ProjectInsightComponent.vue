@@ -44,6 +44,14 @@ export default {
     props: {
         projectId: Number,
     },
+    watch: {
+        '$route.params.id'(n, old){
+            this.task_count_spints.labels = [];
+            this.task_count_sprint_by_status.labels = [];
+            this.listCountTaskBySprintsProject();
+            this.listSprintCountTaskByStatus();
+        }
+    },
     data(){
         return {
             value: 30,
@@ -57,7 +65,7 @@ export default {
                         borderColor: ['#64748b', '#0ea5e9', '#4f46e5', '#db2777'],
                         borderWidth: 0,
                         borderRadius: 8,
-                        barPercentage: 0.3
+                        barPercentage: 0.09
                     }
                 ]
             },
@@ -133,7 +141,7 @@ export default {
                         backgroundColor: ['#10b981'],
                         borderWidth: 0,
                         borderRadius: 8,
-                        barPercentage: 1
+                        barPercentage: 0.5
                     },
                     {
                         label: 'Total tarefas',
@@ -141,7 +149,7 @@ export default {
                         backgroundColor: ['#64748b'],
                         borderWidth: 0,
                         borderRadius: 8,
-                        barPercentage: 1
+                        barPercentage: 0.5
                     }
                 ]
             }

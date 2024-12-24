@@ -28,9 +28,9 @@ class AnnexRepository implements AnnexRepositoryInterface
         }
     }
 
-    public function find($request)
+    public function find($id)
     {
-
+        return Annex::find($id);
     }
 
     public function update($request)
@@ -38,8 +38,12 @@ class AnnexRepository implements AnnexRepositoryInterface
 
     }
 
-    public function delete($request)
+    public function delete(Annex $annex)
     {
-
+        $file_name = $annex->annex;
+        if(file_exists(public_path("task-annex/{$file_name}"))){
+            unlink(public_path("task-annex/{$file_name}"));
+        }
+        $annex->delete();
     }
 }

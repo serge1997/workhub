@@ -195,6 +195,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::controller(AnnexController::class)->group(function(){
         Route::prefix('annex')->group(function(){
             Route::post('/', 'onCreate');
+            Route::delete('/{id}', 'delete')->whereNumber('id');
         });
     });
 

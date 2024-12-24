@@ -72,7 +72,7 @@ const routes = [
                 component: () => import("../components/pages/dashboard/Sprint.vue"),
             },
             {
-                path: 'projects/:id?/:rand_uuid?',
+                path: 'projects/:id?/:name?',
                 name: 'Project',
                 component: () => import("../components/pages/dashboard/Project.vue"),
             },

@@ -43,6 +43,8 @@ import './../../resources/css/app.css';
 import Knob from 'primevue/knob';
 import Chart from 'primevue/chart';
 import MeterGroup from 'primevue/metergroup';
+import TreeTable from 'primevue/treetable';
+import Column from 'primevue/column';
 function loggedIn(){
     return localStorage.getItem('token');
 }
@@ -106,6 +108,8 @@ app.component('Sidebar', Sidebar);
 app.component('Knob', Knob);
 app.component('Chart', Chart);
 app.component('MeterGroup', MeterGroup)
+app.component('TreeTable', TreeTable);
+app.component('Column', Column);
 
 
 

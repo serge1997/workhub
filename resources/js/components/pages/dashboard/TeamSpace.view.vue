@@ -18,7 +18,7 @@
                                 </span>
                                 <span class="small-fw"><small>Tarefas</small></span>
                             </Button>
-                            <Button class="task-description d-flex gap-1 btn-text-nowrap " label="Projeto" text>
+                            <Button @click="componentIs = 'TeamMembersComponent'" :class="handleActiveClass('TeamMembersComponent')" class="task-description d-flex gap-1 btn-text-nowrap " label="Projeto" text>
                                 <span class="d-flex align-items-center">
                                     <i class="pi pi-users small-icon"></i>
                                 </span>
@@ -54,6 +54,9 @@ export default {
         ),
         TaskListByExecutionStatusComponent: defineAsyncComponent(() =>
             import('../../project/TaskListByExecutionStatusComponent.vue')
+        ),
+        TeamMembersComponent: defineAsyncComponent(() =>
+            import('../../TeamSpace/TeamMembersComponent.vue')
         )
     },
     watch: {

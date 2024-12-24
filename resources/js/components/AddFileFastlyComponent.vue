@@ -35,6 +35,8 @@ export default {
             toast: useToast()
         }
     },
+    mounted(){
+    },
     methods:{
         taskAnnexHandler(){
             let inputFile = document.getElementById('annex-input');
@@ -49,13 +51,15 @@ export default {
             }
         },
         createAnnex(){
-            //const data = new FormData();
-            //data.append('annex[]', this.$refs.inputFiles.files);
+            if(!this.annex.has('annex[]')){
+                return this.toast.add({ severity: 'info', summary: 'Aviso', detail:  "Selecione um arquivo para continuar", life: 3000 });
+            }
             this.annex.append('task_id', this.task.id)
             this.Api.post('annex', this.annex)
             .then(async response => {
                 this.toast.add({ severity: 'success', summary: 'Message', detail: await response.data, life: 3000 });
                 this.openAddFileModal = false;
+                this.annex = new FormData;
                 this.$emit('updateUi');
             })
             .catch(error => {
