@@ -54,4 +54,18 @@ class BiController extends Controller
                 ->json($this->errorResponse($e->getMessage()));
         }
     }
+
+    public function listTeamMembersTaskByTeam(int $team_id)
+    {
+        try{
+            return response()
+                ->json($this->successResponse(
+                    "list user task (concluded&not) and tasks",
+                    $this->biRepository->findAllMembersTaskByTeam($team_id)
+                ));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse($e->getMessage()));
+        }
+    }
 }

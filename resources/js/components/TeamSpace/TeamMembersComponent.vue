@@ -59,6 +59,9 @@ export default {
             expandedRow: null
         }
     },
+    mounted(){
+        this.Api.get('bi/list-members-tasks/by-team/1')
+    },
     methods: {
         onRowExpand(){
            console.log(this.expandedRow)

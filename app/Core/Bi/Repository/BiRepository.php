@@ -1,9 +1,11 @@
 <?php
 namespace App\Core\Bi\Repository;
 
+use App\Http\Resources\TaskResource;
 use App\Models\Scopes\NotDeletScope;
 use App\Models\Task;
 use App\Models\TaskExecutionStatus;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class BiRepository implements BiRepositoryInterface
@@ -75,5 +77,39 @@ class BiRepository implements BiRepositoryInterface
             $tModel->color = $tModel->label == "Concluded" ? "#34d399" : '#f59e0b';
         });
         return $collection;
+    }
+
+    public function findAllMembersTaskByTeam(int $team_id)
+    {
+        $query = User::selectRaw(
+            "COUNT(t.id) as task_total, users.name, t.user_id"
+        )
+            ->addSelect(['task_concluded' => Task::selectRaw(
+                "COUNT(t2.id)"
+            )
+                ->from('tasks as t2')
+                    ->whereColumn('t2.user_id', 't.user_id')
+                        ->where([
+                            ['t2.team_id', $team_id],
+                            ['t2.execution_status_id', TaskExecutionStatus::CONCLUDED]
+                        ])
+                            ->groupBy('t2.user_id')
+            ])
+                ->join('tasks as t', 'users.id', '=', 't.user_id')
+                    ->where([
+                        ['t.team_id', $team_id]
+                    ])
+                        ->withoutGlobalScopes()
+                            ->groupBy('users.name', 't.user_id')
+                                ->get();
+        $query->each(function($tModel) use($team_id) {
+            return $tModel->tasks = TaskResource::collection(
+                Task::where([
+                    ['user_id', $tModel->user_id],
+                    ['team_id', $team_id]
+                ])->get()
+            );
+        });
+        dd($query->all());
     }
 }

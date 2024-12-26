@@ -134,7 +134,14 @@ export default {
                     console.log(response)
                     this.toaster(response.data).fire();
                     this.invalidInpuClass = null
-                    this.user = {}
+                    this.user.name = null,
+                    this.user.email = null,
+                    this.user.username = null,
+                    this.user.password = null,
+                    this.user.position_id = null,
+                    this.user.department_id = null,
+                    this.user.team_id = null
+
                 })
                 .catch(error =>{
                     this.formErrorBag = error.response.data.errors;

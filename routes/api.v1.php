@@ -85,6 +85,7 @@ Route::middleware('auth:sanctum')->group(function() {
             Route::get('/count-task-by-sprints/project/{project_id}', 'listCountTaskbySprintsProject')->whereNumber('project_id');
             Route::get('/list-sprint-status-count/by-project/{project_id}', 'listTaskExcutionStatusByProjectSprint')->whereNumber('project_id');
             Route::get('/list-concluded-not/by-sprint/{sprint_id}', 'listConcludedAndNot')->whereNumber('sprint_id');
+            Route::get('/list-members-tasks/by-team/{team_id}', 'listTeamMembersTaskByTeam')->whereNumber('team_id');
         });
     });
 
