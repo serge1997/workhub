@@ -33,7 +33,7 @@
             <template #expansion="slotProps">
                 <small>tarefas para {{ slotProps.data.name }}</small>
                 <DataTable :value="slotProps.data.tasks">
-                    <Column class="border-bottom">
+                    <Column class="border-bottom p-0">
                         <template #header>
                             <small class="fw-normal">Tarefas</small>
                         </template>
@@ -48,7 +48,7 @@
                             </span>
                         </template>
                     </Column>
-                    <Column class="border-bottom">
+                    <Column class="border-bottom p-0">
                         <template #header>
                             <small class="fw-normal">Prioridade</small>
                         </template>
@@ -63,7 +63,7 @@
                             </div>
                         </template>
                     </Column>
-                    <Column class="border-bottom">
+                    <Column class="border-bottom p-0">
                         <template #header>
                             <small class="fw-normal">Status</small>
                         </template>
@@ -78,7 +78,7 @@
                             </div>
                         </template>
                     </Column>
-                    <Column class="border-bottom">
+                    <Column class="border-bottom p-0">
                         <template #header="data">
                             <small class="fw-normal">Sprint</small>
                         </template>
@@ -88,7 +88,7 @@
                             </div>
                         </template>
                     </Column>
-                    <Column class="border-bottom">
+                    <Column class="border-bottom p-0">
                         <template #header="data">
                             <small class="fw-normal">Projeto</small>
                         </template>
