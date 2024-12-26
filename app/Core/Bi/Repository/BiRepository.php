@@ -82,25 +82,30 @@ class BiRepository implements BiRepositoryInterface
     public function findAllMembersTaskByTeam(int $team_id)
     {
         $query = User::selectRaw(
-            "COUNT(t.id) as task_total, users.name, t.user_id"
+            "IF(COUNT(t.id) IS NOT NULL, COUNT(t.id), '-') as task_total,
+            users.name,
+            t.user_id,
+            users.avatar"
         )
             ->addSelect(['task_concluded' => Task::selectRaw(
-                "COUNT(t2.id)"
+                "IF(COUNT(t2.id) IS NOT NULL, COUNT(t2.id), '-')"
             )
                 ->from('tasks as t2')
                     ->whereColumn('t2.user_id', 't.user_id')
                         ->where([
                             ['t2.team_id', $team_id],
-                            ['t2.execution_status_id', TaskExecutionStatus::CONCLUDED]
+                            ['t2.execution_status_id', TaskExecutionStatus::CONCLUDED],
+                            ['t2.deleted_at', null]
                         ])
                             ->groupBy('t2.user_id')
             ])
                 ->join('tasks as t', 'users.id', '=', 't.user_id')
                     ->where([
-                        ['t.team_id', $team_id]
+                        ['t.team_id', $team_id],
+                        ['t.deleted_at', null]
                     ])
                         ->withoutGlobalScopes()
-                            ->groupBy('users.name', 't.user_id')
+                            ->groupBy('users.name', 't.user_id', 'users.avatar')
                                 ->get();
         $query->each(function($tModel) use($team_id) {
             return $tModel->tasks = TaskResource::collection(
@@ -110,6 +115,6 @@ class BiRepository implements BiRepositoryInterface
                 ])->get()
             );
         });
-        dd($query->all());
+        return $query;
     }
 }

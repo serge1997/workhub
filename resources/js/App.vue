@@ -72,4 +72,10 @@ body {
 .toolbar-nav-active{
     border-bottom: 2px solid #475569;
 }
+.gray-pure{
+    color: #374151;
+}
+.gray-alert-bg{
+    background-color: #f3f4f6;
+}
 </style>

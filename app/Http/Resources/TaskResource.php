@@ -27,6 +27,7 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'short_title' => Str::limit($this->title, 18,"....."),
             'description' => $this->description,
             'short_description' => Str::limit($this->description, 60),
             'priority' => $this->priority,
