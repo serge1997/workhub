@@ -155,9 +155,6 @@ export default {
             .then(async response => {
                 this.tasks = await response.data.data;
             })
-            .catch(error => {
-
-            })
         },
         getSprints(){
             this.Api.get('sprint')

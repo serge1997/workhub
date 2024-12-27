@@ -16,7 +16,7 @@
                 <div draggable="false" v-if="!task.is_sub_task" class="w-100 border-bottom d-flex gap-2 p-2">
                     <div class="d-flex align-items-center select_btn_div_box">
                         <span class="d-flex align-items-center d-none" :id="`selected_btn_box_${task.id}`">
-                        <Button @click="onSelectedTask(task.id)" class="p-0" text>
+                        <Button @click="$emit('onSelectedTask', task.id)" class="p-0" text>
                             <i :id="`selected_task_icon_${task.id}`" :class="`pi pi-circle task-description`"></i>
                         </Button>
                         </span>
@@ -125,12 +125,12 @@
     </div>
     <div class="w-100">
         <TaskToolbarComponent
-            :tasks-ids="selected_tasks_ids"
+            :tasks-ids="tasksIds"
         />
     </div>
 </template>
 <script>
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import ListTaskExecutionStatusComponent from '../ListTaskExecutionStatusComponent.vue';
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from 'primevue/useconfirm';
@@ -139,7 +139,8 @@ export default {
     name: 'TaskListComponent',
     props: {
         tasks: Object,
-        taskStatus: Object
+        taskStatus: Object,
+        tasksIds: Object
     },
     components: {
         ListTaskExecutionStatusComponent,
@@ -167,33 +168,6 @@ export default {
         }
     },
     methods: {
-        onSelectedTask(id){
-            const iconTag = document.getElementById(`selected_task_icon_${id}`);
-            const li = document.getElementById(`task_list_li_${id}`);
-            const all = document.querySelectorAll('.task-list-list-items');
-            let classes = [];
-            iconTag.classList.toggle('pi-circle');
-            iconTag.classList.toggle('pi-circle-fill');
-            iconTag.classList.toggle('selected_icon_color')
-            li.classList.toggle('selected_task_li')
-            all.forEach(el => {
-                if (el.classList.contains('selected_task_li')){
-                    classes.push('selected_task_li');
-                }
-            })
-            if (classes.includes('selected_task_li')){
-                document.getElementById('task-toolbar').classList.remove('d-none')
-            }else{
-                document.getElementById('task-toolbar').classList.add('d-none')
-            }
-            if(!this.selected_tasks_ids.includes(id)){
-                this.selected_tasks_ids.push(id);
-            }else{
-                if (!li.classList.contains('selected_task_li')){
-                    this.selected_tasks_ids.splice(this.selected_tasks_ids.indexOf(id), 1);
-                }
-            }
-        },
         onDragstart(event){
             let target_id = event.target.getAttribute('id');
             event.dataTransfer.setData('text/plain', target_id);

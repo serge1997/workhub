@@ -27,6 +27,8 @@
                         :tasks="tasks[index]"
                         @update-ui="listTaskBySprint(sprint.id, index, false)"
                         :task-status="taskStatus"
+                        :tasks-ids="selected_tasks_ids"
+                        @onSelectedTask="onSelectedTask"
                     />
                 </div>
             </div>
@@ -53,11 +55,40 @@ export default {
     data() {
         return {
             toggleIcon: 'pi-angle-right',
-            tasks: []
+            tasks: [],
+            selected_tasks_ids: []
         }
     },
 
     methods: {
+        onSelectedTask(id){
+            const iconTag = document.getElementById(`selected_task_icon_${id}`);
+            const li = document.getElementById(`task_list_li_${id}`);
+            const all = document.querySelectorAll('.task-list-list-items');
+            let classes = [];
+            iconTag.classList.toggle('pi-circle');
+            iconTag.classList.toggle('pi-circle-fill');
+            iconTag.classList.toggle('selected_icon_color')
+            li.classList.toggle('selected_task_li')
+            all.forEach(el => {
+                if (el.classList.contains('selected_task_li')){
+                    classes.push('selected_task_li');
+                }
+            })
+            if (classes.includes('selected_task_li')){
+                document.getElementById('task-toolbar').classList.remove('d-none')
+            }else{
+                document.getElementById('task-toolbar').classList.add('d-none')
+            }
+            if(!this.selected_tasks_ids.includes(id)){
+                this.selected_tasks_ids.push(id);
+            }else{
+                if (!li.classList.contains('selected_task_li')){
+                    this.selected_tasks_ids.splice(this.selected_tasks_ids.indexOf(id), 1);
+                }
+            }
+            console.log(this.selected_tasks_ids)
+        },
         listTaskBySprint(sprint_id, index, hidden_box){
             this.Api.get(`tasks/sprint/${sprint_id}/project/${this.projectId}`)
             .then(async response => {
