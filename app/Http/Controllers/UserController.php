@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\User\Actions\UserListAction;
 use App\Core\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Traits\HttpResponse;
 use Exception;
+use Psr\Container\ContainerInterface;
 
 class UserController extends Controller
 {
     use HttpResponse;
 
     public function __construct(
-        private UserRepositoryInterface $userRepositoryInterface
+        private UserRepositoryInterface $userRepositoryInterface,
+        private ContainerInterface $container
     )
     {}
 
@@ -80,6 +83,20 @@ class UserController extends Controller
         }catch(Exception $e){
             return response()
                 ->json($this->errorResponse("Error: {$e->getMessage()}"), 500);
+        }
+    }
+
+    public function listByTeam(int $team_id)
+    {
+        try{
+            /** @var UserListAction $userListAction */
+            $userListAction = $this->container->get(UserListAction::class);
+            $response = $userListAction->listAllByTeam($team_id);
+            return response()
+                ->json($this->successResponse("list of users by team", $response));
+        }catch(Exception $e){
+            return response()
+                ->json($this->errorResponse($e->getMessage()));
         }
     }
 

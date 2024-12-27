@@ -29,6 +29,7 @@ function taskStatusSeverity(status){
 function prioritySeverity(priority){
     if(priority === "ALT")  return "danger";
     if (priority === "MED") return "warning";
+    if (priority === "BAX") return "success";
     return "secondary";
 }
 function statusColor(desc){

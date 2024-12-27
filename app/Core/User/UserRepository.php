@@ -58,4 +58,9 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::find($id);
     }
+    public function findAllByTeam(int $team_id)
+    {
+        return User::where('team_id', $team_id)
+            ->get();
+    }
 }

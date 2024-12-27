@@ -13,4 +13,5 @@ interface UserRepositoryInterface
     public function search($request);
     public function listByProject(int $project_id);
     public function find(?int $id) : ?User;
+    public function findAllByTeam(int $team_id);
 }

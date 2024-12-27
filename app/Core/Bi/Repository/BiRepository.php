@@ -82,9 +82,9 @@ class BiRepository implements BiRepositoryInterface
     public function findAllMembersTaskByTeam(int $team_id)
     {
         $query = User::selectRaw(
-            "IF(COUNT(t.id) IS NOT NULL, COUNT(t.id), '-') as task_total,
+            "DISTINCT(users.id) as user_id,
+            IF(COUNT(t.id) IS NOT NULL, COUNT(t.id), '-') as task_total,
             users.name,
-            t.user_id,
             users.avatar"
         )
             ->addSelect(['task_concluded' => Task::selectRaw(
@@ -99,14 +99,18 @@ class BiRepository implements BiRepositoryInterface
                         ])
                             ->groupBy('t2.user_id')
             ])
-                ->join('tasks as t', 'users.id', '=', 't.user_id')
+                ->leftJoin('tasks as t', function($leftJoin){
+                    $leftJoin->on('users.team_id', '=', 't.team_id');
+                    $leftJoin->on('users.id', '=','t.user_id');
+                })
                     ->where([
-                        ['t.team_id', $team_id],
+                        ['users.team_id', $team_id],
                         ['t.deleted_at', null]
                     ])
                         ->withoutGlobalScopes()
-                            ->groupBy('users.name', 't.user_id', 'users.avatar')
-                                ->get();
+                            ->orderByRaw('COUNT(t.id) DESC')
+                                ->groupBy('users.name', 't.user_id', 'users.avatar', 'users.id')
+                                    ->get();
         $query->each(function($tModel) use($team_id) {
             return $tModel->tasks = TaskResource::collection(
                 Task::where([
