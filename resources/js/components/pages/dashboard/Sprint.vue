@@ -17,8 +17,8 @@
                         </template>
                         <template #center>
                             <div class="w-100 d-flex gap-2">
-                                <div v-for="meter in sprints_meters" class="card border-0 p-0">
-                                    <div class="card-body-p-0 d-flex align-items-center gap-1">
+                                <div v-for="meter in sprints_meters" class="card border-0 p-0 bg-transparent">
+                                    <div class="card-body-p-0 d-flex align-items-center gap-1 bg-transparent">
                                         <i :style="`color: ${meter.color};`" class="v-small-fs pi pi-circle-fill"></i>
                                         <small class="v-small-fs task-description">{{ meter.label }} ({{ meter.value }})</small>
                                     </div>

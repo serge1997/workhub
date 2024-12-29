@@ -80,6 +80,11 @@ const routes = [
                 path: "team-space/:id/:name",
                 component: () => import("../components/pages/dashboard/TeamSpace.view.vue"),
                 name: 'TeamSpace'
+            },
+            {
+                path: "configuration",
+                component: () => import("../components/pages/dashboard/configuration/index.view.vue"),
+                name: "Config.index"
             }
         ]
     }
