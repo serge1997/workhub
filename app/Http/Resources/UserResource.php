@@ -22,7 +22,8 @@ class UserResource extends JsonResource
             'banned_at' => $this->banned_at,
             'banned_reason' => $this->banned_reason,
             'user_type' => $this->user_type,
-            'latestTask' => $this->latestTasks()
+            'latestTask' => $this->latestTasks(),
+            'team_name' => $this->team?->name
         ];
     }
 }

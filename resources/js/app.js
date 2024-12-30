@@ -45,6 +45,7 @@ import Chart from 'primevue/chart';
 import MeterGroup from 'primevue/metergroup';
 import TreeTable from 'primevue/treetable';
 import Column from 'primevue/column';
+import DataTable from 'primevue/datatable';
 function loggedIn(){
     return localStorage.getItem('token');
 }
@@ -110,6 +111,7 @@ app.component('Chart', Chart);
 app.component('MeterGroup', MeterGroup)
 app.component('TreeTable', TreeTable);
 app.component('Column', Column);
+app.component('DataTable', DataTable);
 
 
 

@@ -6,7 +6,7 @@
                     <TeamSpaceMenuComponent />
                     <SprintsMenuComponent />
                     <ProjectsMenuComponent />
-                    <Button class="task-description d-flex gap-1 btn-text-nowrap " label="Projeto" text>
+                    <Button @click="$router.push('/dashboard/configuration')" class="task-description d-flex gap-1 btn-text-nowrap " label="Projeto" text>
                         <span class="d-flex align-items-center">
                             <i class="pi pi-cog small-icon"></i>
                         </span>
