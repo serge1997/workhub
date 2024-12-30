@@ -1,5 +1,13 @@
 <template>
     <div class="row">
+        <TaskDataTableComponent
+            :url="`sprint/list-by-project/${$route.params.id}`"
+            header-group-label="Sprints"
+            :header-group-label-has-severity="false"
+            :has-concluded-column="true"
+        />
+    </div>
+    <div class="row d-none">
         <div class="col-md-12 mb-">
             <h6 class="d-flex align-items-center gap-1">
                 <Tag :value="projectName" icon="pi pi-briefcase" severity="secondary" />
@@ -37,6 +45,7 @@
 </template>
 <script>
 import TaskListComponent from './TaskListComponent.vue';
+import TaskDataTableComponent from '../tasks/TaskDataTableComponent.vue';
 import { defineAsyncComponent } from 'vue';
 export default {
     name: 'SprintListComponent',
@@ -49,7 +58,8 @@ export default {
     },
 
     components: {
-        TaskListComponent
+        TaskListComponent,
+        TaskDataTableComponent
     },
 
     data() {

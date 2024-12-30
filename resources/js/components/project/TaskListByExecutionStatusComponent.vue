@@ -1,5 +1,12 @@
 <template>
     <div class="row">
+        <TaskDataTableComponent
+            :url="`task-execution-status/list-with-task-count/by-team/${$route.params.id}`"
+            header-group-label="Status"
+            :header-group-label-has-severity="true"
+        />
+    </div>
+    <div class="row d-none">
         <div class="col-md-12 d-flex flex-column gap-3">
             <div v-for="(status, index) of task_status_by_project" class="w-100 d-flex flex-column gap-2">
                 <div class="w-100 d-flex gap-3">
@@ -40,6 +47,9 @@ export default {
         TaskListComponent: defineAsyncComponent(() =>
             import('./TaskListComponent.vue')
         ),
+        TaskDataTableComponent: defineAsyncComponent(() =>
+            import('../tasks/TaskDataTableComponent.vue')
+        )
     },
     props: {
         byId: Number,

@@ -4,6 +4,8 @@ namespace App\Core\Sprint;
 use App\Http\Resources\SprintResource;
 use App\Models\Sprint;
 use App\Models\Project;
+use App\Models\Task;
+use App\Models\TaskExecutionStatus;
 use Illuminate\Support\Facades\DB;
 
 class SprintRepository implements SprintRepositoryInterface
@@ -36,24 +38,36 @@ class SprintRepository implements SprintRepositoryInterface
     public function findAllByProject(Project $project)
     {
         $query = Sprint::select(
-            'sprints.id',
+            DB::raw('DISTINCT(tasks.sprint_id) as id'),
             'sprints.name',
             'sprints.start_at',
             'sprints.close_at',
-            'sprints.deleted_at',
-            DB::raw('COUNT(tasks.id) as count_tasks')
+            DB::raw('COUNT(tasks.id) as task_total')
         )
-        ->join('tasks', 'sprints.id', '=', 'tasks.sprint_id')
-            ->where([['tasks.project_id', $project->id], ['tasks.deleted_at', null]])
-                ->groupby(
-                    'sprints.id',
-                    'sprints.name',
-                    'sprints.start_at',
-                    'sprints.close_at',
-                    'sprints.deleted_at'
+            ->addSelect(['task_concluded' => Task::selectRaw(
+                "COUNT(t2.id)"
                 )
-                    ->orderBy('sprints.id', 'desc')
-                        ->get();
+                    ->from('tasks as t2')
+                        ->whereColumn('t2.sprint_id', 'tasks.sprint_id')
+                            ->where([
+                                ['t2.project_id', $project->id],
+                                ['t2.execution_status_id', TaskExecutionStatus::CONCLUDED],
+                                ['t2.deleted_at', null]
+                            ])
+                                ->groupBy('t2.sprint_id')
+            ])
+                ->join('tasks', 'sprints.id', '=', 'tasks.sprint_id')
+                    ->where([['tasks.project_id', $project->id], ['tasks.deleted_at', null]])
+                        ->groupby(
+                            'sprints.id',
+                            'sprints.name',
+                            'sprints.start_at',
+                            'sprints.close_at',
+                            'tasks.sprint_id',
+                            'tasks.execution_status_id',
+                        )
+                            ->orderBy('sprints.id', 'desc')
+                                ->get();
         return $query;
     }
 }

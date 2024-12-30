@@ -2,6 +2,8 @@
 namespace App\Core\TaskExecutionStatus;
 
 use App\Http\Resources\TaskExecutionStatusResource;
+use App\Http\Resources\TaskResource;
+use App\Models\Task;
 use App\Models\TaskExecutionStatus;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -68,23 +70,41 @@ class TaskExecutionStatusRepository implements TaskExecutionStatusRepositoryInte
 
     public function findAllWithTaskCountByTeam(int $team_id)
     {
-        return TaskExecutionStatus::selectRaw(
+        $query = TaskExecutionStatus::selectRaw(
             "
-                    IF(COUNT(DISTINCT t.id) = 0, '-', COUNT(DISTINCT t.id)) as task_count,
+                    IF(COUNT(DISTINCT t.id) = 0, '-', COUNT(DISTINCT t.id)) as task_total,
                     task_execution_status.name as name_ucfirst,
                     task_execution_status.status,
                     task_execution_status.id
                 "
         )
-            ->leftJoin('tasks as t', function($join) use($team_id) {
-                $join->on('task_execution_status.id', '=', 't.execution_status_id');
-                $join->on('t.team_id', '=', DB::raw("{$team_id}"));
-            })
-                ->withoutGlobalScopes()
-                    ->where([
-                        ['t.deleted_at', null]
-                    ])
-                        ->groupBy('task_execution_status.name', 'task_execution_status.status', 'task_execution_status.id')
-                            ->get();
+                ->leftJoin('tasks as t', function($join) use($team_id) {
+                    $join->on('task_execution_status.id', '=', 't.execution_status_id');
+                    $join->on('t.team_id', '=', DB::raw("{$team_id}"));
+                })
+                    ->withoutGlobalScopes()
+                        ->where([
+                            ['t.deleted_at', null]
+                        ])
+                            ->orderBy('task_execution_status.id')
+                                ->groupBy(
+                                    'task_execution_status.name', 
+                                    'task_execution_status.status', 
+                                    'task_execution_status.id', 't.team_id')
+                                    ->get();
+
+        $query->each(function($model) use($team_id) {
+            $model->name = ucfirst(strtolower($model->name_ucfirst));
+            $model->severity = TaskExecutionStatus::setStatusSeverity($model->status);
+            $model->tasks = TaskResource::collection(
+                Task::where([
+                    ['team_id', $team_id],
+                    ['execution_status_id', $model->id]
+                ])
+                    ->get()
+            );
+        });
+
+        return $query;
     }
 }

@@ -113,7 +113,7 @@ export default {
         listAllProjectsByTeam(){
             this.Api.get(`project/list-by-team-space/${this.$route.params.id}`)
             .then(async response => {
-                this.projects = response.data.data;
+                //this.projects = response.data.data;
             })
         },
         handleActiveClass(component){

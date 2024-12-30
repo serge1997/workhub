@@ -1,6 +1,15 @@
 <template>
     <div class="container-fluid">
         <div class="row">
+            <TaskDataTableComponent
+                :url="`project/list-by-team-space/${$route.params.id}`"
+                :is-by-users="false"
+                header-group-label="Projetos"
+                :header-group-label-has-severity="true"
+                :has-concluded-column="true"
+            />
+        </div>
+        <div class="row d-none">
             <div v-if="projects.length" v-for="(project, index) in projects" class="col-md-12 p-1">
                 <div class="col-md-10 d-flex align-items-center gap-2">
                     <Button @click="$emit('listTaskByProject', project.id, index)" text class="task-description btn-list-task-by-project">
@@ -30,6 +39,7 @@
 </template>
 <script>
 import { defineAsyncComponent } from 'vue';
+import TaskDataTableComponent from '../tasks/TaskDataTableComponent.vue';
 export default {
     name: 'ProjectListComponent',
 
@@ -39,10 +49,12 @@ export default {
         ),
         TaskToolbarComponent: defineAsyncComponent(() =>
             import('./../TaskToolbarComponent.vue')
-        )
+        ),
+        TaskDataTableComponent
     },
 
     props: {
+        url: String,
         projects: Object,
         tasks: Object,
         taskStatus: Object,

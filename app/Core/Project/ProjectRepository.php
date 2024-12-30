@@ -3,7 +3,10 @@ namespace App\Core\Project;
 
 use App\Core\Project\Exception\ProjectException;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\TaskResource;
 use App\Models\Project;
+use App\Models\Task;
+use App\Models\TaskExecutionStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -36,16 +39,42 @@ class ProjectRepository implements ProjectRepositoryInterface
 
     public function findAllByTeamSpace(int $team_space_id)
     {
-        return Project::select(
-            DB::raw("DISTINCT projects.id"),
+        $query =  Project::select(
+            DB::raw("DISTINCT projects.id as id"),
             'projects.name',
-            'projects.severity',
-            DB::raw("COUNT(tasks.id) tasks_count")
+            DB::raw("CONCAT('#', projects.severity) as severity"),
+            DB::raw("COUNT(tasks.id) task_total")
         )
-            ->join('tasks', 'tasks.project_id', '=', 'projects.id')
-                ->where('tasks.team_id', $team_space_id)
-                    ->groupBy('projects.id', 'projects.name', 'projects.severity')
-                        ->get();
+            ->addSelect(['task_concluded' => Task::selectRaw("
+                    COUNT(t2.id)
+                ")
+                    ->from('tasks as t2')
+                        ->where([
+                            ['t2.team_id', $team_space_id],
+                            ['t2.execution_status_id', TaskExecutionStatus::CONCLUDED],
+                            ['t2.deleted_at', null]
+                        ])
+                            ->whereColumn('t2.project_id', 'projects.id')
+                                ->groupBy('t2.project_id')
+            ])
+                ->withoutGlobalScopes()
+                    ->join('tasks', 'tasks.project_id', '=', 'projects.id')
+                        ->where([
+                            ['tasks.team_id', $team_space_id],
+                            ['tasks.deleted_at', null]
+                        ])
+                            ->groupBy('projects.id', 'projects.name', 'projects.severity')
+                                ->get();
+
+        $query->each(function($tQuery) use($team_space_id){
+            return $tQuery->tasks = TaskResource::collection(
+                Task::where([
+                    ['team_id', $team_space_id],
+                    ['project_id', $tQuery->id]
+                ])->get()
+            );
+        });
+        return $query;
     }
 
 }

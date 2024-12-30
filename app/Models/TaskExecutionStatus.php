@@ -64,4 +64,18 @@ class TaskExecutionStatus extends Model
              "BLOCK" => "#fb923c"
         };
     }
+
+    public static function setStatusSeverity($status)
+    {
+        return match($status){
+            "WAT"  => "#7c3aed",
+            "PRO" =>  "#0ea5e9",
+            "CDR" =>  "#9333ea",
+            "CON" =>  "#10b981",
+            "TST" =>  "#f59e0b",
+            "BKL" =>  "#94a3b8",
+            "PRQ" =>  "#e11d48",
+            "BLOCK" => "#fb923c"
+       };
+    }
 }
