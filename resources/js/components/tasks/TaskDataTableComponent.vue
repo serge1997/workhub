@@ -58,6 +58,7 @@
                                     @update-priority="updatePriority"
                                     @update-task-status="updateTaskStatus"
                                     @update-task-user="updateTaskUser"
+                                    @on-selected-task="onSelectedTask"
                                 />
                                 <router-link class="text-decoration-none gray-pure p-2 w-100" :to="`/task-show/${data.id}/task/${data.id}`">
                                    <small> {{ data.short_title }}</small>
@@ -133,6 +134,11 @@ export default {
     name: 'TeamMembersComponent',
     inject: ['taskPrioritySeverity'],
 
+    watch:{
+        '$route.params.id'(n, old){
+            this.getData();
+        }
+    },
     components: {
         TaskActionMenuComponent
     },
@@ -152,7 +158,8 @@ export default {
             expandedRow: null,
             task_status: [],
             members: [],
-            setStatusColor: statusColor
+            setStatusColor: statusColor,
+            taskSelectedTarget: []
         }
     },
     mounted(){
@@ -161,6 +168,19 @@ export default {
         this.listTeamMembers();
     },
     methods: {
+        onSelectedTask(id){
+            const icon = document.getElementById(`task_selected_icon_${id}`);
+            if (icon.classList.contains('pi-circle')){
+                icon.classList.remove('pi-circle')
+                icon.classList.add('pi-circle-fill');
+                this.taskSelectedTarget.push("pi-circle-fill")
+            }else{
+                icon.classList.remove('pi-circle-fill');
+                icon.classList.add('pi-circle');
+                this.taskSelectedTarget.splice(0, 1);
+            }
+            this.$emit("selectedTask", id, this.taskSelectedTarget);
+        },
         updateTaskUser(task_id, user_id){
             this.Api.put('task/user', {user_id: user_id, task_id: task_id})
             .then(() => {

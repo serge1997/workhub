@@ -8,6 +8,7 @@
                 :header-group-label-has-severity="true"
                 :has-concluded-column="true"
                 global-header-text-color="text-white"
+                @selected-task="onSelectedTask"
             />
         </div>
         <div class="row d-none">
@@ -36,6 +37,9 @@
                 </h4>
             </div>
         </div>
+        <TaskToolbarComponent
+            :tasks-ids="selected_tasks_ids"
+        />
     </div>
 </template>
 <script>
@@ -53,7 +57,11 @@ export default {
         ),
         TaskDataTableComponent
     },
-
+    watch:{
+        '$route.params.id'(n, old){
+            this.selected_tasks_ids = [];
+        },
+    },
     props: {
         url: String,
         projects: Object,
@@ -76,7 +84,19 @@ export default {
        }, 200)
     },
     methods:{
-
+        onSelectedTask(id, selectedTarget){
+            const toolbar = document.getElementById('task-toolbar');
+            if (this.selected_tasks_ids.includes(id)){
+                this.selected_tasks_ids.splice(this.selected_tasks_ids.indexOf(id));
+            }else{
+                this.selected_tasks_ids.push(id);
+            }
+            if (selectedTarget.length){
+                toolbar.classList.remove('d-none')
+            }else{
+                toolbar.classList.add('d-none')
+            }
+        }
     }
 }
 </script>

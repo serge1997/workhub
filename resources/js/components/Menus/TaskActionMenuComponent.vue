@@ -2,7 +2,7 @@
     <Button @click="toggleTaskActionMenu" class="p-1" text>
         <i class="pi pi-ellipsis-v small-icon task-description"></i>
     </Button>
-    <Button @click="onSelectedTask(task.id)" class="p-1" text>
+    <Button @click="$emit('onSelectedTask', task.id)" class="p-1" text>
         <i :id="`task_selected_icon_${task.id}`" class="pi pi-circle small-icon task-description"></i>
     </Button>
    <Menu :model="actions" class="shadow" ref="visibleTaskActionMenu" style="width: 380px;" :popup="true">
@@ -53,13 +53,12 @@
    </Menu>
 </template>
 <script>
-import { ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 
 export default {
     name: 'TaskActionMenuComponent',
 
     components: {
-
     },
     props: {
         taskStatus: Object,
@@ -93,16 +92,6 @@ export default {
         handleActionMenuActiveClass(active){
             return this.menuIs == active ? 'toolbar-nav-active' : null;
         },
-        onSelectedTask(id){
-            const icon = document.getElementById(`task_selected_icon_${id}`);
-            if (icon.classList.contains('pi-circle')){
-                icon.classList.remove('pi-circle')
-                icon.classList.add('pi-circle-fill');
-            }else{
-                icon.classList.remove('pi-circle-fill');
-                icon.classList.add('pi-circle');
-            }
-        }
     }
 }
 </script>
