@@ -57,7 +57,8 @@ class TaskResource extends JsonResource
             'sprint_name' => $this->sprint ? ucfirst($this->sprint->name) : 'Nenhum sprint',
             'sub_task_count' => $this->subTasks->where('deleted_at', null)->count(),
             'is_sub_task' => $this->isSubTask(),
-            'parent_id' => $this->parent?->task_id
+            'parent_id' => $this->parent?->task_id,
+            'team_name' => $this->team?->name ?? "-"
 
         ];
     }

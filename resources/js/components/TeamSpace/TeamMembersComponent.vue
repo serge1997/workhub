@@ -45,7 +45,6 @@ export default {
         }
     },
     mounted(){
-        this.onListAllTaskExecutionStatus();
         this.listTeamMembers();
     },
     methods: {

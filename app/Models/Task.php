@@ -162,4 +162,9 @@ class Task extends Model
         })->where('task_id', $this->id)
             ->exists();
     }
+
+    public function team() : BelongsTo
+    {
+        return $this->belongsTo(TeamSpace::class, 'team_id');
+    }
 }

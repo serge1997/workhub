@@ -2,10 +2,10 @@
     <div class="w-100">
         <Button v-if="task.comment_count" class="d-flex gap-1 px-1 p-1" @click="listAllCommentByTask(task.id)" text>
             <span>
-                <i class="pi pi pi-comment icon-list-task"></i>
+                <i class="pi pi pi-comment task-description small-icon"></i>
             </span>
             <span class="d-flex gap-1 align-items-center">
-                <small class="task-description">
+                <small class="task-description small-icon">
                     {{task.comment_count === true ? 0 : task.comment_count}}
                 </small>
             </span>

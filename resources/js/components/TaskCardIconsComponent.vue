@@ -29,7 +29,7 @@
                 :tag-value="task.full_task_execution_status"
             />
         </div>
-        <div class="w-100 icons d-flex align-items-center" :class="`${task.execution_status}-target`">
+        <div class="w-100 icons d-flex align-items-center d-none" :class="`${task.execution_status}-target`">
             <Button class="d-flex gap-1 align-items-center p-1" :class="`${task.execution_status}-target`" text>
                 <span>
                     <i class="pi pi-clock icon-list-task"></i>
@@ -47,10 +47,10 @@
         <div class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
             <Button class="d-flex gap-1 align-items-center p-1" text :class="`${task.execution_status}-target`">
                 <span>
-                    <i class="pi pi-paperclip icon-list-task"></i>
+                    <i class="pi pi-paperclip task-description small-icon"></i>
                 </span>
                 <span class="d-flex gap-1 align-items-center">
-                    <small class="task-description">
+                    <small class="task-description small-icon">
                         {{ task.annex_count }}
                     </small>
                 </span>
@@ -61,19 +61,24 @@
         </div>
         <div class="w-100 icons d-flex align-items-center" :class="`${task.execution_status}-target`">
             <Button class="p-1" @click="showTask(task.id)" text>
-                <i class="pi pi-align-center icon-list-task"></i>
+                <i class="pi pi-align-center task-description small-icon"></i>
             </Button>
         </div>
         <div v-if="task.can_delete" class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
             <Button @click="$emit('confirmDelete', task.id)" class="d-flex gap-1 align-items-center p-1" :class="`${task.execution_status}-target`" text>
                 <span>
-                    <i class="pi pi-trash icon-list-task"></i>
+                    <i class="pi pi-trash task-description small-icon"></i>
                 </span>
             </Button>
         </div>
         <div class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
-            <Button class="d-flex gap-1 align-items-center p-1" text>
-                <Tag :style="`background-color: #${task.project_severity};`" icon="pi pi-tag" :value="task.project_name" :class="`${task.execution_status}-target`"/>
+            <Button class="d-flex gap-1 align-items-center px-0 py-1" text>
+                <Tag icon="pi pi-users" severity="secondary" :value="task?.team_name" class="small-icon fw-normal bg-transparent" :class="`${task.execution_status}-target`"/>
+            </Button>
+        </div>
+        <div class="w-100 icons d-flex gap-1 align-items-center" :class="`${task.execution_status}-target`">
+            <Button class="d-flex gap-1 align-items-center px-0 py-1" text>
+                <Tag :style="`background-color: #${task.project_severity};`" icon="pi pi-tag" class="small-icon fw-normal" :value="task.project_name" :class="`${task.execution_status}-target`"/>
             </Button>
         </div>
         <div class="row">
