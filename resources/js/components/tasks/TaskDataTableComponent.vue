@@ -9,11 +9,11 @@
                     <template #body="{data}">
                         <Tag v-if="headerGroupLabelHasSeverity" :style="{'background-color': data.severity}">
                             <Chip v-if="isByUsers" class="bg-transparent" :image="`/img/users_avatars/${data.avatar}`"/>
-                            <span class="gray-pure">{{ data.name }}</span>
+                            <span :class="globalHeaderTextColor">{{ data.name }}</span>
                         </Tag>
                         <Tag v-else severity="secondary">
                             <Chip v-if="isByUsers" class="bg-transparent" :image="`/img/users_avatars/${data.avatar}`"/>
-                            <span class="gray-pure">{{ data.name }}</span>
+                            <span :class="globalHeaderTextColor">{{ data.name }}</span>
                         </Tag>
                     </template>
             </Column>
@@ -142,7 +142,8 @@ export default {
         isByUsers: Boolean,
         headerGroupLabel: String,
         headerGroupLabelHasSeverity: Boolean,
-        hasConcludedColumn: Boolean
+        hasConcludedColumn: Boolean,
+        globalHeaderTextColor: String
     },
 
     data(){

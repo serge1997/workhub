@@ -2,6 +2,7 @@
 namespace App\Core\Sprint;
 
 use App\Http\Resources\SprintResource;
+use App\Http\Resources\TaskResource;
 use App\Models\Sprint;
 use App\Models\Project;
 use App\Models\Task;
@@ -38,11 +39,9 @@ class SprintRepository implements SprintRepositoryInterface
     public function findAllByProject(Project $project)
     {
         $query = Sprint::select(
-            DB::raw('DISTINCT(tasks.sprint_id) as id'),
+            DB::raw('DISTINCT tasks.sprint_id as id'),
             'sprints.name',
-            'sprints.start_at',
-            'sprints.close_at',
-            DB::raw('COUNT(tasks.id) as task_total')
+            DB::raw('COUNT(DISTINCT tasks.id) as task_total')
         )
             ->addSelect(['task_concluded' => Task::selectRaw(
                 "COUNT(t2.id)"
@@ -61,13 +60,19 @@ class SprintRepository implements SprintRepositoryInterface
                         ->groupby(
                             'sprints.id',
                             'sprints.name',
-                            'sprints.start_at',
-                            'sprints.close_at',
-                            'tasks.sprint_id',
-                            'tasks.execution_status_id',
+                            'tasks.sprint_id'
                         )
                             ->orderBy('sprints.id', 'desc')
                                 ->get();
+        $query->each(function($tModel)use($project) {
+            $tModel->tasks = TaskResource::collection(
+                Task::where([
+                    ['project_id', $project->id],
+                    ['sprint_id', $tModel->id]
+                ])
+                    ->get()
+            );
+        });
         return $query;
     }
 }

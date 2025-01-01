@@ -7,6 +7,7 @@
                 header-group-label="Projetos"
                 :header-group-label-has-severity="true"
                 :has-concluded-column="true"
+                global-header-text-color="text-white"
             />
         </div>
         <div class="row d-none">

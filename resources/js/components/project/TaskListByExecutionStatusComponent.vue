@@ -4,6 +4,7 @@
             :url="`task-execution-status/list-with-task-count/by-team/${$route.params.id}`"
             header-group-label="Status"
             :header-group-label-has-severity="true"
+            global-header-text-color="text-white"
         />
     </div>
     <div class="row d-none">

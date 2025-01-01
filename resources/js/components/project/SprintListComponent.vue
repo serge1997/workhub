@@ -5,6 +5,7 @@
             header-group-label="Sprints"
             :header-group-label-has-severity="false"
             :has-concluded-column="true"
+            global-header-text-color="gray-pure"
         />
     </div>
     <div class="row d-none">
